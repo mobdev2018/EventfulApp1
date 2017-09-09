@@ -85,9 +85,7 @@ class EventSearchController: UICollectionViewController, UISearchBarDelegate, UI
             print("Failed to fetch event data", err)
         }
     }
-    
-    
-    
+
     //detects when search bar text is done editing
     func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
       //  print("Stopped Editing")
@@ -114,11 +112,7 @@ class EventSearchController: UICollectionViewController, UISearchBarDelegate, UI
             self.collectionView?.reloadData()
         }
     }
-    
-    
-    
-    
-    //
+
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
         return CGSize(width: view.frame.width, height: 80)
     }
@@ -128,15 +122,11 @@ class EventSearchController: UICollectionViewController, UISearchBarDelegate, UI
         header.searchBar.delegate = self
         return header
     }
-    
-    
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         //Changes the first responder to the search bar
         searchBar.resignFirstResponder()
     }
-    
-    
-    
+
     func searchBar(_ searchBar: UISearchBar, selectedScopeButtonIndexDidChange selectedScope: Int) {
         switch selectedScope {
         case 0:
@@ -159,25 +149,16 @@ class EventSearchController: UICollectionViewController, UISearchBarDelegate, UI
     }
     
     // this function will detect change in the search bar and filter out the results returned based off what is entered in the search bar
-    
-    
-    
-    
-    
+
     var filteredUsers = [User]()
     var usersArray = [User]()
     
     fileprivate func fetchUsers(stringValue: String){
-        
         //create a reference to the location in the database that you want to pull from and observe the value there
         let ref = Database.database().reference().child("users")
-        
         let endString = stringValue + "\\uf8ff"
         ref.queryOrdered(byChild: "username").queryStarting(atValue: stringValue).queryEnding(atValue: endString).observeSingleEvent(of: .value, with: { (snapshot) in
-            
           //  print(snapshot)
-            
-            
             guard let dictionaries = snapshot.value as? [String: Any] else{
                 return print(snapshot.value ?? "nil")
             }
@@ -188,33 +169,23 @@ class EventSearchController: UICollectionViewController, UISearchBarDelegate, UI
             dictionaries.forEach({ (key,value) in
                 // print(key, value)
                 //creating an eventDictionary to store the results of previous call
-                
                 guard let userDictionary = value as? [String: Any] else{
                     return
                 }
-
                 let newUser = User(key: key, postDictionary: userDictionary)
-
                 let filteredArr = self.usersArray.filter { (user) -> Bool in
                   //  print(user.uid)
                     return user.uid == newUser?.uid
                 }
-                
-                
               //  print(newUser?.uid ?? "nil")
-                
                 //If arrat equals 0 append newPost
                 if filteredArr.count == 0 {
                     //append
                     self.usersArray.append(newUser!)
                 }
-                
-                
-                
                 self.filteredUsers = self.usersArray.filter { (user) -> Bool in
                     return (user.username?.lowercased().contains(stringValue.lowercased()))!
                 }
-                
                 DispatchQueue.main.async {
                     self.collectionView?.reloadData()
                 }

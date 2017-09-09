@@ -12,7 +12,6 @@ import Firebase
 
 
 struct PostService {
-    
     static func create(for event: String?,for vidURL: String) {
         // 1
         guard let key = event else {
@@ -30,15 +29,12 @@ struct PostService {
         postRef.updateChildValues(dict)
         userRef.updateChildValues(dict)
     }
-    
-    
-    static func showEvent(pageSize: UInt, lastPostKey: String? = nil,completion: @escaping ([Event]) -> Void) {
+    static func showEvent(pageSize: UInt, lastPostKey: String? = nil,eventCategory: String? = nil,completion: @escaping ([Event]) -> Void) {
         //getting firebase root directory
        // print(lastPostKey)
         print("came here")
         var currentEvents = [Event]()
         let eventsByLocationRef = Database.database().reference().child("eventsbylocation").child(User.current.location!)
-        
         //let ref = Database.database().reference().child("events")
         var query = eventsByLocationRef.queryOrderedByKey().queryLimited(toFirst: pageSize)
         if let lastPostKey = lastPostKey {
@@ -51,22 +47,13 @@ struct PostService {
             guard let allObjects = snapshot.children.allObjects as? [DataSnapshot] else{
                 return
             }
-           
             allObjects.forEach({ (snapshot) in
-             print(snapshot.value ?? "")
-//                guard let key: String? = snapshot.value as! String else {
-//                    return
-//                }
-            //    print(key)
+            // print(snapshot.value ?? "")
                 EventService.show(forEventKey: snapshot.value as! String, completion: { (event) in
-                  //  print(event)
-//                    currentEvents.append(.init(currentEventKey: snapshot.value as! String, dictionary: (event?.eventDictionary)!))
                     currentEvents.append(event!)
-                  //  print(currentEvents)
-                //    print(currentEvents)
-                    print("\n\n\n\n\n\n")
-                    print("Finished an event")
-                    print(currentEvents.count)
+                   // print("\n\n\n\n\n\n")
+                   // print("Finished an event")
+                   // print(currentEvents.count)
                     completion(currentEvents)
                 })
 

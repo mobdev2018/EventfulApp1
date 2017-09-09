@@ -12,7 +12,6 @@
 		07087C211F49470A0099B91F /* PhotoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07087C201F49470A0099B91F /* PhotoViewController.swift */; };
 		0719CDF31F54CF580076E678 /* CommentsHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0719CDF21F54CF580076E678 /* CommentsHeader.swift */; };
 		0719CDF51F54DC360076E678 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0719CDF41F54DC360076E678 /* Assets.xcassets */; };
-		0719CDF91F56362E0076E678 /* UICollectionView+Utility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0719CDF81F56362E0076E678 /* UICollectionView+Utility.swift */; };
 		0719CDFB1F5639690076E678 /* MGPaginationHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0719CDFA1F5639690076E678 /* MGPaginationHelper.swift */; };
 		071C9E071F3F95530021D5A3 /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 071C9E061F3F95530021D5A3 /* SearchViewController.swift */; };
 		071C9E0A1F3FBBB00021D5A3 /* EventSearchCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 071C9E091F3FBBB00021D5A3 /* EventSearchCell.swift */; };
@@ -68,7 +67,6 @@
 		07087C201F49470A0099B91F /* PhotoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoViewController.swift; sourceTree = "<group>"; };
 		0719CDF21F54CF580076E678 /* CommentsHeader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CommentsHeader.swift; path = Controllers/CommentsHeader.swift; sourceTree = "<group>"; };
 		0719CDF41F54DC360076E678 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		0719CDF81F56362E0076E678 /* UICollectionView+Utility.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "UICollectionView+Utility.swift"; path = "Extensions/UICollectionView+Utility.swift"; sourceTree = "<group>"; };
 		0719CDFA1F5639690076E678 /* MGPaginationHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MGPaginationHelper.swift; path = Services/MGPaginationHelper.swift; sourceTree = "<group>"; };
 		071C9E061F3F95530021D5A3 /* SearchViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SearchViewController.swift; path = Controllers/SearchViewController.swift; sourceTree = "<group>"; };
 		071C9E091F3FBBB00021D5A3 /* EventSearchCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = EventSearchCell.swift; path = Controllers/EventSearchCell.swift; sourceTree = "<group>"; };
@@ -214,7 +212,6 @@
 				07437F3C1F28D4C500CE728B /* Extensions.swift */,
 				07D923A71F33C61D0069613D /* Storyboard+Utility.swift */,
 				076428B21F4B9289003D1B43 /* Storage.swift */,
-				0719CDF81F56362E0076E678 /* UICollectionView+Utility.swift */,
 				0719CDFA1F5639690076E678 /* MGPaginationHelper.swift */,
 			);
 			name = Extensions;
@@ -484,7 +481,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				07B9145D1F3D416900A02952 /* CommentCell.swift in Sources */,
-				0719CDF91F56362E0076E678 /* UICollectionView+Utility.swift in Sources */,
 				071F2E1A1F4E14B500FEDDCF /* EventSearchHeader.swift in Sources */,
 				073B120A1F2C264000031044 /* HomeFeedController.swift in Sources */,
 				073B120C1F2ED42C00031044 /* ProfileeViewController.swift in Sources */,

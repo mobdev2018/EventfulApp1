@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		070599AC1F6464C0006D1BF9 /* CircularTransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 070599AB1F6464C0006D1BF9 /* CircularTransition.swift */; };
 		07087C1A1F48FBB10099B91F /* CameraController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07087C191F48FBB10099B91F /* CameraController.swift */; };
 		07087C1F1F4946DA0099B91F /* VideoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07087C1E1F4946DA0099B91F /* VideoViewController.swift */; };
 		07087C211F49470A0099B91F /* PhotoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07087C201F49470A0099B91F /* PhotoViewController.swift */; };
@@ -62,6 +63,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		070599AB1F6464C0006D1BF9 /* CircularTransition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CircularTransition.swift; path = Controllers/CircularTransition.swift; sourceTree = "<group>"; };
 		07087C191F48FBB10099B91F /* CameraController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CameraController.swift; path = Controllers/CameraController.swift; sourceTree = "<group>"; };
 		07087C1E1F4946DA0099B91F /* VideoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = VideoViewController.swift; path = Controllers/VideoViewController.swift; sourceTree = "<group>"; };
 		07087C201F49470A0099B91F /* PhotoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoViewController.swift; sourceTree = "<group>"; };
@@ -323,6 +325,7 @@
 			children = (
 				07FF92BA1F39051900FC9716 /* EventDetailViewController.swift */,
 				071F2E171F4CAFDE00FEDDCF /* VideoLauncher.swift */,
+				070599AB1F6464C0006D1BF9 /* CircularTransition.swift */,
 			);
 			name = "Event Detail";
 			sourceTree = "<group>";
@@ -525,6 +528,7 @@
 				07F3EC601F4B7BE9005296EB /* Story.swift in Sources */,
 				07370C841F4A4CC8006DC7A2 /* StorageService.swift in Sources */,
 				071F2E1C1F4E2FC500FEDDCF /* UserSearchCell.swift in Sources */,
+				070599AC1F6464C0006D1BF9 /* CircularTransition.swift in Sources */,
 				07087C211F49470A0099B91F /* PhotoViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

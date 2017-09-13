@@ -29,7 +29,7 @@ struct PostService {
         postRef.updateChildValues(dict)
         userRef.updateChildValues(dict)
     }
-    static func showEvent(pageSize: UInt, lastPostKey: String? = nil,eventCategory: String? = nil,completion: @escaping ([Event]) -> Void) {
+    static func showEvent(pageSize: UInt, lastPostKey: String? = nil,completion: @escaping ([Event]) -> Void) {
         //getting firebase root directory
        // print(lastPostKey)
         print("came here")

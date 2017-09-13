@@ -11,11 +11,9 @@ import Firebase
 import FirebaseDatabase
 
 class EventDetailViewController: UIViewController {
-    
     var currentEvent : Event?{
         didSet{
             let imageURL = URL(string: eventImage)
-            
             currentEventImage.af_setImage(withURL: imageURL!)
             currentEventTime.text = eventTime
             currentEventDate.text = self.eventDate
@@ -26,8 +24,6 @@ class EventDetailViewController: UIViewController {
             descriptionLabel.text = self.eventDescription
             descriptionLabel.font = UIFont(name: (descriptionLabel.font?.fontName)!, size: 12)
             navigationItem.title = eventName.capitalized
-            
-            
         }
     }
     var stackView: UIStackView?
@@ -110,9 +106,6 @@ class EventDetailViewController: UIViewController {
         let currentAddressLabel = UILabel()
         currentAddressLabel.numberOfLines = 0
         currentAddressLabel.textColor = UIColor.lightGray
-        //        var firstPartOfAddress = self.eventStreet  + "\n" + self.eventCity + ", " + self.eventState
-        //        var secondPartOfAddress = firstPartOfAddress + " " + String(self.eventZip)
-        //  currentAddressLabel.text = secondPartOfAddress
         currentAddressLabel.font = UIFont(name: currentAddressLabel.font.fontName, size: 12)
         return currentAddressLabel
     }()
@@ -123,8 +116,6 @@ class EventDetailViewController: UIViewController {
         currentDescriptionLabel.textContainer.maximumNumberOfLines = 0
         currentDescriptionLabel.textColor = UIColor.black
         currentDescriptionLabel.textAlignment = .justified
-        //        currentDescriptionLabel.text = self.eventDescription
-        //        currentDescriptionLabel.font = UIFont(name: (currentDescriptionLabel.font?.fontName)!, size: 12)
         return currentDescriptionLabel
     }()
     
@@ -139,14 +130,8 @@ class EventDetailViewController: UIViewController {
     
     func presentComments(){
         print("Comments button pressed")
-        
         commentsController.eventKey = eventKey
-        
-        //        let navController = UINavigationController(rootViewController: commentsController)
-        //        navController.navigationBar.isTranslucent = false
-        //        navController.tabBarItem.title = "Comments"
         present(commentsController, animated: true, completion: nil)
-        //        self.navigationController?.pushViewController(commentsController, animated: false)
         
     }
     
@@ -187,9 +172,6 @@ class EventDetailViewController: UIViewController {
         // 2
         attendingButton.isUserInteractionEnabled = false
         // 3
-        
-        
-        
         AttendService.setIsAttending(!((currentEvent?.isAttending)!), from: currentEvent) { (success) in
             // 5
             
@@ -270,9 +252,9 @@ class EventDetailViewController: UIViewController {
         downSwipe.direction = .down
         view.addGestureRecognizer(downSwipe)
         view.backgroundColor = UIColor.white
-        self.navigationItem.hidesBackButton = true
-        let backButton = UIBarButtonItem(image: UIImage(named: "icons8-Back-64"), style: .plain, target: self, action: #selector(GoBack))
-        self.navigationItem.leftBarButtonItem = backButton
+//        self.navigationItem.hidesBackButton = true
+//        let backButton = UIBarButtonItem(image: UIImage(named: "icons8-Back-64"), style: .plain, target: self, action: #selector(GoBack))
+//        self.navigationItem.leftBarButtonItem = backButton
         
         //Subviews will be added here
         view.addSubview(currentEventImage)
@@ -331,11 +313,6 @@ class EventDetailViewController: UIViewController {
             
         })
         
-    }
-    
-    
-    func GoBack(){
-        _ = self.navigationController?.popViewController(animated: false)
     }
     
     override func didReceiveMemoryWarning() {

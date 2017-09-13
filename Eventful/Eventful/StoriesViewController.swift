@@ -50,6 +50,9 @@ class StoriesViewController: UIViewController, UICollectionViewDataSource, UICol
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        let downSwipe = UISwipeGestureRecognizer(target: self, action: #selector(swipeAction(_:)))
+        downSwipe.direction = .down
+        view.addGestureRecognizer(downSwipe)
         view.addSubview(collectionView)
         collectionView.anchor(top: view.topAnchor, left: view.leftAnchor, bottom: view.bottomAnchor, right: view.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
         //Do any additional setup after loading the view
@@ -58,6 +61,27 @@ class StoriesViewController: UIViewController, UICollectionViewDataSource, UICol
        
     }
     
+    
+    func swipeAction(_ swipe: UIGestureRecognizer){
+        if let swipeGesture = swipe as? UISwipeGestureRecognizer {
+            switch swipeGesture.direction {
+            case UISwipeGestureRecognizerDirection.right:
+                print("Swiped right")
+                break
+            case UISwipeGestureRecognizerDirection.down:
+                dismiss(animated: true, completion: nil)
+                break
+            case UISwipeGestureRecognizerDirection.left:
+                print("Swiped left")
+                break
+            case UISwipeGestureRecognizerDirection.up:
+                print("Swiped up")
+                break
+            default:
+                break
+            }
+        }
+    }
     fileprivate func fetchStories(){
         
         StoryService.showEvent(for: self.eventKey) { (story) in

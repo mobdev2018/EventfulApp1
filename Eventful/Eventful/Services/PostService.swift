@@ -12,6 +12,7 @@ import Firebase
 
 
 struct PostService {
+    static var category : String = ""
     static func create(for event: String?,for vidURL: String) {
         // 1
         guard let key = event else {
@@ -49,7 +50,7 @@ struct PostService {
             }
             allObjects.forEach({ (snapshot) in
             // print(snapshot.value ?? "")
-                EventService.show(forEventKey: snapshot.value as! String, completion: { (event) in
+                EventService.show(forEventKey: snapshot.value as! String, eventCategory: category, completion: { (event) in
                     currentEvents.append(event!)
                    // print("\n\n\n\n\n\n")
                    // print("Finished an event")

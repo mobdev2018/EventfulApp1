@@ -11,6 +11,7 @@ import Firebase
 import FirebaseDatabase
 
 class EventDetailViewController: UIViewController {
+    
     var currentEvent : Event?{
         didSet{
             let imageURL = URL(string: eventImage)

@@ -186,7 +186,9 @@ class CommentsViewController: UICollectionViewController, UICollectionViewDelega
         
         // 5
         let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+        let deleteAction = UIAlertAction(title: "Delete Comment", style: .default, handler: nil)
         alertController.addAction(cancelAction)
+        alertController.addAction(deleteAction)
         
         // 6
         present(alertController, animated: true, completion: nil)

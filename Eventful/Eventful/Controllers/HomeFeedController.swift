@@ -15,7 +15,7 @@ import CoreLocation
 import AMScrollingNavbar
 
 class HomeFeedController: UICollectionViewController, UICollectionViewDelegateFlowLayout,UIGestureRecognizerDelegate {
-   // let dropDownLauncher = DropDownLauncher()
+    // let dropDownLauncher = DropDownLauncher()
     var isFinishedPaging = false
     let detailView = EventDetailViewController()
     let refreshControl = UIRefreshControl()
@@ -37,21 +37,21 @@ class HomeFeedController: UICollectionViewController, UICollectionViewDelegateFl
         collectionView?.backgroundColor = UIColor.white
         collectionView?.collectionViewLayout = grideLayout
         collectionView?.reloadData()
-      self.collectionView?.contentInset = UIEdgeInsetsMake(15, 0, 0, 0)
-       navigationItem.title = "Home"
+        self.collectionView?.contentInset = UIEdgeInsetsMake(15, 0, 0, 0)
+        navigationItem.title = "Home"
         collectionView?.register(CustomCell.self, forCellWithReuseIdentifier: customCellIdentifier)
-              //  self.navigationItem.hidesBackButton = true
-                let backButton = UIBarButtonItem(image: UIImage(named: "menu"), style: .plain, target: self, action: #selector(handleDropDownMenu))
-                self.navigationItem.leftBarButtonItem = backButton
-    
-//        PostService.showEvent(location: User.current.location!) { (event) in
-//            self.allEvents = event
-//            print(self.allEvents)
-//            
-//            DispatchQueue.main.async {
-//                self.collectionView?.reloadData()
-//            }
-//        }
+        //  self.navigationItem.hidesBackButton = true
+        let backButton = UIBarButtonItem(image: UIImage(named: "menu"), style: .plain, target: self, action: #selector(handleDropDownMenu))
+        self.navigationItem.leftBarButtonItem = backButton
+        
+        //        PostService.showEvent(location: User.current.location!) { (event) in
+        //            self.allEvents = event
+        //            print(self.allEvents)
+        //
+        //            DispatchQueue.main.async {
+        //                self.collectionView?.reloadData()
+        //            }
+        //        }
         configureCollectionView()
         reloadHomeFeed()
     }
@@ -78,10 +78,10 @@ class HomeFeedController: UICollectionViewController, UICollectionViewDelegateFl
         return true
     }
     
-
+    
     
     func handleDropDownMenu(){
-         dropDownLauncer.showDropDown()
+        dropDownLauncer.showDropDown()
     }
     //will query by selected category
     func categoryFetch(dropDown: DropDown){
@@ -103,7 +103,7 @@ class HomeFeedController: UICollectionViewController, UICollectionViewDelegateFl
             }
         })
     }
-
+    
     
     func configureCollectionView() {
         // add pull to refresh
@@ -111,10 +111,28 @@ class HomeFeedController: UICollectionViewController, UICollectionViewDelegateFl
         collectionView?.addSubview(refreshControl)
     }
     
+    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+        return true
+    }
+    
+    //will make surepictures keep same orientation even if you flip screen
+    // will most likely lock into portrait mode but still good to have
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransition(to: size, with: coordinator)
+        grideLayout.invalidateLayout()
+    }
+    
+    func showLeftView(sender: AnyObject?){
+        print("Button Pressed")
+        // sideMenuController?.leftViewController = LeftViewController()
+        //sideMenuController?.showLeftView(animated: true, completionHandler: nil)
+    }
+    
+    //MARK:- Collection View Data Source
     // need to tell it how many cells to have
     
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-            return allEvents.count
+        return allEvents.count
     }
     
     // need to tell the collection view controller what type of cell we want to return
@@ -126,14 +144,25 @@ class HomeFeedController: UICollectionViewController, UICollectionViewDelegateFl
         customCell.sampleImage.af_setImage(withURL: imageURL!)
         return customCell
     }
+    
+    //MARK:- Collection View Delegate
+    //Will allow the first two cells that are displayed to be of varying widths
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        if indexPath.item == 0 || indexPath.item == 1 {
+            return CGSize(width: view.frame.width, height: grideLayout.itemSize.height)
+        }else{
+            return grideLayout.itemSize
+        }
+    }
+    
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         //let selectedEvent = self.imageArray[indexPath.row]
         //let eventDetailVC
         if let cell = collectionView.cellForItem(at: indexPath){
             detailView.eventImage = allEvents[indexPath.row].currentEventImage
             detailView.eventName = allEvents[indexPath.row].currentEventName
-          //  print("Look here for event name")
-           // print(detailView.eventName)
+            //  print("Look here for event name")
+            // print(detailView.eventName)
             detailView.eventDescription = allEvents[indexPath.row].currentEventDescription
             detailView.eventStreet = allEvents[indexPath.row].currentEventStreetAddress
             detailView.eventCity = allEvents[indexPath.row].currentEventCity
@@ -148,13 +177,13 @@ class HomeFeedController: UICollectionViewController, UICollectionViewDelegateFl
             //self.navigationController?.pushViewController(detailView, animated: true)
             
         }
-         print("Cell \(indexPath.row) selected")
+        print("Cell \(indexPath.row) selected")
     }
     
     override func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
         
         if indexPath.item >= allEvents.count - 1 {
-           // print("paginating for post")
+            // print("paginating for post")
             paginationHelper.paginate(completion: { [unowned self] (events) in
                 self.allEvents.append(contentsOf: events)
                 
@@ -166,31 +195,6 @@ class HomeFeedController: UICollectionViewController, UICollectionViewDelegateFl
             print("Not paginating")
         }
     }
-    
-    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
-        return true
-    }
-
-    //will make surepictures keep same orientation even if you flip screen
-    // will most likely lock into portrait mode but still good to have
-    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
-        super.viewWillTransition(to: size, with: coordinator)
-        grideLayout.invalidateLayout()
-    }
-    //Will allow the first two cells that are displayed to be of varying widths
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        if indexPath.item == 0 || indexPath.item == 1 {
-            return CGSize(width: view.frame.width, height: grideLayout.itemSize.height)
-        }else{
-            return grideLayout.itemSize
-        }
-    }
-    func showLeftView(sender: AnyObject?){
-        print("Button Pressed")
-       // sideMenuController?.leftViewController = LeftViewController()
-        //sideMenuController?.showLeftView(animated: true, completionHandler: nil)
-    }
-    
 }
 //responsible for populating each cell with content
 

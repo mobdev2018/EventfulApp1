@@ -59,6 +59,7 @@
 		07FF92C31F3ABC4900FC9716 /* CommentsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07FF92C21F3ABC4900FC9716 /* CommentsViewController.swift */; };
 		07FF92C91F3B898C00FC9716 /* Comment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07FF92C81F3B898C00FC9716 /* Comment.swift */; };
 		07FF92CB1F3B925800FC9716 /* ChatService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07FF92CA1F3B925800FC9716 /* ChatService.swift */; };
+		50717DDA1F6EFE2600AADB66 /* NSLayoutConstraint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50717DD91F6EFE2600AADB66 /* NSLayoutConstraint.swift */; };
 		F277E01C2A00DE5C23A3A9DD /* Pods_Eventful.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1746B55EBA2E6BE797E81DA6 /* Pods_Eventful.framework */; };
 /* End PBXBuildFile section */
 
@@ -119,6 +120,7 @@
 		07FF92CA1F3B925800FC9716 /* ChatService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ChatService.swift; path = Services/ChatService.swift; sourceTree = "<group>"; };
 		1746B55EBA2E6BE797E81DA6 /* Pods_Eventful.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Eventful.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		4D63B9A855CD185FB49E3D17 /* Pods-Eventful.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Eventful.release.xcconfig"; path = "Pods/Target Support Files/Pods-Eventful/Pods-Eventful.release.xcconfig"; sourceTree = "<group>"; };
+		50717DD91F6EFE2600AADB66 /* NSLayoutConstraint.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSLayoutConstraint.swift; sourceTree = "<group>"; };
 		5A2D82487A88CC695A029DCA /* Pods-Eventful.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Eventful.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Eventful/Pods-Eventful.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -211,6 +213,7 @@
 		07437F321F28CF2200CE728B /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				50717DD91F6EFE2600AADB66 /* NSLayoutConstraint.swift */,
 				07437F3C1F28D4C500CE728B /* Extensions.swift */,
 				07D923A71F33C61D0069613D /* Storyboard+Utility.swift */,
 				076428B21F4B9289003D1B43 /* Storage.swift */,
@@ -518,6 +521,7 @@
 				076428B31F4B9289003D1B43 /* Storage.swift in Sources */,
 				07FF92C31F3ABC4900FC9716 /* CommentsViewController.swift in Sources */,
 				07437F3D1F28D4C500CE728B /* Extensions.swift in Sources */,
+				50717DDA1F6EFE2600AADB66 /* NSLayoutConstraint.swift in Sources */,
 				0719CDF31F54CF580076E678 /* CommentsHeader.swift in Sources */,
 				07B9145F1F3D4DE100A02952 /* CommentGrabbed.swift in Sources */,
 				071F2E181F4CAFDE00FEDDCF /* VideoLauncher.swift in Sources */,

@@ -17,6 +17,8 @@ struct EventService {
        // print(eventKey)
         let ref = Database.database().reference().child("events").child(eventKey)
        // print(eventKey)
+     
+            if eventCategory == "Home" || eventCategory == nil || eventCategory == ""{
                 //pull everything
                 ref.observeSingleEvent(of: .value, andPreviousSiblingKeyWith: { (snapshot,eventKey) in
                     print(snapshot.value ?? "")
@@ -25,6 +27,14 @@ struct EventService {
                     }
                     completion(event)
                 })
+
+            }else{
+                //pull based off of category
+                
+                print("Begin Query By Event Category")
+                var query = ref.queryOrdered(byChild: "event:category").queryEqual(toValue: eventCategory)
+            }
+        
         
     }
 }

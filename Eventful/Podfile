@@ -18,6 +18,7 @@ target 'Eventful' do
   pod ‘TextFieldEffects’
   pod 'EZSwipeController'
   pod 'AMScrollingNavbar'
+  pod 'IGListKit', '~> 3.0'
 
 
 

@@ -47,6 +47,11 @@ PODS:
     - GoogleToolboxForMac/NSString+URLArguments (= 2.1.1)
   - GoogleToolboxForMac/NSString+URLArguments (2.1.1)
   - GTMSessionFetcher/Core (1.1.10)
+  - IGListKit (3.0.0):
+    - IGListKit/Default (= 3.0.0)
+  - IGListKit/Default (3.0.0):
+    - IGListKit/Diffing
+  - IGListKit/Diffing (3.0.0)
   - SVProgressHUD (2.1.2)
   - SwiftLocation (2.0.7)
   - SwiftyCam (2.4.0)
@@ -63,6 +68,7 @@ DEPENDENCIES:
   - Firebase/Core
   - Firebase/Database
   - Firebase/Storage
+  - IGListKit (~> 3.0)
   - SVProgressHUD
   - SwiftLocation
   - SwiftyCam
@@ -84,12 +90,13 @@ SPEC CHECKSUMS:
   FirebaseStorage: 8110a1ed2034c8fbfd83890d2acc9cdbbd99afec
   GoogleToolboxForMac: 8e329f1b599f2512c6b10676d45736bcc2cbbeb0
   GTMSessionFetcher: 30d874b96d0d76028f61fbd122801e3f030d47db
+  IGListKit: 9eab6856a15fa25ad72018ff9d9eb2178c240fff
   SVProgressHUD: c404a55d78acbeb7ebb78b76d3faf986475a6994
   SwiftLocation: 1fe2e15a5812e961496e82eeaca71d03e829e47a
   SwiftyCam: cb83b9a8e181f70fb741d30cea724c6b045a4549
   SwiftyJSON: c2842d878f95482ffceec5709abc3d05680c0220
   TextFieldEffects: 8706f53525f1ce51c8921b7af32237caab50c467
 
-PODFILE CHECKSUM: d7e50d66605d469a8330a9372d10bebec86e30d8
+PODFILE CHECKSUM: 85ba602d9b47dd9ea7385927045cf96423ca2e0e
 
 COCOAPODS: 1.2.1

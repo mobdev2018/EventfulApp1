@@ -86,8 +86,9 @@ class HomeFeedController: UICollectionViewController, UICollectionViewDelegateFl
     //will query by selected category
     func categoryFetch(dropDown: DropDown){
         navigationItem.title = dropDown.name
-        
-        
+        paginationHelper.category = dropDown.name
+        configureCollectionView()
+        reloadHomeFeed()
     }
     
     func reloadHomeFeed() {

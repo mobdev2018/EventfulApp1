@@ -28,9 +28,9 @@ class CommentsViewController: UICollectionViewController, UICollectionViewDelega
         super.viewDidLoad()
         navigationItem.title = "Comments"
         collectionView?.backgroundColor = UIColor.white
-//        self.navigationItem.hidesBackButton = true
-//        let backButton = UIBarButtonItem(image: UIImage(named: "icons8-Back-64"), style: .plain, target: self, action: #selector(GoBack))
-//        self.navigationItem.leftBarButtonItem = backButton
+        //        self.navigationItem.hidesBackButton = true
+        //        let backButton = UIBarButtonItem(image: UIImage(named: "icons8-Back-64"), style: .plain, target: self, action: #selector(GoBack))
+        //        self.navigationItem.leftBarButtonItem = backButton
         self.collectionView?.register(CommentCell.self, forCellWithReuseIdentifier: cellID)
         collectionView?.scrollIndicatorInsets = UIEdgeInsets(top: 0, left: 0, bottom:-50, right: 0)
         collectionView?.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: -50, right: 0)
@@ -44,7 +44,7 @@ class CommentsViewController: UICollectionViewController, UICollectionViewDelega
         NotificationCenter.default.addObserver(self, selector: #selector(handleKeyboardNotification), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
         
         NotificationCenter.default.addObserver(self, selector: #selector(handleKeyboardNotification), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
-         self.collectionView?.contentInset = UIEdgeInsetsMake(20, 0, 0, 0)
+        self.collectionView?.contentInset = UIEdgeInsetsMake(20, 0, 0, 0)
         
         collectionView?.register(CommentHeader.self, forSupplementaryViewOfKind: UICollectionElementKindSectionHeader, withReuseIdentifier: "headerID")
         
@@ -111,7 +111,7 @@ class CommentsViewController: UICollectionViewController, UICollectionViewDelega
                             return comment.commentID == commentFetched.commentID
                         }
                         if filteredArr.count == 0 {
-                             self.comments.append(commentFetched)
+                            self.comments.append(commentFetched)
                         }
                     }
                     self.comments.sort(by: { (comment1, comment2) -> Bool in
@@ -161,7 +161,7 @@ class CommentsViewController: UICollectionViewController, UICollectionViewDelega
     }
     
     
-     func flagButtonTapped (from cell: CommentCell){
+    func flagButtonTapped (from cell: CommentCell){
         guard let indexPath = collectionView?.indexPath(for: cell) else { return }
         
         // 2
@@ -180,15 +180,23 @@ class CommentsViewController: UICollectionViewController, UICollectionViewDelega
                 okAlert.addAction(UIAlertAction(title: "Ok", style: .default))
                 self.present(okAlert, animated: true)
             }
-            
+            let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+            alertController.addAction(cancelAction)
             alertController.addAction(flagAction)
+        }else{
+            let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+            let deleteAction = UIAlertAction(title: "Delete Comment", style: .default, handler: { _ in
+                ChatService.deleteComment(comment, self.eventKey)
+                let okAlert = UIAlertController(title: nil, message: "Comment Has Been Deleted", preferredStyle: .alert)
+                okAlert.addAction(UIAlertAction(title: "Ok", style: .default))
+                self.present(okAlert, animated: true)
+            })
+            alertController.addAction(cancelAction)
+            alertController.addAction(deleteAction)
+            
         }
         
         // 5
-        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
-        let deleteAction = UIAlertAction(title: "Delete Comment", style: .default, handler: nil)
-        alertController.addAction(cancelAction)
-        alertController.addAction(deleteAction)
         
         // 6
         present(alertController, animated: true, completion: nil)
@@ -224,9 +232,9 @@ class CommentsViewController: UICollectionViewController, UICollectionViewDelega
         submitButton.titleLabel?.font = UIFont.boldSystemFont(ofSize: 14)
         submitButton.addTarget(self, action: #selector(handleSubmit), for: .touchUpInside)
         submitButton.isEnabled = false
-       return submitButton
+        return submitButton
     }()
-  
+    
     //allows you to gain access to the input accessory view that each view controller has for inputting text
     lazy var containerView: UIView = {
         let containerView = UIView()
@@ -298,9 +306,9 @@ class CommentsViewController: UICollectionViewController, UICollectionViewDelega
     }
     
     
-//    func GoBack(){
-//        _ = self.navigationController?.popViewController(animated: false)
-//    }
+    //    func GoBack(){
+    //        _ = self.navigationController?.popViewController(animated: false)
+    //    }
     
 }
 

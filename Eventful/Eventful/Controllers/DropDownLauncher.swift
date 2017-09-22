@@ -7,14 +7,7 @@
 //
 
 import UIKit
-class DropDown: NSObject {
-    let name: String
-    let imageName: String
-    init(name: String, imageName: String) {
-        self.name = name
-        self.imageName = imageName
-    }
-}
+
 class DropDownLauncher: NSObject, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout{
     let dropDown: [DropDown] = {
         return [DropDown(name: "Home", imageName: "home"),DropDown(name: "Seize The Night", imageName: "night"),DropDown(name: "Seize The Day", imageName: "summer"), DropDown(name: "Dress To Impress", imageName: "suit"), DropDown(name: "I Love College", imageName: "college"),DropDown(name: "21 & Up", imageName: "21")]
@@ -62,6 +55,7 @@ class DropDownLauncher: NSObject, UICollectionViewDelegate, UICollectionViewData
         cv.backgroundColor = UIColor.white
         return cv
     }()
+    
     let cellID = "cellID"
     let cellHeight:CGFloat = 50
     var homeFeed: HomeFeedController?

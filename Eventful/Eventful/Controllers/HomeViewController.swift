@@ -18,8 +18,10 @@
     lazy var viewControllerList: [UIViewController] = {
         let homeFeedController = HomeFeedController()
         let navController = ScrollingNavigationController(rootViewController: homeFeedController)
+        
         let profileView = ProfileeViewController(collectionViewLayout: UICollectionViewFlowLayout())
         let profileViewNavController = UINavigationController(rootViewController: profileView)
+        
         let searchController = EventSearchController(collectionViewLayout: UICollectionViewFlowLayout())
         let searchNavController = UINavigationController(rootViewController: searchController)
         

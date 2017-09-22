@@ -59,6 +59,7 @@
 		07FF92C31F3ABC4900FC9716 /* CommentsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07FF92C21F3ABC4900FC9716 /* CommentsViewController.swift */; };
 		07FF92C91F3B898C00FC9716 /* Comment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07FF92C81F3B898C00FC9716 /* Comment.swift */; };
 		07FF92CB1F3B925800FC9716 /* ChatService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07FF92CA1F3B925800FC9716 /* ChatService.swift */; };
+		50360FAF1F755DCF00AB3BD0 /* HomeFeedCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50360FAE1F755DCF00AB3BD0 /* HomeFeedCell.swift */; };
 		50717DDA1F6EFE2600AADB66 /* NSLayoutConstraint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50717DD91F6EFE2600AADB66 /* NSLayoutConstraint.swift */; };
 		F277E01C2A00DE5C23A3A9DD /* Pods_Eventful.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1746B55EBA2E6BE797E81DA6 /* Pods_Eventful.framework */; };
 /* End PBXBuildFile section */
@@ -120,6 +121,7 @@
 		07FF92CA1F3B925800FC9716 /* ChatService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ChatService.swift; path = Services/ChatService.swift; sourceTree = "<group>"; };
 		1746B55EBA2E6BE797E81DA6 /* Pods_Eventful.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Eventful.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		4D63B9A855CD185FB49E3D17 /* Pods-Eventful.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Eventful.release.xcconfig"; path = "Pods/Target Support Files/Pods-Eventful/Pods-Eventful.release.xcconfig"; sourceTree = "<group>"; };
+		50360FAE1F755DCF00AB3BD0 /* HomeFeedCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeFeedCell.swift; sourceTree = "<group>"; };
 		50717DD91F6EFE2600AADB66 /* NSLayoutConstraint.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSLayoutConstraint.swift; sourceTree = "<group>"; };
 		5A2D82487A88CC695A029DCA /* Pods-Eventful.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Eventful.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Eventful/Pods-Eventful.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -276,6 +278,7 @@
 			isa = PBXGroup;
 			children = (
 				079F52DB1F5E47EE0043F9EF /* DropDownCell.swift */,
+				50360FAE1F755DCF00AB3BD0 /* HomeFeedCell.swift */,
 				079F52D91F5E386C0043F9EF /* DropDownLauncher.swift */,
 				073B12091F2C264000031044 /* HomeFeedController.swift */,
 			);
@@ -551,6 +554,7 @@
 				07437F511F2A63B600CE728B /* HomeViewController.swift in Sources */,
 				073AFDC51F45E4FB009D4773 /* FollowService.swift in Sources */,
 				07F3EC591F4A57C3005296EB /* PostService.swift in Sources */,
+				50360FAF1F755DCF00AB3BD0 /* HomeFeedCell.swift in Sources */,
 				07087C1A1F48FBB10099B91F /* CameraController.swift in Sources */,
 				07437F311F27D3EB00CE728B /* SignUpViewController.swift in Sources */,
 				071C9E0A1F3FBBB00021D5A3 /* EventSearchCell.swift in Sources */,

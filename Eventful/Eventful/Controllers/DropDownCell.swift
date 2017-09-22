@@ -9,15 +9,23 @@
 import Foundation
 import UIKit
 
-class DropDownCell: UICollectionViewCell {
-    override var isHighlighted: Bool {
-        didSet{
-            backgroundColor = isHighlighted ? UIColor.darkGray : UIColor.white
-            nameLabel.textColor = isHighlighted ? UIColor.white : UIColor.black
-            iconImageVIew.tintColor = isHighlighted ? UIColor.white : UIColor.darkGray
-
-        }
+class DropDown: NSObject {
+    let name: String
+    let imageName: String
+    init(name: String, imageName: String) {
+        self.name = name
+        self.imageName = imageName
     }
+}
+
+public class DropDownCell: UICollectionViewCell {
+//    override public var isHighlighted: Bool {
+//        didSet{
+//            backgroundColor = isHighlighted ? UIColor.darkGray : UIColor.white
+//            nameLabel.textColor = isHighlighted ? UIColor.white : UIColor.black
+//            iconImageVIew.tintColor = isHighlighted ? UIColor.white : UIColor.darkGray
+//        }
+//    }
     
     var dropDown: DropDown?{
         didSet{
@@ -26,7 +34,7 @@ class DropDownCell: UICollectionViewCell {
             if let imageName = dropDown?.imageName{
                 iconImageVIew.image = UIImage(named: imageName)?.withRenderingMode(.alwaysTemplate)
                 iconImageVIew.tintColor = UIColor.darkGray
-
+                
             }
         }
     }
@@ -36,7 +44,7 @@ class DropDownCell: UICollectionViewCell {
         setupViews()
     }
     
-    required init?(coder aDecoder: NSCoder) {
+    required public init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
@@ -45,21 +53,22 @@ class DropDownCell: UICollectionViewCell {
         addSubview(iconImageVIew)
         addConstraintsWithFormat("H:|-8-[v0(20)]-8-[v1]|", views: iconImageVIew,nameLabel)
         addConstraintsWithFormat("V:|[v0]|", views: nameLabel)
-    addConstraintsWithFormat("V:[v0(20)]", views: iconImageVIew)
+        addConstraintsWithFormat("V:[v0(20)]", views: iconImageVIew)
         addConstraint(NSLayoutConstraint(item: iconImageVIew, attribute: .centerY, relatedBy: .equal, toItem: self, attribute: .centerY, multiplier: 1, constant: 0))
     }
     
     let nameLabel: UILabel = {
         let nameLabel = UILabel()
-       // nameLabel.text = "Seize The Day"
+        // nameLabel.text = "Seize The Day"
         nameLabel.font = UIFont.systemFont(ofSize: 13)
         return nameLabel
     }()
     
     let iconImageVIew: UIImageView = {
-       let iconImageView = UIImageView()
-      //  iconImageView.image = UIImage(named: "summer")
+        let iconImageView = UIImageView()
+        //  iconImageView.image = UIImage(named: "summer")
         iconImageView.contentMode = .scaleAspectFill
         return iconImageView
     }()
 }
+

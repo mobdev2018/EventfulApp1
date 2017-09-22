@@ -147,4 +147,14 @@ extension String {
     var length: Int {
         return self.characters.count
     }
+    
+    func textRect(withFont font: UIFont, andHeight height:CGFloat) -> CGRect {
+        return self.textRect(withFont: font, andWidth: CGFloat.greatestFiniteMagnitude, andHeight: height)
+    }
+    
+    func textRect(withFont font: UIFont, andWidth width:CGFloat, andHeight height:CGFloat) -> CGRect {
+        let constraintRect = CGSize(width: width, height: height)
+        let boundingBox = self.boundingRect(with: constraintRect, options: .usesLineFragmentOrigin, attributes: [NSFontAttributeName: font, NSParagraphStyleAttributeName: NSParagraphStyle.default], context: nil)
+        return boundingBox
+    }
 }

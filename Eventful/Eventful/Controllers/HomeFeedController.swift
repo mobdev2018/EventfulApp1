@@ -54,10 +54,10 @@ class HomeFeedController: UIViewController, UIGestureRecognizerDelegate {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
-        if let navigationController = self.navigationController as? ScrollingNavigationController {
-            navigationController.followScrollView(self.collectionView!, delay: 50.0)
-        }
+        self.navigationController?.setNavigationBarHidden(true, animated: false)
+//        if let navigationController = self.navigationController as? ScrollingNavigationController {
+//            navigationController.followScrollView(self.collectionView!, delay: 50.0)
+//        }
         if self.selectedTopIndex == nil {
             self.performActionOnTopItemSelect(at: 0)
         }
@@ -66,9 +66,9 @@ class HomeFeedController: UIViewController, UIGestureRecognizerDelegate {
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
         
-        if let navigationController = navigationController as? ScrollingNavigationController {
-            navigationController.stopFollowingScrollView()
-        }
+//        if let navigationController = navigationController as? ScrollingNavigationController {
+//            navigationController.stopFollowingScrollView()
+//        }
     }
     
     private func configure(){
@@ -231,7 +231,7 @@ class HomeFeedController: UIViewController, UIGestureRecognizerDelegate {
         detailView.eventTime = model.currentEventTime!
         detailView.currentEvent = model
         present(detailView, animated: true, completion: nil)
-        debugPrint("Tap at index: \(sender.tag)")
+        //debugPrint("Tap at index: \(sender.tag)")
     }
 }
 
@@ -302,7 +302,7 @@ extension HomeFeedController: UICollectionViewDelegateFlowLayout {
                 })
             }
             else{
-                debugPrint("Not paginating")
+                //debugPrint("Not paginating")
             }
         }
     }

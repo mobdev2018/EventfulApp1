@@ -61,6 +61,7 @@
 		07FF92CB1F3B925800FC9716 /* ChatService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07FF92CA1F3B925800FC9716 /* ChatService.swift */; };
 		50360FAF1F755DCF00AB3BD0 /* HomeFeedCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50360FAE1F755DCF00AB3BD0 /* HomeFeedCell.swift */; };
 		50717DDA1F6EFE2600AADB66 /* NSLayoutConstraint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50717DD91F6EFE2600AADB66 /* NSLayoutConstraint.swift */; };
+		5074F1C21F7648D10082E016 /* ImageCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5074F1C11F7648D10082E016 /* ImageCollectionViewCell.swift */; };
 		F277E01C2A00DE5C23A3A9DD /* Pods_Eventful.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1746B55EBA2E6BE797E81DA6 /* Pods_Eventful.framework */; };
 /* End PBXBuildFile section */
 
@@ -123,6 +124,7 @@
 		4D63B9A855CD185FB49E3D17 /* Pods-Eventful.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Eventful.release.xcconfig"; path = "Pods/Target Support Files/Pods-Eventful/Pods-Eventful.release.xcconfig"; sourceTree = "<group>"; };
 		50360FAE1F755DCF00AB3BD0 /* HomeFeedCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeFeedCell.swift; sourceTree = "<group>"; };
 		50717DD91F6EFE2600AADB66 /* NSLayoutConstraint.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSLayoutConstraint.swift; sourceTree = "<group>"; };
+		5074F1C11F7648D10082E016 /* ImageCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCollectionViewCell.swift; sourceTree = "<group>"; };
 		5A2D82487A88CC695A029DCA /* Pods-Eventful.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Eventful.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Eventful/Pods-Eventful.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -305,6 +307,7 @@
 			isa = PBXGroup;
 			children = (
 				07437F501F2A63B600CE728B /* HomeViewController.swift */,
+				5074F1C11F7648D10082E016 /* ImageCollectionViewCell.swift */,
 			);
 			name = "Root View";
 			sourceTree = "<group>";
@@ -543,6 +546,7 @@
 				071C9E101F415E680021D5A3 /* AttendService.swift in Sources */,
 				07D9239F1F2EEE460069613D /* AlterProfileViewController.swift in Sources */,
 				07437F491F29167000CE728B /* UserService.swift in Sources */,
+				5074F1C21F7648D10082E016 /* ImageCollectionViewCell.swift in Sources */,
 				07FF92B91F3627A300FC9716 /* Post.swift in Sources */,
 				07F3EC5E1F4B7B28005296EB /* StoryService.swift in Sources */,
 				0719CDFB1F5639690076E678 /* MGPaginationHelper.swift in Sources */,

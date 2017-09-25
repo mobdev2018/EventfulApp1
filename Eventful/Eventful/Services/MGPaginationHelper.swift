@@ -34,14 +34,15 @@ class PaginationHelper<T : Keyed>
     // 3. state - The current pagination state of the helper
     // 4. lastobjectKey - Firebase uses object keys to determine the last position of the page. We'lll need to use this as an offset for paginating.
     let pageSize: UInt
-    let serviceMethod: (UInt, String?, @escaping (([T]) -> Void)) -> Void
+    let serviceMethod: (UInt, String?,String?, @escaping (([T]) -> Void)) -> Void
     var state: PaginationState = .initial
     var lastObjectKey: String?
+    var category: String?
     
     // MARK: - Init
     //    Can change the default page size for our helper
     //    Set the service method that will be paginated and return data
-    init(pageSize: UInt = 5, serviceMethod: @escaping (UInt, String?, @escaping (([T]) -> Void)) -> Void) {
+    init(pageSize: UInt = 4, serviceMethod: @escaping (UInt, String?,String?, @escaping (([T]) -> Void)) -> Void) {
         self.pageSize = pageSize
         self.serviceMethod = serviceMethod
     }
@@ -61,7 +62,7 @@ class PaginationHelper<T : Keyed>
         case .ready:
             state = .loading
           //  print(lastObjectKey)
-            serviceMethod(pageSize, lastObjectKey) { [unowned self] (objects: [T]) in
+            serviceMethod(pageSize, lastObjectKey, category) { [unowned self] (objects: [T]) in
                 //5 We use the defer keyword to make sure the following code is executed whenever the closure returns. This is helpful for removing duplicate code.
                 defer {
                     //6 If the returned last returned object has a key value, we store that in lastObjectKey to use as a future offset for paginating. Right now the compiler will throw an error because it cannot infer that T has a property of key. We'll fix that next.

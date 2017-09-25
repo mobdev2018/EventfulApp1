@@ -14,6 +14,17 @@ import SwiftLocation
 import CoreLocation
 import AMScrollingNavbar
 
+class ImageAndTitleItem: NSObject {
+    public var name:String?
+    public var imageName:String?
+    
+    convenience init(name:String, imageName:String) {
+        self.init()
+        self.name = name
+        self.imageName = imageName
+    }
+}
+
 class HomeFeedController: UIViewController, UIGestureRecognizerDelegate {
     // let dropDownLauncher = DropDownLauncher()
     var isFinishedPaging = false
@@ -29,16 +40,16 @@ class HomeFeedController: UIViewController, UIGestureRecognizerDelegate {
     fileprivate var collectionView:UICollectionView!
     fileprivate var topView:HomeFeedCell!
     fileprivate var topCollectionView:UICollectionView!
-//    var grideLayout = GridLayout(numberOfColumns: 2)
-//    lazy var dropDownLauncer : DropDownLauncher = {
-//        let launcer = DropDownLauncher()
-//        launcer.homeFeed = self
-//        return launcer
-//    }()
+    //    var grideLayout = GridLayout(numberOfColumns: 2)
+    //    lazy var dropDownLauncer : DropDownLauncher = {
+    //        let launcer = DropDownLauncher()
+    //        launcer.homeFeed = self
+    //        return launcer
+    //    }()
     let paginationHelper = PaginationHelper<Event>(serviceMethod: PostService.showEvent)
     
-    let dropDown: [DropDown] = {
-        return [DropDown(name: "Home", imageName: "home"),DropDown(name: "Seize The Night", imageName: "night"),DropDown(name: "Seize The Day", imageName: "summer"), DropDown(name: "Dress To Impress", imageName: "suit"), DropDown(name: "I Love College", imageName: "college"),DropDown(name: "21 & Up", imageName: "21")]
+    let dropDown: [ImageAndTitleItem] = {
+        return [ImageAndTitleItem(name: "Home", imageName: "home"), ImageAndTitleItem(name: "Seize The Night", imageName: "night"), ImageAndTitleItem(name: "Seize The Day", imageName: "summer"), ImageAndTitleItem(name: "Dress To Impress", imageName: "suit"), ImageAndTitleItem(name: "I Love College", imageName: "college"), ImageAndTitleItem(name: "21 & Up", imageName: "21")]
     }()
     
     fileprivate var selectedTopIndex:Int?
@@ -47,7 +58,7 @@ class HomeFeedController: UIViewController, UIGestureRecognizerDelegate {
         super.viewDidLoad()
         navigationItem.title = "Home"
         //  self.navigationItem.hidesBackButton = true
-
+        
         self.configure()
         reloadHomeFeed()
     }
@@ -55,9 +66,9 @@ class HomeFeedController: UIViewController, UIGestureRecognizerDelegate {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.navigationController?.setNavigationBarHidden(true, animated: false)
-//        if let navigationController = self.navigationController as? ScrollingNavigationController {
-//            navigationController.followScrollView(self.collectionView!, delay: 50.0)
-//        }
+        //        if let navigationController = self.navigationController as? ScrollingNavigationController {
+        //            navigationController.followScrollView(self.collectionView!, delay: 50.0)
+        //        }
         if self.selectedTopIndex == nil {
             self.performActionOnTopItemSelect(at: 0)
         }
@@ -66,9 +77,9 @@ class HomeFeedController: UIViewController, UIGestureRecognizerDelegate {
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
         
-//        if let navigationController = navigationController as? ScrollingNavigationController {
-//            navigationController.stopFollowingScrollView()
-//        }
+        //        if let navigationController = navigationController as? ScrollingNavigationController {
+        //            navigationController.stopFollowingScrollView()
+        //        }
     }
     
     private func configure(){
@@ -142,15 +153,15 @@ class HomeFeedController: UIViewController, UIGestureRecognizerDelegate {
         self.categoryFetch(dropDown: dropDown)
     }
     
-//    override func scrollViewShouldScrollToTop(_ scrollView: UIScrollView) -> Bool {
-//        if let navigationController = navigationController as? ScrollingNavigationController {
-//            navigationController.showNavbar(animated: true)
-//        }
-//        return true
-//    }
+    //    override func scrollViewShouldScrollToTop(_ scrollView: UIScrollView) -> Bool {
+    //        if let navigationController = navigationController as? ScrollingNavigationController {
+    //            navigationController.showNavbar(animated: true)
+    //        }
+    //        return true
+    //    }
     
     //will query by selected category
-    func categoryFetch(dropDown: DropDown){
+    func categoryFetch(dropDown: ImageAndTitleItem){
         navigationItem.title = dropDown.name
     }
     
@@ -216,19 +227,8 @@ class HomeFeedController: UIViewController, UIGestureRecognizerDelegate {
             return
         }
         let model = self.allEvents[sender.tag]
-        detailView.eventImage = model.currentEventImage
-        detailView.eventName = model.currentEventName
-        //  print("Look here for event name")
-        // print(detailView.eventName)
-        detailView.eventDescription = model.currentEventDescription
-        detailView.eventStreet = model.currentEventStreetAddress
-        detailView.eventCity = model.currentEventCity
-        detailView.eventState = model.currentEventState
-        detailView.eventZip = model.currentEventZip
         detailView.eventKey = model.key!
         detailView.eventPromo = model.currentEventPromo!
-        detailView.eventDate = model.currentEventDate!
-        detailView.eventTime = model.currentEventTime!
         detailView.currentEvent = model
         present(detailView, animated: true, completion: nil)
         //debugPrint("Tap at index: \(sender.tag)")
@@ -246,7 +246,7 @@ extension HomeFeedController: UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         if collectionView.tag == 0 {
-            let cellWith = self.dropDown[indexPath.item].name.textRect(withFont: UIFont.systemFont(ofSize: 13), andHeight: 20.0).size.width + 44.0
+            let cellWith = self.dropDown[indexPath.item].name!.textRect(withFont: UIFont.systemFont(ofSize: 13), andHeight: 20.0).size.width + 44.0
             return CGSize(width: cellWith, height: collectionView.bounds.size.height - 20)
         }
         else {

@@ -44,8 +44,8 @@ playground.xcworkspace
 # https://guides.cocoapods.org/using/using-cocoapods.html#should-i-check-the-pods-directory-into-source-control
 #
 # Pods/
-Eventful/Pods/
-Eventful/Podfile.lock
+./Eventful/Pods/
+./Eventful/Podfile.lock
 # Carthage
 #
 # Add this line if you want to avoid checking in source code from Carthage dependencies.

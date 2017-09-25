@@ -12,7 +12,6 @@ import Firebase
 
 
 struct PostService {
-    static var category : String = ""
     static func create(for event: String?,for vidURL: String) {
         // 1
         guard let key = event else {
@@ -30,10 +29,10 @@ struct PostService {
         postRef.updateChildValues(dict)
         userRef.updateChildValues(dict)
     }
-    static func showEvent(pageSize: UInt, lastPostKey: String? = nil,completion: @escaping ([Event]) -> Void) {
+    static func showEvent(pageSize: UInt, lastPostKey: String? = nil, category: String? = nil,completion: @escaping ([Event]) -> Void) {
         //getting firebase root directory
        // print(lastPostKey)
-        print("came here")
+      //  print("came here")
         var currentEvents = [Event]()
         let eventsByLocationRef = Database.database().reference().child("eventsbylocation").child(User.current.location!)
         //let ref = Database.database().reference().child("events")
@@ -50,7 +49,8 @@ struct PostService {
             }
             allObjects.forEach({ (snapshot) in
             // print(snapshot.value ?? "")
-                EventService.show(forEventKey: snapshot.value as! String, eventCategory: category, completion: { (event) in
+                print(category)
+                EventService.show(forEventKey: snapshot.value as! String,eventCategory: category, completion: { (event) in
                     currentEvents.append(event!)
                    // print("\n\n\n\n\n\n")
                    // print("Finished an event")

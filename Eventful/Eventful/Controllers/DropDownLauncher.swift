@@ -9,8 +9,8 @@
 import UIKit
 
 class DropDownLauncher: NSObject, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout{
-    let dropDown: [DropDown] = {
-        return [DropDown(name: "Home", imageName: "home"),DropDown(name: "Seize The Night", imageName: "night"),DropDown(name: "Seize The Day", imageName: "summer"), DropDown(name: "Dress To Impress", imageName: "suit"), DropDown(name: "I Love College", imageName: "college"),DropDown(name: "21 & Up", imageName: "21")]
+    let dropDown: [ImageAndTitleItem] = {
+        return [ImageAndTitleItem(name: "Home", imageName: "home"),ImageAndTitleItem(name: "Seize The Night", imageName: "night"),ImageAndTitleItem(name: "Seize The Day", imageName: "summer"), ImageAndTitleItem(name: "Dress To Impress", imageName: "suit"), ImageAndTitleItem(name: "I Love College", imageName: "college"),ImageAndTitleItem(name: "21 & Up", imageName: "21")]
     }()
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return dropDown.count

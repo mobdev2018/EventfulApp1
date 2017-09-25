@@ -14,17 +14,17 @@ class EventDetailViewController: UIViewController {
     
     var currentEvent : Event?{
         didSet{
-            let imageURL = URL(string: eventImage)
+            let imageURL = URL(string: (currentEvent?.currentEventImage)!)
             currentEventImage.af_setImage(withURL: imageURL!)
-            currentEventTime.text = eventTime
-            currentEventDate.text = self.eventDate
-            eventNameLabel.text = self.eventName.capitalized
-            let firstPartOfAddress = self.eventStreet  + "\n" + self.eventCity + ", " + self.eventState
-            let secondPartOfAddress = firstPartOfAddress + " " + String(self.eventZip)
+            currentEventTime.text = currentEvent?.currentEventTime
+            currentEventDate.text = currentEvent?.currentEventDate
+            eventNameLabel.text = currentEvent?.currentEventName.capitalized
+            let firstPartOfAddress = (currentEvent?.currentEventStreetAddress)!  + "\n" + (currentEvent?.currentEventCity)! + ", " + (currentEvent?.currentEventState)!
+            let secondPartOfAddress = firstPartOfAddress + " " + String(describing: currentEvent?.currentEventZip)
             addressLabel.text = secondPartOfAddress
-            descriptionLabel.text = self.eventDescription
+            descriptionLabel.text = currentEvent?.currentEventDescription
             descriptionLabel.font = UIFont(name: (descriptionLabel.font?.fontName)!, size: 12)
-            navigationItem.title = eventName.capitalized
+            navigationItem.title = currentEvent?.currentEventName.capitalized
         }
     }
     var stackView: UIStackView?
@@ -33,20 +33,14 @@ class EventDetailViewController: UIViewController {
     let camera = CameraViewController()
     let commentsController = CommentsViewController(collectionViewLayout: UICollectionViewFlowLayout())
     let eventStory = StoriesViewController()
+    let newCommentsController = NewCommentsViewController()
     
     
     //variables that will hold data sent in through previous event controller
-    var eventImage = ""
-    var eventName = ""
-    var eventDescription = ""
-    var eventStreet = ""
-    var eventCity = ""
-    var eventState = ""
-    var eventZip = 0
-    var eventDate = ""
+    
     var eventKey = ""
     var eventPromo = ""
-    var eventTime = ""
+ 
     
     var currentEventAttendCount = 0
     //
@@ -132,6 +126,7 @@ class EventDetailViewController: UIViewController {
     func presentComments(){
         print("Comments button pressed")
         commentsController.eventKey = eventKey
+        newCommentsController.eventKey = eventKey
         present(commentsController, animated: true, completion: nil)
         
     }

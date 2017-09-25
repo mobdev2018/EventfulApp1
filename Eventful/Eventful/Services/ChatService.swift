@@ -8,6 +8,8 @@
 
 import Foundation
 import  FirebaseDatabase
+import Firebase
+import FirebaseAuth
 
 
 class ChatService {
@@ -30,10 +32,6 @@ class ChatService {
             success?(true)
         })
     }
-    
-    
-    
-    
     
     static func flag(_ comment: CommentGrabbed) {
         // 1
@@ -61,12 +59,23 @@ class ChatService {
         })
     }
     
-    
-    
-    
-    
-    
-    
+    static func deleteComment(_ comment: CommentGrabbed, _ eventKey: String){
+        //1
+        guard let commentkey = comment.commentID else {
+            return
+        }
+        
+        print(commentkey)
+        
+        let commentData = ["Comments/\(eventKey)/\(commentkey)": NSNull()]
+        
+        Database.database().reference().updateChildValues(commentData) { (error, _) in
+            if let error = error {
+                assertionFailure(error.localizedDescription)
+            }
+        }
+        
+    }
     
     static func observeMessages(forChatKey eventKey: String, completion: @escaping (DatabaseReference, Comments?) -> Void) -> DatabaseHandle {
         let messagesRef = Database.database().reference().child(eventKey)

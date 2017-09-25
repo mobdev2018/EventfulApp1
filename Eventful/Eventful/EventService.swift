@@ -17,23 +17,21 @@ struct EventService {
        // print(eventKey)
         let ref = Database.database().reference().child("events").child(eventKey)
        // print(eventKey)
-     
-            if eventCategory == "Home" || eventCategory == nil || eventCategory == ""{
                 //pull everything
                 ref.observeSingleEvent(of: .value, andPreviousSiblingKeyWith: { (snapshot,eventKey) in
                     print(snapshot.value ?? "")
                     guard let event = Event(snapshot: snapshot) else {
                         return completion(nil)
                     }
-                    completion(event)
+                    if event.category == eventCategory{
+                        completion(event)
+                    }
+                    if eventCategory == nil || eventCategory == "" || eventCategory == "Home" {
+                        completion(event)
+                    }
                 })
 
-            }else{
-                //pull based off of category
-                
-                print("Begin Query By Event Category")
-                var query = ref.queryOrdered(byChild: "event:category").queryEqual(toValue: eventCategory)
-            }
+            
         
         
     }

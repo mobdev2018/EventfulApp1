@@ -14,17 +14,17 @@ import SwiftLocation
 import CoreLocation
 import AMScrollingNavbar
 
-class HomeFeedController: UIViewController {
+class NewHomeFeedControllerViewController: UIViewController {
     let detailView = EventDetailViewController()
     var allEvents = [Event]()
     let customCellIdentifier1 = "customCellIdentifier1"
     var grideLayout = GridLayout(numberOfColumns: 2)
     let refreshControl = UIRefreshControl()
     var newHomeFeed: NewHomeFeedControllerViewController?
-    let paginationHelper = PaginationHelper<Event>(serviceMethod: PostService.showEvent)
+      let paginationHelper = PaginationHelper<Event>(serviceMethod: PostService.showEvent)
     lazy var dropDownLauncer : DropDownLauncher = {
         let launcer = DropDownLauncher()
-        launcer.homeFeed = self
+        launcer.newHomeFeed = self
         return launcer
     }()
     
@@ -97,7 +97,7 @@ class HomeFeedController: UIViewController {
         }
     }
     
-    func scrollViewShouldScrollToTop(_ scrollView: UIScrollView) -> Bool {
+     func scrollViewShouldScrollToTop(_ scrollView: UIScrollView) -> Bool {
         if let navigationController = navigationController as? ScrollingNavigationController {
             navigationController.showNavbar(animated: true)
         }
@@ -116,8 +116,8 @@ class HomeFeedController: UIViewController {
     }
 }
 
-extension HomeFeedController: UICollectionViewDelegate {
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+extension NewHomeFeedControllerViewController: UICollectionViewDelegate {
+     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         //let selectedEvent = self.imageArray[indexPath.row]
         //let eventDetailVC
         if let cell = collectionView.cellForItem(at: indexPath){
@@ -134,12 +134,12 @@ extension HomeFeedController: UICollectionViewDelegate {
     }
 }
 
-extension HomeFeedController: UICollectionViewDataSource {
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+extension NewHomeFeedControllerViewController: UICollectionViewDataSource {
+     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return allEvents.count
     }
     // The cell that is returned must be retrieved from a call to -dequeueReusableCellWithReuseIdentifier:forIndexPath:
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
         let customCell = collectionView.dequeueReusableCell(withReuseIdentifier: customCellIdentifier1, for: indexPath) as! CustomCell
         let imageURL = URL(string: allEvents[indexPath.item].currentEventImage)
@@ -162,11 +162,11 @@ extension HomeFeedController: UICollectionViewDataSource {
             print("Not paginating")
         }
     }
-    
+
 }
 
 
-extension HomeFeedController: UICollectionViewDelegateFlowLayout{
+extension NewHomeFeedControllerViewController: UICollectionViewDelegateFlowLayout{
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         if indexPath.item == 0 || indexPath.item == 1 {
             return CGSize(width: view.frame.width, height: grideLayout.itemSize.height)
@@ -174,69 +174,4 @@ extension HomeFeedController: UICollectionViewDelegateFlowLayout{
             return grideLayout.itemSize
         }
     }
-}
-//responsible for populating each cell with content
-
-class CustomCell: UICollectionViewCell {
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        setupViews()
-    }
-    let sampleImage: UIImageView = {
-        let firstImage = UIImageView()
-        firstImage.clipsToBounds = true
-        firstImage.translatesAutoresizingMaskIntoConstraints = false
-        firstImage.contentMode = .scaleToFill
-        firstImage.layer.masksToBounds = true
-        return firstImage
-    }()
-    let nameLabel: UILabel = {
-        let name = UILabel()
-        name.text = "Custom Text"
-        name.translatesAutoresizingMaskIntoConstraints = false
-        return name
-    }()
-    func setupViews() {
-        addSubview(sampleImage)
-        backgroundColor = UIColor.white
-        //addSubview(nameLabel)
-        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[v0]|", options: NSLayoutFormatOptions(), metrics: nil, views: ["v0": sampleImage]))
-        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[v0]|", options: NSLayoutFormatOptions(), metrics: nil, views: ["v0": sampleImage]))
-    }
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-}
-// responsible for creating the grid layout that you see in the home view feed
-
-class GridLayout: UICollectionViewFlowLayout {
-    
-    var numberOfColumns:Int = 2
-    
-    init(numberOfColumns: Int) {
-        super.init()
-        // controlls spacing inbetween them as well as spacing below them to next item
-        self.numberOfColumns = numberOfColumns
-        self.minimumInteritemSpacing = 3
-        self.minimumLineSpacing = 5
-    }
-    // just needs to be here because swift tells us to
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    override var itemSize: CGSize{
-        get{
-            if collectionView != nil {
-                let collectionVieweWidth = collectionView?.frame.width
-                let itemWidth = (collectionVieweWidth!/CGFloat(self.numberOfColumns)) - self.minimumInteritemSpacing
-                let itemHeight: CGFloat = 200
-                return CGSize(width: itemWidth, height: itemHeight)
-            }
-            return CGSize(width: 100, height: 100)
-        }set{
-            super.itemSize = newValue
-        }
-    }
-    
-    
 }

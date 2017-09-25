@@ -16,7 +16,7 @@
         // setupView()
     }
     lazy var viewControllerList: [UIViewController] = {
-        let homeFeedController = HomeFeedController(collectionViewLayout: UICollectionViewFlowLayout())
+        let homeFeedController = HomeFeedController()
         let navController = ScrollingNavigationController(rootViewController: homeFeedController)
         let profileView = ProfileeViewController(collectionViewLayout: UICollectionViewFlowLayout())
         let profileViewNavController = UINavigationController(rootViewController: profileView)

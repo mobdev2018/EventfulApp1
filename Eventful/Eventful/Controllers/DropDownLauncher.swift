@@ -43,6 +43,7 @@ class DropDownLauncher: NSObject, UICollectionViewDelegate, UICollectionViewData
         }) { (completed: Bool) in
             let dropDown = self.dropDown[indexPath.item]
            self.homeFeed?.categoryFetch(dropDown: dropDown)
+            self.newHomeFeed?.categoryFetch(dropDown: dropDown)
             print("")
         }
         
@@ -65,6 +66,8 @@ class DropDownLauncher: NSObject, UICollectionViewDelegate, UICollectionViewData
     let cellID = "cellID"
     let cellHeight:CGFloat = 50
     var homeFeed: HomeFeedController?
+    var newHomeFeed: NewHomeFeedControllerViewController?
+
     func showDropDown(){
         //show menu
         if let window = UIApplication.shared.keyWindow{

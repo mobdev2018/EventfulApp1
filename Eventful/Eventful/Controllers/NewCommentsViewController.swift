@@ -183,9 +183,9 @@ class NewCommentsViewController: UIViewController, UITextFieldDelegate {
             UIView.animate(withDuration: 0, delay: 0, options: UIViewAnimationOptions.curveEaseOut, animations: {
                 self.view.layoutIfNeeded()
             }, completion: { (completion) in
-                if self.comments.count > 0  && isKeyboardShowing{
-                    let indexPath = NSIndexPath(item: self.comments.count-1, section: 0)
-                    self.collectionView.scrollToItem(at: indexPath as IndexPath, at: .top, animated: true)
+                if self.comments.count > 0  && isKeyboardShowing {
+                    let indexPath = IndexPath(item: self.comments.count-1, section: 0)
+                    self.collectionView.scrollToItem(at: indexPath, at: .top, animated: true)
                 }
             })
         }

@@ -15,7 +15,7 @@ import CoreLocation
 import AMScrollingNavbar
 
 class HomeFeedController: UICollectionViewController, UICollectionViewDelegateFlowLayout,UIGestureRecognizerDelegate {
-   // let dropDownLauncher = DropDownLauncher()
+    // let dropDownLauncher = DropDownLauncher()
     var isFinishedPaging = false
     let detailView = EventDetailViewController()
     let refreshControl = UIRefreshControl()
@@ -31,27 +31,26 @@ class HomeFeedController: UICollectionViewController, UICollectionViewDelegateFl
         return launcer
     }()
     let paginationHelper = PaginationHelper<Event>(serviceMethod: PostService.showEvent)
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         collectionView?.backgroundColor = UIColor.white
         collectionView?.collectionViewLayout = grideLayout
         collectionView?.reloadData()
-      self.collectionView?.contentInset = UIEdgeInsetsMake(15, 0, 0, 0)
-       navigationItem.title = "Home"
+        self.collectionView?.contentInset = UIEdgeInsetsMake(15, 0, 0, 0)
+        navigationItem.title = "Home"
         collectionView?.register(CustomCell.self, forCellWithReuseIdentifier: customCellIdentifier)
-              //  self.navigationItem.hidesBackButton = true
-                let backButton = UIBarButtonItem(image: UIImage(named: "menu"), style: .plain, target: self, action: #selector(handleDropDownMenu))
-                self.navigationItem.leftBarButtonItem = backButton
-    
-//        PostService.showEvent(location: User.current.location!) { (event) in
-//            self.allEvents = event
-//            print(self.allEvents)
-//            
-//            DispatchQueue.main.async {
-//                self.collectionView?.reloadData()
-//            }
-//        }
+        //  self.navigationItem.hidesBackButton = true
+        let backButton = UIBarButtonItem(image: UIImage(named: "menu"), style: .plain, target: self, action: #selector(handleDropDownMenu))
+        self.navigationItem.leftBarButtonItem = backButton
+        
+        //        PostService.showEvent(location: User.current.location!) { (event) in
+        //            self.allEvents = event
+        //            print(self.allEvents)
+        //
+        //            DispatchQueue.main.async {
+        //                self.collectionView?.reloadData()
+        //            }
+        //        }
         configureCollectionView()
         reloadHomeFeed()
     }
@@ -78,10 +77,10 @@ class HomeFeedController: UICollectionViewController, UICollectionViewDelegateFl
         return true
     }
     
-
+    
     
     func handleDropDownMenu(){
-         dropDownLauncer.showDropDown()
+        dropDownLauncer.showDropDown()
     }
     //will query by selected category
     func categoryFetch(dropDown: DropDown){
@@ -104,7 +103,7 @@ class HomeFeedController: UICollectionViewController, UICollectionViewDelegateFl
             }
         })
     }
-
+    
     
     func configureCollectionView() {
         // add pull to refresh
@@ -115,7 +114,7 @@ class HomeFeedController: UICollectionViewController, UICollectionViewDelegateFl
     // need to tell it how many cells to have
     
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-            return allEvents.count
+        return allEvents.count
     }
     
     // need to tell the collection view controller what type of cell we want to return
@@ -131,31 +130,21 @@ class HomeFeedController: UICollectionViewController, UICollectionViewDelegateFl
         //let selectedEvent = self.imageArray[indexPath.row]
         //let eventDetailVC
         if let cell = collectionView.cellForItem(at: indexPath){
-            detailView.eventImage = allEvents[indexPath.row].currentEventImage
-            detailView.eventName = allEvents[indexPath.row].currentEventName
-          //  print("Look here for event name")
-           // print(detailView.eventName)
-            detailView.eventDescription = allEvents[indexPath.row].currentEventDescription
-            detailView.eventStreet = allEvents[indexPath.row].currentEventStreetAddress
-            detailView.eventCity = allEvents[indexPath.row].currentEventCity
-            detailView.eventState = allEvents[indexPath.row].currentEventState
-            detailView.eventZip = allEvents[indexPath.row].currentEventZip
+            //  print("Look here for event name")
+            // print(detailView.eventName)
             detailView.eventKey = allEvents[indexPath.row].key!
             detailView.eventPromo = allEvents[indexPath.row].currentEventPromo!
-            detailView.eventDate = allEvents[indexPath.row].currentEventDate!
-            detailView.eventTime = allEvents[indexPath.row].currentEventTime!
             detailView.currentEvent = allEvents[indexPath.row]
             present(detailView, animated: true, completion: nil)
             //self.navigationController?.pushViewController(detailView, animated: true)
             
         }
-         print("Cell \(indexPath.row) selected")
+        print("Cell \(indexPath.row) selected")
     }
     
     override func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-        
         if indexPath.item >= allEvents.count - 1 {
-           // print("paginating for post")
+            // print("paginating for post")
             paginationHelper.paginate(completion: { [unowned self] (events) in
                 self.allEvents.append(contentsOf: events)
                 
@@ -171,7 +160,7 @@ class HomeFeedController: UICollectionViewController, UICollectionViewDelegateFl
     func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
         return true
     }
-
+    
     //will make surepictures keep same orientation even if you flip screen
     // will most likely lock into portrait mode but still good to have
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
@@ -188,7 +177,7 @@ class HomeFeedController: UICollectionViewController, UICollectionViewDelegateFl
     }
     func showLeftView(sender: AnyObject?){
         print("Button Pressed")
-       // sideMenuController?.leftViewController = LeftViewController()
+        // sideMenuController?.leftViewController = LeftViewController()
         //sideMenuController?.showLeftView(animated: true, completionHandler: nil)
     }
     

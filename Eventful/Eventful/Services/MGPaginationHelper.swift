@@ -42,7 +42,7 @@ class PaginationHelper<T : Keyed>
     // MARK: - Init
     //    Can change the default page size for our helper
     //    Set the service method that will be paginated and return data
-    init(pageSize: UInt = 5, serviceMethod: @escaping (UInt, String?,String?, @escaping (([T]) -> Void)) -> Void) {
+    init(pageSize: UInt = 4, serviceMethod: @escaping (UInt, String?,String?, @escaping (([T]) -> Void)) -> Void) {
         self.pageSize = pageSize
         self.serviceMethod = serviceMethod
     }

@@ -37,8 +37,8 @@ class CommentsViewController: UICollectionViewController, UICollectionViewDelega
         collectionView?.alwaysBounceVertical = true
         collectionView?.keyboardDismissMode = .interactive
         view.addSubview(containerView)
-        view.addConstraintsWithFormat("H:|[v0]|", views: containerView)
-        view.addConstraintsWithFormat("V:[v0(48)]", views: containerView)
+        view.addConstraintsWithFormatt("H:|[v0]|", views: containerView)
+        view.addConstraintsWithFormatt("V:[v0(48)]", views: containerView)
         bottomConstraint = NSLayoutConstraint(item: containerView, attribute: .bottom, relatedBy: .equal, toItem: view, attribute: .bottom, multiplier: 1, constant: 0)
         view.addConstraint(bottomConstraint!)
         NotificationCenter.default.addObserver(self, selector: #selector(handleKeyboardNotification), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
@@ -50,7 +50,7 @@ class CommentsViewController: UICollectionViewController, UICollectionViewDelega
         
         // Register cell classes
         // self.collectionView!.register(UICollectionViewCell.self, forCellWithReuseIdentifier: cellID)
-        paginateComments()
+        fetchComments()
     }
     
     func handleKeyboardNotification(notification: NSNotification){
@@ -75,27 +75,18 @@ class CommentsViewController: UICollectionViewController, UICollectionViewDelega
     var comments = [CommentGrabbed]()
     var isFinishedPaging = false
     // will do the work of fetching the comments and populate the array
-    fileprivate func paginateComments(){
+    fileprivate func fetchComments(){
         messagesRef = Database.database().reference().child("Comments").child(eventKey)
+print(eventKey)
+       // print(comments.count)
         var query = messagesRef?.queryOrderedByKey()
-        
-        
-        if comments.count > 0 {
-            let value = comments.last?.commentID
-            query = query?.queryStarting(atValue: value)
-        }
-        query?.queryLimited(toFirst: 2).observe(.value, with: { (snapshot) in
+        query?.observe(.value, with: { (snapshot) in
             guard var allObjects = snapshot.children.allObjects as? [DataSnapshot] else {
                 return
             }
             
-            if allObjects.count < 2 {
-                self.isFinishedPaging = true
-            }
+            print(snapshot)
             
-            if self.comments.count > 0 {
-                allObjects.removeFirst()
-            }
             allObjects.forEach({ (snapshot) in
                 guard let commentDictionary = snapshot.value as? [String: Any] else{
                     return
@@ -112,6 +103,7 @@ class CommentsViewController: UICollectionViewController, UICollectionViewDelega
                         }
                         if filteredArr.count == 0 {
                             self.comments.append(commentFetched)
+                            
                         }
                     }
                     self.comments.sort(by: { (comment1, comment2) -> Bool in
@@ -124,9 +116,10 @@ class CommentsViewController: UICollectionViewController, UICollectionViewDelega
                 
             })
             
-        }, withCancel: { (err) in
-            print("Failed to paginate for comments: ", err)
+        }, withCancel: { (error) in
+             print("Failed to observe comments")
         })
+        
         //first lets fetch comments for current event
     }
     
@@ -150,10 +143,6 @@ class CommentsViewController: UICollectionViewController, UICollectionViewDelega
     
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         //fire off pagination
-        if indexPath.item == self.comments.count - 1 && !isFinishedPaging {
-            self.paginateComments()
-        }
-        
         let cell: CommentCell = collectionView.dequeueReusableCell(withReuseIdentifier: cellID, for: indexPath) as! CommentCell
         cell.comment = self.comments[indexPath.item]
         cell.didTapOptionsButtonForCell = flagButtonTapped(from:)
@@ -190,6 +179,7 @@ class CommentsViewController: UICollectionViewController, UICollectionViewDelega
                 let okAlert = UIAlertController(title: nil, message: "Comment Has Been Deleted", preferredStyle: .alert)
                 okAlert.addAction(UIAlertAction(title: "Ok", style: .default))
                 self.present(okAlert, animated: true)
+                self.collectionView?.reloadData()
             })
             alertController.addAction(cancelAction)
             alertController.addAction(deleteAction)
@@ -209,8 +199,10 @@ class CommentsViewController: UICollectionViewController, UICollectionViewDelega
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        self.collectionView?.reloadData()
         tabBarController?.tabBar.isHidden = true
         submitButton.isUserInteractionEnabled = true
+        fetchComments()
         
     }
     
@@ -224,6 +216,7 @@ class CommentsViewController: UICollectionViewController, UICollectionViewDelega
         super.viewDidDisappear(animated)
         self.view.endEditing(true)
         tabBarController?.tabBar.isHidden = false
+        self.comments.removeAll()
     }
     lazy var submitButton : UIButton = {
         let submitButton = UIButton(type: .system)
@@ -320,18 +313,4 @@ extension CommentsViewController {
     }
 }
 
-extension UIView {
-    
-    func addConstraintsWithFormat(_ format: String, views: UIView...) {
-        
-        var viewsDictionary = [String: UIView]()
-        for (index, view) in views.enumerated() {
-            let key = "v\(index)"
-            viewsDictionary[key] = view
-            view.translatesAutoresizingMaskIntoConstraints = false
-        }
-        
-        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: format, options: NSLayoutFormatOptions(), metrics: nil, views: viewsDictionary))
-    }
-    
-}
+

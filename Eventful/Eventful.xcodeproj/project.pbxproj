@@ -50,6 +50,8 @@
 		07D9239F1F2EEE460069613D /* AlterProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07D9239E1F2EEE460069613D /* AlterProfileViewController.swift */; };
 		07D923A81F33C61D0069613D /* Storyboard+Utility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07D923A71F33C61D0069613D /* Storyboard+Utility.swift */; };
 		07D923AA1F34B44F0069613D /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07D923A91F34B44F0069613D /* SettingsViewController.swift */; };
+		07E932F71F768E8300A0A479 /* NewCommentsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07E932F61F768E8300A0A479 /* NewCommentsViewController.swift */; };
+		07E932F91F76D13300A0A479 /* CommentsSectionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07E932F81F76D13300A0A479 /* CommentsSectionController.swift */; };
 		07F3EC591F4A57C3005296EB /* PostService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07F3EC581F4A57C3005296EB /* PostService.swift */; };
 		07F3EC5B1F4B53A6005296EB /* StoriesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07F3EC5A1F4B53A6005296EB /* StoriesViewController.swift */; };
 		07F3EC5E1F4B7B28005296EB /* StoryService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07F3EC5D1F4B7B28005296EB /* StoryService.swift */; };
@@ -108,6 +110,8 @@
 		07D9239E1F2EEE460069613D /* AlterProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AlterProfileViewController.swift; path = Controllers/AlterProfileViewController.swift; sourceTree = "<group>"; };
 		07D923A71F33C61D0069613D /* Storyboard+Utility.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "Storyboard+Utility.swift"; path = "Extensions/Storyboard+Utility.swift"; sourceTree = "<group>"; };
 		07D923A91F34B44F0069613D /* SettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SettingsViewController.swift; path = Controllers/SettingsViewController.swift; sourceTree = "<group>"; };
+		07E932F61F768E8300A0A479 /* NewCommentsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = NewCommentsViewController.swift; path = Controllers/NewCommentsViewController.swift; sourceTree = "<group>"; };
+		07E932F81F76D13300A0A479 /* CommentsSectionController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CommentsSectionController.swift; path = Controllers/CommentsSectionController.swift; sourceTree = "<group>"; };
 		07F3EC581F4A57C3005296EB /* PostService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PostService.swift; path = Services/PostService.swift; sourceTree = "<group>"; };
 		07F3EC5A1F4B53A6005296EB /* StoriesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StoriesViewController.swift; sourceTree = "<group>"; };
 		07F3EC5D1F4B7B28005296EB /* StoryService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = StoryService.swift; path = Services/StoryService.swift; sourceTree = "<group>"; };
@@ -336,6 +340,8 @@
 				07FF92C21F3ABC4900FC9716 /* CommentsViewController.swift */,
 				07B9145C1F3D416900A02952 /* CommentCell.swift */,
 				0719CDF21F54CF580076E678 /* CommentsHeader.swift */,
+				07E932F61F768E8300A0A479 /* NewCommentsViewController.swift */,
+				07E932F81F76D13300A0A479 /* CommentsSectionController.swift */,
 			);
 			name = Comments;
 			sourceTree = "<group>";
@@ -504,10 +510,12 @@
 				0738DD391F3DC1340093F51B /* CustomImageView.swift in Sources */,
 				07437F1A1F267CA900CE728B /* AppDelegate.swift in Sources */,
 				07F3EC5B1F4B53A6005296EB /* StoriesViewController.swift in Sources */,
+				07E932F91F76D13300A0A479 /* CommentsSectionController.swift in Sources */,
 				071C9E071F3F95530021D5A3 /* SearchViewController.swift in Sources */,
 				071C9E101F415E680021D5A3 /* AttendService.swift in Sources */,
 				07D9239F1F2EEE460069613D /* AlterProfileViewController.swift in Sources */,
 				07437F491F29167000CE728B /* UserService.swift in Sources */,
+				07E932F71F768E8300A0A479 /* NewCommentsViewController.swift in Sources */,
 				07FF92B91F3627A300FC9716 /* Post.swift in Sources */,
 				07F3EC5E1F4B7B28005296EB /* StoryService.swift in Sources */,
 				0719CDFB1F5639690076E678 /* MGPaginationHelper.swift in Sources */,

@@ -8,10 +8,20 @@
 
 import Foundation
 import UIKit
+import Reusable
 
 
 
-class CommentCell: UICollectionViewCell {
+class CommentCell: UICollectionViewCell,NibReusable {
+    
+    override var reuseIdentifier : String {
+        get {
+            return "cellID"
+        }
+        set {
+            // nothing, because only red is allowed
+        }
+    }
     var didTapOptionsButtonForCell: ((CommentCell) -> Void)?
 
     var comment: CommentGrabbed?{

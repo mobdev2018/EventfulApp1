@@ -7,15 +7,14 @@
 //
 
 import Foundation
+import  IGListKit
 
-struct CommentGrabbed {
+class CommentGrabbed {
     let content: String
     let uid: String
     let user: User
     let creationDate: Date
-    var commentID: String? = ""
-    
-
+     var commentID: String? = ""
     
     init(user: User, dictionary: [String:Any]) {
         self.content = dictionary["content"] as? String ?? ""
@@ -24,4 +23,24 @@ struct CommentGrabbed {
         let secondsFrom1970 = dictionary["timestamp"] as? Double ?? 0
         self.creationDate = Date(timeIntervalSince1970: secondsFrom1970)
     }
+   
 }
+
+extension CommentGrabbed: Equatable{
+    static public func  ==(rhs: CommentGrabbed, lhs: CommentGrabbed) ->Bool{
+        return rhs.commentID == lhs.commentID
+    }
+}
+
+extension CommentGrabbed: ListDiffable{
+    public func diffIdentifier() -> NSObjectProtocol {
+        return commentID as! NSObjectProtocol
+    }
+    public func isEqual(toDiffableObject object: ListDiffable?) ->Bool{
+        guard let object = object as? CommentGrabbed else {
+            return false
+        }
+        return  self.commentID==object.commentID
+    }
+}
+

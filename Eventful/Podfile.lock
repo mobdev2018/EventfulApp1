@@ -47,11 +47,16 @@ PODS:
     - GoogleToolboxForMac/NSString+URLArguments (= 2.1.1)
   - GoogleToolboxForMac/NSString+URLArguments (2.1.1)
   - GTMSessionFetcher/Core (1.1.10)
-  - IGListKit (3.0.0):
-    - IGListKit/Default (= 3.0.0)
-  - IGListKit/Default (3.0.0):
+  - IGListKit (3.1.1):
+    - IGListKit/Default (= 3.1.1)
+  - IGListKit/Default (3.1.1):
     - IGListKit/Diffing
-  - IGListKit/Diffing (3.0.0)
+  - IGListKit/Diffing (3.1.1)
+  - Reusable (4.0.0):
+    - Reusable/Storyboard (= 4.0.0)
+    - Reusable/View (= 4.0.0)
+  - Reusable/Storyboard (4.0.0)
+  - Reusable/View (4.0.0)
   - SVProgressHUD (2.1.2)
   - SwiftLocation (2.0.7)
   - SwiftyCam (2.4.0)
@@ -68,12 +73,23 @@ DEPENDENCIES:
   - Firebase/Core
   - Firebase/Database
   - Firebase/Storage
-  - IGListKit (~> 3.0)
+  - IGListKit (from `https://github.com/Instagram/IGListKit.git`, branch `master`)
+  - Reusable
   - SVProgressHUD
   - SwiftLocation
   - SwiftyCam
   - SwiftyJSON
   - TextFieldEffects
+
+EXTERNAL SOURCES:
+  IGListKit:
+    :branch: master
+    :git: https://github.com/Instagram/IGListKit.git
+
+CHECKOUT OPTIONS:
+  IGListKit:
+    :commit: 2f8bcda83713a23f62a7384542b8d24a944d6e6c
+    :git: https://github.com/Instagram/IGListKit.git
 
 SPEC CHECKSUMS:
   Alamofire: f28cdffd29de33a7bfa022cbd63ae95a27fae140
@@ -90,13 +106,14 @@ SPEC CHECKSUMS:
   FirebaseStorage: 8110a1ed2034c8fbfd83890d2acc9cdbbd99afec
   GoogleToolboxForMac: 8e329f1b599f2512c6b10676d45736bcc2cbbeb0
   GTMSessionFetcher: 30d874b96d0d76028f61fbd122801e3f030d47db
-  IGListKit: 9eab6856a15fa25ad72018ff9d9eb2178c240fff
+  IGListKit: cb97f405ae43e59fe1da74271e19427ec20d3c07
+  Reusable: 98e5fff1e0e2e00872199699b276dde08ee56c07
   SVProgressHUD: c404a55d78acbeb7ebb78b76d3faf986475a6994
   SwiftLocation: 1fe2e15a5812e961496e82eeaca71d03e829e47a
   SwiftyCam: cb83b9a8e181f70fb741d30cea724c6b045a4549
   SwiftyJSON: c2842d878f95482ffceec5709abc3d05680c0220
   TextFieldEffects: 8706f53525f1ce51c8921b7af32237caab50c467
 
-PODFILE CHECKSUM: 85ba602d9b47dd9ea7385927045cf96423ca2e0e
+PODFILE CHECKSUM: 4950531d0245f23b44db29a7905680827f18b644
 
 COCOAPODS: 1.2.1

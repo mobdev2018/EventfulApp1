@@ -2,27 +2,27 @@
 # platform :ios, '9.0'
 
 target 'Eventful' do
-  # Comment the next line if you're not using Swift and don't want to use dynamic frameworks
-  use_frameworks!
-  pod 'Firebase/Core'
-  pod 'Firebase/Auth’
-  pod 'Firebase/Database’
-  pod 'Firebase/Storage’
-  pod ’SwiftyJSON’
-  pod 'Alamofire'
-  pod 'AlamofireImage'
-  pod 'AlamofireNetworkActivityIndicator'
-  pod ‘SVProgressHUD’
-  pod "SwiftyCam"
-  pod 'SwiftLocation'
-  pod ‘TextFieldEffects’
-  pod 'EZSwipeController'
-  pod 'AMScrollingNavbar'
-  pod 'IGListKit', '~> 3.0'
-
-
-
-
-   # Pods for Eventful
-
+    # Comment the next line if you're not using Swift and don't want to use dynamic frameworks
+    use_frameworks!
+    pod 'Firebase/Core'
+    pod 'Firebase/Auth’
+    pod 'Firebase/Database’
+    pod 'Firebase/Storage’
+    pod ’SwiftyJSON’
+    pod 'Alamofire'
+    pod 'AlamofireImage'
+    pod 'AlamofireNetworkActivityIndicator'
+    pod ‘SVProgressHUD’
+    pod "SwiftyCam"
+    pod 'SwiftLocation'
+    pod ‘TextFieldEffects’
+    pod 'EZSwipeController'
+    pod 'AMScrollingNavbar'
+    pod 'IGListKit', :git => 'https://github.com/Instagram/IGListKit.git', :branch => 'master'
+    pod 'Reusable'
+    
+    
+    
+    # Pods for Eventful
+    
 end

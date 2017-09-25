@@ -43,9 +43,9 @@ class DropDownCell: UICollectionViewCell {
     func setupViews(){
         addSubview(nameLabel)
         addSubview(iconImageVIew)
-        addConstraintsWithFormat("H:|-8-[v0(20)]-8-[v1]|", views: iconImageVIew,nameLabel)
-        addConstraintsWithFormat("V:|[v0]|", views: nameLabel)
-    addConstraintsWithFormat("V:[v0(20)]", views: iconImageVIew)
+        addConstraintsWithFormatt("H:|-8-[v0(20)]-8-[v1]|", views: iconImageVIew,nameLabel)
+        addConstraintsWithFormatt("V:|[v0]|", views: nameLabel)
+    addConstraintsWithFormatt("V:[v0(20)]", views: iconImageVIew)
         addConstraint(NSLayoutConstraint(item: iconImageVIew, attribute: .centerY, relatedBy: .equal, toItem: self, attribute: .centerY, multiplier: 1, constant: 0))
     }
     

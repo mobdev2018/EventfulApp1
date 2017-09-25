@@ -244,16 +244,7 @@ class EventSearchController: UICollectionViewController, UISearchBarDelegate, UI
         switch scopeIndex {
         case 0:
             let event = filteredEvents[indexPath.item]
-            currentEventDetailController.eventImage = event.currentEventImage
-            currentEventDetailController.eventName = event.currentEventName
-            currentEventDetailController.eventDescription = event.currentEventDescription
-            currentEventDetailController.eventStreet = event.currentEventStreetAddress
-            currentEventDetailController.eventCity = event.currentEventCity
-            currentEventDetailController.eventState = event.currentEventState
-            currentEventDetailController.eventZip = event.currentEventZip
             currentEventDetailController.eventKey = event.key!
-            currentEventDetailController.eventDate = event.currentEventDate!
-            currentEventDetailController.eventTime = event.currentEventTime!
             currentEventDetailController.eventPromo = event.currentEventPromo!
             currentEventDetailController.currentEvent = event
             self.filteredEvents.removeAll()

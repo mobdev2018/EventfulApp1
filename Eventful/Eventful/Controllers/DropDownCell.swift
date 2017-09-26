@@ -19,7 +19,7 @@ class DropDownCell: UICollectionViewCell {
         }
     }
     
-    var dropDown: DropDown?{
+    var dropDown: ImageAndTitleItem?{
         didSet{
             nameLabel.text = dropDown?.name
             

@@ -1,12 +1,12 @@
 //
-//  NewHomeFeedControllerViewController.swift
+//  HomeFeedController.swift
 //  Eventful
 //
-//  Created by Shawn Miller on 9/25/17.
+//  Created by Shawn Miller on 7/28/17.
 //  Copyright © 2017 Make School. All rights reserved.
 //
 
-import UIKit
+import Foundation
 import UIKit
 import Alamofire
 import AlamofireNetworkActivityIndicator
@@ -14,36 +14,157 @@ import SwiftLocation
 import CoreLocation
 import AMScrollingNavbar
 
-class HomeFeedController: UIViewController {
+class ImageAndTitleItem: NSObject {
+    public var name:String?
+    public var imageName:String?
+    
+    convenience init(name:String, imageName:String) {
+        self.init()
+        self.name = name
+        self.imageName = imageName
+    }
+}
+
+class HomeFeedController: UIViewController, UIGestureRecognizerDelegate {
+    // let dropDownLauncher = DropDownLauncher()
+    var isFinishedPaging = false
     let detailView = EventDetailViewController()
-    var allEvents = [Event]()
-    let customCellIdentifier1 = "customCellIdentifier1"
-    var grideLayout = GridLayout(numberOfColumns: 2)
     let refreshControl = UIRefreshControl()
-    var newHomeFeed: NewHomeFeedControllerViewController?
+    var emptyLabel: UILabel?
+    var allEvents = [Event]()
+    //will containt array of event keys
+    var eventKeys = [String]()
+    let eventCellIdentifier = "customCellIdentifier"
+    let topCell = "topCell"
+    
+    fileprivate var collectionView:UICollectionView!
+    fileprivate var topView:HomeFeedCell!
+    fileprivate var topCollectionView:UICollectionView!
+    //    var grideLayout = GridLayout(numberOfColumns: 2)
+    //    lazy var dropDownLauncer : DropDownLauncher = {
+    //        let launcer = DropDownLauncher()
+    //        launcer.homeFeed = self
+    //        return launcer
+    //    }()
     let paginationHelper = PaginationHelper<Event>(serviceMethod: PostService.showEvent)
-    lazy var dropDownLauncer : DropDownLauncher = {
-        let launcer = DropDownLauncher()
-        launcer.homeFeed = self
-        return launcer
+    
+    let dropDown: [ImageAndTitleItem] = {
+        return [ImageAndTitleItem(name: "Home", imageName: "home"), ImageAndTitleItem(name: "Seize The Night", imageName: "night"), ImageAndTitleItem(name: "Seize The Day", imageName: "summer"), ImageAndTitleItem(name: "Dress To Impress", imageName: "suit"), ImageAndTitleItem(name: "I Love College", imageName: "college"), ImageAndTitleItem(name: "21 & Up", imageName: "21")]
     }()
     
-    // 1 IGListKit uses IGListCollectionView, which is a subclass of UICollectionView, which patches some functionality and prevents others.
-    let collectionView: UICollectionView = {
-        // 2 This starts with a zero-sized rect since the view isn’t created yet. It uses the UICollectionViewFlowLayout just as the ClassicFeedViewController did.
-        let view = UICollectionView(frame: CGRect.zero, collectionViewLayout: UICollectionViewFlowLayout())
-        // 3 The background color is set to white
-        view.backgroundColor = UIColor.white
-        return view
-    }()
-    func handleDropDownMenu(){
-        dropDownLauncer.showDropDown()
+    fileprivate var selectedTopIndex:Int?
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        navigationItem.title = "Home"
+        //  self.navigationItem.hidesBackButton = true
+        
+        self.configure()
+        reloadHomeFeed()
     }
-    func configureCollectionView() {
-        // add pull to refresh
-        refreshControl.addTarget(self, action: #selector(reloadHomeFeed), for: .valueChanged)
-        collectionView.addSubview(refreshControl)
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.navigationController?.setNavigationBarHidden(true, animated: false)
+        //        if let navigationController = self.navigationController as? ScrollingNavigationController {
+        //            navigationController.followScrollView(self.collectionView!, delay: 50.0)
+        //        }
+        if self.selectedTopIndex == nil {
+            self.performActionOnTopItemSelect(at: 0)
+        }
     }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        
+        //        if let navigationController = navigationController as? ScrollingNavigationController {
+        //            navigationController.stopFollowingScrollView()
+        //        }
+    }
+    
+    private func configure(){
+        func configureViews(){
+            let topLayout = UICollectionViewFlowLayout()
+            topLayout.scrollDirection = .horizontal
+            self.topCollectionView = UICollectionView(frame: .zero, collectionViewLayout: topLayout)
+            self.topCollectionView.tag = 0
+            self.topCollectionView.backgroundColor = .white
+            self.topCollectionView.dataSource = self
+            self.topCollectionView.delegate = self
+            self.topCollectionView.translatesAutoresizingMaskIntoConstraints = false
+            self.view.addSubview(self.topCollectionView)
+            NSLayoutConstraint.activateViewConstraints(self.topCollectionView, inSuperView: self.view, withLeading: 0.0, trailing: 0.0, top: nil, bottom: nil, width: nil, height: 50.0)
+            _ = NSLayoutConstraint.activateVerticalSpacingConstraint(withFirstView: self.topLayoutGuide, secondView: self.topCollectionView, andSeparation: 0.0)
+            
+            self.topView = HomeFeedCell(frame: .zero)
+            self.topView.translatesAutoresizingMaskIntoConstraints = false
+            self.view.addSubview(self.topView)
+            self.topView.overlayButton.tag = 0
+            let actions = self.topView.overlayButton.actions(forTarget: self, forControlEvent: .touchUpInside)
+            if actions == nil || actions?.count == 0 {
+                self.topView.overlayButton.addTarget(self, action: #selector(self.handleTapOnItem(_:)), for: .touchUpInside)
+            }
+            NSLayoutConstraint.activateViewConstraints(self.topView, inSuperView: self.view, withLeading: 0.0, trailing: 0.0, top: nil, bottom: nil, width: nil, height: self.view.bounds.size.height/2 - 50.0)
+            _ = NSLayoutConstraint.activateVerticalSpacingConstraint(withFirstView: self.topCollectionView, secondView: self.topView, andSeparation: 0.0)
+            
+            let layout = UICollectionViewFlowLayout()
+            layout.scrollDirection = .horizontal
+            self.collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
+            self.collectionView.translatesAutoresizingMaskIntoConstraints = false
+            self.collectionView.tag = 1
+            self.collectionView.dataSource = self
+            self.collectionView.delegate = self
+            self.collectionView.backgroundColor = .white
+            self.view.backgroundColor = .white
+            self.view.addSubview(self.collectionView)
+            NSLayoutConstraint.activateViewConstraints(self.collectionView, inSuperView: self.view, withLeading: 0.0, trailing: 0.0, top: nil, bottom: nil, width: nil, height: nil)
+            _ = NSLayoutConstraint.activateVerticalSpacingConstraint(withFirstView: self.topView, secondView: self.collectionView, andSeparation: 0.0)
+            _ = NSLayoutConstraint.activateVerticalSpacingConstraint(withFirstView: self.collectionView, secondView: self.bottomLayoutGuide, andSeparation: 0.0)
+        }
+        
+        func configureCollectionCell(){
+            self.collectionView.register(HomeFeedCell.self, forCellWithReuseIdentifier: eventCellIdentifier)
+            self.topCollectionView.register(DropDownCell.self, forCellWithReuseIdentifier: topCell)
+        }
+        configureViews()
+        configureCollectionCell()
+    }
+    
+    fileprivate func performActionOnTopItemSelect(at index:Int) {
+        let current = IndexPath(item: index, section: 0)
+        var indexPaths:[IndexPath] = [current]
+        if self.selectedTopIndex != nil {
+            if self.selectedTopIndex == index {
+                return
+            }
+            else {
+                let old = IndexPath(item: self.selectedTopIndex!, section: 0)
+                indexPaths.append(old)
+                self.selectedTopIndex = index
+            }
+        }
+        else {
+            self.selectedTopIndex = index
+        }
+        self.topCollectionView.performBatchUpdates({
+            self.topCollectionView.reloadItems(at: indexPaths)
+        }, completion: nil)
+        let dropDown = self.dropDown[index]
+        self.categoryFetch(dropDown: dropDown)
+    }
+    
+    //    override func scrollViewShouldScrollToTop(_ scrollView: UIScrollView) -> Bool {
+    //        if let navigationController = navigationController as? ScrollingNavigationController {
+    //            navigationController.showNavbar(animated: true)
+    //        }
+    //        return true
+    //    }
+    
+    //will query by selected category
+    func categoryFetch(dropDown: ImageAndTitleItem){
+        navigationItem.title = dropDown.name
+    }
+    
     func reloadHomeFeed() {
         self.paginationHelper.reloadData(completion: { [unowned self] (events) in
             self.allEvents = events
@@ -53,190 +174,186 @@ class HomeFeedController: UIViewController {
             }
             
             DispatchQueue.main.async {
-                self.collectionView.reloadData()
+                self.reloadCollection()
             }
         })
     }
     
-    func categoryFetch(dropDown: DropDown){
-        navigationItem.title = dropDown.name
-        paginationHelper.category = dropDown.name
-        configureCollectionView()
-        reloadHomeFeed()
-    }
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        view.addSubview(collectionView)
-        collectionView.contentInset = UIEdgeInsetsMake(15, 0, 0, 0)
-        navigationItem.title = "Home"
-        collectionView.dataSource = self
-        collectionView.delegate = self
-        collectionView.collectionViewLayout = grideLayout
-        collectionView.reloadData()
-        collectionView.register(CustomCell.self, forCellWithReuseIdentifier: customCellIdentifier1)
-        //  self.navigationItem.hidesBackButton = true
-        let backButton = UIBarButtonItem(image: UIImage(named: "menu"), style: .plain, target: self, action: #selector(handleDropDownMenu))
-        self.navigationItem.leftBarButtonItem = backButton
-        configureCollectionView()
-        reloadHomeFeed()
-        // Do any additional setup after loading the view.
-    }
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        
-        if let navigationController = self.navigationController as? ScrollingNavigationController {
-            navigationController.followScrollView(self.collectionView, delay: 50.0)
-        }
-    }
-    override func viewDidDisappear(_ animated: Bool) {
-        super.viewDidDisappear(animated)
-        
-        if let navigationController = navigationController as? ScrollingNavigationController {
-            navigationController.stopFollowingScrollView()
-        }
-    }
-    
-    func scrollViewShouldScrollToTop(_ scrollView: UIScrollView) -> Bool {
-        if let navigationController = navigationController as? ScrollingNavigationController {
-            navigationController.showNavbar(animated: true)
-        }
-        return true
-    }
-    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
-        super.viewWillTransition(to: size, with: coordinator)
-        grideLayout.invalidateLayout()
-    }
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-        collectionView.frame = view.bounds
-    }
     func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
         return true
     }
-}
-
-extension HomeFeedController: UICollectionViewDelegate {
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        //let selectedEvent = self.imageArray[indexPath.row]
-        //let eventDetailVC
-        if let cell = collectionView.cellForItem(at: indexPath){
-            //  print("Look here for event name")
-            // print(detailView.eventName)
-            detailView.eventKey = allEvents[indexPath.row].key!
-            detailView.eventPromo = allEvents[indexPath.row].currentEventPromo!
-            detailView.currentEvent = allEvents[indexPath.row]
-            present(detailView, animated: true, completion: nil)
-            //self.navigationController?.pushViewController(detailView, animated: true)
-            
+    
+    //will make surepictures keep same orientation even if you flip screen
+    // will most likely lock into portrait mode but still good to have
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransition(to: size, with: coordinator)
+        self.collectionView.collectionViewLayout.invalidateLayout()
+    }
+    
+    func showLeftView(sender: AnyObject?){
+        print("Button Pressed")
+        // sideMenuController?.leftViewController = LeftViewController()
+        //sideMenuController?.showLeftView(animated: true, completionHandler: nil)
+    }
+    
+    fileprivate func reloadCollection() {
+        if allEvents.count > 0 {
+            let imageURL = URL(string: allEvents[0].currentEventImage)
+            let dateComponents = self.getDayAndMonthFromEvent(allEvents[0])
+            self.topView.dayLabel.text = dateComponents.0
+            self.topView.monthLabel.text = dateComponents.1
+            self.topView.calenderUnit.backgroundColor = UIColor.blue
+            self.topView.backgroundImageView.af_setImage(withURL: imageURL!)
+            self.topView.nameLabel.text = allEvents[0].currentEventName
+            self.topView.flipToFullWidth(labelWidth: self.view.bounds.size.width - 120.0)
         }
-        print("Cell \(indexPath.row) selected")
+        self.collectionView.reloadData()
+    }
+    
+    fileprivate func getDayAndMonthFromEvent(_ event:Event) -> (String, String) {
+        let apiDateFormat = "MM/dd/yyyy"
+        let df = DateFormatter()
+        df.dateFormat = apiDateFormat
+        let eventDate = df.date(from: event.currentEventDate!)!
+        df.dateFormat = "dd"
+        let dayElement = df.string(from: eventDate)
+        df.dateFormat = "MMM"
+        let monthElement = df.string(from: eventDate)
+        return (dayElement, monthElement)
+    }
+    
+    @objc fileprivate func handleTapOnItem(_ sender:UIButton) {
+        if self.allEvents.count <= sender.tag {
+            return
+        }
+        let model = self.allEvents[sender.tag]
+        detailView.eventKey = model.key!
+        detailView.eventPromo = model.currentEventPromo!
+        detailView.currentEvent = model
+        present(detailView, animated: true, completion: nil)
+        //debugPrint("Tap at index: \(sender.tag)")
     }
 }
 
-extension HomeFeedController: UICollectionViewDataSource {
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return allEvents.count
+
+// MARK: - UICollectionViewDelegateFlowLayout
+extension HomeFeedController: UICollectionViewDelegateFlowLayout {
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        if collectionView.tag == 0 {
+            self.performActionOnTopItemSelect(at: indexPath.item)
+        }
     }
-    // The cell that is returned must be retrieved from a call to -dequeueReusableCellWithReuseIdentifier:forIndexPath:
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        
-        let customCell = collectionView.dequeueReusableCell(withReuseIdentifier: customCellIdentifier1, for: indexPath) as! CustomCell
-        let imageURL = URL(string: allEvents[indexPath.item].currentEventImage)
-        print(imageURL ?? "")
-        customCell.sampleImage.af_setImage(withURL: imageURL!)
-        return customCell
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        if collectionView.tag == 0 {
+            let cellWith = self.dropDown[indexPath.item].name!.textRect(withFont: UIFont.systemFont(ofSize: 13), andHeight: 20.0).size.width + 44.0
+            return CGSize(width: cellWith, height: collectionView.bounds.size.height - 20)
+        }
+        else {
+            return CGSize(width: collectionView.bounds.size.width/2.2, height: collectionView.bounds.size.height)
+        }
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
+        if collectionView.tag == 0 {
+            return UIEdgeInsetsMake(10.0, 15.0, 10.0, 0.0)
+        }
+        else {
+            return UIEdgeInsetsMake(0.0, 0.0, 0.0, 0.0)
+        }
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+        if collectionView.tag == 0 {
+            return 15.0
+        }
+        else {
+            return 2.0
+        }
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
+        if collectionView.tag == 0 {
+            return 15.0
+        }
+        else {
+            return 0.0
+        }
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
+        return .zero
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForFooterInSection section: Int) -> CGSize {
+        return .zero
     }
     
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-        if indexPath.section >= allEvents.count - 1 {
-            // print("paginating for post")
-            paginationHelper.paginate(completion: { [unowned self] (events) in
-                self.allEvents.append(contentsOf: events)
-                
-                DispatchQueue.main.async {
-                    self.collectionView.reloadData()
-                }
-            })
-        }else{
-            print("Not paginating")
-        }
-    }
-    
-}
-
-
-extension HomeFeedController: UICollectionViewDelegateFlowLayout{
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        if indexPath.item == 0 || indexPath.item == 1 {
-            return CGSize(width: view.frame.width, height: grideLayout.itemSize.height)
-        }else{
-            return grideLayout.itemSize
-        }
-    }
-}
-//responsible for populating each cell with content
-
-class CustomCell: UICollectionViewCell {
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        setupViews()
-    }
-    let sampleImage: UIImageView = {
-        let firstImage = UIImageView()
-        firstImage.clipsToBounds = true
-        firstImage.translatesAutoresizingMaskIntoConstraints = false
-        firstImage.contentMode = .scaleToFill
-        firstImage.layer.masksToBounds = true
-        return firstImage
-    }()
-    let nameLabel: UILabel = {
-        let name = UILabel()
-        name.text = "Custom Text"
-        name.translatesAutoresizingMaskIntoConstraints = false
-        return name
-    }()
-    func setupViews() {
-        addSubview(sampleImage)
-        backgroundColor = UIColor.white
-        //addSubview(nameLabel)
-        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[v0]|", options: NSLayoutFormatOptions(), metrics: nil, views: ["v0": sampleImage]))
-        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[v0]|", options: NSLayoutFormatOptions(), metrics: nil, views: ["v0": sampleImage]))
-    }
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-}
-// responsible for creating the grid layout that you see in the home view feed
-
-class GridLayout: UICollectionViewFlowLayout {
-    
-    var numberOfColumns:Int = 2
-    
-    init(numberOfColumns: Int) {
-        super.init()
-        // controlls spacing inbetween them as well as spacing below them to next item
-        self.numberOfColumns = numberOfColumns
-        self.minimumInteritemSpacing = 3
-        self.minimumLineSpacing = 5
-    }
-    // just needs to be here because swift tells us to
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    override var itemSize: CGSize{
-        get{
-            if collectionView != nil {
-                let collectionVieweWidth = collectionView?.frame.width
-                let itemWidth = (collectionVieweWidth!/CGFloat(self.numberOfColumns)) - self.minimumInteritemSpacing
-                let itemHeight: CGFloat = 200
-                return CGSize(width: itemWidth, height: itemHeight)
+        if collectionView.tag == 1 {
+            if indexPath.item >= allEvents.count - 1 {
+                // print("paginating for post")
+                paginationHelper.paginate(completion: { [unowned self] (events) in
+                    self.allEvents.append(contentsOf: events)
+                    
+                    DispatchQueue.main.async {
+                        self.reloadCollection()
+                    }
+                })
             }
-            return CGSize(width: 100, height: 100)
-        }set{
-            super.itemSize = newValue
+            else{
+                //debugPrint("Not paginating")
+            }
+        }
+    }
+}
+
+// MARK: - UICollectionViewDataSource
+extension HomeFeedController: UICollectionViewDataSource {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        if collectionView.tag == 0 {
+            return dropDown.count
+        }
+        else {
+            return allEvents.count - 1
         }
     }
     
-    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        if collectionView.tag == 0 {
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: topCell, for: indexPath) as! DropDownCell
+            let dropDown = self.dropDown[indexPath.row]
+            cell.dropDown = dropDown
+            var selected = false
+            if self.selectedTopIndex != nil && self.selectedTopIndex == indexPath.item {
+                selected = true
+            }
+            cell.backgroundColor = selected ? UIColor.darkGray : UIColor.white
+            cell.nameLabel.textColor = selected ? UIColor.white : UIColor.black
+            cell.iconImageVIew.tintColor = selected ? UIColor.white : UIColor.darkGray
+            cell.layer.borderWidth = 1.0
+            cell.layer.borderColor = UIColor.black.cgColor
+            cell.layer.cornerRadius = 5.0
+            return cell
+        }
+        else {
+            let customCell = collectionView.dequeueReusableCell(withReuseIdentifier: eventCellIdentifier, for: indexPath) as! HomeFeedCell
+            let model = allEvents[indexPath.item + 1]
+            let imageURL = URL(string: model.currentEventImage)
+            let dateComponents = self.getDayAndMonthFromEvent(model)
+            customCell.dayLabel.text = dateComponents.0
+            customCell.monthLabel.text = dateComponents.1
+            customCell.calenderUnit.backgroundColor = UIColor.orange
+            customCell.backgroundImageView.af_setImage(withURL: imageURL!)
+            customCell.nameLabel.text = model.currentEventName
+            customCell.flipToSmallWidth(labelWidth: self.view.bounds.size.width/2.2 - 40.0)
+            customCell.overlayButton.tag = indexPath.item + 1
+            let actions = customCell.overlayButton.actions(forTarget: self, forControlEvent: .touchUpInside)
+            if actions == nil || actions?.count == 0 {
+                customCell.overlayButton.addTarget(self, action: #selector(self.handleTapOnItem(_:)), for: .touchUpInside)
+            }
+            return customCell
+        }
+    }
 }
+

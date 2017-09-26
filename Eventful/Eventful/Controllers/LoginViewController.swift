@@ -17,7 +17,7 @@ protocol LoginViewControllerDelegate: class {
 
 
 
-class LoginViewController: UIViewController , LoginViewControllerDelegate{
+class LoginViewController: UIViewController , LoginViewControllerDelegate {
     //Login Controller Instance
     
    // var loginController: LoginViewController?
@@ -29,6 +29,7 @@ class LoginViewController: UIViewController , LoginViewControllerDelegate{
     // creates a UILabel
     let nameOfAppLabel : UILabel =  {
         let nameLabel = UILabel()
+        nameLabel.textColor = .white
         let myString = "[Name of App]"
         let myAttribute = [NSFontAttributeName:UIFont(name: "Times New Roman", size: 7.3)!]
         let myAttrString = NSAttributedString(string: myString, attributes: myAttribute)
@@ -40,6 +41,7 @@ class LoginViewController: UIViewController , LoginViewControllerDelegate{
     
     let welcomeBackLabel : UILabel =  {
         let welcomeLabel = UILabel()
+        welcomeLabel.textColor = .white
         let myString = "Welcome Back!"
         let myAttribute = [NSFontAttributeName:UIFont(name: "Times New Roman", size: 20.7)!]
         let myAttrString = NSAttributedString(string: myString, attributes: myAttribute)
@@ -52,6 +54,7 @@ class LoginViewController: UIViewController , LoginViewControllerDelegate{
     
     let goalLabel : UILabel =  {
         let primaryGoalLabel = UILabel()
+        primaryGoalLabel.textColor = .white
         let myString = "Use our application to find events"
         let myAttribute = [NSFontAttributeName:UIFont(name: "Times New Roman", size: 13)!]
         let myAttrString = NSAttributedString(string: myString, attributes: myAttribute)
@@ -63,40 +66,44 @@ class LoginViewController: UIViewController , LoginViewControllerDelegate{
     
     let emailTextField : HoshiTextField = {
         let textField = HoshiTextField()
-        textField.placeholderColor = .lightGray
+        textField.placeholderColor = .white
         textField.placeholder = "Email"
         textField.layer.borderColor = UIColor.lightGray.cgColor
         textField.layer.borderWidth = 0
         textField.borderStyle = .roundedRect
         textField.keyboardType = .emailAddress
         textField.borderStyle = .none
-        textField.borderActiveColor = UIColor.black
+        textField.borderInactiveColor = .white
+        textField.borderActiveColor = UIColor.white
+        textField.textColor = .white
         return textField
     }()
 
     // creates a UITextField
     let passwordTextField : HoshiTextField = {
         let textField = HoshiTextField()
-        textField.placeholderColor = .lightGray
+        textField.placeholderColor = .white
         textField.placeholder = "Password"
         textField.layer.borderColor = UIColor.lightGray.cgColor
         textField.layer.borderWidth = 0
         textField.borderStyle = .roundedRect
         textField.isSecureTextEntry = true
         textField.borderStyle = .none
-        textField.borderActiveColor = UIColor.black
+        textField.borderInactiveColor = .white
+        textField.borderActiveColor = UIColor.white
+        textField.textColor = .white
         return textField
     }()
     // creates a UIButton and transitions to a different screen after button is selected
     
     lazy var loginButton: UIButton  = {
         let button = UIButton(type: .system)
-        button.backgroundColor = .black
         button.setTitle("LOGIN", for: .normal)
         button.setTitleColor(.white, for: .normal)
-        button.layer.cornerRadius = 5
+        button.layer.cornerRadius = 23.5
         button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 14)
         button.addTarget(self, action: #selector(handleLogin), for: .touchUpInside)
+        button.backgroundColor = UIColor.logoColor
         return button
     }()
     
@@ -146,6 +153,7 @@ class LoginViewController: UIViewController , LoginViewControllerDelegate{
     //creatas a UILabel
     let signUpLabel: UILabel = {
         let signUp = UILabel()
+        signUp.textColor = .white
         let myString = "Don't have an account?"
         let myAttribute = [NSFontAttributeName:UIFont(name: "Times New Roman", size: 15)!]
         let myAttrString = NSAttributedString(string: myString, attributes: myAttribute)
@@ -159,64 +167,116 @@ class LoginViewController: UIViewController , LoginViewControllerDelegate{
         let signUpButton = UIButton(type: .system)
         signUpButton.setTitle("Sign Up", for: .normal)
         signUpButton.titleLabel?.font = UIFont.boldSystemFont(ofSize: 13)
-        signUpButton.setTitleColor(.black, for: .normal)
+        signUpButton.setTitleColor(UIColor.logoColor, for: .normal)
         signUpButton.addTarget(self, action: #selector(handleSignUpTransition), for: .touchUpInside)
         return signUpButton
+    }()
+    
+    
+    let bgGradientLayer : CAGradientLayer = {
+        let layer = CAGradientLayer()
+        layer.colors = [UIColor(hex: "F77832").cgColor, UIColor(hex:"811FC6").cgColor]
+        layer.locations = [0.5]
+        layer.startPoint = CGPoint(x: 0.5, y: 0.0)
+        layer.endPoint = CGPoint(x: 0.5, y: 1.0)
+        return layer
     }()
     
     override func viewDidLoad() {
         // Every view that I add is from the top down imagine a chandeler that you are just hanging things from
         super.viewDidLoad()
         // will add each of the screen elements to the current view
-        view.addSubview(nameOfAppLabel)
-        view.addSubview(welcomeBackLabel)
-        view.addSubview(goalLabel)
+        
+        self.bgGradientLayer.frame = self.view.layer.bounds
+        self.view.layer.addSublayer(self.bgGradientLayer)
+        
+        self.view.addSubview(nameOfAppLabel)
+        self.view.addSubview(welcomeBackLabel)
+        self.view.addSubview(goalLabel)
         //////////////////////////////////////////////////////////////////////
         
         // All Constraints for Elements in Screen
         // constraints for the nameOfAppLabel
-        _ = nameOfAppLabel.anchor(top: view.centerYAnchor, left: nil, bottom: nil, right: nil, paddingTop: -191.3, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 49.7, height: 9.7)
-        nameOfAppLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        _ = nameOfAppLabel.anchor(top: self.view.centerYAnchor, left: nil, bottom: nil, right: nil, paddingTop: -215.0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 49.7, height: 9.7)
+        nameOfAppLabel.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
         
         //constrints for the welcome back label
         _ = welcomeBackLabel.anchor(top: nameOfAppLabel.bottomAnchor, left: nil, bottom: nil, right: nil, paddingTop: 15.7, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 12.7)
         
-        welcomeBackLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        welcomeBackLabel.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
         //constrints for the goal label
         _ = goalLabel.anchor(top: welcomeBackLabel.bottomAnchor, left: nil, bottom: nil, right: nil, paddingTop: 10, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 180, height: 14)
         
-        goalLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        goalLabel.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
 
         
-        view.backgroundColor = UIColor(r: 255, g: 255 , b: 255)
-        observeKeyboardNotifications()
+        self.view.backgroundColor = UIColor(r: 255, g: 255 , b: 255)
         let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(LoginViewController.dismissKeyboard))
         //Uncomment the line below if you want the tap not not interfere and cancel other interactions.
         tap.cancelsTouchesInView = false
         
-        view.addGestureRecognizer(tap)
+        self.view.addGestureRecognizer(tap)
         setupLoginScreen()
         
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        //self.observeKeyboardNotifications()
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        //self.removeObserveKeyboardNotifications()
+    }
+    
     var stackView: UIStackView?
     fileprivate func setupLoginScreen(){
-         stackView = UIStackView(arrangedSubviews: [ emailTextField, passwordTextField,loginButton])
-        view.addSubview(stackView!)
+        stackView = UIStackView(arrangedSubviews: [ emailTextField, passwordTextField,loginButton])
+        self.view.addSubview(stackView!)
         stackView?.distribution = .fillEqually
         stackView?.axis = .vertical
         stackView?.spacing = 5.0
-        stackView?.anchor(top: goalLabel.bottomAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, paddingTop: 40, paddingLeft: 40, paddingBottom: 0, paddingRight: 40, width: 0, height: 150)
-        view.addSubview(signUpLabel)
-        _ = signUpLabel.anchor(top: nil, left: view.leftAnchor, bottom: view.bottomAnchor, right: nil, paddingTop: 0, paddingLeft: 75, paddingBottom: 10, paddingRight: 0, width: 0, height: 20)
-        view.addSubview(signUpButton)
-        _ = signUpButton.anchor(top: nil, left: signUpLabel.rightAnchor, bottom: view.bottomAnchor, right: nil, paddingTop: 0, paddingLeft: 5, paddingBottom: 10, paddingRight: 0, width: 0, height: 20)
+        stackView?.anchor(top: goalLabel.bottomAnchor, left: self.view.leftAnchor, bottom: nil, right: self.view.rightAnchor, paddingTop: 40, paddingLeft: 40, paddingBottom: 0, paddingRight: 40, width: 0, height: 152)
+        self.addBottomMostItems()
+    }
+    
+    fileprivate func addBottomMostItems() {
+        let bottomView = UIView()
+        bottomView.translatesAutoresizingMaskIntoConstraints = false
+        self.view.addSubview(bottomView)
+        NSLayoutConstraint.activateViewConstraints(bottomView, inSuperView: self.view, withLeading: 0.0, trailing: 0.0, top: nil, bottom: nil, width: nil, height: 20.0)
+        _ = NSLayoutConstraint.activateVerticalSpacingConstraint(withFirstView: bottomView, secondView: self.bottomLayoutGuide, andSeparation: 10.0)
+        
+        let pseudoView1 = UIView()
+        pseudoView1.translatesAutoresizingMaskIntoConstraints = false
+        bottomView.addSubview(pseudoView1)
+        NSLayoutConstraint.activateViewConstraints(pseudoView1, inSuperView: bottomView, withLeading: 0.0, trailing: nil, top: 0.0, bottom: 0.0)
+        
+        self.signUpLabel.translatesAutoresizingMaskIntoConstraints = false
+        bottomView.addSubview(self.signUpLabel)
+        NSLayoutConstraint.activateViewConstraints(self.signUpLabel, inSuperView: bottomView, withLeading: nil, trailing: nil, top: 0.0, bottom: 0.0)
+        _ = NSLayoutConstraint.activateHorizontalSpacingConstraint(withFirstView: pseudoView1, secondView: self.signUpLabel, andSeparation: 0.0)
+        _ = NSLayoutConstraint.activateWidthConstraint(view: self.signUpLabel, withWidth: 1.0, andRelation: .greaterThanOrEqual)
+        
+        self.signUpButton.translatesAutoresizingMaskIntoConstraints = false
+        bottomView.addSubview(self.signUpButton)
+        NSLayoutConstraint.activateViewConstraints(self.signUpButton, inSuperView: bottomView, withLeading: nil, trailing: nil, top: 0.0, bottom: 0.0)
+        _ = NSLayoutConstraint.activateHorizontalSpacingConstraint(withFirstView: self.signUpLabel, secondView: self.signUpButton, andSeparation: 5.0)
+        _ = NSLayoutConstraint.activateWidthConstraint(view: self.signUpButton, withWidth: 1.0, andRelation: .greaterThanOrEqual)
+        
+        let pseudoView2 = UIView()
+        pseudoView2.translatesAutoresizingMaskIntoConstraints = false
+        bottomView.addSubview(pseudoView2)
+        NSLayoutConstraint.activateViewConstraints(pseudoView2, inSuperView: bottomView, withLeading: nil, trailing: 0.0, top: 0.0, bottom: 0.0)
+        _ = NSLayoutConstraint.activateHorizontalSpacingConstraint(withFirstView: self.signUpButton, secondView: pseudoView2, andSeparation: 0.0)
+        _ = NSLayoutConstraint.activateEqualWidthConstraint(withView: pseudoView2, referenceView: pseudoView1)
     }
     
     //Calls this function when the tap is recognized.
     func dismissKeyboard() {
         //Causes the view (or one of its embedded text fields) to resign the first responder status.
-        view.endEditing(true)
+        self.view.endEditing(true)
     }
     
     
@@ -230,8 +290,13 @@ class LoginViewController: UIViewController , LoginViewControllerDelegate{
     
     fileprivate func  observeKeyboardNotifications(){
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
         
+    }
+    
+    fileprivate func  removeObserveKeyboardNotifications(){
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIKeyboardWillShow, object: nil)
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIKeyboardWillHide, object: nil)
     }
     
     func keyboardWillShow(sender: NSNotification) {

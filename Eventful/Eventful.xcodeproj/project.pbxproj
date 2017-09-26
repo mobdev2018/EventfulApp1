@@ -52,7 +52,6 @@
 		07D923AA1F34B44F0069613D /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07D923A91F34B44F0069613D /* SettingsViewController.swift */; };
 		07E932F71F768E8300A0A479 /* NewCommentsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07E932F61F768E8300A0A479 /* NewCommentsViewController.swift */; };
 		07E932F91F76D13300A0A479 /* CommentsSectionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07E932F81F76D13300A0A479 /* CommentsSectionController.swift */; };
-		07E932FB1F790A2F00A0A479 /* NewHomeFeedControllerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07E932FA1F790A2F00A0A479 /* NewHomeFeedControllerViewController.swift */; };
 		07F3EC591F4A57C3005296EB /* PostService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07F3EC581F4A57C3005296EB /* PostService.swift */; };
 		07F3EC5B1F4B53A6005296EB /* StoriesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07F3EC5A1F4B53A6005296EB /* StoriesViewController.swift */; };
 		07F3EC5E1F4B7B28005296EB /* StoryService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07F3EC5D1F4B7B28005296EB /* StoryService.swift */; };
@@ -62,6 +61,9 @@
 		07FF92C31F3ABC4900FC9716 /* CommentsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07FF92C21F3ABC4900FC9716 /* CommentsViewController.swift */; };
 		07FF92C91F3B898C00FC9716 /* Comment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07FF92C81F3B898C00FC9716 /* Comment.swift */; };
 		07FF92CB1F3B925800FC9716 /* ChatService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07FF92CA1F3B925800FC9716 /* ChatService.swift */; };
+		50360FAF1F755DCF00AB3BD0 /* HomeFeedCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50360FAE1F755DCF00AB3BD0 /* HomeFeedCell.swift */; };
+		50717DDA1F6EFE2600AADB66 /* NSLayoutConstraint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50717DD91F6EFE2600AADB66 /* NSLayoutConstraint.swift */; };
+		5074F1C21F7648D10082E016 /* ImageCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5074F1C11F7648D10082E016 /* ImageCollectionViewCell.swift */; };
 		F277E01C2A00DE5C23A3A9DD /* Pods_Eventful.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1746B55EBA2E6BE797E81DA6 /* Pods_Eventful.framework */; };
 /* End PBXBuildFile section */
 
@@ -113,7 +115,6 @@
 		07D923A91F34B44F0069613D /* SettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SettingsViewController.swift; path = Controllers/SettingsViewController.swift; sourceTree = "<group>"; };
 		07E932F61F768E8300A0A479 /* NewCommentsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = NewCommentsViewController.swift; path = Controllers/NewCommentsViewController.swift; sourceTree = "<group>"; };
 		07E932F81F76D13300A0A479 /* CommentsSectionController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CommentsSectionController.swift; path = Controllers/CommentsSectionController.swift; sourceTree = "<group>"; };
-		07E932FA1F790A2F00A0A479 /* NewHomeFeedControllerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = NewHomeFeedControllerViewController.swift; path = Controllers/NewHomeFeedControllerViewController.swift; sourceTree = "<group>"; };
 		07F3EC581F4A57C3005296EB /* PostService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PostService.swift; path = Services/PostService.swift; sourceTree = "<group>"; };
 		07F3EC5A1F4B53A6005296EB /* StoriesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StoriesViewController.swift; sourceTree = "<group>"; };
 		07F3EC5D1F4B7B28005296EB /* StoryService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = StoryService.swift; path = Services/StoryService.swift; sourceTree = "<group>"; };
@@ -125,6 +126,9 @@
 		07FF92CA1F3B925800FC9716 /* ChatService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ChatService.swift; path = Services/ChatService.swift; sourceTree = "<group>"; };
 		1746B55EBA2E6BE797E81DA6 /* Pods_Eventful.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Eventful.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		4D63B9A855CD185FB49E3D17 /* Pods-Eventful.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Eventful.release.xcconfig"; path = "Pods/Target Support Files/Pods-Eventful/Pods-Eventful.release.xcconfig"; sourceTree = "<group>"; };
+		50360FAE1F755DCF00AB3BD0 /* HomeFeedCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeFeedCell.swift; sourceTree = "<group>"; };
+		50717DD91F6EFE2600AADB66 /* NSLayoutConstraint.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSLayoutConstraint.swift; sourceTree = "<group>"; };
+		5074F1C11F7648D10082E016 /* ImageCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCollectionViewCell.swift; sourceTree = "<group>"; };
 		5A2D82487A88CC695A029DCA /* Pods-Eventful.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Eventful.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Eventful/Pods-Eventful.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -217,6 +221,7 @@
 		07437F321F28CF2200CE728B /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				50717DD91F6EFE2600AADB66 /* NSLayoutConstraint.swift */,
 				07437F3C1F28D4C500CE728B /* Extensions.swift */,
 				07D923A71F33C61D0069613D /* Storyboard+Utility.swift */,
 				076428B21F4B9289003D1B43 /* Storage.swift */,
@@ -279,9 +284,9 @@
 			isa = PBXGroup;
 			children = (
 				079F52DB1F5E47EE0043F9EF /* DropDownCell.swift */,
+				50360FAE1F755DCF00AB3BD0 /* HomeFeedCell.swift */,
 				079F52D91F5E386C0043F9EF /* DropDownLauncher.swift */,
 				073B12091F2C264000031044 /* HomeFeedController.swift */,
-				07E932FA1F790A2F00A0A479 /* NewHomeFeedControllerViewController.swift */,
 			);
 			name = "Home Feed";
 			sourceTree = "<group>";
@@ -306,6 +311,7 @@
 			isa = PBXGroup;
 			children = (
 				07437F501F2A63B600CE728B /* HomeViewController.swift */,
+				5074F1C11F7648D10082E016 /* ImageCollectionViewCell.swift */,
 			);
 			name = "Root View";
 			sourceTree = "<group>";
@@ -446,9 +452,42 @@
 			files = (
 			);
 			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-Eventful/Pods-Eventful-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/AMScrollingNavbar/AMScrollingNavbar.framework",
+				"${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework",
+				"${BUILT_PRODUCTS_DIR}/AlamofireImage/AlamofireImage.framework",
+				"${BUILT_PRODUCTS_DIR}/AlamofireNetworkActivityIndicator/AlamofireNetworkActivityIndicator.framework",
+				"${BUILT_PRODUCTS_DIR}/EZSwipeController/EZSwipeController.framework",
+				"${BUILT_PRODUCTS_DIR}/GTMSessionFetcher/GTMSessionFetcher.framework",
+				"${BUILT_PRODUCTS_DIR}/GoogleToolboxForMac/GoogleToolboxForMac.framework",
+				"${BUILT_PRODUCTS_DIR}/IGListKit/IGListKit.framework",
+				"${BUILT_PRODUCTS_DIR}/Reusable/Reusable.framework",
+				"${BUILT_PRODUCTS_DIR}/SVProgressHUD/SVProgressHUD.framework",
+				"${BUILT_PRODUCTS_DIR}/SwiftLocation/SwiftLocation.framework",
+				"${BUILT_PRODUCTS_DIR}/SwiftyCam/SwiftyCam.framework",
+				"${BUILT_PRODUCTS_DIR}/SwiftyJSON/SwiftyJSON.framework",
+				"${BUILT_PRODUCTS_DIR}/TextFieldEffects/TextFieldEffects.framework",
+				"${BUILT_PRODUCTS_DIR}/leveldb-library/leveldb.framework",
+				"${BUILT_PRODUCTS_DIR}/nanopb/nanopb.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AMScrollingNavbar.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Alamofire.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AlamofireImage.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AlamofireNetworkActivityIndicator.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/EZSwipeController.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GTMSessionFetcher.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleToolboxForMac.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/IGListKit.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Reusable.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SVProgressHUD.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftLocation.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftyCam.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftyJSON.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/TextFieldEffects.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/leveldb.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/nanopb.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -461,13 +500,16 @@
 			files = (
 			);
 			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
 			);
 			name = "[CP] Check Pods Manifest.lock";
 			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-Eventful-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
 		FDF21954F6D4CFA39B24B91D /* [CP] Copy Pods Resources */ = {
@@ -499,6 +541,7 @@
 				076428B31F4B9289003D1B43 /* Storage.swift in Sources */,
 				07FF92C31F3ABC4900FC9716 /* CommentsViewController.swift in Sources */,
 				07437F3D1F28D4C500CE728B /* Extensions.swift in Sources */,
+				50717DDA1F6EFE2600AADB66 /* NSLayoutConstraint.swift in Sources */,
 				0719CDF31F54CF580076E678 /* CommentsHeader.swift in Sources */,
 				07B9145F1F3D4DE100A02952 /* CommentGrabbed.swift in Sources */,
 				071F2E181F4CAFDE00FEDDCF /* VideoLauncher.swift in Sources */,
@@ -518,6 +561,7 @@
 				071C9E101F415E680021D5A3 /* AttendService.swift in Sources */,
 				07D9239F1F2EEE460069613D /* AlterProfileViewController.swift in Sources */,
 				07437F491F29167000CE728B /* UserService.swift in Sources */,
+				5074F1C21F7648D10082E016 /* ImageCollectionViewCell.swift in Sources */,
 				07E932F71F768E8300A0A479 /* NewCommentsViewController.swift in Sources */,
 				07FF92B91F3627A300FC9716 /* Post.swift in Sources */,
 				07F3EC5E1F4B7B28005296EB /* StoryService.swift in Sources */,
@@ -530,6 +574,7 @@
 				07437F511F2A63B600CE728B /* HomeViewController.swift in Sources */,
 				073AFDC51F45E4FB009D4773 /* FollowService.swift in Sources */,
 				07F3EC591F4A57C3005296EB /* PostService.swift in Sources */,
+				50360FAF1F755DCF00AB3BD0 /* HomeFeedCell.swift in Sources */,
 				07087C1A1F48FBB10099B91F /* CameraController.swift in Sources */,
 				07437F311F27D3EB00CE728B /* SignUpViewController.swift in Sources */,
 				071C9E0A1F3FBBB00021D5A3 /* EventSearchCell.swift in Sources */,
@@ -540,7 +585,6 @@
 				07370C841F4A4CC8006DC7A2 /* StorageService.swift in Sources */,
 				071F2E1C1F4E2FC500FEDDCF /* UserSearchCell.swift in Sources */,
 				070599AC1F6464C0006D1BF9 /* CircularTransition.swift in Sources */,
-				07E932FB1F790A2F00A0A479 /* NewHomeFeedControllerViewController.swift in Sources */,
 				07087C211F49470A0099B91F /* PhotoViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

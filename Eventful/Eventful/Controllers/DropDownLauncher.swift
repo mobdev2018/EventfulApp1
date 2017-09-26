@@ -7,17 +7,10 @@
 //
 
 import UIKit
-class DropDown: NSObject {
-    let name: String
-    let imageName: String
-    init(name: String, imageName: String) {
-        self.name = name
-        self.imageName = imageName
-    }
-}
+
 class DropDownLauncher: NSObject, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout{
-    let dropDown: [DropDown] = {
-        return [DropDown(name: "Home", imageName: "home"),DropDown(name: "Seize The Night", imageName: "night"),DropDown(name: "Seize The Day", imageName: "summer"), DropDown(name: "Dress To Impress", imageName: "suit"), DropDown(name: "I Love College", imageName: "college"),DropDown(name: "21 & Up", imageName: "21")]
+    let dropDown: [ImageAndTitleItem] = {
+        return [ImageAndTitleItem(name: "Home", imageName: "home"),ImageAndTitleItem(name: "Seize The Night", imageName: "night"),ImageAndTitleItem(name: "Seize The Day", imageName: "summer"), ImageAndTitleItem(name: "Dress To Impress", imageName: "suit"), ImageAndTitleItem(name: "I Love College", imageName: "college"),ImageAndTitleItem(name: "21 & Up", imageName: "21")]
     }()
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return dropDown.count
@@ -43,7 +36,6 @@ class DropDownLauncher: NSObject, UICollectionViewDelegate, UICollectionViewData
         }) { (completed: Bool) in
             let dropDown = self.dropDown[indexPath.item]
            self.homeFeed?.categoryFetch(dropDown: dropDown)
-            self.newHomeFeed?.categoryFetch(dropDown: dropDown)
             print("")
         }
         
@@ -63,11 +55,10 @@ class DropDownLauncher: NSObject, UICollectionViewDelegate, UICollectionViewData
         cv.backgroundColor = UIColor.white
         return cv
     }()
+    
     let cellID = "cellID"
     let cellHeight:CGFloat = 50
     var homeFeed: HomeFeedController?
-    var newHomeFeed: NewHomeFeedControllerViewController?
-
     func showDropDown(){
         //show menu
         if let window = UIApplication.shared.keyWindow{

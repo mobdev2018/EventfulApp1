@@ -207,7 +207,7 @@ open class ScrollingNavigationController: UINavigationController, UIGestureRecog
 
   // MARK: - Gesture recognizer
 
-  func handlePan(_ gesture: UIPanGestureRecognizer) {
+  @objc func handlePan(_ gesture: UIPanGestureRecognizer) {
     if gesture.state != .failed {
       if let superview = scrollableView?.superview {
         let translation = gesture.translation(in: superview)
@@ -228,7 +228,7 @@ open class ScrollingNavigationController: UINavigationController, UIGestureRecog
 
   // MARK: - Rotation handler
 
-  func didRotate(_ notification: Notification) {
+  @objc func didRotate(_ notification: Notification) {
     showNavbar()
   }
 
@@ -243,7 +243,7 @@ open class ScrollingNavigationController: UINavigationController, UIGestureRecog
 
   // MARK: - Notification handler
 
-  func didBecomeActive(_ notification: Notification) {
+  @objc func didBecomeActive(_ notification: Notification) {
     if expandOnActive {
       showNavbar(animated: false)
     } else {
@@ -253,7 +253,7 @@ open class ScrollingNavigationController: UINavigationController, UIGestureRecog
     }
   }
 
-  func willResignActive(_ notification: Notification) {
+  @objc func willResignActive(_ notification: Notification) {
     previousState = state
   }
 
@@ -461,6 +461,15 @@ open class ScrollingNavigationController: UINavigationController, UIGestureRecog
   }
 
   // MARK: - UIGestureRecognizerDelegate
+
+  /**
+   UIGestureRecognizerDelegate function. Begin scrolling only if the direction is vertical (prevents conflicts with horizontal scroll views)
+   */
+  open func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
+    guard let gestureRecognizer = gestureRecognizer as? UIPanGestureRecognizer else { return true }
+    let velocity = gestureRecognizer.velocity(in: gestureRecognizer.view)
+    return fabs(velocity.y) > fabs(velocity.x)
+  }
 
   /**
    UIGestureRecognizerDelegate function. Enables the scrolling of both the content and the navigation bar

@@ -95,7 +95,7 @@ open class SwiftyCamViewController: UIViewController {
 
 	/// Maxiumum video duration if SwiftyCamButton is used
 
-	public var maximumVideoDuration : Double     = 10.0
+	public var maximumVideoDuration : Double     = 0.0
 
 	/// Video capture quality
 
@@ -255,8 +255,9 @@ open class SwiftyCamViewController: UIViewController {
 
 	override open func viewDidLoad() {
 		super.viewDidLoad()
-        view = PreviewView(frame: view.frame, videoGravity: videoGravity)
-		previewLayer = view as! PreviewView!
+        previewLayer = PreviewView(frame: view.frame, videoGravity: videoGravity)
+        view.addSubview(previewLayer)
+        view.sendSubview(toBack: previewLayer)
 
 		// Add Gesture Recognizers
         

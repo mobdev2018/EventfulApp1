@@ -10,11 +10,13 @@ import UIKit
 import IGListKit
 import Foundation
 
-class CommentsSectionController: ListSectionController {
-var comment: CommentGrabbed?
+class CommentsSectionController: ListSectionController,CommentCellDelegate {
+    var comment: CommentGrabbed?
     override init() {
         super.init()
-        inset = UIEdgeInsets(top: 0, left: 0, bottom: 15, right: 0)
+        // supplementaryViewSource = self
+        //sets the spacing between items in a specfic section controller
+        inset = UIEdgeInsets(top: 5, left: 0, bottom: 0, right: 0)
     }
     // MARK: IGListSectionController Overrides
     override func numberOfItems() -> Int {
@@ -24,7 +26,7 @@ var comment: CommentGrabbed?
     override func sizeForItem(at index: Int) -> CGSize {
         let frame = CGRect(x: 0, y: 0, width: collectionContext!.containerSize.width, height: 50)
         let dummyCell = CommentCell(frame: frame)
-         dummyCell.comment = comment
+        dummyCell.comment = comment
         dummyCell.layoutIfNeeded()
         let targetSize =  CGSize(width: collectionContext!.containerSize.width, height: 55)
         let estimatedSize = dummyCell.systemLayoutSizeFitting(targetSize)
@@ -46,18 +48,36 @@ var comment: CommentGrabbed?
         guard let cell = collectionContext?.dequeueReusableCell(of: CommentCell.self, for: self, at: index) as? CommentCell else {
             fatalError()
         }
-        print(comment)
-        
+      //  print(comment)
         cell.comment = comment
+        cell.delegate = self
         return cell
     }
     override func didUpdate(to object: Any) {
         comment = object as! CommentGrabbed
     }
     override func didSelectItem(at index: Int){
-        
+    }
+    /*
+     func supportedElementKinds() -> [String] {
+     return [UICollectionElementKindSectionHeader]
+     }
+     func viewForSupplementaryElement(ofKind elementKind: String, at index: Int) -> UICollectionReusableView {
+     guard let view = collectionContext?.dequeueReusableSupplementaryView(ofKind: elementKind, for: self, class: CommentHeader.self, at: index) as? CommentHeader else{
+     fatalError()
+     }
+     view.handle = "Comments"
+     return view
+     }
+     */
+    func optionsButtonTapped(cell: CommentCell) {
+        print("like")
         
     }
-
-
+    /*
+     func sizeForSupplementaryView(ofKind elementKind: String, at index: Int) -> CGSize {
+     return CGSize(width: collectionContext!.containerSize.width, height: 40)
+     }
+     */
+    
 }

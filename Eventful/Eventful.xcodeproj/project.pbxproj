@@ -52,6 +52,7 @@
 		07D923AA1F34B44F0069613D /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07D923A91F34B44F0069613D /* SettingsViewController.swift */; };
 		07E932F71F768E8300A0A479 /* NewCommentsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07E932F61F768E8300A0A479 /* NewCommentsViewController.swift */; };
 		07E932F91F76D13300A0A479 /* CommentsSectionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07E932F81F76D13300A0A479 /* CommentsSectionController.swift */; };
+		07E933011F7AF30600A0A479 /* CommentsHeaderSectionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07E933001F7AF30600A0A479 /* CommentsHeaderSectionController.swift */; };
 		07F3EC591F4A57C3005296EB /* PostService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07F3EC581F4A57C3005296EB /* PostService.swift */; };
 		07F3EC5B1F4B53A6005296EB /* StoriesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07F3EC5A1F4B53A6005296EB /* StoriesViewController.swift */; };
 		07F3EC5E1F4B7B28005296EB /* StoryService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07F3EC5D1F4B7B28005296EB /* StoryService.swift */; };
@@ -115,6 +116,7 @@
 		07D923A91F34B44F0069613D /* SettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SettingsViewController.swift; path = Controllers/SettingsViewController.swift; sourceTree = "<group>"; };
 		07E932F61F768E8300A0A479 /* NewCommentsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = NewCommentsViewController.swift; path = Controllers/NewCommentsViewController.swift; sourceTree = "<group>"; };
 		07E932F81F76D13300A0A479 /* CommentsSectionController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CommentsSectionController.swift; path = Controllers/CommentsSectionController.swift; sourceTree = "<group>"; };
+		07E933001F7AF30600A0A479 /* CommentsHeaderSectionController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CommentsHeaderSectionController.swift; path = Controllers/CommentsHeaderSectionController.swift; sourceTree = "<group>"; };
 		07F3EC581F4A57C3005296EB /* PostService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PostService.swift; path = Services/PostService.swift; sourceTree = "<group>"; };
 		07F3EC5A1F4B53A6005296EB /* StoriesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StoriesViewController.swift; sourceTree = "<group>"; };
 		07F3EC5D1F4B7B28005296EB /* StoryService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = StoryService.swift; path = Services/StoryService.swift; sourceTree = "<group>"; };
@@ -351,6 +353,7 @@
 				0719CDF21F54CF580076E678 /* CommentsHeader.swift */,
 				07E932F61F768E8300A0A479 /* NewCommentsViewController.swift */,
 				07E932F81F76D13300A0A479 /* CommentsSectionController.swift */,
+				07E933001F7AF30600A0A479 /* CommentsHeaderSectionController.swift */,
 			);
 			name = Comments;
 			sourceTree = "<group>";
@@ -536,6 +539,7 @@
 			files = (
 				07B9145D1F3D416900A02952 /* CommentCell.swift in Sources */,
 				071F2E1A1F4E14B500FEDDCF /* EventSearchHeader.swift in Sources */,
+				07E933011F7AF30600A0A479 /* CommentsHeaderSectionController.swift in Sources */,
 				073B120A1F2C264000031044 /* HomeFeedController.swift in Sources */,
 				073B120C1F2ED42C00031044 /* ProfileeViewController.swift in Sources */,
 				076428B31F4B9289003D1B43 /* Storage.swift in Sources */,

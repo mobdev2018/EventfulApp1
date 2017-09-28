@@ -163,6 +163,9 @@ class HomeFeedController: UIViewController, UIGestureRecognizerDelegate {
     //will query by selected category
     func categoryFetch(dropDown: ImageAndTitleItem){
         navigationItem.title = dropDown.name
+        paginationHelper.category = dropDown.name
+        self.configure()
+        reloadHomeFeed()
     }
     
     func reloadHomeFeed() {
@@ -204,7 +207,7 @@ class HomeFeedController: UIViewController, UIGestureRecognizerDelegate {
             self.topView.monthLabel.text = dateComponents.1
             self.topView.calenderUnit.backgroundColor = UIColor.blue
             self.topView.backgroundImageView.af_setImage(withURL: imageURL!)
-            self.topView.nameLabel.text = allEvents[0].currentEventName
+            self.topView.nameLabel.text = allEvents[0].currentEventName.capitalized
             self.topView.flipToFullWidth(labelWidth: self.view.bounds.size.width - 120.0)
         }
         self.collectionView.reloadData()
@@ -291,19 +294,20 @@ extension HomeFeedController: UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
         if collectionView.tag == 1 {
+            print(indexPath.item)
+            print(allEvents.count - 1)
             if indexPath.item >= allEvents.count - 1 {
                 // print("paginating for post")
                 paginationHelper.paginate(completion: { [unowned self] (events) in
                     self.allEvents.append(contentsOf: events)
-                    
                     DispatchQueue.main.async {
                         self.reloadCollection()
                     }
                 })
-            }
-            else{
+            }else{
                 //debugPrint("Not paginating")
             }
+           
         }
     }
 }
@@ -345,7 +349,7 @@ extension HomeFeedController: UICollectionViewDataSource {
             customCell.monthLabel.text = dateComponents.1
             customCell.calenderUnit.backgroundColor = UIColor.orange
             customCell.backgroundImageView.af_setImage(withURL: imageURL!)
-            customCell.nameLabel.text = model.currentEventName
+            customCell.nameLabel.text = model.currentEventName.capitalized
             customCell.flipToSmallWidth(labelWidth: self.view.bounds.size.width/2.2 - 40.0)
             customCell.overlayButton.tag = indexPath.item + 1
             let actions = customCell.overlayButton.actions(forTarget: self, forControlEvent: .touchUpInside)

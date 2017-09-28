@@ -16,6 +16,7 @@ class NewCommentsViewController: UIViewController, UITextFieldDelegate {
     var comments = [CommentGrabbed]()
     var messagesRef: DatabaseReference?
     var bottomConstraint: NSLayoutConstraint?
+    public let addHeader = "addHeader" as ListDiffable
     public var eventKey = ""
     //This creates a lazily-initialized variable for the IGListAdapter. The initializer requires three parameters:
     //1 updater is an object conforming to IGListUpdatingDelegate, which handles row and section updates. IGListAdapterUpdater is a default implementation that is suitable for your usage.
@@ -94,7 +95,7 @@ class NewCommentsViewController: UIViewController, UITextFieldDelegate {
         self.submitButton.anchor(top: containerView.topAnchor, left: nil, bottom: containerView.bottomAnchor, right: containerView.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 12, width: 50, height: 0)
         
         containerView.addSubview(self.commentTextField)
-        self.commentTextField.anchor(top: containerView.topAnchor, left: containerView.leftAnchor, bottom: containerView.bottomAnchor, right: self.submitButton.leftAnchor, paddingTop: 0, paddingLeft: 12, paddingBottom: 0, paddingRight: 180, width: 0, height: 0)
+        self.commentTextField.anchor(top: containerView.topAnchor, left: containerView.leftAnchor, bottom: containerView.bottomAnchor, right: self.submitButton.leftAnchor, paddingTop: 0, paddingLeft: 12, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
         self.commentTextField.delegate = self
         let lineSeparatorView = UIView()
         lineSeparatorView.backgroundColor = UIColor.rgb(red: 230, green: 230, blue: 230)
@@ -132,7 +133,7 @@ class NewCommentsViewController: UIViewController, UITextFieldDelegate {
     }
     
     func flagButtonTapped (from cell: CommentCell){
-        guard let indexPath = collectionView.indexPath(for: cell) else { return }
+        guard let indexPath = self.collectionView.indexPath(for: cell) else { return }
         
         // 2
         let comment = comments[indexPath.item]
@@ -183,21 +184,23 @@ class NewCommentsViewController: UIViewController, UITextFieldDelegate {
             UIView.animate(withDuration: 0, delay: 0, options: UIViewAnimationOptions.curveEaseOut, animations: {
                 self.view.layoutIfNeeded()
             }, completion: { (completion) in
-                if self.comments.count > 0  && isKeyboardShowing{
-                    let indexPath = NSIndexPath(item: self.comments.count-1, section: 0)
-                    self.collectionView.scrollToItem(at: indexPath as IndexPath, at: .top, animated: true)
+                if self.comments.count > 0  && isKeyboardShowing {
+                    let indexPath = IndexPath(item: self.comments.count-1, section: 0)
+                    self.collectionView.scrollToItem(at: indexPath, at: .top, animated: true)
                 }
             })
         }
     }
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
         view.addSubview(collectionView)
         collectionView.addSubview(containerView)
         collectionView.alwaysBounceVertical = true
-        view.addConstraintsWithFormatt("H:|[v0]|", views: containerView)
-        view.addConstraintsWithFormatt("V:[v0(48)]", views: containerView)
+        containerView.anchor(top: nil, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 40)
+        //view.addConstraintsWithFormatt("H:|[v0]|", views: containerView)
+        // view.addConstraintsWithFormatt("V:[v0(48)]", views: containerView)
         bottomConstraint = NSLayoutConstraint(item: containerView, attribute: .bottom, relatedBy: .equal, toItem: view, attribute: .bottom, multiplier: 1, constant: 0)
         view.addConstraint(bottomConstraint!)
         adapter.collectionView = collectionView
@@ -206,6 +209,8 @@ class NewCommentsViewController: UIViewController, UITextFieldDelegate {
         
         NotificationCenter.default.addObserver(self, selector: #selector(handleKeyboardNotification), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
         collectionView.register(CommentCell.self, forCellWithReuseIdentifier: "CommentCell")
+        collectionView.register(CommentHeader.self, forCellWithReuseIdentifier: "HeaderCell")
+        self.collectionView.contentInset = UIEdgeInsetsMake(20, 0, 0, 0)
         fetchComments()
         // Do any additional setup after loading the view.
     }
@@ -230,13 +235,17 @@ class NewCommentsViewController: UIViewController, UITextFieldDelegate {
 extension NewCommentsViewController: ListAdapterDataSource {
     // 1 objects(for:) returns an array of data objects that should show up in the collection view. loader.entries is provided here as it contains the journal entries.
     func objects(for listAdapter: ListAdapter) -> [ListDiffable] {
+        var items:[ListDiffable] = comments
         print("comments = \(comments)")
-        return comments
+        return [addHeader] + items
     }
     
     // 2 For each data object, listAdapter(_:sectionControllerFor:) must return a new instance of a section controller. For now you’re returning a plain IGListSectionController to appease the compiler — in a moment, you’ll modify this to return a custom journal section controller.
     func listAdapter(_ listAdapter: ListAdapter, sectionControllerFor object: Any) -> ListSectionController {
         //the comment section controller will be placed here but we don't have it yet so this will be a placeholder
+        if let object = object as? ListDiffable, object === addHeader {
+            return CommentsHeaderSectionController()
+        }
         return CommentsSectionController()
     }
     

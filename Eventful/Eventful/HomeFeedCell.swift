@@ -44,7 +44,7 @@ class HomeFeedCell: UICollectionViewCell {
         self.calenderUnit.layer.cornerRadius = 5.0
         self.calenderUnit.translatesAutoresizingMaskIntoConstraints = false
         self.addSubview(self.calenderUnit)
-        NSLayoutConstraint.activateViewConstraints(self.calenderUnit, inSuperView: self, withLeading: 15.0, trailing: nil, top: nil, bottom: nil, width: 50.0, height: 50.0)
+        NSLayoutConstraint.activateViewConstraints(self.calenderUnit, inSuperView: self, withLeading: 15.0, trailing: nil, top: nil, bottom: nil, width: 45.0, height: 45.0)
         self.calenderUnitBottom = NSLayoutConstraint.activateBottomConstraint(withView: self.calenderUnit, superView: self, andSeparation: 15.0)
         
         self.dayLabel = UILabel()

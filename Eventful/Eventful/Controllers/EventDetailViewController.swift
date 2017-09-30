@@ -16,12 +16,20 @@ class EventDetailViewController: UIViewController {
         didSet{
             let imageURL = URL(string: (currentEvent?.currentEventImage)!)
             currentEventImage.af_setImage(withURL: imageURL!)
-            currentEventTime.text = currentEvent?.currentEventTime
-            currentEventDate.text = currentEvent?.currentEventDate
+            let dateFormatter = DateFormatter()
+            dateFormatter.dateFormat = "MM/dd/yyyy"
+            let eventDate = dateFormatter.date(from: (currentEvent?.currentEventDate)!)
+            dateFormatter.dateFormat = "MMM dd, yyyy"
+            currentEventDateTime.text = String(format:"%@ %@", dateFormatter.string(from: eventDate!), (currentEvent?.currentEventTime)!)
+//            currentEventTime.text = currentEvent?.currentEventTime
+//            currentEventDate.text = currentEvent?.currentEventDate
             eventNameLabel.text = currentEvent?.currentEventName.capitalized
-            let firstPartOfAddress = (currentEvent?.currentEventStreetAddress)!  + "\n" + (currentEvent?.currentEventCity)! + ", " + (currentEvent?.currentEventState)!
-            let secondPartOfAddress = firstPartOfAddress + " " + String(describing: currentEvent?.currentEventZip)
-            addressLabel.text = secondPartOfAddress
+            var address = (currentEvent?.currentEventStreetAddress)!  + "\n" + (currentEvent?.currentEventCity)! + ", " + (currentEvent?.currentEventState)!
+            if let zip = currentEvent?.currentEventZip {
+                address = String(format:"%@ %ld", address, zip)
+            }
+//            let secondPartOfAddress = firstPartOfAddress + " " + String(describing: currentEvent?.currentEventZip)
+            addressLabel.text = address
             descriptionLabel.text = currentEvent?.currentEventDescription
             descriptionLabel.font = UIFont(name: (descriptionLabel.font?.fontName)!, size: 12)
             navigationItem.title = currentEvent?.currentEventName.capitalized
@@ -51,7 +59,6 @@ class EventDetailViewController: UIViewController {
         currentEvent.clipsToBounds = true
         currentEvent.translatesAutoresizingMaskIntoConstraints = false
         currentEvent.contentMode = .scaleAspectFit
-        currentEvent.isUserInteractionEnabled = true
         currentEvent.layer.masksToBounds = true
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(handlePromoVid))
         currentEvent.isUserInteractionEnabled = true
@@ -73,34 +80,46 @@ class EventDetailViewController: UIViewController {
         
     }
     
-    lazy var currentEventTime: UILabel = {
-        let currentEventTime = UILabel()
-        //        currentEventTime.text = self.eventTime
-        currentEventTime.font = UIFont(name: currentEventTime.font.fontName, size: 12)
-        return currentEventTime
-    }()
+//    lazy var currentEventTime: UILabel = {
+//        let currentEventTime = UILabel()
+//        currentEventTime.translatesAutoresizingMaskIntoConstraints = false
+//
+//        //        currentEventTime.text = self.eventTime
+//        currentEventTime.font = UIFont(name: currentEventTime.font.fontName, size: 12)
+//        return currentEventTime
+//    }()
+//
+//
+//    lazy var currentEventDate: UILabel = {
+//        let currentEventDate = UILabel()
+//        currentEventDate.translatesAutoresizingMaskIntoConstraints = false
+//
+//        //        currentEventDate.text = self.eventDate
+//        currentEventDate.font = UIFont(name: currentEventDate.font.fontName, size: 12)
+//        return currentEventDate
+//    }()
     
-    
-    lazy var currentEventDate: UILabel = {
-        let currentEventDate = UILabel()
-        //        currentEventDate.text = self.eventDate
-        currentEventDate.font = UIFont(name: currentEventDate.font.fontName, size: 12)
-        return currentEventDate
+    lazy var currentEventDateTime: UILabel = {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.font = UIFont(name: label.font.fontName, size: 12)
+        return label
     }()
     
     
     //will show the event name
     lazy var eventNameLabel: UILabel = {
-        let currentEventName = UILabel()
+        let label = UILabel()
+        label.numberOfLines = 0
         //        currentEventName.text = self.eventName.capitalized
-        currentEventName.translatesAutoresizingMaskIntoConstraints = false
-        return currentEventName
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
     }()
     //wil be responsible for creating the address  label
     lazy var addressLabel : UILabel = {
         let currentAddressLabel = UILabel()
         currentAddressLabel.numberOfLines = 0
-        currentAddressLabel.textColor = UIColor.lightGray
+        currentAddressLabel.textColor = UIColor.black
         currentAddressLabel.font = UIFont(name: currentAddressLabel.font.fontName, size: 12)
         return currentAddressLabel
     }()
@@ -111,6 +130,7 @@ class EventDetailViewController: UIViewController {
         currentDescriptionLabel.textContainer.maximumNumberOfLines = 0
         currentDescriptionLabel.textColor = UIColor.black
         currentDescriptionLabel.textAlignment = .justified
+        currentDescriptionLabel.translatesAutoresizingMaskIntoConstraints = false
         return currentDescriptionLabel
     }()
     
@@ -217,6 +237,45 @@ class EventDetailViewController: UIViewController {
         present(eventStory, animated: true, completion: nil)
     }
     
+//    lazy var eventTimeLabel:UILabel = {
+//        let label = UILabel()
+//        label.textColor = UIColor.white
+//        label.font = UIFont.boldSystemFont(ofSize: 15.0)
+//        label.translatesAutoresizingMaskIntoConstraints = false
+//        label.textAlignment = .center
+//        return label
+//    }()
+//
+//    lazy var eventDateLabel:UILabel = {
+//        let label = UILabel()
+//        label.font = UIFont.systemFont(ofSize: 14.0)
+//        label.translatesAutoresizingMaskIntoConstraints = false
+//        label.textAlignment = .center
+//        return label
+//    }()
+//
+//    lazy var eventDateTimeView: UIView = {
+//        let view = UIView()
+//        view.backgroundColor = UIColor.blue
+//        view.translatesAutoresizingMaskIntoConstraints = false
+//        view.layer.cornerRadius = 5.0
+//
+//        view.addSubview(self.eventDateLabel)
+//        NSLayoutConstraint.activateViewConstraints(self.eventDateLabel, inSuperView: view, withLeading: 0.0, trailing: 0.0, top: 0.0, bottom: nil)
+//        _ = NSLayoutConstraint.activateEqualHeightConstraint(withView: self.eventDateLabel, referenceView: view, multiplier: 0.5)
+//
+//        view.addSubview(self.eventTimeLabel)
+//        NSLayoutConstraint.activateViewConstraints(self.eventTimeLabel, inSuperView: view, withLeading: 0.0, trailing: 0.0, top: nil, bottom: 0.0)
+//        _ = NSLayoutConstraint.activateEqualHeightConstraint(withView: self.eventTimeLabel, referenceView: view, multiplier: 0.5)
+//
+//        let middleBar = UIView()
+//        middleBar.translatesAutoresizingMaskIntoConstraints = false
+//        middleBar.backgroundColor = .white
+//        view.addSubview(middleBar)
+//        NSLayoutConstraint.activateViewConstraints(middleBar, inSuperView: view, withLeading: 0.0, trailing: 0.0, top: nil, bottom: nil, width: nil, height: 1.0)
+//        _ = NSLayoutConstraint.activateCentreYConstraint(withView: middleBar, superView: view)
+//        return view
+//    }()
     
 
     
@@ -242,46 +301,93 @@ class EventDetailViewController: UIViewController {
     }
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.setupViews()
         
         
-        let downSwipe = UISwipeGestureRecognizer(target: self, action: #selector(swipeAction(_:)))
-        downSwipe.direction = .down
-        view.addGestureRecognizer(downSwipe)
-        view.backgroundColor = UIColor.white
 //        self.navigationItem.hidesBackButton = true
 //        let backButton = UIBarButtonItem(image: UIImage(named: "icons8-Back-64"), style: .plain, target: self, action: #selector(GoBack))
 //        self.navigationItem.leftBarButtonItem = backButton
         
         //Subviews will be added here
-        view.addSubview(currentEventImage)
-        view.addSubview(currentEventDate)
+//        view.addSubview(currentEventDate)
         
         //        view.addSubview(attendCount)
         //        view.addSubview(commentCount)
         
         //Constraints will be added here
-        _ = currentEventImage.anchor(top: view.centerYAnchor, left: nil, bottom: nil, right: nil, paddingTop: -305, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: self.view.frame.width, height: 200)
-        _ = currentEventDate.anchor(top: currentEventImage.bottomAnchor, left: userInteractStackView?.rightAnchor, bottom: nil, right: view.rightAnchor, paddingTop: 10, paddingLeft: 10, paddingBottom: 0, paddingRight: 0, width: 90, height: 50)
+        
+        
+//        _ = currentEventDate.anchor(top: currentEventImage.bottomAnchor, left: userInteractStackView?.rightAnchor, bottom: nil, right: view.rightAnchor, paddingTop: 10, paddingLeft: 10, paddingBottom: 0, paddingRight: 0, width: 90, height: 50)
         //          _ = attendCount.anchor(top: attendingButton.bottomAnchor, left: commentCount.leftAnchor, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 60, paddingBottom: 0, paddingRight: 0, width: 20, height: 20)
         //        _ = commentCount.anchor(top: commentsViewButton.bottomAnchor, left: view.leftAnchor, bottom: nil, right: nil, paddingTop: 5, paddingLeft: 40, paddingBottom: 0, paddingRight: 0, width: 20, height: 20)
         //        _ = addToStoryButton.anchor(top: stackView?.bottomAnchor, left: attendingButton.rightAnchor, bottom: nil, right: nil, paddingTop: 3, paddingLeft: 25, paddingBottom: 0, paddingRight: 0, width: 40, height: 30)
         //        _ = viewStoryButton.anchor(top: stackView?.bottomAnchor, left: addToStoryButton.rightAnchor, bottom: nil, right: nil, paddingTop: 3, paddingLeft: 25, paddingBottom: 0, paddingRight: 0, width: 40, height: 40)
         //        viewStoryButton.layer.cornerRadius = 40/2
         attendingButton.isSelected = (currentEvent?.isAttending)!
-        setupEventDisplayScreen()
-        userInteractionView()
+//        setupEventDisplayScreen()
+//        userInteractionView()
         
         // navigationController?.isHeroEnabled = true
     }
     
-    fileprivate func setupEventDisplayScreen(){
-        stackView = UIStackView(arrangedSubviews: [ eventNameLabel,addressLabel,descriptionLabel])
-        view.addSubview(stackView!)
-        stackView?.distribution = .fill
-        stackView?.axis = .vertical
-        stackView?.spacing = 5.0
-        stackView?.anchor(top: currentEventImage.bottomAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, paddingTop: 0, paddingLeft: 20, paddingBottom: 0, paddingRight: 20, width: 0, height: 250)
+    private func setupViews() {
+        let downSwipe = UISwipeGestureRecognizer(target: self, action: #selector(swipeAction(_:)))
+        downSwipe.direction = .down
+        view.addGestureRecognizer(downSwipe)
+        view.backgroundColor = UIColor.white
+        
+        view.addSubview(currentEventImage)
+        NSLayoutConstraint.activateViewConstraints(currentEventImage, inSuperView: self.view, withLeading: 0.0, trailing: 0.0, top: nil, bottom: nil, width: nil, height: 200.0)
+        _ = NSLayoutConstraint.activateVerticalSpacingConstraint(withFirstView: self.topLayoutGuide, secondView: currentEventImage, andSeparation: 0.0)
+        
+        self.view.addSubview(self.eventNameLabel)
+        _ = NSLayoutConstraint.activateVerticalSpacingConstraint(withFirstView: self.currentEventImage, secondView: self.eventNameLabel, andSeparation: 10.0)
+        NSLayoutConstraint.activateViewConstraints(self.eventNameLabel, inSuperView: self.view, withLeading: 15.0, trailing: -15.0, top: nil, bottom: nil)
+        _ = NSLayoutConstraint.activateHeightConstraint(view: self.eventNameLabel, withHeight: 1.0, andRelation: .greaterThanOrEqual)
+        
+        let locationIcon = UIImageView(image: #imageLiteral(resourceName: "marker-black"))
+        locationIcon.translatesAutoresizingMaskIntoConstraints = false
+        self.view.addSubview(locationIcon)
+        NSLayoutConstraint.activateViewConstraints(locationIcon, inSuperView: self.view, withLeading: 15.0, trailing: nil, top: nil, bottom: nil, width: 24.0, height: 24.0)
+        self.view.addSubview(self.addressLabel)
+        self.addressLabel.translatesAutoresizingMaskIntoConstraints = false
+        self.addressLabel.numberOfLines = 0
+        _ = NSLayoutConstraint.activateVerticalSpacingConstraint(withFirstView: self.eventNameLabel, secondView: self.addressLabel, andSeparation: 8.0)
+        _ = NSLayoutConstraint.activateHorizontalSpacingConstraint(withFirstView: locationIcon, secondView: self.addressLabel, andSeparation: 8.0)
+        _ = NSLayoutConstraint.activateTrailingConstraint(withView: self.addressLabel, superView: self.view, andSeparation: -15.0)
+        _ = NSLayoutConstraint.activateHeightConstraint(view: self.addressLabel, withHeight: 24.0, andRelation: .greaterThanOrEqual)
+        _ = NSLayoutConstraint.activateCentreYConstraint(withView: locationIcon, superView: self.addressLabel)
+        
+        let timeIcon = UIImageView(image: #imageLiteral(resourceName: "date-range"))
+        timeIcon.translatesAutoresizingMaskIntoConstraints = false
+        self.view.addSubview(timeIcon)
+        NSLayoutConstraint.activateViewConstraints(timeIcon, inSuperView: self.view, withLeading: 15.0, trailing: nil, top: nil, bottom: nil, width: 24.0, height: 24.0)
+        self.view.addSubview(self.currentEventDateTime)
+        self.currentEventDateTime.numberOfLines = 0
+        _ = NSLayoutConstraint.activateVerticalSpacingConstraint(withFirstView: self.addressLabel, secondView: self.currentEventDateTime, andSeparation: 8.0)
+        _ = NSLayoutConstraint.activateHorizontalSpacingConstraint(withFirstView: timeIcon, secondView: self.currentEventDateTime, andSeparation: 8.0)
+        _ = NSLayoutConstraint.activateTrailingConstraint(withView: self.currentEventDateTime, superView: self.view, andSeparation: -15.0)
+        _ = NSLayoutConstraint.activateHeightConstraint(view: self.currentEventDateTime, withHeight: 24.0, andRelation: .greaterThanOrEqual)
+        _ = NSLayoutConstraint.activateCentreYConstraint(withView: timeIcon, superView: self.currentEventDateTime)
+        
+        self.view.addSubview(descriptionLabel)
+        NSLayoutConstraint.activateViewConstraints(descriptionLabel, inSuperView: self.view, withLeading: 15.0, trailing: -15.0, top: nil, bottom: nil)
+        _ = NSLayoutConstraint.activateVerticalSpacingConstraint(withFirstView: self.currentEventDateTime, secondView: descriptionLabel, andSeparation: 10.0)
+        
+        self.userInteractionView()
+        self.userInteractStackView?.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activateViewConstraints(userInteractStackView!, inSuperView: self.view, withLeading: 15.0, trailing: -15.0, top: nil, bottom: -15.0, width: nil, height: 50.0)
+        _ = NSLayoutConstraint.activateVerticalSpacingConstraint(withFirstView: self.descriptionLabel, secondView: self.userInteractStackView!, andSeparation: 10.0)
     }
+    
+//    fileprivate func setupEventDisplayScreen(){
+//        stackView = UIStackView(arrangedSubviews: [ eventNameLabel,addressLabel,descriptionLabel])
+//        view.addSubview(stackView!)
+//        stackView?.distribution = .fill
+//        stackView?.axis = .vertical
+//        stackView?.spacing = 5.0
+//        stackView?.anchor(top: currentEventImage.bottomAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, paddingTop: 0, paddingLeft: 20, paddingBottom: 0, paddingRight: 20, width: 0, height: 250)
+//    }
     
     fileprivate func userInteractionView(){
         userInteractStackView = UIStackView(arrangedSubviews: [commentsViewButton, attendingButton, addToStoryButton, viewStoryButton])
@@ -292,8 +398,7 @@ class EventDetailViewController: UIViewController {
         userInteractStackView?.distribution = .fillEqually
         userInteractStackView?.axis = .horizontal
         userInteractStackView?.spacing = 10.0
-        userInteractStackView?.anchor(top: stackView?.bottomAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, paddingTop: 0, paddingLeft: 20, paddingBottom: 0, paddingRight: 20, width: 0, height: 50)
-        
+        //userInteractStackView?.anchor(top: stackView?.bottomAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, paddingTop: 0, paddingLeft: 20, paddingBottom: 0, paddingRight: 20, width: 0, height: 50)
     }
     
     override func viewWillAppear(_ animated: Bool) {

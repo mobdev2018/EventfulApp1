@@ -15,7 +15,7 @@ struct PostService {
     static func create(for event: String?,for vidURL: String) {
         // 1
         guard let key = event else {
-            return 
+            return
         }
         let storyUrl = vidURL
         // 2
@@ -24,47 +24,48 @@ struct PostService {
         }
         let story = Story(url: storyUrl)
         let dict = story.dictValue
-       let postRef = Database.database().reference().child("Stories").child(key).childByAutoId()
+        let postRef = Database.database().reference().child("Stories").child(key).childByAutoId()
         let userRef = Database.database().reference().child("users").child(uid).child("Stories").child(key).childByAutoId()
         postRef.updateChildValues(dict)
         userRef.updateChildValues(dict)
     }
-    static func showEvent(pageSize: UInt, lastPostKey: String? = nil, category: String? = nil,completion: @escaping ([Event]) -> Void) {
+    static func showEvent(pageNo: UInt, pageSize: UInt, lastPostKey: String? = nil, category: String? = nil,completion: @escaping ([Event]) -> Void) {
         //getting firebase root directory
-       // print(lastPostKey)
-      //  print("came here")
-        var currentEvents = [Event]()
+        // print(lastPostKey)
+        //  print("came here")
         let eventsByLocationRef = Database.database().reference().child("eventsbylocation").child(User.current.location!)
         //let ref = Database.database().reference().child("events")
-        var query = eventsByLocationRef.queryOrderedByKey().queryLimited(toFirst: pageSize)
-        if let lastPostKey = lastPostKey {
-          //  print(lastPostKey)
-            query = query.queryEnding(atValue: lastPostKey)
+        var query = eventsByLocationRef.queryOrderedByKey()
+        if lastPostKey != nil {
+            query = query.queryLimited(toFirst: pageNo * pageSize).queryStarting(atValue: lastPostKey)
+        } else {
+            query = query.queryLimited(toFirst: pageSize)
         }
         query.observeSingleEvent(of: .value, with: { (snapshot) in
-         //   print(snapshot)
-           // print(snapshot.value)
+            //   print(snapshot)
+            // print(snapshot.value)
             guard let allObjects = snapshot.children.allObjects as? [DataSnapshot] else{
                 return
             }
-            allObjects.forEach({ (snapshot) in
-            // print(snapshot.value ?? "")
-                print(category)
-                EventService.show(forEventKey: snapshot.value as! String,eventCategory: category, completion: { (event) in
-                    currentEvents.append(event!)
-                   // print("\n\n\n\n\n\n")
-                   // print("Finished an event")
-                   // print(currentEvents.count)
-                    completion(currentEvents)
-                })
-
+            EventService.showAll(allObjects, eventCategory: category, index: 0, events: [], completion: { (events) in
+                var newEvents = events
+                for (index, object) in allObjects.enumerated() {
+                    if newEvents?[index].key != "" {
+                        newEvents?[index].key = object.key
+                    }
+                }
+                var filterEvent: [Event] = []
+                for event in newEvents! {
+                    if event.key != "" {
+                        filterEvent.append(event)
+                    }
+                }
+                completion(filterEvent)
             })
-
-
         })
-
+        
     }
     
     
-
+    
 }

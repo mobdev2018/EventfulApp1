@@ -33,8 +33,9 @@ class PaginationHelper<T : Keyed>
     // 2. serviceMethod - The service method that will return paginated data
     // 3. state - The current pagination state of the helper
     // 4. lastobjectKey - Firebase uses object keys to determine the last position of the page. We'lll need to use this as an offset for paginating.
+    var pageNo: UInt
     let pageSize: UInt
-    let serviceMethod: (UInt, String?,String?, @escaping (([T]) -> Void)) -> Void
+    let serviceMethod: (UInt, UInt, String?,String?, @escaping (([T]) -> Void)) -> Void
     var state: PaginationState = .initial
     var lastObjectKey: String?
     var category: String?
@@ -42,7 +43,8 @@ class PaginationHelper<T : Keyed>
     // MARK: - Init
     //    Can change the default page size for our helper
     //    Set the service method that will be paginated and return data
-    init(pageSize: UInt = 4, serviceMethod: @escaping (UInt, String?,String?, @escaping (([T]) -> Void)) -> Void) {
+    init(pageNo: UInt = 1, pageSize: UInt = 4, serviceMethod: @escaping (UInt, UInt, String?,String?, @escaping (([T]) -> Void)) -> Void) {
+        self.pageNo = pageNo
         self.pageSize = pageSize
         self.serviceMethod = serviceMethod
     }
@@ -61,34 +63,36 @@ class PaginationHelper<T : Keyed>
         //4 For our ready state, we make sure to change the state to loading and execute our service method to return the paginated data.
         case .ready:
             state = .loading
-          //  print(lastObjectKey)
-            serviceMethod(pageSize, lastObjectKey, category) { [unowned self] (objects: [T]) in
+            //  print(lastObjectKey)
+            serviceMethod(pageNo, pageSize, lastObjectKey, category) { [unowned self] (objects: [T]) in
                 //5 We use the defer keyword to make sure the following code is executed whenever the closure returns. This is helpful for removing duplicate code.
                 defer {
                     //6 If the returned last returned object has a key value, we store that in lastObjectKey to use as a future offset for paginating. Right now the compiler will throw an error because it cannot infer that T has a property of key. We'll fix that next.
                     if let lastObjectKey = objects.last?.key {
                         self.lastObjectKey = lastObjectKey
-                      //  print(self.lastObjectKey)
-                      //  print(lastObjectKey)
+                        //  print(self.lastObjectKey)
+                        //  print(lastObjectKey)
                     }
                     // 7 We determine if we've paginated through all content because if the number of objects returned is less than the page size, we know that we're only the last page of objects.
                     self.state = objects.count < Int(self.pageSize) ? .end : .ready
+                    self.pageNo += 1
                 }
                 
                 // 8 If lastObjectKey of the helper doesn't exist, we know that it's the first page of data so we return the data as is.
                 guard let _ = self.lastObjectKey else {
-                   // print(self.lastObjectKey)
+                    // print(self.lastObjectKey)
                     return completion(objects)
                 }
                 
                 // 9 Due to implementation details of Firebase, whenever we page with the lastObjectKey, the previous object from the last page is returned. Here we need to drop the first object which will be a duplicate post in our timeline. This happens whenever we're no longer on the first page.
-              //  print(objects.last?.key)
-              //  let newObjects = Array(objects.dropLast())
-              //  print(newObjects)
+                //  print(objects.last?.key)
+                //  let newObjects = Array(objects.dropLast())
+                //  print(newObjects)
                 print("\n")
-              //  print(objects)
+                //  print(objects)
                 print("\n")
-                completion(objects)
+                let newObjects = Array(objects.dropFirst())
+                return completion(newObjects)
                 
             }
             

@@ -60,6 +60,7 @@ class HomeFeedController: UIViewController, UIGestureRecognizerDelegate {
         //  self.navigationItem.hidesBackButton = true
         
         self.configure()
+        reloadHomeFeed()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -162,13 +163,9 @@ class HomeFeedController: UIViewController, UIGestureRecognizerDelegate {
     //will query by selected category
     func categoryFetch(dropDown: ImageAndTitleItem){
         navigationItem.title = dropDown.name
-        paginationHelper.category = dropDown.name
-        self.configure()
-        reloadHomeFeed()
     }
     
     func reloadHomeFeed() {
-        self.allEvents.removeAll()
         self.paginationHelper.reloadData(completion: { [unowned self] (events) in
             self.allEvents = events
             
@@ -294,20 +291,19 @@ extension HomeFeedController: UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
         if collectionView.tag == 1 {
-            print(indexPath.item)
-            if indexPath.item == allEvents.count - 2 {
+            if indexPath.item >= allEvents.count - 1 {
                 // print("paginating for post")
-                
                 paginationHelper.paginate(completion: { [unowned self] (events) in
                     self.allEvents.append(contentsOf: events)
+                    
                     DispatchQueue.main.async {
                         self.reloadCollection()
                     }
                 })
-            }else{
+            }
+            else{
                 //debugPrint("Not paginating")
             }
-            
         }
     }
 }

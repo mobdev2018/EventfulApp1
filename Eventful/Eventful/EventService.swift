@@ -23,35 +23,16 @@ struct EventService {
             guard let event = Event(snapshot: snapshot) else {
                 return completion(nil)
             }
-            if eventCategory == nil || eventCategory == "" || eventCategory == "Home" {
-                return completion(event)
-            }
-            
             if event.category == eventCategory{
                 completion(event)
-            } else {
-                completion(Event(currentEventKey: "", dictionary: [:]))
             }
-            
+            if eventCategory == nil || eventCategory == "" || eventCategory == "Home" {
+                completion(event)
+            }
         })
         
         
         
         
     }
-    
-    static func showAll(_ snapshots: [DataSnapshot], eventCategory: String? = nil, index: Int, events: [Event], completion: @escaping ([Event]?) -> Void) {
-        if index == snapshots.count {
-            completion(events)
-            return
-        }
-        show(forEventKey: snapshots[index].value as! String, eventCategory: eventCategory) { (event) in
-            var newEvents = events
-            if let event = event {
-                newEvents.append(event)
-            }
-            showAll(snapshots, eventCategory: eventCategory, index: index + 1, events: newEvents, completion: completion)
-        }
-    }
-    
 }

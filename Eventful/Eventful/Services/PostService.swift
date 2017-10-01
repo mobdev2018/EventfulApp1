@@ -29,17 +29,17 @@ struct PostService {
         postRef.updateChildValues(dict)
         userRef.updateChildValues(dict)
     }
-    static func showEvent(pageNo: UInt, pageSize: UInt, lastPostKey: String? = nil, category: String? = nil,completion: @escaping ([Event]) -> Void) {
+    static func showEvent(pageSize: UInt, lastPostKey: String? = nil, category: String? = nil,completion: @escaping ([Event]) -> Void) {
         //getting firebase root directory
         // print(lastPostKey)
         //  print("came here")
+        var currentEvents = [Event]()
         let eventsByLocationRef = Database.database().reference().child("eventsbylocation").child(User.current.location!)
         //let ref = Database.database().reference().child("events")
-        var query = eventsByLocationRef.queryOrderedByKey()
-        if lastPostKey != nil {
-            query = query.queryLimited(toFirst: pageNo * pageSize).queryStarting(atValue: lastPostKey)
-        } else {
-            query = query.queryLimited(toFirst: pageSize)
+        var query = eventsByLocationRef.queryOrderedByKey().queryLimited(toFirst: pageSize)
+        if let lastPostKey = lastPostKey {
+            //  print(lastPostKey)
+            query = query.queryEnding(atValue: lastPostKey)
         }
         query.observeSingleEvent(of: .value, with: { (snapshot) in
             //   print(snapshot)
@@ -47,21 +47,20 @@ struct PostService {
             guard let allObjects = snapshot.children.allObjects as? [DataSnapshot] else{
                 return
             }
-            EventService.showAll(allObjects, eventCategory: category, index: 0, events: [], completion: { (events) in
-                var newEvents = events
-                for (index, object) in allObjects.enumerated() {
-                    if newEvents?[index].key != "" {
-                        newEvents?[index].key = object.key
-                    }
-                }
-                var filterEvent: [Event] = []
-                for event in newEvents! {
-                    if event.key != "" {
-                        filterEvent.append(event)
-                    }
-                }
-                completion(filterEvent)
+            allObjects.forEach({ (snapshot) in
+                // print(snapshot.value ?? "")
+                print(category)
+                EventService.show(forEventKey: snapshot.value as! String,eventCategory: category, completion: { (event) in
+                    currentEvents.append(event!)
+                    // print("\n\n\n\n\n\n")
+                    // print("Finished an event")
+                    // print(currentEvents.count)
+                    completion(currentEvents)
+                })
+                
             })
+            
+            
         })
         
     }

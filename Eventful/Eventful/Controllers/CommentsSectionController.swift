@@ -12,6 +12,7 @@ import Foundation
 
 class CommentsSectionController: ListSectionController,CommentCellDelegate {
     var comment: CommentGrabbed?
+    var eventKey: String?
     override init() {
         super.init()
         // supplementaryViewSource = self
@@ -48,7 +49,7 @@ class CommentsSectionController: ListSectionController,CommentCellDelegate {
         guard let cell = collectionContext?.dequeueReusableCell(of: CommentCell.self, for: self, at: index) as? CommentCell else {
             fatalError()
         }
-      //  print(comment)
+        //  print(comment)
         cell.comment = comment
         cell.delegate = self
         return cell
@@ -70,10 +71,55 @@ class CommentsSectionController: ListSectionController,CommentCellDelegate {
      return view
      }
      */
-    func optionsButtonTapped(cell: CommentCell) {
+    //    func optionsButtonTapped(cell: CommentCell) {
+    //        print("like")
+    //
+    //
+    //    }
+    
+    
+    func optionsButtonTapped(cell: CommentCell){
         print("like")
+     //   guard let indexPath = self.collectionContext?.index(for: cell, sectionController: self)(for: cell) else { return }
+        guard let indexPath = self.collectionContext?.index(for: cell, sectionController: self) else{
+            return
+        }
+        // 2
+        let comment = self.comment
+        _ = comment?.uid
+        
+        // 3
+        let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+        
+        // 4
+        if comment?.uid != User.current.uid {
+            let flagAction = UIAlertAction(title: "Report as Inappropriate", style: .default) { _ in
+                ChatService.flag(comment!)
+                
+                let okAlert = UIAlertController(title: nil, message: "The post has been flagged.", preferredStyle: .alert)
+                okAlert.addAction(UIAlertAction(title: "Ok", style: .default))
+                self.viewController?.present(okAlert, animated: true, completion: nil)
+            }
+            let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+            alertController.addAction(cancelAction)
+            alertController.addAction(flagAction)
+        }else{
+            let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+            let deleteAction = UIAlertAction(title: "Delete Comment", style: .default, handler: { _ in
+                ChatService.deleteComment(comment!, self.eventKey!)
+                let okAlert = UIAlertController(title: nil, message: "Comment Has Been Deleted", preferredStyle: .alert)
+                okAlert.addAction(UIAlertAction(title: "Ok", style: .default))
+                self.viewController?.present(okAlert, animated: true, completion: nil)
+            })
+            alertController.addAction(cancelAction)
+            alertController.addAction(deleteAction)
+            
+        }
+        self.viewController?.present(alertController, animated: true, completion: nil)
         
     }
+    
+    
     /*
      func sizeForSupplementaryView(ofKind elementKind: String, at index: Int) -> CGSize {
      return CGSize(width: collectionContext!.containerSize.width, height: 40)

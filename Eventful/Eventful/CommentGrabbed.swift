@@ -14,16 +14,18 @@ class CommentGrabbed {
     let uid: String
     let user: User
     let creationDate: Date
-     var commentID: String? = ""
+    var commentID: String? = ""
+    let eventKey:String
     
     init(user: User, dictionary: [String:Any]) {
         self.content = dictionary["content"] as? String ?? ""
         self.uid = dictionary["uid"] as? String ?? ""
+        self.eventKey = dictionary["eventKey"] as? String ?? ""
         self.user = user
         let secondsFrom1970 = dictionary["timestamp"] as? Double ?? 0
         self.creationDate = Date(timeIntervalSince1970: secondsFrom1970)
     }
-   
+    
 }
 
 extension CommentGrabbed: Equatable{

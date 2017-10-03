@@ -11,7 +11,7 @@ import IGListKit
 import Firebase
 
 
-class NewCommentsViewController: UIViewController, UITextFieldDelegate {
+class NewCommentsViewController: UIViewController, UITextFieldDelegate,CommentsSectionDelegate {
     //array of comments which will be loaded by a service function
     var comments = [CommentGrabbed]()
     var messagesRef: DatabaseReference?
@@ -126,7 +126,7 @@ class NewCommentsViewController: UIViewController, UITextFieldDelegate {
         guard let comment = commentTextField.text, comment.characters.count > 0 else{
             return
         }
-        let userText = Comments(content: comment, uid: User.current.uid, profilePic: User.current.profilePic!)
+        let userText = Comments(content: comment, uid: User.current.uid, profilePic: User.current.profilePic!,eventKey: eventKey)
         sendMessage(userText)
         // will remove text after entered
         self.commentTextField.text = nil
@@ -214,7 +214,11 @@ class NewCommentsViewController: UIViewController, UITextFieldDelegate {
         fetchComments()
         // Do any additional setup after loading the view.
     }
-    
+    //look here
+    func CommentSectionUpdared(sectionController: CommentsSectionController){
+        print("like")
+    self.adapter.performUpdates(animated: true)
+    }
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         tabBarController?.tabBar.isHidden = true
@@ -246,7 +250,9 @@ extension NewCommentsViewController: ListAdapterDataSource {
         if let object = object as? ListDiffable, object === addHeader {
             return CommentsHeaderSectionController()
         }
-        return CommentsSectionController()
+        let sectionController = CommentsSectionController()
+        sectionController.delegate = self
+        return sectionController
     }
     
     // 3 emptyView(for:) returns a view that should be displayed when the list is empty. NASA is in a bit of a time crunch, so they didn’t budget for this feature.

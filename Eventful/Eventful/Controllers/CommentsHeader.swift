@@ -9,7 +9,13 @@
 import Foundation
 import UIKit
 
+
+protocol CommentHeaderDelegate: class {
+    func commentHeaderTapped(cell: CommentHeader)
+}
 class CommentHeader: UICollectionViewCell {
+    weak var delegate: CommentHeaderDelegate? = nil
+
     let handleLabel: UILabel = {
         let handleLabel = UILabel()
         handleLabel.textAlignment = NSTextAlignment.center
@@ -35,8 +41,13 @@ class CommentHeader: UICollectionViewCell {
     lazy var backButton: UIButton = {
         let backButton = UIButton(type: .system)
         backButton.setImage(#imageLiteral(resourceName: "icons8-Expand Arrow-48").withRenderingMode(.alwaysOriginal), for: .normal)
+        backButton.addTarget(self, action: #selector(onDismissTapped), for: .touchUpInside)
         return backButton
     }()
+    
+    func onDismissTapped() {
+        delegate?.commentHeaderTapped(cell: self)
+    }
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")

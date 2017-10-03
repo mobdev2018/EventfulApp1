@@ -282,7 +282,7 @@ print(eventKey)
         guard let comment = commentTextField.text, comment.characters.count > 0 else{
             return
         }
-        let userText = Comments(content: comment, uid: User.current.uid, profilePic: User.current.profilePic!)
+        let userText = Comments(content: comment, uid: User.current.uid, profilePic: User.current.profilePic!, eventKey: eventKey)
         sendMessage(userText)
         // will remove text after entered
         self.commentTextField.text = nil

@@ -10,7 +10,11 @@ import UIKit
 import IGListKit
 import Foundation
 
+protocol CommentsSectionDelegate: class {
+    func CommentSectionUpdared(sectionController: CommentsSectionController)
+}
 class CommentsSectionController: ListSectionController,CommentCellDelegate {
+    weak var delegate: CommentsSectionDelegate? = nil
     var comment: CommentGrabbed?
     var eventKey: String?
     override init() {
@@ -106,10 +110,12 @@ class CommentsSectionController: ListSectionController,CommentCellDelegate {
         }else{
             let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
             let deleteAction = UIAlertAction(title: "Delete Comment", style: .default, handler: { _ in
-                ChatService.deleteComment(comment!, self.eventKey!)
+                ChatService.deleteComment(comment!, (comment?.eventKey)!)
                 let okAlert = UIAlertController(title: nil, message: "Comment Has Been Deleted", preferredStyle: .alert)
                 okAlert.addAction(UIAlertAction(title: "Ok", style: .default))
                 self.viewController?.present(okAlert, animated: true, completion: nil)
+                self.onItemDeleted()
+
             })
             alertController.addAction(cancelAction)
             alertController.addAction(deleteAction)
@@ -118,7 +124,9 @@ class CommentsSectionController: ListSectionController,CommentCellDelegate {
         self.viewController?.present(alertController, animated: true, completion: nil)
         
     }
-    
+    func onItemDeleted() {
+        delegate?.CommentSectionUpdared(sectionController: self)
+    }
     
     /*
      func sizeForSupplementaryView(ofKind elementKind: String, at index: Int) -> CGSize {

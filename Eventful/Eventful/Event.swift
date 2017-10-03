@@ -22,6 +22,7 @@ struct Event: Keyed {
     let currentEventState: String
     let currentEventDate: String?
     let currentEventTime: String?
+    let currentEventEndTime: String?
     let currentEventZip: Int
     var category: String
     //nested properties stop
@@ -30,7 +31,7 @@ struct Event: Keyed {
     var eventDictionary: [String: Any]{
         
         
-        let dateDict = ["start:date":currentEventDate, "start:time": currentEventTime]
+        let dateDict = ["start:date":currentEventDate, "start:time": currentEventTime,"end:time":currentEventEndTime]
         
         return ["event:name":currentEventName,"event:imageURL" : currentEventImage,
                 "event:description": currentEventDescription, "attend:count": currentAttendCount,
@@ -54,6 +55,7 @@ struct Event: Keyed {
         let eventDate = dictionary["event:date"] as? [String: Any]
         self.currentEventDate = eventDate?["start:date"] as? String ?? ""
         self.currentEventTime = eventDate?["start:time"] as? String ?? ""
+        self.currentEventEndTime = eventDate?["end:time"] as? String ?? ""
         
     }
     
@@ -71,7 +73,8 @@ struct Event: Keyed {
             let currentAttendCount = dict["attend:count"] as? Int,
             let eventDate = dict["event:date"] as? [String: Any],
             let currentEventDate = eventDate["start:date"] as? String,
-            let currentEventTime = eventDate["start:time"] as? String
+            let currentEventTime = eventDate["start:time"] as? String,
+            let currentEventEndTime = eventDate["end:time"] as? String
             else { return nil }
         self.key = snapshot.key
         self.currentEventName = currentEventName
@@ -85,6 +88,7 @@ struct Event: Keyed {
         self.currentEventPromo = currentEventPromo
         self.currentEventDate = currentEventDate
         self.currentEventTime = currentEventTime
+        self.currentEventEndTime = currentEventEndTime
         self.category = category
     }
     

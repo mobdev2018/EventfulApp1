@@ -9,7 +9,7 @@
 import UIKit
 import IGListKit
 
-class CommentsHeaderSectionController: ListSectionController {
+class CommentsHeaderSectionController: ListSectionController, CommentHeaderDelegate {
     override init(){
         super.init()
     }
@@ -33,10 +33,16 @@ class CommentsHeaderSectionController: ListSectionController {
         guard let cell = collectionContext?.dequeueReusableCell(of: CommentHeader.self, for: self, at: index) as? CommentHeader else {
             fatalError()
         }
+        cell.delegate = self
         cell.handle = "Comments"
         return cell
     }
     
+    func commentHeaderTapped(cell: CommentHeader){
+        print("like")
+        viewController?.dismiss(animated: true, completion: nil)
+    }
+
     override func didUpdate(to object: Any) {
         
     }

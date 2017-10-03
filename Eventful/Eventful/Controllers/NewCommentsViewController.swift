@@ -39,37 +39,47 @@ class NewCommentsViewController: UIViewController, UITextFieldDelegate,CommentsS
     
     //will fetch the comments from the database and append them to an array
     fileprivate func fetchComments(){
+        comments.removeAll()
         messagesRef = Database.database().reference().child("Comments").child(eventKey)
         print(eventKey)
-        print(comments.count)
-        messagesRef?.observe(.childAdded, with: { (snapshot) in
+        // print(comments.count)
+        var query = messagesRef?.queryOrderedByKey()
+        query?.observe(.value, with: { (snapshot) in
+            guard var allObjects = snapshot.children.allObjects as? [DataSnapshot] else {
+                return
+            }
+            
             print(snapshot)
-            guard let commentDictionary = snapshot.value as? [String: Any] else{
-                return
-            }
-            print(commentDictionary)
-            guard let uid = commentDictionary["uid"] as? String else{
-                return
-            }
-            UserService.show(forUID: uid, completion: { (user) in
-                if let user = user {
-                    var commentFetched = CommentGrabbed(user: user, dictionary: commentDictionary)
-                    commentFetched.commentID = snapshot.key
-                    let filteredArr = self.comments.filter { (comment) -> Bool in
-                        return comment.commentID == commentFetched.commentID
-                    }
-                    if filteredArr.count == 0 {
-                        self.comments.append(commentFetched)
-                    }
-                    print(self.comments)
-                    self.adapter.performUpdates(animated: true)
+            
+            allObjects.forEach({ (snapshot) in
+                guard let commentDictionary = snapshot.value as? [String: Any] else{
+                    return
                 }
-                self.comments.sort(by: { (comment1, comment2) -> Bool in
-                    return comment1.creationDate.compare(comment2.creationDate) == .orderedAscending
+                guard let uid = commentDictionary["uid"] as? String else{
+                    return
+                }
+                UserService.show(forUID: uid, completion: { (user) in
+                    if let user = user {
+                        var commentFetched = CommentGrabbed(user: user, dictionary: commentDictionary)
+                        commentFetched.commentID = snapshot.key
+                        let filteredArr = self.comments.filter { (comment) -> Bool in
+                            return comment.commentID == commentFetched.commentID
+                        }
+                        if filteredArr.count == 0 {
+                            self.comments.append(commentFetched)
+                            
+                        }
+                        self.adapter.performUpdates(animated: true)
+                    }
+                    self.comments.sort(by: { (comment1, comment2) -> Bool in
+                        return comment1.creationDate.compare(comment2.creationDate) == .orderedAscending
+                    })
+                    self.comments.forEach({ (comments) in
+                    })
                 })
-                self.comments.forEach({ (comments) in
-                })
+                
             })
+            
         }, withCancel: { (error) in
             print("Failed to observe comments")
         })
@@ -217,6 +227,7 @@ class NewCommentsViewController: UIViewController, UITextFieldDelegate,CommentsS
     //look here
     func CommentSectionUpdared(sectionController: CommentsSectionController){
         print("like")
+        self.fetchComments()
     self.adapter.performUpdates(animated: true)
     }
     override func viewWillAppear(_ animated: Bool) {

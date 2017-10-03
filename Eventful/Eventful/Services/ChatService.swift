@@ -66,6 +66,7 @@ class ChatService {
         }
         
         print(commentkey)
+        print(eventKey)
         
         let commentData = ["Comments/\(eventKey)/\(commentkey)": NSNull()]
         

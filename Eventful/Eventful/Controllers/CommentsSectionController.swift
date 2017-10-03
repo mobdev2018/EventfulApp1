@@ -84,11 +84,7 @@ class CommentsSectionController: ListSectionController,CommentCellDelegate {
     
     func optionsButtonTapped(cell: CommentCell){
         print("like")
-     //   guard let indexPath = self.collectionContext?.index(for: cell, sectionController: self)(for: cell) else { return }
-        guard let indexPath = self.collectionContext?.index(for: cell, sectionController: self) else{
-            return
-        }
-        // 2
+   
         let comment = self.comment
         _ = comment?.uid
         

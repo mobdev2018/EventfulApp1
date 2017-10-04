@@ -48,7 +48,6 @@ class NewCommentsViewController: UIViewController, UITextFieldDelegate,CommentsS
             guard var allObjects = snapshot.children.allObjects as? [DataSnapshot] else {
                 return
             }
-            
             print(snapshot)
             
             allObjects.forEach({ (snapshot) in
@@ -142,45 +141,6 @@ class NewCommentsViewController: UIViewController, UITextFieldDelegate,CommentsS
         self.commentTextField.text = nil
     }
     
-    func flagButtonTapped (from cell: CommentCell){
-        guard let indexPath = self.collectionView.indexPath(for: cell) else { return }
-        
-        // 2
-        let comment = comments[indexPath.item]
-        _ = comment.uid
-        
-        // 3
-        let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
-        
-        // 4
-        if comment.uid != User.current.uid {
-            let flagAction = UIAlertAction(title: "Report as Inappropriate", style: .default) { _ in
-                ChatService.flag(comment)
-                
-                let okAlert = UIAlertController(title: nil, message: "The post has been flagged.", preferredStyle: .alert)
-                okAlert.addAction(UIAlertAction(title: "Ok", style: .default))
-                self.present(okAlert, animated: true)
-            }
-            let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
-            alertController.addAction(cancelAction)
-            alertController.addAction(flagAction)
-        }else{
-            let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
-            let deleteAction = UIAlertAction(title: "Delete Comment", style: .default, handler: { _ in
-                ChatService.deleteComment(comment, self.eventKey)
-                let okAlert = UIAlertController(title: nil, message: "Comment Has Been Deleted", preferredStyle: .alert)
-                okAlert.addAction(UIAlertAction(title: "Ok", style: .default))
-                self.present(okAlert, animated: true)
-                self.adapter.performUpdates(animated: true)
-                
-            })
-            alertController.addAction(cancelAction)
-            alertController.addAction(deleteAction)
-            
-        }
-        present(alertController, animated: true, completion: nil)
-        
-    }
     
     func handleKeyboardNotification(notification: NSNotification){
         if let userinfo = notification.userInfo{

@@ -23,10 +23,11 @@ struct EventService {
             guard let event = Event(snapshot: snapshot) else {
                 return completion(nil)
             }
-            if event.category == eventCategory{
+            
+            if eventCategory == nil || eventCategory == "" || eventCategory == "Home" {
                 completion(event)
             }
-            if eventCategory == nil || eventCategory == "" || eventCategory == "Home" {
+            if event.category == eventCategory{
                 completion(event)
             }
         })

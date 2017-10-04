@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5229B59E1F84D277001766A6 /* NSLayoutConstraint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5229B59D1F84D276001766A6 /* NSLayoutConstraint.swift */; };
 		52A72DC11F83D28A0024DCD9 /* DynamoCollectionView.h in Headers */ = {isa = PBXBuildFile; fileRef = 52A72DBF1F83D28A0024DCD9 /* DynamoCollectionView.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		52A72DD51F83D39E0024DCD9 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52A72DD41F83D39E0024DCD9 /* AppDelegate.swift */; };
 		52A72DD71F83D39E0024DCD9 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52A72DD61F83D39E0024DCD9 /* ViewController.swift */; };
@@ -43,6 +44,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		5229B59D1F84D276001766A6 /* NSLayoutConstraint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = NSLayoutConstraint.swift; path = ../../Eventful/NSLayoutConstraint.swift; sourceTree = "<group>"; };
 		52A72DBC1F83D28A0024DCD9 /* DynamoCollectionView.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = DynamoCollectionView.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		52A72DBF1F83D28A0024DCD9 /* DynamoCollectionView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DynamoCollectionView.h; sourceTree = "<group>"; };
 		52A72DC01F83D28A0024DCD9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -99,6 +101,7 @@
 			children = (
 				52D748C41F84A47F00357DDF /* DynamoCollectionView.swift */,
 				52D748C61F84AA5200357DDF /* DynamoCollectionViewCell.swift */,
+				5229B59D1F84D276001766A6 /* NSLayoutConstraint.swift */,
 				52A72DBF1F83D28A0024DCD9 /* DynamoCollectionView.h */,
 				52A72DC01F83D28A0024DCD9 /* Info.plist */,
 			);
@@ -242,6 +245,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				52D748C71F84AA5200357DDF /* DynamoCollectionViewCell.swift in Sources */,
+				5229B59E1F84D277001766A6 /* NSLayoutConstraint.swift in Sources */,
 				52D748C51F84A47F00357DDF /* DynamoCollectionView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

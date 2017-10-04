@@ -14,6 +14,7 @@
 		52A72DDC1F83D39E0024DCD9 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 52A72DDB1F83D39E0024DCD9 /* Assets.xcassets */; };
 		52A72DDF1F83D39E0024DCD9 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 52A72DDD1F83D39E0024DCD9 /* LaunchScreen.storyboard */; };
 		52A72DE91F83D52D0024DCD9 /* DynamoCollectionView.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 52A72DBC1F83D28A0024DCD9 /* DynamoCollectionView.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		52D748C51F84A47F00357DDF /* DynamoCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52D748C41F84A47F00357DDF /* DynamoCollectionView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -51,6 +52,7 @@
 		52A72DDB1F83D39E0024DCD9 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		52A72DDE1F83D39E0024DCD9 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		52A72DE01F83D39E0024DCD9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		52D748C41F84A47F00357DDF /* DynamoCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DynamoCollectionView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -93,6 +95,7 @@
 		52A72DBE1F83D28A0024DCD9 /* DynamoCollectionView */ = {
 			isa = PBXGroup;
 			children = (
+				52D748C41F84A47F00357DDF /* DynamoCollectionView.swift */,
 				52A72DBF1F83D28A0024DCD9 /* DynamoCollectionView.h */,
 				52A72DC01F83D28A0024DCD9 /* Info.plist */,
 			);
@@ -182,6 +185,7 @@
 				TargetAttributes = {
 					52A72DBB1F83D28A0024DCD9 = {
 						CreatedOnToolsVersion = 9.0;
+						LastSwiftMigration = 0900;
 						ProvisioningStyle = Automatic;
 					};
 					52A72DD11F83D39E0024DCD9 = {
@@ -234,6 +238,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				52D748C51F84A47F00357DDF /* DynamoCollectionView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -392,6 +397,7 @@
 		52A72DC51F83D28A0024DCD9 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Automatic;
 				DEFINES_MODULE = YES;
@@ -405,6 +411,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.Eventful.DynamoCollectionView;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -413,6 +420,7 @@
 		52A72DC61F83D28A0024DCD9 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Automatic;
 				DEFINES_MODULE = YES;
@@ -434,6 +442,7 @@
 		52A72DE11F83D39E0024DCD9 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 72NU66U8WE;
@@ -449,6 +458,7 @@
 		52A72DE21F83D39E0024DCD9 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 72NU66U8WE;

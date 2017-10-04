@@ -15,6 +15,7 @@
 		52A72DDF1F83D39E0024DCD9 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 52A72DDD1F83D39E0024DCD9 /* LaunchScreen.storyboard */; };
 		52A72DE91F83D52D0024DCD9 /* DynamoCollectionView.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 52A72DBC1F83D28A0024DCD9 /* DynamoCollectionView.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		52D748C51F84A47F00357DDF /* DynamoCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52D748C41F84A47F00357DDF /* DynamoCollectionView.swift */; };
+		52D748C71F84AA5200357DDF /* DynamoCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52D748C61F84AA5200357DDF /* DynamoCollectionViewCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -53,6 +54,7 @@
 		52A72DDE1F83D39E0024DCD9 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		52A72DE01F83D39E0024DCD9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		52D748C41F84A47F00357DDF /* DynamoCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DynamoCollectionView.swift; sourceTree = "<group>"; };
+		52D748C61F84AA5200357DDF /* DynamoCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DynamoCollectionViewCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -96,6 +98,7 @@
 			isa = PBXGroup;
 			children = (
 				52D748C41F84A47F00357DDF /* DynamoCollectionView.swift */,
+				52D748C61F84AA5200357DDF /* DynamoCollectionViewCell.swift */,
 				52A72DBF1F83D28A0024DCD9 /* DynamoCollectionView.h */,
 				52A72DC01F83D28A0024DCD9 /* Info.plist */,
 			);
@@ -238,6 +241,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				52D748C71F84AA5200357DDF /* DynamoCollectionViewCell.swift in Sources */,
 				52D748C51F84A47F00357DDF /* DynamoCollectionView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

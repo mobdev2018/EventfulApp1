@@ -11,6 +11,7 @@ import UIKit
 protocol DynamoCollectionViewDataSource: NSObjectProtocol {
     func topViewRatio(_ dynamoCollectionView: DynamoCollectionView) -> Float // ratio in range [0,1]
     func numberOfItems(_ dynamoCollectionView: DynamoCollectionView) -> Int
+    func dynamoCollectionView(_ dynamoCollectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> DynamoCollectionViewCell
 }
 
 protocol DynamoCollectionViewDelegate: NSObjectProtocol {

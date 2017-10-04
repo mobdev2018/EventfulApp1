@@ -8,10 +8,10 @@
 
 import UIKit
 
-class DynamoCollectionViewCell: UIView {
-    var backgroundImage: UIImage?
-    var title:String?
-    var day:String?
-    var month:String?
+class DynamoCollectionViewCell: UICollectionViewCell {
+    public var backgroundImage: UIImage?
+    public var title:String?
+    public var day:String?
+    public var month:String?
 }
 

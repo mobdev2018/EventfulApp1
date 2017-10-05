@@ -46,7 +46,7 @@ class ChatService {
                            "reporter_uid": User.current.uid]
         
         // 4
-        flaggedPostRef.updateChildValues(flaggedDict)
+        flaggedPostRef.updateChildValues(flaggedDict as Any as! [AnyHashable : Any])
         
         // 5
         let flagCountRef = flaggedPostRef.child("flag_count")

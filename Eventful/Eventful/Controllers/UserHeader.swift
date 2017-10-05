@@ -46,8 +46,8 @@ class UserProfileHeader: UICollectionViewCell {
   
     lazy var statsLabel : UILabel = {
        let statsLabel = UILabel()
-        let attributedText = NSMutableAttributedString(string: "0\n", attributes: [NSFontAttributeName: UIFont.boldSystemFont(ofSize: 14)])
-        attributedText.append(NSAttributedString(string: "Score", attributes: [NSForegroundColorAttributeName: UIColor.lightGray, NSFontAttributeName: UIFont.systemFont(ofSize: 14)]))
+        let attributedText = NSMutableAttributedString(string: "0\n", attributes: [NSAttributedStringKey.font: UIFont.boldSystemFont(ofSize: 14)])
+        attributedText.append(NSAttributedString(string: "Score", attributes: [NSAttributedStringKey.foregroundColor: UIColor.lightGray, NSAttributedStringKey.font: UIFont.systemFont(ofSize: 14)]))
         statsLabel.attributedText = attributedText
         statsLabel.numberOfLines = 0
         statsLabel.textAlignment = .center
@@ -56,8 +56,8 @@ class UserProfileHeader: UICollectionViewCell {
     
     lazy var followersLabel : UILabel = {
         let followersLabel = UILabel()
-        let attributedText = NSMutableAttributedString(string: "0\n", attributes: [NSFontAttributeName: UIFont.boldSystemFont(ofSize: 14)])
-        attributedText.append(NSAttributedString(string: "Followers", attributes: [NSForegroundColorAttributeName: UIColor.lightGray, NSFontAttributeName: UIFont.systemFont(ofSize: 14)]))
+        let attributedText = NSMutableAttributedString(string: "0\n", attributes: [NSAttributedStringKey.font: UIFont.boldSystemFont(ofSize: 14)])
+        attributedText.append(NSAttributedString(string: "Followers", attributes: [NSAttributedStringKey.foregroundColor: UIColor.lightGray, NSAttributedStringKey.font: UIFont.systemFont(ofSize: 14)]))
         followersLabel.attributedText = attributedText
         followersLabel.numberOfLines = 0
         followersLabel.textAlignment = .center
@@ -67,8 +67,8 @@ class UserProfileHeader: UICollectionViewCell {
     
     lazy var followingLabel : UILabel = {
         let followingLabel = UILabel()
-        let attributedText = NSMutableAttributedString(string: "0\n", attributes: [NSFontAttributeName: UIFont.boldSystemFont(ofSize: 14)])
-        attributedText.append(NSAttributedString(string: "Following", attributes: [NSForegroundColorAttributeName: UIColor.lightGray, NSFontAttributeName: UIFont.systemFont(ofSize: 14)]))
+        let attributedText = NSMutableAttributedString(string: "0\n", attributes: [NSAttributedStringKey.font: UIFont.boldSystemFont(ofSize: 14)])
+        attributedText.append(NSAttributedString(string: "Following", attributes: [NSAttributedStringKey.foregroundColor: UIColor.lightGray, NSAttributedStringKey.font: UIFont.systemFont(ofSize: 14)]))
         followingLabel.attributedText = attributedText
         followingLabel.numberOfLines = 0
         followingLabel.textAlignment = .center
@@ -135,7 +135,7 @@ class UserProfileHeader: UICollectionViewCell {
         }
     }
     
-    func handleFollow(){
+    @objc func handleFollow(){
         print("function handled")
     }
     
@@ -164,7 +164,7 @@ class UserProfileHeader: UICollectionViewCell {
     fileprivate func setupProfileImage() {
         
         
-        print("Did set username\(user?.username)")
+        print("Did set username\(user?.username ?? "")")
         
         
         guard let profileImageUrl = user?.profilePic else { return }

@@ -59,7 +59,7 @@ class CommentsSectionController: ListSectionController,CommentCellDelegate {
         return cell
     }
     override func didUpdate(to object: Any) {
-        comment = object as! CommentGrabbed
+        comment = object as? CommentGrabbed
     }
     override func didSelectItem(at index: Int){
     }

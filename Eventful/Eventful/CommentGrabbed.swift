@@ -36,7 +36,7 @@ extension CommentGrabbed: Equatable{
 
 extension CommentGrabbed: ListDiffable{
     public func diffIdentifier() -> NSObjectProtocol {
-        return commentID as! NSObjectProtocol
+        return commentID! as NSObjectProtocol
     }
     public func isEqual(toDiffableObject object: ListDiffable?) ->Bool{
         guard let object = object as? CommentGrabbed else {

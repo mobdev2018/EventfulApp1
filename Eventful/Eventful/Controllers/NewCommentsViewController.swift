@@ -122,7 +122,7 @@ class NewCommentsViewController: UIViewController, UITextFieldDelegate,CommentsS
         return textField
     }()
     
-    func textFieldDidChange(_ textField: UITextField) {
+    @objc func textFieldDidChange(_ textField: UITextField) {
         let isCommentValid = commentTextField.text?.characters.count ?? 0 > 0
         if isCommentValid {
             submitButton.isEnabled = true
@@ -131,7 +131,7 @@ class NewCommentsViewController: UIViewController, UITextFieldDelegate,CommentsS
         }
     }
     
-    func handleSubmit(){
+    @objc func handleSubmit(){
         guard let comment = commentTextField.text, comment.characters.count > 0 else{
             return
         }
@@ -142,7 +142,7 @@ class NewCommentsViewController: UIViewController, UITextFieldDelegate,CommentsS
     }
     
     
-    func handleKeyboardNotification(notification: NSNotification){
+    @objc func handleKeyboardNotification(notification: NSNotification){
         if let userinfo = notification.userInfo{
             
             let keyboardFrame = (userinfo[UIKeyboardFrameEndUserInfoKey] as! NSValue).cgRectValue

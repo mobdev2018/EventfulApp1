@@ -28,7 +28,7 @@ class SignUpViewController: UIViewController, UIImagePickerControllerDelegate, U
         return button
     }()
     
-    func handlePlusPhoto() {
+    @objc func handlePlusPhoto() {
         let imagePickerController = UIImagePickerController()
         imagePickerController.delegate = self
         imagePickerController.allowsEditing = true
@@ -137,7 +137,7 @@ class SignUpViewController: UIViewController, UIImagePickerControllerDelegate, U
     }()
     
     // will handle the  sign up of a user
-    func handleSignUp(){
+    @objc func handleSignUp(){
             // first we cant to take sure that all of the fields are filled
         let bio: String = ""
         
@@ -219,7 +219,7 @@ class SignUpViewController: UIViewController, UIImagePickerControllerDelegate, U
     let genderLabel: UILabel = {
        let gender = UILabel()
         let myString = "Gender"
-        let myAttribute = [NSFontAttributeName:UIFont(name: "Times New Roman", size: 15)!]
+        let myAttribute = [NSAttributedStringKey.font:UIFont(name: "Times New Roman", size: 15)!]
         let myAttrString = NSAttributedString(string: myString, attributes: myAttribute)
         gender.attributedText = myAttrString
         return gender
@@ -233,7 +233,7 @@ class SignUpViewController: UIViewController, UIImagePickerControllerDelegate, U
         return genderSelect
     }()
     
-    func handleGenderSelection()  {
+    @objc func handleGenderSelection()  {
        //print(genderSelector.selectedSegmentIndex)
         if (genderSelector.selectedSegmentIndex == 0) {
             selectedUserGender = "Male"
@@ -254,7 +254,7 @@ class SignUpViewController: UIViewController, UIImagePickerControllerDelegate, U
         return cancel
     }()
     
-    func handleCancel(){
+    @objc func handleCancel(){
         self.dismiss(animated: true, completion: nil)
     }
     
@@ -277,7 +277,7 @@ class SignUpViewController: UIViewController, UIImagePickerControllerDelegate, U
 
     
     // will properly show keyboard
-    func keyboardWillShow(sender: NSNotification) {
+    @objc func keyboardWillShow(sender: NSNotification) {
         let keyboardInfo = sender.userInfo
         let keyboardFrameBegin = keyboardInfo?[UIKeyboardFrameEndUserInfoKey]
         let keyboardFrameBeginRect = (keyboardFrameBegin as! NSValue).cgRectValue
@@ -302,7 +302,7 @@ class SignUpViewController: UIViewController, UIImagePickerControllerDelegate, U
     }
     
     // will properly hide keyboard
-    func keyboardWillHide(sender: NSNotification) {
+    @objc func keyboardWillHide(sender: NSNotification) {
         DispatchQueue.main.async {
             UIView.animate(withDuration: 0.2, animations: {
                 self.bottomPadding.constant = 30.0
@@ -457,7 +457,7 @@ class SignUpViewController: UIViewController, UIImagePickerControllerDelegate, U
         let signUp = UILabel()
         signUp.textColor = .white
         let myString = "Already have an account?"
-        let myAttribute = [NSFontAttributeName:UIFont(name: "Times New Roman", size: 15)!]
+        let myAttribute = [NSAttributedStringKey.font:UIFont(name: "Times New Roman", size: 15)!]
         let myAttrString = NSAttributedString(string: myString, attributes: myAttribute)
         signUp.attributedText = myAttrString
         return signUp
@@ -494,7 +494,7 @@ class SignUpViewController: UIViewController, UIImagePickerControllerDelegate, U
         NSLayoutConstraint.activateViewConstraints(self.scrollViewContent, inSuperView: self.contentScrollView, withLeading: 0.0, trailing: 0.0, top: 0.0, bottom: 0.0)
         _ = NSLayoutConstraint.activateEqualWidthConstraint(withView: self.scrollViewContent, referenceView: pseudoView)
         let cons = NSLayoutConstraint.addEqualHeightConstraint(withView: self.scrollViewContent, referenceView: pseudoView)
-        cons.priority = UILayoutPriorityDefaultLow
+        cons.priority = UILayoutPriority.defaultLow
         NSLayoutConstraint.activate([cons])
     }
     

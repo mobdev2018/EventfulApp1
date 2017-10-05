@@ -41,7 +41,7 @@ class VideoViewController: UIViewController {
     }()
     
     
-    func swipeAction(_ swipe: UIGestureRecognizer){
+    @objc func swipeAction(_ swipe: UIGestureRecognizer){
         if let swipeGesture = swipe as? UISwipeGestureRecognizer {
             switch swipeGesture.direction {
             case UISwipeGestureRecognizerDirection.right:
@@ -113,13 +113,13 @@ class VideoViewController: UIViewController {
     }
     
     
-    func cancel() {
+    @objc func cancel() {
                dismiss(animated: true, completion: nil)
 //    _ = self.navigationController?.popViewController(animated: true)
     }
     
     // Takes you to AddPostViewController
-    func nextPressed()
+    @objc func nextPressed()
     {
         print("Next Button pressed")
         

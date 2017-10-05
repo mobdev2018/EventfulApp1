@@ -22,7 +22,7 @@ class SearchHeader: UICollectionViewCell {
         let sb = UISearchBar()
         sb.placeholder = "Enter Event"
         sb.showsScopeBar = true
-        sb.setScopeBarButtonTitleTextAttributes([ NSForegroundColorAttributeName : UIColor.black], for: .normal)
+        sb.setScopeBarButtonTitleTextAttributes([ NSAttributedStringKey.foregroundColor.rawValue : UIColor.black], for: .normal)
         sb.scopeButtonTitles = ["Events", "Users"]
         sb.barTintColor = UIColor.white
         UITextField.appearance(whenContainedInInstancesOf: [UISearchBar.self]).backgroundColor = UIColor.rgb(red: 230, green: 230, blue: 230)

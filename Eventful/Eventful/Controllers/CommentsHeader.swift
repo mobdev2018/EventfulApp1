@@ -45,7 +45,7 @@ class CommentHeader: UICollectionViewCell {
         return backButton
     }()
     
-    func onDismissTapped() {
+    @objc func onDismissTapped() {
         delegate?.commentHeaderTapped(cell: self)
     }
     

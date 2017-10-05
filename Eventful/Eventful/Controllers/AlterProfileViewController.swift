@@ -69,13 +69,13 @@ class AlterProfileViewController: UIViewController, UIImagePickerControllerDeleg
         return backButton
     }()
     
-    func handleSettingsDismiss(){
+    @objc func handleSettingsDismiss(){
         print("Button pressed")
         dismiss(animated: true, completion: nil)
     }
     
     //Calls this function when the tap is recognized.
-    func dismissKeyboard() {
+    @objc func dismissKeyboard() {
         //Causes the view (or one of its embedded text fields) to resign the first responder status.
         view.endEditing(true)
     }
@@ -190,7 +190,7 @@ class AlterProfileViewController: UIViewController, UIImagePickerControllerDeleg
     }()
     
     // will save the edits made in edit profile view controller
-    func saveCurrentEdits(){
+    @objc func saveCurrentEdits(){
         print("End edits pressed")
         var profilePic: String = ""
         // will set the username and bio and make sure that they are not empty
@@ -246,7 +246,7 @@ class AlterProfileViewController: UIViewController, UIImagePickerControllerDeleg
     ////////////////////////////////////////////////////////////////////////////
     //Will handle image selection
     
-    func handleSelectProfileImageView(tapGestureRecognizer: UITapGestureRecognizer)  {
+    @objc func handleSelectProfileImageView(tapGestureRecognizer: UITapGestureRecognizer)  {
         print("123")
         //creates the image picker controller
         let picker = UIImagePickerController()

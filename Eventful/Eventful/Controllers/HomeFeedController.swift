@@ -164,7 +164,6 @@ class HomeFeedController: UIViewController, UIGestureRecognizerDelegate {
     func categoryFetch(dropDown: ImageAndTitleItem){
         navigationItem.title = dropDown.name
         paginationHelper.category = dropDown.name
-        self.configure()
         reloadHomeFeed()
     }
     

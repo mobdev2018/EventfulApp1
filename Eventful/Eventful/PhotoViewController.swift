@@ -53,7 +53,7 @@ class PhotoViewController: UIViewController {
     }
     
     // Takes you to AddPostViewController
-    func nextPressed()
+    @objc func nextPressed()
     {
         print("Next Button pressed")
         

@@ -18,7 +18,11 @@ public protocol DynamoCollectionViewDelegate: NSObjectProtocol {
     func dynamoCollectionView(_ dynamoCollectionView: DynamoCollectionView, didSelectItemAt indexPath: IndexPath)
 }
 
-public class DynamoCollectionView: UIView, DynamoCollectionViewCellDelegate {
+public let DynamoCollectionViewEnableScrollingNotification = NSNotification.Name("DynamoCollectionViewEnableScrollingNotification")
+
+public let DynamoCollectionViewDisableScrollingNotification = NSNotification.Name("DynamoCollectionViewDisableScrollingNotification")
+
+public class DynamoCollectionView: UIView, DynamoCollectionViewCellDelegate, UIGestureRecognizerDelegate {
     
     // MARK: - Variables
     
@@ -26,6 +30,7 @@ public class DynamoCollectionView: UIView, DynamoCollectionViewCellDelegate {
     public var dataSource: DynamoCollectionViewDataSource?
     private var topView: DynamoCollectionViewCell!
     private var collectionView: UICollectionView!
+    private var containerView: UIView!
     private var topViewRatio: CGFloat = 0.6
     private var numberOfItems: Int = 0
     private let dynamoCollectionViewCellIdentifier = "DynamoCollectionViewCellIdentifier"
@@ -41,19 +46,30 @@ public class DynamoCollectionView: UIView, DynamoCollectionViewCellDelegate {
         initViews()
     }
 
-    private func initViews() {
+    public func initViews() {
         
         // init topview
         
         topView = DynamoCollectionViewCell(frame: .zero)
         topView.translatesAutoresizingMaskIntoConstraints = false
         topView.backgroundColor = UIColor.white
+        topView.delegate = self
         topView.tag = 0
         addSubview(topView)
         _ = NSLayoutConstraint.activateCentreXConstraint(withView: topView, superView: self)
         _ = NSLayoutConstraint.activateCentreYConstraint(withView: topView, superView: self)
         _ = NSLayoutConstraint.activateEqualWidthConstraint(withView: topView, referenceView: self)
         _ = NSLayoutConstraint.activateEqualHeightConstraint(withView: topView, referenceView: self)
+        
+        // init containerview
+        
+        containerView = UIView(frame: .zero)
+        containerView.translatesAutoresizingMaskIntoConstraints = false
+        containerView.backgroundColor = .white
+        addSubview(containerView)
+        
+        NSLayoutConstraint.activateViewConstraints(containerView, inSuperView: self, withLeading: 0.0, trailing: 0.0, top: nil, bottom: 0.0, width: nil, height: nil)
+        _ = NSLayoutConstraint.activateEqualHeightConstraint(withView: containerView, referenceView: self, multiplier: (1.0 - topViewRatio))
         
         // init collectionview
         
@@ -64,16 +80,45 @@ public class DynamoCollectionView: UIView, DynamoCollectionViewCellDelegate {
         collectionView.dataSource = self
         collectionView.delegate = self
         collectionView.backgroundColor = .white
-        collectionView.canCancelContentTouches = true
+
         backgroundColor = .white
-        addSubview(collectionView)
-        NSLayoutConstraint.activateViewConstraints(self.collectionView, inSuperView: self, withLeading: 0.0, trailing: 0.0, top: nil, bottom: 0.0, width: nil, height: nil)
-        _ = NSLayoutConstraint.activateEqualHeightConstraint(withView: self.collectionView, referenceView: self, multiplier: (1.0 - topViewRatio))
+        containerView.addSubview(collectionView)
+        _ = NSLayoutConstraint.activateCentreXConstraint(withView: collectionView, superView: containerView)
+        _ = NSLayoutConstraint.activateCentreYConstraint(withView: collectionView, superView: containerView)
+        _ = NSLayoutConstraint.activateEqualWidthConstraint(withView: collectionView, referenceView: containerView)
+        _ = NSLayoutConstraint.activateEqualHeightConstraint(withView: collectionView, referenceView: containerView)
         collectionView.register(DynamoCollectionViewCell.self, forCellWithReuseIdentifier: dynamoCollectionViewCellIdentifier)
+
+        // init view's gestures
+        
+        let panGesture = UIPanGestureRecognizer(target: self, action: #selector(handlePan(recognizer:)))
+        panGesture.delaysTouchesBegan = false
+        panGesture.delegate = self
+        panGesture.cancelsTouchesInView = false
+        self.addGestureRecognizer(panGesture)
+    }
+    
+    // MARK: Gesture Recognizers
+    
+    @objc func handlePan(recognizer: UIPanGestureRecognizer) {
+    }
+    
+    public func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+        return true
+    }
+    
+    public func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
+        let touchPoint  = touch.location(in: containerView)
+        if touchPoint.y > 0 {
+            NotificationCenter.default.post(name: DynamoCollectionViewEnableScrollingNotification, object: nil)
+            return true
+        }
+        NotificationCenter.default.post(name: DynamoCollectionViewDisableScrollingNotification, object: nil)
+        return false
     }
     
     // MARK: Public API
-    
+
     public func reloadData() {
         configureView()
     }
@@ -124,10 +169,12 @@ extension DynamoCollectionView: UICollectionViewDelegate, UICollectionViewDataSo
         if let source = dataSource {
             let cell = source.dynamoCollectionView(self, cellForItemAt: IndexPath(item: indexPath.item + 1, section: 0))
             cell.tag = indexPath.item + 1
+            cell.delegate = self
             return cell
         }else {
-            let cell = DynamoCollectionViewCell() as UICollectionViewCell
+            let cell = DynamoCollectionViewCell()
             cell.tag = indexPath.item + 1
+            cell.delegate = self
             return cell
         }
     }

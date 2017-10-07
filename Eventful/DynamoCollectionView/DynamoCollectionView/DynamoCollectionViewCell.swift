@@ -88,7 +88,7 @@ public class DynamoCollectionViewCell: UICollectionViewCell {
     private var calenderUnitBottom:NSLayoutConstraint!
     private var dayLabel:UILabel!
     private var monthLabel:UILabel!
-    private var overlayButton:UIButton!
+    //private var overlayButton:UIButton!
     
     private func setupViews() {
         self.addSubview(self.backgroundImageView)
@@ -139,17 +139,21 @@ public class DynamoCollectionViewCell: UICollectionViewCell {
         self.calenderToNameLabel = NSLayoutConstraint.activateVerticalSpacingConstraint(withFirstView: self.calenderUnit, secondView: self.nameLabel, andSeparation: 15.0)
         //variable height
         self.nameLabelHeight = NSLayoutConstraint.activateHeightConstraint(view: self.nameLabel, withHeight: 1.0, andRelation: .greaterThanOrEqual)
-        
-        self.overlayButton = UIButton(type: .custom)
-        self.overlayButton.translatesAutoresizingMaskIntoConstraints = false
-        self.addSubview(self.overlayButton)
-        NSLayoutConstraint.activateViewConstraints(self.overlayButton, inSuperView: self, withLeading: 0.0, trailing: 0.0, top: 0.0, bottom: 0.0)
-        
-        self.overlayButton.addTarget(self, action: #selector(self.handleTap(_:)), for: .touchUpInside)
+
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTap(_:)))
+        tapGesture.delaysTouchesBegan = false
+        tapGesture.numberOfTouchesRequired = 1
+        tapGesture.numberOfTapsRequired = 1
+        self.addGestureRecognizer(tapGesture)
     }
     
-    @objc func handleTap(_ sender:UIButton) {
-        delegate?.dynamoCollectionViewCellDidSelect(sender: self)
+    @objc func handleTap(_ recognizer:UITapGestureRecognizer) {
+        switch recognizer.state {
+        case .ended:
+            delegate?.dynamoCollectionViewCellDidSelect(sender: self)
+        default:
+            break
+        }
     }
     
     private func setDisplayMode(_ mode: DynamoDisplayMode) {

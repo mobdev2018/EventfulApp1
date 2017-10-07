@@ -129,6 +129,7 @@ class HomeFeedController: UIViewController, UIGestureRecognizerDelegate {
             self.dynamoCollectionView.backgroundColor = .white
             self.view.backgroundColor = .white
             self.view.addSubview(self.dynamoCollectionView)
+            
             NSLayoutConstraint.activateViewConstraints(self.dynamoCollectionView, inSuperView: self.view, withLeading: 0.0, trailing: 0.0, top: nil, bottom: nil, width: nil, height: nil)
             _ = NSLayoutConstraint.activateVerticalSpacingConstraint(withFirstView: self.topCollectionView, secondView: self.dynamoCollectionView, andSeparation: 0.0)
             _ = NSLayoutConstraint.activateVerticalSpacingConstraint(withFirstView: self.dynamoCollectionView, secondView: self.bottomLayoutGuide, andSeparation: 0.0)

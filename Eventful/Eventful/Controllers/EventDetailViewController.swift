@@ -62,10 +62,15 @@ class EventDetailViewController: UIViewController {
     
     
     
+    fileprivate func extractedFunc(_ url: URL?) -> VideoViewController {
+        return VideoViewController(videoURL: url!)
+    }
+    
     @objc func handlePromoVid(){
         print("Image tappped")
+        print(eventPromo)
         let url = URL(string: eventPromo)
-        let videoLauncher = VideoViewController(videoURL: url!)
+        let videoLauncher = extractedFunc(url)
         videoLauncher.nextButton.isHidden = true
         present(videoLauncher, animated: true, completion: nil)
         

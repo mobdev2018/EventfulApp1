@@ -311,7 +311,7 @@ extension HomeFeedController: UICollectionViewDelegateFlowLayout {
     
 
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        if collectionView.tag == 1 {
+        /*if collectionView.tag == 1 {
             let offsetY = scrollView.contentOffset.y
             let contentHeight = scrollView.contentSize.height
             print(offsetY)
@@ -325,7 +325,7 @@ extension HomeFeedController: UICollectionViewDelegateFlowLayout {
                     }
                 })        
             }
-        }
+        }*/
     }
 }
 

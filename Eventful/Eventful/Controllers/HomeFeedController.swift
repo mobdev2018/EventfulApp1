@@ -13,6 +13,7 @@ import AlamofireNetworkActivityIndicator
 import SwiftLocation
 import CoreLocation
 import AMScrollingNavbar
+import DynamoCollectionView
 
 class ImageAndTitleItem: NSObject {
     public var name:String?
@@ -34,12 +35,13 @@ class HomeFeedController: UIViewController, UIGestureRecognizerDelegate {
     var allEvents = [Event]()
     //will containt array of event keys
     var eventKeys = [String]()
-    let eventCellIdentifier = "customCellIdentifier"
+    //let eventCellIdentifier = "customCellIdentifier"
     let topCell = "topCell"
     
-    fileprivate var collectionView:UICollectionView!
-    fileprivate var topView:HomeFeedCell!
+    //fileprivate var collectionView:UICollectionView!
+    //fileprivate var topView:HomeFeedCell!
     fileprivate var topCollectionView:UICollectionView!
+    fileprivate var dynamoCollectionView: DynamoCollectionView!
     //    var grideLayout = GridLayout(numberOfColumns: 2)
     //    lazy var dropDownLauncer : DropDownLauncher = {
     //        let launcer = DropDownLauncher()
@@ -58,7 +60,6 @@ class HomeFeedController: UIViewController, UIGestureRecognizerDelegate {
         super.viewDidLoad()
         navigationItem.title = "Home"
         //  self.navigationItem.hidesBackButton = true
-        
         self.configure()
         reloadHomeFeed()
     }
@@ -87,7 +88,7 @@ class HomeFeedController: UIViewController, UIGestureRecognizerDelegate {
             let topLayout = UICollectionViewFlowLayout()
             topLayout.scrollDirection = .horizontal
             self.topCollectionView = UICollectionView(frame: .zero, collectionViewLayout: topLayout)
-            self.topCollectionView.tag = 0
+            //self.topCollectionView.tag = 0
             self.topCollectionView.backgroundColor = .white
             self.topCollectionView.dataSource = self
             self.topCollectionView.delegate = self
@@ -95,7 +96,7 @@ class HomeFeedController: UIViewController, UIGestureRecognizerDelegate {
             self.view.addSubview(self.topCollectionView)
             NSLayoutConstraint.activateViewConstraints(self.topCollectionView, inSuperView: self.view, withLeading: 0.0, trailing: 0.0, top: nil, bottom: nil, width: nil, height: 50.0)
             _ = NSLayoutConstraint.activateVerticalSpacingConstraint(withFirstView: self.topLayoutGuide, secondView: self.topCollectionView, andSeparation: 0.0)
-            
+            /*
             self.topView = HomeFeedCell(frame: .zero)
             self.topView.translatesAutoresizingMaskIntoConstraints = false
             self.view.addSubview(self.topView)
@@ -120,10 +121,22 @@ class HomeFeedController: UIViewController, UIGestureRecognizerDelegate {
             NSLayoutConstraint.activateViewConstraints(self.collectionView, inSuperView: self.view, withLeading: 0.0, trailing: 0.0, top: nil, bottom: nil, width: nil, height: nil)
             _ = NSLayoutConstraint.activateVerticalSpacingConstraint(withFirstView: self.topView, secondView: self.collectionView, andSeparation: 0.0)
             _ = NSLayoutConstraint.activateVerticalSpacingConstraint(withFirstView: self.collectionView, secondView: self.bottomLayoutGuide, andSeparation: 0.0)
+         */
+            self.dynamoCollectionView = DynamoCollectionView(frame: .zero)
+            self.dynamoCollectionView.translatesAutoresizingMaskIntoConstraints = false
+            self.dynamoCollectionView.dataSource = self
+            self.dynamoCollectionView.delegate = self
+            self.dynamoCollectionView.backgroundColor = .white
+            self.view.backgroundColor = .white
+            self.view.addSubview(self.dynamoCollectionView)
+            
+            NSLayoutConstraint.activateViewConstraints(self.dynamoCollectionView, inSuperView: self.view, withLeading: 0.0, trailing: 0.0, top: nil, bottom: nil, width: nil, height: nil)
+            _ = NSLayoutConstraint.activateVerticalSpacingConstraint(withFirstView: self.topCollectionView, secondView: self.dynamoCollectionView, andSeparation: 0.0)
+            _ = NSLayoutConstraint.activateVerticalSpacingConstraint(withFirstView: self.dynamoCollectionView, secondView: self.bottomLayoutGuide, andSeparation: 0.0)
         }
         
         func configureCollectionCell(){
-            self.collectionView.register(HomeFeedCell.self, forCellWithReuseIdentifier: eventCellIdentifier)
+            //self.collectionView.register(HomeFeedCell.self, forCellWithReuseIdentifier: eventCellIdentifier)
             self.topCollectionView.register(DropDownCell.self, forCellWithReuseIdentifier: topCell)
         }
         configureViews()
@@ -168,6 +181,7 @@ class HomeFeedController: UIViewController, UIGestureRecognizerDelegate {
     }
     
     func reloadHomeFeed() {
+
         self.paginationHelper.reloadData(completion: { [unowned self] (events) in
             self.allEvents = events
             
@@ -189,7 +203,8 @@ class HomeFeedController: UIViewController, UIGestureRecognizerDelegate {
     // will most likely lock into portrait mode but still good to have
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
-        self.collectionView.collectionViewLayout.invalidateLayout()
+        //self.collectionView.collectionViewLayout.invalidateLayout()
+        self.dynamoCollectionView.invalidateLayout()
     }
     
     func showLeftView(sender: AnyObject?){
@@ -199,7 +214,7 @@ class HomeFeedController: UIViewController, UIGestureRecognizerDelegate {
     }
     
     fileprivate func reloadCollection() {
-        if allEvents.count > 0 {
+        /*if allEvents.count > 0 {
             let imageURL = URL(string: allEvents[0].currentEventImage)
             let dateComponents = self.getDayAndMonthFromEvent(allEvents[0])
             self.topView.dayLabel.text = dateComponents.0
@@ -210,6 +225,8 @@ class HomeFeedController: UIViewController, UIGestureRecognizerDelegate {
             self.topView.flipToFullWidth(labelWidth: self.view.bounds.size.width - 120.0)
         }
         self.collectionView.reloadData()
+         */
+        self.dynamoCollectionView.reloadData()
     }
     
     fileprivate func getDayAndMonthFromEvent(_ event:Event) -> (String, String) {
@@ -223,7 +240,7 @@ class HomeFeedController: UIViewController, UIGestureRecognizerDelegate {
         let monthElement = df.string(from: eventDate)
         return (dayElement, monthElement)
     }
-    
+    /*
     @objc fileprivate func handleTapOnItem(_ sender:UIButton) {
         if self.allEvents.count <= sender.tag {
             return
@@ -235,52 +252,53 @@ class HomeFeedController: UIViewController, UIGestureRecognizerDelegate {
         present(detailView, animated: true, completion: nil)
         //debugPrint("Tap at index: \(sender.tag)")
     }
+     */
 }
 
 
 // MARK: - UICollectionViewDelegateFlowLayout
 extension HomeFeedController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        if collectionView.tag == 0 {
+        //if collectionView.tag == 0 {
             self.performActionOnTopItemSelect(at: indexPath.item)
-        }
+        //}
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        if collectionView.tag == 0 {
+        //if collectionView.tag == 0 {
             let cellWith = self.dropDown[indexPath.item].name!.textRect(withFont: UIFont.systemFont(ofSize: 13), andHeight: 20.0).size.width + 44.0
             return CGSize(width: cellWith, height: collectionView.bounds.size.height - 20)
-        }
-        else {
+        //}
+        /*else {
             return CGSize(width: collectionView.bounds.size.width/2.2, height: collectionView.bounds.size.height)
-        }
+        }*/
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-        if collectionView.tag == 0 {
+        //if collectionView.tag == 0 {
             return UIEdgeInsetsMake(10.0, 15.0, 10.0, 0.0)
-        }
-        else {
+        //}
+        /*else {
             return UIEdgeInsetsMake(0.0, 0.0, 0.0, 0.0)
-        }
+        }*/
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-        if collectionView.tag == 0 {
+        //if collectionView.tag == 0 {
             return 15.0
-        }
-        else {
+        //}
+        /*else {
             return 2.0
-        }
+        }*/
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
-        if collectionView.tag == 0 {
+        //if collectionView.tag == 0 {
             return 15.0
-        }
-        else {
+        //}
+        /*else {
             return 0.0
-        }
+        }*/
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
@@ -291,8 +309,9 @@ extension HomeFeedController: UICollectionViewDelegateFlowLayout {
         return .zero
     }
     
+
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        if collectionView.tag == 1 {
+        /*if collectionView.tag == 1 {
             let offsetY = scrollView.contentOffset.y
             let contentHeight = scrollView.contentSize.height
             print(offsetY)
@@ -304,24 +323,25 @@ extension HomeFeedController: UICollectionViewDelegateFlowLayout {
                     DispatchQueue.main.async {
                         self.collectionView.reloadData()
                     }
-                })        }
-        }
+                })        
+            }
+        }*/
     }
 }
 
 // MARK: - UICollectionViewDataSource
 extension HomeFeedController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        if collectionView.tag == 0 {
+        //if collectionView.tag == 0 {
             return dropDown.count
-        }
-        else {
+        //}
+        /*else {
             return allEvents.count - 1
-        }
+        }*/
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        if collectionView.tag == 0 {
+        //if collectionView.tag == 0 {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: topCell, for: indexPath) as! DropDownCell
             let dropDown = self.dropDown[indexPath.row]
             cell.dropDown = dropDown
@@ -336,8 +356,8 @@ extension HomeFeedController: UICollectionViewDataSource {
             cell.layer.borderColor = UIColor.black.cgColor
             cell.layer.cornerRadius = 5.0
             return cell
-        }
-        else {
+        //}
+        /*else {
             let customCell = collectionView.dequeueReusableCell(withReuseIdentifier: eventCellIdentifier, for: indexPath) as! HomeFeedCell
             let model = allEvents[indexPath.item + 1]
             let imageURL = URL(string: model.currentEventImage)
@@ -354,7 +374,44 @@ extension HomeFeedController: UICollectionViewDataSource {
                 customCell.overlayButton.addTarget(self, action: #selector(self.handleTapOnItem(_:)), for: .touchUpInside)
             }
             return customCell
-        }
+        }*/
     }
 }
 
+extension HomeFeedController: DynamoCollectionViewDelegate, DynamoCollectionViewDataSource {
+    
+    // MARK: DynamoCollectionView Datasource
+    
+    func topViewRatio(_ dynamoCollectionView: DynamoCollectionView) -> CGFloat {
+        return 0.6
+    }
+    
+    func numberOfItems(_ dynamoCollectionView: DynamoCollectionView) -> Int {
+        return allEvents.count 
+    }
+    
+    func dynamoCollectionView(_ dynamoCollectionView: DynamoCollectionView, cellForItemAt indexPath: IndexPath) -> DynamoCollectionViewCell {
+        let cell = dynamoCollectionView.dequeueReusableCell(for: indexPath)
+        let model = allEvents[indexPath.item]
+        let imageURL = URL(string: model.currentEventImage)
+        let dateComponents = self.getDayAndMonthFromEvent(model)
+        cell.day = dateComponents.0
+        cell.month = dateComponents.1
+        cell.backgroundImageView.af_setImage(withURL: imageURL!)
+        return cell
+    }
+    
+    // MARK: DynamoCollectionView Delegate
+    
+    func dynamoCollectionView(_ dynamoCollectionView: DynamoCollectionView, didSelectItemAt indexPath: IndexPath) {
+        if self.allEvents.count <= indexPath.item {
+            return
+        }
+        let model = self.allEvents[indexPath.item]
+        detailView.eventKey = model.key!
+        detailView.eventPromo = model.currentEventPromo!
+        detailView.currentEvent = model
+        present(detailView, animated: true, completion: nil)
+    }
+    
+}

@@ -3,7 +3,7 @@
  import Firebase
  import FirebaseAuth
  import AMScrollingNavbar
- 
+ import DynamoCollectionView
  
  class HomeViewController: UIViewController  {
     
@@ -33,8 +33,9 @@
     override func viewDidLoad() {
         super.viewDidLoad()
         self.configureViews()
+        registerNotifications()
     }
-    
+
     fileprivate func configureViews() {
         self.selectedTopIndex = 1
         self.view.backgroundColor = .white
@@ -63,6 +64,11 @@
         _ = NSLayoutConstraint.activateVerticalSpacingConstraint(withFirstView: self.topCollectionView, secondView: self.pageController.view, andSeparation: 0.0)
         _ = NSLayoutConstraint.activateVerticalSpacingConstraint(withFirstView: self.pageController.view, secondView: self.bottomLayoutGuide, andSeparation: 0.0)
         self.pageController.didMove(toParentViewController: self)
+    }
+    
+    fileprivate func registerNotifications() {
+        NotificationCenter.default.addObserver(self, selector: #selector(handleDynamoCollectionViewEnableScrolling(notification:)), name: DynamoCollectionViewEnableScrollingNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(handleDynamoCollectionViewDisableScrolling(notification:)), name: DynamoCollectionViewDisableScrollingNotification, object: nil)
     }
     
     fileprivate func performActionOnTopItemSelect(at index:Int) {
@@ -184,5 +190,18 @@
     }
  }
  
+ // MARK: - DynamoCollectionView Notifications
  
+ extension HomeViewController {
+    
+    func handleDynamoCollectionViewEnableScrolling(notification: Notification) {
+        let scrollView = pageController.view.subviews.filter{ $0 is UIScrollView}.first as! UIScrollView
+          scrollView.isScrollEnabled = false
+    }
+    
+    func handleDynamoCollectionViewDisableScrolling(notification: Notification) {
+        let scrollView = pageController.view.subviews.filter{ $0 is UIScrollView}.first as! UIScrollView
+            scrollView.isScrollEnabled = true
+    }
+ }
 

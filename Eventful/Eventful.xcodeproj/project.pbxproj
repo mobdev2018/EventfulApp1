@@ -65,8 +65,24 @@
 		50360FAF1F755DCF00AB3BD0 /* HomeFeedCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50360FAE1F755DCF00AB3BD0 /* HomeFeedCell.swift */; };
 		50717DDA1F6EFE2600AADB66 /* NSLayoutConstraint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50717DD91F6EFE2600AADB66 /* NSLayoutConstraint.swift */; };
 		5074F1C21F7648D10082E016 /* ImageCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5074F1C11F7648D10082E016 /* ImageCollectionViewCell.swift */; };
+		52D748CA1F84C17A00357DDF /* DynamoCollectionView.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 52D748C91F84C16E00357DDF /* DynamoCollectionView.framework */; };
+		52D748CB1F84C17A00357DDF /* DynamoCollectionView.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 52D748C91F84C16E00357DDF /* DynamoCollectionView.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		F277E01C2A00DE5C23A3A9DD /* Pods_Eventful.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1746B55EBA2E6BE797E81DA6 /* Pods_Eventful.framework */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		52D748CC1F84C17A00357DDF /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				52D748CB1F84C17A00357DDF /* DynamoCollectionView.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		070599AB1F6464C0006D1BF9 /* CircularTransition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CircularTransition.swift; path = Controllers/CircularTransition.swift; sourceTree = "<group>"; };
@@ -131,6 +147,7 @@
 		50360FAE1F755DCF00AB3BD0 /* HomeFeedCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeFeedCell.swift; sourceTree = "<group>"; };
 		50717DD91F6EFE2600AADB66 /* NSLayoutConstraint.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSLayoutConstraint.swift; sourceTree = "<group>"; };
 		5074F1C11F7648D10082E016 /* ImageCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCollectionViewCell.swift; sourceTree = "<group>"; };
+		52D748C91F84C16E00357DDF /* DynamoCollectionView.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = DynamoCollectionView.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		5A2D82487A88CC695A029DCA /* Pods-Eventful.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Eventful.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Eventful/Pods-Eventful.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -140,6 +157,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				F277E01C2A00DE5C23A3A9DD /* Pods_Eventful.framework in Frameworks */,
+				52D748CA1F84C17A00357DDF /* DynamoCollectionView.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -170,8 +188,8 @@
 		07437F0D1F267CA900CE728B = {
 			isa = PBXGroup;
 			children = (
-				07437F3E1F28D52200CE728B /* Default-568h@2x.png */,
 				07437F181F267CA900CE728B /* Eventful */,
+				07437F3E1F28D52200CE728B /* Default-568h@2x.png */,
 				07437F171F267CA900CE728B /* Products */,
 				69B6760783C527721C92650D /* Pods */,
 				EDCAC4FC8504278362A0DA28 /* Frameworks */,
@@ -370,6 +388,7 @@
 		EDCAC4FC8504278362A0DA28 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				52D748C91F84C16E00357DDF /* DynamoCollectionView.framework */,
 				1746B55EBA2E6BE797E81DA6 /* Pods_Eventful.framework */,
 			);
 			name = Frameworks;
@@ -388,6 +407,7 @@
 				07437F141F267CA900CE728B /* Resources */,
 				DEBC6E9D19E14CC939269E2F /* [CP] Embed Pods Frameworks */,
 				FDF21954F6D4CFA39B24B91D /* [CP] Copy Pods Resources */,
+				52D748CC1F84C17A00357DDF /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -724,7 +744,7 @@
 			baseConfigurationReference = 5A2D82487A88CC695A029DCA /* Pods-Eventful.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = W8XH6RU95C;
+				DEVELOPMENT_TEAM = 72NU66U8WE;
 				INFOPLIST_FILE = "$(SRCROOT)/Eventful/Supporting/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.makeschool.Eventful;
@@ -740,7 +760,7 @@
 			baseConfigurationReference = 4D63B9A855CD185FB49E3D17 /* Pods-Eventful.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = W8XH6RU95C;
+				DEVELOPMENT_TEAM = 72NU66U8WE;
 				INFOPLIST_FILE = "$(SRCROOT)/Eventful/Supporting/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.makeschool.Eventful;

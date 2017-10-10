@@ -62,10 +62,15 @@ class EventDetailViewController: UIViewController {
     
     
     
-    func handlePromoVid(){
+    fileprivate func extractedFunc(_ url: URL?) -> VideoViewController {
+        return VideoViewController(videoURL: url!)
+    }
+    
+    @objc func handlePromoVid(){
         print("Image tappped")
+        print(eventPromo)
         let url = URL(string: eventPromo)
-        let videoLauncher = VideoViewController(videoURL: url!)
+        let videoLauncher = extractedFunc(url)
         videoLauncher.nextButton.isHidden = true
         present(videoLauncher, animated: true, completion: nil)
         
@@ -123,7 +128,7 @@ class EventDetailViewController: UIViewController {
     }()
     
     
-    func presentComments(){
+    @objc func presentComments(){
         print("Comments button pressed")
         commentsController.eventKey = eventKey
         newCommentsController.eventKey = eventKey
@@ -163,7 +168,7 @@ class EventDetailViewController: UIViewController {
     }()
     
     
-    func handleAttend(){
+    @objc func handleAttend(){
         print("Handling attend from within cell")
         // 2
         attendingButton.isUserInteractionEnabled = false
@@ -194,7 +199,7 @@ class EventDetailViewController: UIViewController {
         return addToStory
     }()
     
-    func beginAddToStory(){
+    @objc func beginAddToStory(){
         print("Attempting to load camera")
         camera.eventKey = self.eventKey
         present(camera, animated: true, completion: nil)
@@ -211,7 +216,7 @@ class EventDetailViewController: UIViewController {
         return viewStoryButton
     }()
     
-    func handleViewStory(){
+    @objc func handleViewStory(){
         print("Attempting to view story")
         eventStory.eventKey = self.eventKey
         present(eventStory, animated: true, completion: nil)
@@ -220,7 +225,7 @@ class EventDetailViewController: UIViewController {
     
 
     
-    func swipeAction(_ swipe: UIGestureRecognizer){
+    @objc func swipeAction(_ swipe: UIGestureRecognizer){
         if let swipeGesture = swipe as? UISwipeGestureRecognizer {
             switch swipeGesture.direction {
             case UISwipeGestureRecognizerDirection.right:

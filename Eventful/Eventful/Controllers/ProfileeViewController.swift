@@ -82,17 +82,17 @@
             return header
         }
         
-        func GoBack(){
+        @objc func GoBack(){
             dismiss(animated: true, completion: nil)
         }
         
-        func settingsButtonTapped(){
+        @objc func settingsButtonTapped(){
             present(settingView, animated: true, completion: nil)
             //        self.navigationController?.pushViewController(settingView, animated: true)
             
         }
         
-        func profileSettingsTapped(){
+        @objc func profileSettingsTapped(){
             present(profileSetupTransition, animated: true, completion: nil)
             //        self.navigationController?.pushViewController(profileSetupTransition, animated: true)
         }
@@ -122,8 +122,9 @@
                 paragraph.lineBreakMode = .byWordWrapping
                 paragraph.alignment = .center
                 
-                let attributes: [String: Any] = [NSFontAttributeName: UIFont.systemFont(ofSize: 14.0), NSForegroundColorAttributeName: UIColor.lightGray, NSParagraphStyleAttributeName: paragraph]
+                let attributes: [NSAttributedStringKey: Any] = [NSAttributedStringKey(rawValue: NSAttributedStringKey.font.rawValue): UIFont.systemFont(ofSize: 14.0), NSAttributedStringKey(rawValue: NSAttributedStringKey.foregroundColor.rawValue): UIColor.lightGray, NSAttributedStringKey(rawValue: NSAttributedStringKey.paragraphStyle.rawValue): paragraph]
                 let myAttrString = NSAttributedString(string:  "Go Attend Some Events", attributes: attributes)
+
                 emptyLabel?.attributedText = myAttrString
                 emptyLabel?.textAlignment = .center
                 self.collectionView?.backgroundView = emptyLabel

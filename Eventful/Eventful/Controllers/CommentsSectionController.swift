@@ -27,7 +27,6 @@ class CommentsSectionController: ListSectionController,CommentCellDelegate {
     override func numberOfItems() -> Int {
         return 1
     }
-    
     override func sizeForItem(at index: Int) -> CGSize {
         let frame = CGRect(x: 0, y: 0, width: collectionContext!.containerSize.width, height: 50)
         let dummyCell = CommentCell(frame: frame)
@@ -59,7 +58,7 @@ class CommentsSectionController: ListSectionController,CommentCellDelegate {
         return cell
     }
     override func didUpdate(to object: Any) {
-        comment = object as! CommentGrabbed
+        comment = object as? CommentGrabbed
     }
     override func didSelectItem(at index: Int){
     }
@@ -84,11 +83,7 @@ class CommentsSectionController: ListSectionController,CommentCellDelegate {
     
     func optionsButtonTapped(cell: CommentCell){
         print("like")
-     //   guard let indexPath = self.collectionContext?.index(for: cell, sectionController: self)(for: cell) else { return }
-        guard let indexPath = self.collectionContext?.index(for: cell, sectionController: self) else{
-            return
-        }
-        // 2
+   
         let comment = self.comment
         _ = comment?.uid
         
@@ -127,6 +122,7 @@ class CommentsSectionController: ListSectionController,CommentCellDelegate {
     func onItemDeleted() {
         delegate?.CommentSectionUpdared(sectionController: self)
     }
+    
     
     /*
      func sizeForSupplementaryView(ofKind elementKind: String, at index: Int) -> CGSize {

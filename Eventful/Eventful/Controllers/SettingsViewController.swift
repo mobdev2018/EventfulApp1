@@ -64,13 +64,13 @@ class SettingsViewController: UIViewController {
         return backButton
     }()
     
-    func handleSettingsDismiss(){
+    @objc func handleSettingsDismiss(){
         print("Button pressed")
         dismiss(animated: true, completion: nil)
     }
 
     //will log the user out
-    func handleLogout(){
+    @objc func handleLogout(){
         print("Logout button pressed")
      
       AuthService.presentLogOut(viewController: self)

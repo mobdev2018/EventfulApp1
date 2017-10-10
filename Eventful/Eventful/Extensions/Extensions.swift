@@ -165,7 +165,7 @@ extension String {
     
     func textRect(withFont font: UIFont, andWidth width:CGFloat, andHeight height:CGFloat) -> CGRect {
         let constraintRect = CGSize(width: width, height: height)
-        let boundingBox = self.boundingRect(with: constraintRect, options: .usesLineFragmentOrigin, attributes: [NSFontAttributeName: font, NSParagraphStyleAttributeName: NSParagraphStyle.default], context: nil)
+        let boundingBox = self.boundingRect(with: constraintRect, options: .usesLineFragmentOrigin, attributes: [NSAttributedStringKey.font: font, NSAttributedStringKey.paragraphStyle: NSParagraphStyle.default], context: nil)
         return boundingBox
     }
 }

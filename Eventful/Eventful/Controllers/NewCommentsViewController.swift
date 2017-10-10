@@ -39,37 +39,46 @@ class NewCommentsViewController: UIViewController, UITextFieldDelegate,CommentsS
     
     //will fetch the comments from the database and append them to an array
     fileprivate func fetchComments(){
+        comments.removeAll()
         messagesRef = Database.database().reference().child("Comments").child(eventKey)
         print(eventKey)
-        print(comments.count)
-        messagesRef?.observe(.childAdded, with: { (snapshot) in
+        // print(comments.count)
+        var query = messagesRef?.queryOrderedByKey()
+        query?.observe(.value, with: { (snapshot) in
+            guard var allObjects = snapshot.children.allObjects as? [DataSnapshot] else {
+                return
+            }
             print(snapshot)
-            guard let commentDictionary = snapshot.value as? [String: Any] else{
-                return
-            }
-            print(commentDictionary)
-            guard let uid = commentDictionary["uid"] as? String else{
-                return
-            }
-            UserService.show(forUID: uid, completion: { (user) in
-                if let user = user {
-                    var commentFetched = CommentGrabbed(user: user, dictionary: commentDictionary)
-                    commentFetched.commentID = snapshot.key
-                    let filteredArr = self.comments.filter { (comment) -> Bool in
-                        return comment.commentID == commentFetched.commentID
-                    }
-                    if filteredArr.count == 0 {
-                        self.comments.append(commentFetched)
-                    }
-                    print(self.comments)
-                    self.adapter.performUpdates(animated: true)
+            
+            allObjects.forEach({ (snapshot) in
+                guard let commentDictionary = snapshot.value as? [String: Any] else{
+                    return
                 }
-                self.comments.sort(by: { (comment1, comment2) -> Bool in
-                    return comment1.creationDate.compare(comment2.creationDate) == .orderedAscending
+                guard let uid = commentDictionary["uid"] as? String else{
+                    return
+                }
+                UserService.show(forUID: uid, completion: { (user) in
+                    if let user = user {
+                        var commentFetched = CommentGrabbed(user: user, dictionary: commentDictionary)
+                        commentFetched.commentID = snapshot.key
+                        let filteredArr = self.comments.filter { (comment) -> Bool in
+                            return comment.commentID == commentFetched.commentID
+                        }
+                        if filteredArr.count == 0 {
+                            self.comments.append(commentFetched)
+                            
+                        }
+                        self.adapter.performUpdates(animated: true)
+                    }
+                    self.comments.sort(by: { (comment1, comment2) -> Bool in
+                        return comment1.creationDate.compare(comment2.creationDate) == .orderedAscending
+                    })
+                    self.comments.forEach({ (comments) in
+                    })
                 })
-                self.comments.forEach({ (comments) in
-                })
+                
             })
+            
         }, withCancel: { (error) in
             print("Failed to observe comments")
         })
@@ -113,7 +122,7 @@ class NewCommentsViewController: UIViewController, UITextFieldDelegate,CommentsS
         return textField
     }()
     
-    func textFieldDidChange(_ textField: UITextField) {
+    @objc func textFieldDidChange(_ textField: UITextField) {
         let isCommentValid = commentTextField.text?.characters.count ?? 0 > 0
         if isCommentValid {
             submitButton.isEnabled = true
@@ -122,7 +131,7 @@ class NewCommentsViewController: UIViewController, UITextFieldDelegate,CommentsS
         }
     }
     
-    func handleSubmit(){
+    @objc func handleSubmit(){
         guard let comment = commentTextField.text, comment.characters.count > 0 else{
             return
         }
@@ -132,66 +141,31 @@ class NewCommentsViewController: UIViewController, UITextFieldDelegate,CommentsS
         self.commentTextField.text = nil
     }
     
-    func flagButtonTapped (from cell: CommentCell){
-        guard let indexPath = self.collectionView.indexPath(for: cell) else { return }
+    
+    @objc func handleKeyboardNotification(notification: NSNotification){
         
-        // 2
-        let comment = comments[indexPath.item]
-        _ = comment.uid
-        
-        // 3
-        let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
-        
-        // 4
-        if comment.uid != User.current.uid {
-            let flagAction = UIAlertAction(title: "Report as Inappropriate", style: .default) { _ in
-                ChatService.flag(comment)
+        if let userinfo = notification.userInfo {
+            
+            if let keyboardFrame = (userinfo[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue {
                 
-                let okAlert = UIAlertController(title: nil, message: "The post has been flagged.", preferredStyle: .alert)
-                okAlert.addAction(UIAlertAction(title: "Ok", style: .default))
-                self.present(okAlert, animated: true)
+                
+                self.bottomConstraint?.constant = -(keyboardFrame.height)
+                
+                let isKeyboardShowing = notification.name == NSNotification.Name.UIKeyboardWillShow
+                
+                self.bottomConstraint?.constant = isKeyboardShowing ? -(keyboardFrame.height) : 0
+                
+                UIView.animate(withDuration: 0, delay: 0, options: UIViewAnimationOptions.curveEaseOut, animations: {
+                    self.view.layoutIfNeeded()
+                }, completion: { (completion) in
+                    if self.comments.count > 0  && isKeyboardShowing {
+                        let indexPath = IndexPath(item: self.comments.count-1, section: 0)
+                        self.collectionView.scrollToItem(at: indexPath, at: .top, animated: true)
+                    }
+                })
             }
-            let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
-            alertController.addAction(cancelAction)
-            alertController.addAction(flagAction)
-        }else{
-            let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
-            let deleteAction = UIAlertAction(title: "Delete Comment", style: .default, handler: { _ in
-                ChatService.deleteComment(comment, self.eventKey)
-                let okAlert = UIAlertController(title: nil, message: "Comment Has Been Deleted", preferredStyle: .alert)
-                okAlert.addAction(UIAlertAction(title: "Ok", style: .default))
-                self.present(okAlert, animated: true)
-                self.adapter.performUpdates(animated: true)
-                
-            })
-            alertController.addAction(cancelAction)
-            alertController.addAction(deleteAction)
-            
-        }
-        present(alertController, animated: true, completion: nil)
-        
-    }
-    
-    func handleKeyboardNotification(notification: NSNotification){
-        if let userinfo = notification.userInfo{
-            
-            let keyboardFrame = (userinfo[UIKeyboardFrameEndUserInfoKey] as! NSValue).cgRectValue
-            self.bottomConstraint?.constant = -(keyboardFrame.height)
-            
-            let isKeyboardShowing = notification.name == NSNotification.Name.UIKeyboardWillShow
-            self.bottomConstraint?.constant = isKeyboardShowing ? -(keyboardFrame.height) : 0
-            
-            UIView.animate(withDuration: 0, delay: 0, options: UIViewAnimationOptions.curveEaseOut, animations: {
-                self.view.layoutIfNeeded()
-            }, completion: { (completion) in
-                if self.comments.count > 0  && isKeyboardShowing {
-                    let indexPath = IndexPath(item: self.comments.count-1, section: 0)
-                    self.collectionView.scrollToItem(at: indexPath, at: .top, animated: true)
-                }
-            })
         }
     }
-    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -217,6 +191,7 @@ class NewCommentsViewController: UIViewController, UITextFieldDelegate,CommentsS
     //look here
     func CommentSectionUpdared(sectionController: CommentsSectionController){
         print("like")
+        self.fetchComments()
     self.adapter.performUpdates(animated: true)
     }
     override func viewWillAppear(_ animated: Bool) {
@@ -244,6 +219,9 @@ extension NewCommentsViewController: ListAdapterDataSource {
         return [addHeader] + items
     }
     
+    
+
+    
     // 2 For each data object, listAdapter(_:sectionControllerFor:) must return a new instance of a section controller. For now you’re returning a plain IGListSectionController to appease the compiler — in a moment, you’ll modify this to return a custom journal section controller.
     func listAdapter(_ listAdapter: ListAdapter, sectionControllerFor object: Any) -> ListSectionController {
         //the comment section controller will be placed here but we don't have it yet so this will be a placeholder
@@ -252,6 +230,7 @@ extension NewCommentsViewController: ListAdapterDataSource {
         }
         let sectionController = CommentsSectionController()
         sectionController.delegate = self
+        
         return sectionController
     }
     

@@ -49,7 +49,7 @@ struct PostService {
             }
             allObjects.forEach({ (snapshot) in
                 // print(snapshot.value ?? "")
-                print(category)
+                print(category ?? "")
                 EventService.show(forEventKey: snapshot.value as! String,eventCategory: category, completion: { (event) in
                     currentEvents.append(event!)
                     // print("\n\n\n\n\n\n")

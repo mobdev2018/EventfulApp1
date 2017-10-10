@@ -31,7 +31,7 @@ class LoginViewController: UIViewController , LoginViewControllerDelegate {
         let nameLabel = UILabel()
         nameLabel.textColor = .white
         let myString = "[Name of App]"
-        let myAttribute = [NSFontAttributeName:UIFont(name: "Times New Roman", size: 7.3)!]
+        let myAttribute = [NSAttributedStringKey.font:UIFont(name: "Times New Roman", size: 7.3)!]
         let myAttrString = NSAttributedString(string: myString, attributes: myAttribute)
         nameLabel.attributedText = myAttrString
         return nameLabel
@@ -43,7 +43,7 @@ class LoginViewController: UIViewController , LoginViewControllerDelegate {
         let welcomeLabel = UILabel()
         welcomeLabel.textColor = .white
         let myString = "Welcome Back!"
-        let myAttribute = [NSFontAttributeName:UIFont(name: "Times New Roman", size: 20.7)!]
+        let myAttribute = [NSAttributedStringKey.font:UIFont(name: "Times New Roman", size: 20.7)!]
         let myAttrString = NSAttributedString(string: myString, attributes: myAttribute)
         welcomeLabel.attributedText = myAttrString
         return welcomeLabel
@@ -56,7 +56,7 @@ class LoginViewController: UIViewController , LoginViewControllerDelegate {
         let primaryGoalLabel = UILabel()
         primaryGoalLabel.textColor = .white
         let myString = "Use our application to find events"
-        let myAttribute = [NSFontAttributeName:UIFont(name: "Times New Roman", size: 13)!]
+        let myAttribute = [NSAttributedStringKey.font:UIFont(name: "Times New Roman", size: 13)!]
         let myAttrString = NSAttributedString(string: myString, attributes: myAttribute)
         primaryGoalLabel.attributedText = myAttrString
         return primaryGoalLabel
@@ -107,7 +107,7 @@ class LoginViewController: UIViewController , LoginViewControllerDelegate {
         return button
     }()
     
-    func handleLogin(){
+    @objc func handleLogin(){
         if self.emailTextField.text == "" || self.passwordTextField.text == "" {
             let alertController = UIAlertController(title: "Error", message: "Please enter an email and a a password", preferredStyle: .alert)
             let defaultAction = UIAlertAction(title: "Ok", style: .cancel, handler: nil)
@@ -155,7 +155,7 @@ class LoginViewController: UIViewController , LoginViewControllerDelegate {
         let signUp = UILabel()
         signUp.textColor = .white
         let myString = "Don't have an account?"
-        let myAttribute = [NSFontAttributeName:UIFont(name: "Times New Roman", size: 15)!]
+        let myAttribute = [NSAttributedStringKey.font:UIFont(name: "Times New Roman", size: 15)!]
         let myAttrString = NSAttributedString(string: myString, attributes: myAttribute)
         signUp.attributedText = myAttrString
         return signUp
@@ -274,14 +274,14 @@ class LoginViewController: UIViewController , LoginViewControllerDelegate {
     }
     
     //Calls this function when the tap is recognized.
-    func dismissKeyboard() {
+    @objc func dismissKeyboard() {
         //Causes the view (or one of its embedded text fields) to resign the first responder status.
         self.view.endEditing(true)
     }
     
     
     // will open a new ViewController When login button is selected
-    func handleSignUpTransition(){
+    @objc func handleSignUpTransition(){
         let signUpTransition = SignUpViewController()
         present(signUpTransition, animated: true, completion: nil)
     }
@@ -299,7 +299,7 @@ class LoginViewController: UIViewController , LoginViewControllerDelegate {
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIKeyboardWillHide, object: nil)
     }
     
-    func keyboardWillShow(sender: NSNotification) {
+    @objc func keyboardWillShow(sender: NSNotification) {
         if let keyboardSize = (sender.userInfo?[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue {
             let keyboardHeight = keyboardSize.height
             UIView.animate(withDuration: 0.2, animations: {
@@ -310,7 +310,7 @@ class LoginViewController: UIViewController , LoginViewControllerDelegate {
     
     
     // will properly hide keyboard
-    func keyboardWillHide(sender: NSNotification) {
+    @objc func keyboardWillHide(sender: NSNotification) {
         UIView.animate(withDuration: 0.2, animations: {
             self.view.frame.origin.y = 0
         })

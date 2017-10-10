@@ -76,7 +76,7 @@ class DropDownLauncher: NSObject, UICollectionViewDelegate, UICollectionViewData
             }, completion: nil)
         }
     }
-    func handleDismiss(){
+    @objc func handleDismiss(){
         UIView.animate(withDuration: 0.5, animations: {
             self.blackView.alpha = 0
             if let window = UIApplication.shared.keyWindow{

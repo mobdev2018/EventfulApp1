@@ -49,7 +49,7 @@ class HomeFeedCell: UICollectionViewCell {
         
         self.dayLabel = UILabel()
         self.dayLabel.translatesAutoresizingMaskIntoConstraints = false
-        self.dayLabel.font = UIFont.systemFont(ofSize: 17.0, weight: UIFontWeightSemibold)
+        self.dayLabel.font = UIFont.systemFont(ofSize: 17.0, weight: UIFont.Weight.semibold)
         self.dayLabel.textColor = .white
         self.dayLabel.textAlignment = .center
         self.calenderUnit.addSubview(self.dayLabel)
@@ -70,7 +70,7 @@ class HomeFeedCell: UICollectionViewCell {
         self.nameLabel = UILabel()
         self.nameLabel.numberOfLines = 2
         self.nameLabel.translatesAutoresizingMaskIntoConstraints = false
-        self.nameLabel.font = UIFont.systemFont(ofSize: 17.0, weight: UIFontWeightSemibold)
+        self.nameLabel.font = UIFont.systemFont(ofSize: 17.0, weight: UIFont.Weight.semibold)
         self.nameLabel.textColor = .white
         self.nameLabel.shadowColor = UIColor.gray
         self.nameLabel.shadowOffset = CGSize(width: 1, height: -2)

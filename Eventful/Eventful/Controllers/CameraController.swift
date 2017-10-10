@@ -37,7 +37,7 @@ class CameraViewController: SwiftyCamViewController {
         
     }
     
-    func swipeAction(_ swipe: UIGestureRecognizer){
+    @objc func swipeAction(_ swipe: UIGestureRecognizer){
         if let swipeGesture = swipe as? UISwipeGestureRecognizer {
             switch swipeGesture.direction {
             case UISwipeGestureRecognizerDirection.right:

@@ -35,9 +35,9 @@ class CommentCell: UICollectionViewCell {
             //shawn was also here
             profileImageView.loadImage(urlString: comment.user.profilePic!)
             //  print(comment.user.username)
-            let attributedText = NSMutableAttributedString(string: comment.user.username!, attributes: [NSFontAttributeName: UIFont.boldSystemFont(ofSize: 14)])
+            let attributedText = NSMutableAttributedString(string: comment.user.username!, attributes: [NSAttributedStringKey.font: UIFont.boldSystemFont(ofSize: 14)])
             
-            attributedText.append(NSAttributedString(string: " " + (comment.content), attributes: [NSFontAttributeName: UIFont.systemFont(ofSize: 14)]))
+            attributedText.append(NSAttributedString(string: " " + (comment.content), attributes: [NSAttributedStringKey.font: UIFont.systemFont(ofSize: 14)]))
             textView.attributedText = attributedText
             
             
@@ -69,11 +69,11 @@ class CommentCell: UICollectionViewCell {
         return flagButton
     }()
     
-    func optionsButtonTapped (){
+    @objc func optionsButtonTapped (){
         didTapOptionsButtonForCell?(self)
     }
     
-    func onOptionsTapped() {
+    @objc func onOptionsTapped() {
         delegate?.optionsButtonTapped(cell: self)
     }
     

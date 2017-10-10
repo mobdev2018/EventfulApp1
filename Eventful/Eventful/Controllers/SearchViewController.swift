@@ -227,7 +227,7 @@ class EventSearchController: UICollectionViewController, UISearchBarDelegate, UI
             paragraph.lineBreakMode = .byWordWrapping
             paragraph.alignment = .center
             
-            let attributes: [String: Any] = [NSFontAttributeName: UIFont.systemFont(ofSize: 14.0), NSForegroundColorAttributeName: UIColor.lightGray, NSParagraphStyleAttributeName: paragraph]
+            let attributes: [NSAttributedStringKey: Any] = [NSAttributedStringKey(rawValue: NSAttributedStringKey.font.rawValue): UIFont.systemFont(ofSize: 14.0), NSAttributedStringKey(rawValue: NSAttributedStringKey.foregroundColor.rawValue): UIColor.lightGray, NSAttributedStringKey(rawValue: NSAttributedStringKey.paragraphStyle.rawValue): paragraph]
             let myAttrString = NSAttributedString(string:  "Search For Events And Users Near You", attributes: attributes)
             emptyLabel?.attributedText = myAttrString
             emptyLabel?.textAlignment = .center
@@ -272,7 +272,7 @@ class EventSearchController: UICollectionViewController, UISearchBarDelegate, UI
         
     }
     
-    func GoBack(){
+    @objc func GoBack(){
         _ = self.navigationController?.popViewController(animated: true)
     }
     

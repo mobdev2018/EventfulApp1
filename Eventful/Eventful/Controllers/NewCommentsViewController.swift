@@ -143,25 +143,29 @@ class NewCommentsViewController: UIViewController, UITextFieldDelegate,CommentsS
     
     
     @objc func handleKeyboardNotification(notification: NSNotification){
-        if let userinfo = notification.userInfo{
+        
+        if let userinfo = notification.userInfo {
             
-            let keyboardFrame = (userinfo[UIKeyboardFrameEndUserInfoKey] as! NSValue).cgRectValue
-            self.bottomConstraint?.constant = -(keyboardFrame.height)
-            
-            let isKeyboardShowing = notification.name == NSNotification.Name.UIKeyboardWillShow
-            self.bottomConstraint?.constant = isKeyboardShowing ? -(keyboardFrame.height) : 0
-            
-            UIView.animate(withDuration: 0, delay: 0, options: UIViewAnimationOptions.curveEaseOut, animations: {
-                self.view.layoutIfNeeded()
-            }, completion: { (completion) in
-                if self.comments.count > 0  && isKeyboardShowing {
-                    let indexPath = IndexPath(item: self.comments.count-1, section: 0)
-                    self.collectionView.scrollToItem(at: indexPath, at: .top, animated: true)
-                }
-            })
+            if let keyboardFrame = (userinfo[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue {
+                
+                
+                self.bottomConstraint?.constant = -(keyboardFrame.height)
+                
+                let isKeyboardShowing = notification.name == NSNotification.Name.UIKeyboardWillShow
+                
+                self.bottomConstraint?.constant = isKeyboardShowing ? -(keyboardFrame.height) : 0
+                
+                UIView.animate(withDuration: 0, delay: 0, options: UIViewAnimationOptions.curveEaseOut, animations: {
+                    self.view.layoutIfNeeded()
+                }, completion: { (completion) in
+                    if self.comments.count > 0  && isKeyboardShowing {
+                        let indexPath = IndexPath(item: self.comments.count-1, section: 0)
+                        self.collectionView.scrollToItem(at: indexPath, at: .top, animated: true)
+                    }
+                })
+            }
         }
     }
-    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -215,6 +219,9 @@ extension NewCommentsViewController: ListAdapterDataSource {
         return [addHeader] + items
     }
     
+    
+
+    
     // 2 For each data object, listAdapter(_:sectionControllerFor:) must return a new instance of a section controller. For now you’re returning a plain IGListSectionController to appease the compiler — in a moment, you’ll modify this to return a custom journal section controller.
     func listAdapter(_ listAdapter: ListAdapter, sectionControllerFor object: Any) -> ListSectionController {
         //the comment section controller will be placed here but we don't have it yet so this will be a placeholder
@@ -223,6 +230,7 @@ extension NewCommentsViewController: ListAdapterDataSource {
         }
         let sectionController = CommentsSectionController()
         sectionController.delegate = self
+        
         return sectionController
     }
     

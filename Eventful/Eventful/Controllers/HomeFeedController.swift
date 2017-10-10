@@ -291,22 +291,20 @@ extension HomeFeedController: UICollectionViewDelegateFlowLayout {
         return .zero
     }
     
-    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
         if collectionView.tag == 1 {
-            print(indexPath.item)
-            print(allEvents.count - 1)
-            if indexPath.item >= allEvents.count - 1 {
-                // print("paginating for post")
+            let offsetY = scrollView.contentOffset.y
+            let contentHeight = scrollView.contentSize.height
+            print(offsetY)
+            print(contentHeight)
+            if offsetY > contentHeight - scrollView.frame.size.height {
                 paginationHelper.paginate(completion: { [unowned self] (events) in
                     self.allEvents.append(contentsOf: events)
+                    
                     DispatchQueue.main.async {
-                        self.reloadCollection()
+                        self.collectionView.reloadData()
                     }
-                })
-            }else{
-                //debugPrint("Not paginating")
-            }
-            
+                })        }
         }
     }
 }

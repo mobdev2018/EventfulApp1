@@ -8,7 +8,15 @@
 
 /* Begin PBXBuildFile section */
 		5229B59E1F84D277001766A6 /* NSLayoutConstraint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5229B59D1F84D276001766A6 /* NSLayoutConstraint.swift */; };
-		52A72DC11F83D28A0024DCD9 /* DynamoCollectionView.h in Headers */ = {isa = PBXBuildFile; fileRef = 52A72DBF1F83D28A0024DCD9 /* DynamoCollectionView.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		52C919F71F8E0C8100FF975E /* Media.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 52C919F61F8E0C8000FF975E /* Media.xcassets */; };
+		52C919F91F8E1A9F00FF975E /* DynamoUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52C919F81F8E1A9F00FF975E /* DynamoUtils.swift */; };
+		52C91A191F8E365C00FF975E /* CCColorCube.h in Headers */ = {isa = PBXBuildFile; fileRef = 52C91A111F8E357600FF975E /* CCColorCube.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		52C91A1A1F8E365C00FF975E /* CCImageColors.h in Headers */ = {isa = PBXBuildFile; fileRef = 52C91A131F8E357600FF975E /* CCImageColors.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		52C91A1B1F8E365C00FF975E /* CCLocalMaximum.h in Headers */ = {isa = PBXBuildFile; fileRef = 52C91A151F8E357600FF975E /* CCLocalMaximum.h */; };
+		52C91A1C1F8E365F00FF975E /* DynamoCollectionView.h in Headers */ = {isa = PBXBuildFile; fileRef = 52C91A0F1F8E357100FF975E /* DynamoCollectionView.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		52C91A1D1F8E367300FF975E /* CCColorCube.m in Sources */ = {isa = PBXBuildFile; fileRef = 52C91A121F8E357600FF975E /* CCColorCube.m */; };
+		52C91A1E1F8E367300FF975E /* CCImageColors.m in Sources */ = {isa = PBXBuildFile; fileRef = 52C91A141F8E357600FF975E /* CCImageColors.m */; };
+		52C91A1F1F8E367300FF975E /* CCLocalMaximum.m in Sources */ = {isa = PBXBuildFile; fileRef = 52C91A161F8E357600FF975E /* CCLocalMaximum.m */; };
 		52D748C51F84A47F00357DDF /* DynamoCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52D748C41F84A47F00357DDF /* DynamoCollectionView.swift */; };
 		52D748C71F84AA5200357DDF /* DynamoCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52D748C61F84AA5200357DDF /* DynamoCollectionViewCell.swift */; };
 /* End PBXBuildFile section */
@@ -16,8 +24,16 @@
 /* Begin PBXFileReference section */
 		5229B59D1F84D276001766A6 /* NSLayoutConstraint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = NSLayoutConstraint.swift; path = ../../Eventful/NSLayoutConstraint.swift; sourceTree = "<group>"; };
 		52A72DBC1F83D28A0024DCD9 /* DynamoCollectionView.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = DynamoCollectionView.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		52A72DBF1F83D28A0024DCD9 /* DynamoCollectionView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DynamoCollectionView.h; sourceTree = "<group>"; };
 		52A72DC01F83D28A0024DCD9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		52C919F61F8E0C8000FF975E /* Media.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Media.xcassets; sourceTree = "<group>"; };
+		52C919F81F8E1A9F00FF975E /* DynamoUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DynamoUtils.swift; sourceTree = "<group>"; };
+		52C91A0F1F8E357100FF975E /* DynamoCollectionView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DynamoCollectionView.h; sourceTree = "<group>"; };
+		52C91A111F8E357600FF975E /* CCColorCube.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CCColorCube.h; sourceTree = "<group>"; };
+		52C91A121F8E357600FF975E /* CCColorCube.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CCColorCube.m; sourceTree = "<group>"; };
+		52C91A131F8E357600FF975E /* CCImageColors.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CCImageColors.h; sourceTree = "<group>"; };
+		52C91A141F8E357600FF975E /* CCImageColors.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CCImageColors.m; sourceTree = "<group>"; };
+		52C91A151F8E357600FF975E /* CCLocalMaximum.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CCLocalMaximum.h; sourceTree = "<group>"; };
+		52C91A161F8E357600FF975E /* CCLocalMaximum.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CCLocalMaximum.m; sourceTree = "<group>"; };
 		52D748C41F84A47F00357DDF /* DynamoCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DynamoCollectionView.swift; sourceTree = "<group>"; };
 		52D748C61F84AA5200357DDF /* DynamoCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DynamoCollectionViewCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -54,11 +70,27 @@
 			children = (
 				52D748C41F84A47F00357DDF /* DynamoCollectionView.swift */,
 				52D748C61F84AA5200357DDF /* DynamoCollectionViewCell.swift */,
+				52C919F81F8E1A9F00FF975E /* DynamoUtils.swift */,
 				5229B59D1F84D276001766A6 /* NSLayoutConstraint.swift */,
-				52A72DBF1F83D28A0024DCD9 /* DynamoCollectionView.h */,
+				52C91A0F1F8E357100FF975E /* DynamoCollectionView.h */,
+				52C91A101F8E357600FF975E /* ColorCube */,
 				52A72DC01F83D28A0024DCD9 /* Info.plist */,
+				52C919F61F8E0C8000FF975E /* Media.xcassets */,
 			);
 			path = DynamoCollectionView;
+			sourceTree = "<group>";
+		};
+		52C91A101F8E357600FF975E /* ColorCube */ = {
+			isa = PBXGroup;
+			children = (
+				52C91A111F8E357600FF975E /* CCColorCube.h */,
+				52C91A121F8E357600FF975E /* CCColorCube.m */,
+				52C91A131F8E357600FF975E /* CCImageColors.h */,
+				52C91A141F8E357600FF975E /* CCImageColors.m */,
+				52C91A151F8E357600FF975E /* CCLocalMaximum.h */,
+				52C91A161F8E357600FF975E /* CCLocalMaximum.m */,
+			);
+			path = ColorCube;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -68,7 +100,10 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				52A72DC11F83D28A0024DCD9 /* DynamoCollectionView.h in Headers */,
+				52C91A1C1F8E365F00FF975E /* DynamoCollectionView.h in Headers */,
+				52C91A191F8E365C00FF975E /* CCColorCube.h in Headers */,
+				52C91A1A1F8E365C00FF975E /* CCImageColors.h in Headers */,
+				52C91A1B1F8E365C00FF975E /* CCLocalMaximum.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -133,6 +168,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				52C919F71F8E0C8100FF975E /* Media.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -143,7 +179,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				52C91A1D1F8E367300FF975E /* CCColorCube.m in Sources */,
+				52C91A1E1F8E367300FF975E /* CCImageColors.m in Sources */,
+				52C91A1F1F8E367300FF975E /* CCLocalMaximum.m in Sources */,
 				52D748C71F84AA5200357DDF /* DynamoCollectionViewCell.swift in Sources */,
+				52C919F91F8E1A9F00FF975E /* DynamoUtils.swift in Sources */,
 				5229B59E1F84D277001766A6 /* NSLayoutConstraint.swift in Sources */,
 				52D748C51F84A47F00357DDF /* DynamoCollectionView.swift in Sources */,
 			);

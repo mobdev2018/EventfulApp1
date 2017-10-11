@@ -30,14 +30,6 @@ public class DynamoCollectionViewCell: UICollectionViewCell {
         return firstImage
     }()
     
-    public var activityIndicatorView: UIActivityIndicatorView = {
-        let activityIndicatorView = UIActivityIndicatorView()
-        activityIndicatorView.color = UIColor.gray
-        activityIndicatorView.activityIndicatorViewStyle = .gray
-        activityIndicatorView.translatesAutoresizingMaskIntoConstraints = false
-        return activityIndicatorView
-    }()
-    
     public var title:String? {
         set {
             nameLabel.text = newValue
@@ -96,17 +88,25 @@ public class DynamoCollectionViewCell: UICollectionViewCell {
     private var calenderUnitBottom:NSLayoutConstraint!
     private var dayLabel:UILabel!
     private var monthLabel:UILabel!
+    private var darkOverlayImageView: UIImageView = {
+        let imageView = UIImageView()
+        imageView.image = UIImage(named: "dark_overlay", in: Bundle(for: DynamoCollectionView.self), compatibleWith: nil)
+        imageView.clipsToBounds = true
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        imageView.contentMode = .scaleAspectFill
+        return imageView
+    }()
     //private var overlayButton:UIButton!
     
     private func setupViews() {
-        
-        
         self.addSubview(self.backgroundImageView)
-        
-        
         self.backgroundColor = UIColor.white
         
         NSLayoutConstraint.activateViewConstraints(self.backgroundImageView, inSuperView: self, withLeading: 0.0, trailing: 0.0, top: 0.0, bottom: 0.0)
+        
+        // dark overlay
+        self.addSubview(self.darkOverlayImageView)
+        NSLayoutConstraint.activateViewConstraints(self.darkOverlayImageView, inSuperView: self, withLeading: 0.0, trailing: 0.0, top: 0.0, bottom: 0.0)
         
         self.calenderUnit = UIView()
         self.calenderUnit.layer.cornerRadius = 5.0
@@ -133,8 +133,6 @@ public class DynamoCollectionViewCell: UICollectionViewCell {
         _ = NSLayoutConstraint.activateVerticalSpacingConstraint(withFirstView: self.dayLabel, secondView: self.monthLabel, andSeparation: -5.0)
         _ = NSLayoutConstraint.activateHeightConstraint(view: self.dayLabel, withHeight: 1.0, andRelation: .greaterThanOrEqual)
         
-        
-        
         self.nameLabel = UILabel()
         self.nameLabel.numberOfLines = 2
         self.nameLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -157,9 +155,6 @@ public class DynamoCollectionViewCell: UICollectionViewCell {
         tapGesture.numberOfTouchesRequired = 1
         tapGesture.numberOfTapsRequired = 1
         self.addGestureRecognizer(tapGesture)
-        
-        self.backgroundImageView.addSubview(activityIndicatorView)
-        NSLayoutConstraint.activateViewConstraints(self.activityIndicatorView, inSuperView: self.backgroundImageView, withLeading: 0, trailing: 0, top: 0, bottom: 0, width: nil, height: nil)
     }
     
     @objc func handleTap(_ recognizer:UITapGestureRecognizer) {

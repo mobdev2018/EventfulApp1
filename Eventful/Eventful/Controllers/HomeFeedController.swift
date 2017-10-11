@@ -14,8 +14,6 @@ import SwiftLocation
 import CoreLocation
 import AMScrollingNavbar
 import DynamoCollectionView
-import SDWebImage
-import SDWebImage_ProgressView
 
 class ImageAndTitleItem: NSObject {
     public var name:String?
@@ -186,7 +184,7 @@ class HomeFeedController: UIViewController, UIGestureRecognizerDelegate {
 
         self.paginationHelper.reloadData(completion: { [unowned self] (events) in
             self.allEvents = events
-            print(self.allEvents.count)
+            
             if self.refreshControl.isRefreshing {
                 self.refreshControl.endRefreshing()
             }
@@ -261,10 +259,8 @@ class HomeFeedController: UIViewController, UIGestureRecognizerDelegate {
 // MARK: - UICollectionViewDelegateFlowLayout
 extension HomeFeedController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        
-      
         //if collectionView.tag == 0 {
-            //self.performActionOnTopItemSelect(at: indexPath.item)
+            self.performActionOnTopItemSelect(at: indexPath.item)
         //}
     }
     
@@ -315,12 +311,21 @@ extension HomeFeedController: UICollectionViewDelegateFlowLayout {
     
 
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
-//        if dynamoCollectionView.tag == 0 {
-//            let offsetX = scrollView.contentOffset.x
-//            let contentWidth = scrollView.contentSize.width
-//            if offsetX > contentWidth - scrollView.frame.size.width {
-//            }
-//        }
+        /*if collectionView.tag == 1 {
+            let offsetY = scrollView.contentOffset.y
+            let contentHeight = scrollView.contentSize.height
+            print(offsetY)
+            print(contentHeight)
+            if offsetY > contentHeight - scrollView.frame.size.height {
+                paginationHelper.paginate(completion: { [unowned self] (events) in
+                    self.allEvents.append(contentsOf: events)
+                    
+                    DispatchQueue.main.async {
+                        self.collectionView.reloadData()
+                    }
+                })        
+            }
+        }*/
     }
 }
 
@@ -377,21 +382,6 @@ extension HomeFeedController: DynamoCollectionViewDelegate, DynamoCollectionView
     
     // MARK: DynamoCollectionView Datasource
     
-    func dynamoCollectionView(_ dynamoCollectionView: DynamoCollectionView, willDisplay cell: UICollectionViewCell, indexPath: IndexPath) {
-        
-        paginationHelper.paginate(completion: { [unowned self] (events) in
-            for event in events {
-                if !self.allEvents.contains(where: {$0.key == event.key}) {
-                    self.allEvents.append(event)
-                }
-            }
-            DispatchQueue.main.async {
-                self.dynamoCollectionView.reloadData()
-            }
-        })
-
-    }
-    
     func topViewRatio(_ dynamoCollectionView: DynamoCollectionView) -> CGFloat {
         return 0.6
     }
@@ -407,30 +397,21 @@ extension HomeFeedController: DynamoCollectionViewDelegate, DynamoCollectionView
         let dateComponents = self.getDayAndMonthFromEvent(model)
         cell.day = dateComponents.0
         cell.month = dateComponents.1
-       
-        // change this if you want to set progress bar
-        cell.activityIndicatorView.startAnimating()
-        // create UIActivityIndicator
-        cell.backgroundImageView.sd_setImage(with: imageURL!, placeholderImage: UIImage(), options: SDWebImageOptions.highPriority) { (image, error, catcheType, url) in
-            //hide ActivityIndicator
-            cell.activityIndicatorView.stopAnimating()
-        }
+        cell.backgroundImageView.af_setImage(withURL: imageURL!)
         return cell
     }
     
     // MARK: DynamoCollectionView Delegate
     
     func dynamoCollectionView(_ dynamoCollectionView: DynamoCollectionView, didSelectItemAt indexPath: IndexPath) {
-        
-       
-//        if self.allEvents.count <= indexPath.item {
-//            return
-//        }
-//        let model = self.allEvents[indexPath.item]
-//        detailView.eventKey = model.key!
-//        detailView.eventPromo = model.currentEventPromo!
-//        detailView.currentEvent = model
-//        present(detailView, animated: true, completion: nil)
+        if self.allEvents.count <= indexPath.item {
+            return
+        }
+        let model = self.allEvents[indexPath.item]
+        detailView.eventKey = model.key!
+        detailView.eventPromo = model.currentEventPromo!
+        detailView.currentEvent = model
+        present(detailView, animated: true, completion: nil)
     }
     
 }

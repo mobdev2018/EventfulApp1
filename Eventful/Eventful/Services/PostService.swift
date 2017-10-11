@@ -29,20 +29,17 @@ struct PostService {
         postRef.updateChildValues(dict)
         userRef.updateChildValues(dict)
     }
-    
-    static func showEvent(pageSize: UInt, lastPostKey: String? = nil, category: String? = nil,completion: @escaping ([Event],String) -> Void) {
+    static func showEvent(pageSize: UInt, lastPostKey: String? = nil, category: String? = nil,completion: @escaping ([Event]) -> Void) {
         //getting firebase root directory
         // print(lastPostKey)
         //  print("came here")
         var currentEvents = [Event]()
         let eventsByLocationRef = Database.database().reference().child("eventsbylocation").child(User.current.location!)
         //let ref = Database.database().reference().child("events")
-        var query = eventsByLocationRef.queryOrderedByKey()
+        var query = eventsByLocationRef.queryOrderedByKey().queryLimited(toFirst: pageSize)
         if let lastPostKey = lastPostKey {
             //  print(lastPostKey)
-            query = query.queryStarting(atValue: lastPostKey).queryLimited(toFirst: pageSize + 1)
-        } else {
-            query = query.queryLimited(toFirst: pageSize)
+            query = query.queryEnding(atValue: lastPostKey)
         }
         query.observeSingleEvent(of: .value, with: { (snapshot) in
             //   print(snapshot)
@@ -50,18 +47,15 @@ struct PostService {
             guard let allObjects = snapshot.children.allObjects as? [DataSnapshot] else{
                 return
             }
-            var filteredObjects = allObjects
-            if let _ = lastPostKey {
-               filteredObjects.removeFirst()
-            }
-            var key = ""
-            filteredObjects.forEach({ (snapshot) in
+            allObjects.forEach({ (snapshot) in
                 // print(snapshot.value ?? "")
                 print(category ?? "")
-                key = snapshot.key
-                EventService.show(forEventKey: snapshot.value as! String ,eventCategory: category, completion: { (event) in
+                EventService.show(forEventKey: snapshot.value as! String,eventCategory: category, completion: { (event) in
                     currentEvents.append(event!)
-                    completion(currentEvents,key)
+                    // print("\n\n\n\n\n\n")
+                    // print("Finished an event")
+                    // print(currentEvents.count)
+                    completion(currentEvents)
                 })
                 
             })

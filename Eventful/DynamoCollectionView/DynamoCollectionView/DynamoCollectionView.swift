@@ -16,8 +16,6 @@ public protocol DynamoCollectionViewDataSource: NSObjectProtocol {
 
 public protocol DynamoCollectionViewDelegate: NSObjectProtocol {
     func dynamoCollectionView(_ dynamoCollectionView: DynamoCollectionView, didSelectItemAt indexPath: IndexPath)
-    
-    func dynamoCollectionView(_ dynamoCollectionView: DynamoCollectionView, willDisplay cell: UICollectionViewCell, indexPath: IndexPath)
 }
 
 public let DynamoCollectionViewEnableScrollingNotification = NSNotification.Name("DynamoCollectionViewEnableScrollingNotification")
@@ -179,10 +177,6 @@ extension DynamoCollectionView: UICollectionViewDelegate, UICollectionViewDataSo
             cell.delegate = self
             return cell
         }
-    }
-    
-    public func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-        delegate?.dynamoCollectionView(self, willDisplay: cell, indexPath: indexPath)
     }
     
     public func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {

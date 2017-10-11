@@ -88,6 +88,14 @@ public class DynamoCollectionViewCell: UICollectionViewCell {
     private var calenderUnitBottom:NSLayoutConstraint!
     private var dayLabel:UILabel!
     private var monthLabel:UILabel!
+    private var darkOverlayImageView: UIImageView = {
+        let imageView = UIImageView()
+        imageView.image = UIImage(named: "dark_overlay", in: Bundle(for: DynamoCollectionView.self), compatibleWith: nil)
+        imageView.clipsToBounds = true
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        imageView.contentMode = .scaleAspectFill
+        return imageView
+    }()
     //private var overlayButton:UIButton!
     
     private func setupViews() {
@@ -95,6 +103,10 @@ public class DynamoCollectionViewCell: UICollectionViewCell {
         self.backgroundColor = UIColor.white
         
         NSLayoutConstraint.activateViewConstraints(self.backgroundImageView, inSuperView: self, withLeading: 0.0, trailing: 0.0, top: 0.0, bottom: 0.0)
+        
+        // dark overlay
+        self.addSubview(self.darkOverlayImageView)
+        NSLayoutConstraint.activateViewConstraints(self.darkOverlayImageView, inSuperView: self, withLeading: 0.0, trailing: 0.0, top: 0.0, bottom: 0.0)
         
         self.calenderUnit = UIView()
         self.calenderUnit.layer.cornerRadius = 5.0
@@ -120,8 +132,6 @@ public class DynamoCollectionViewCell: UICollectionViewCell {
         NSLayoutConstraint.activateViewConstraints(self.monthLabel, inSuperView: self.calenderUnit, withLeading: 0.0, trailing: 0.0, top: nil, bottom: nil, width: nil, height: nil)
         _ = NSLayoutConstraint.activateVerticalSpacingConstraint(withFirstView: self.dayLabel, secondView: self.monthLabel, andSeparation: -5.0)
         _ = NSLayoutConstraint.activateHeightConstraint(view: self.dayLabel, withHeight: 1.0, andRelation: .greaterThanOrEqual)
-        
-        
         
         self.nameLabel = UILabel()
         self.nameLabel.numberOfLines = 2

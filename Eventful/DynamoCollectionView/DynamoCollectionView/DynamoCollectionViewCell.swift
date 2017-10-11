@@ -30,6 +30,14 @@ public class DynamoCollectionViewCell: UICollectionViewCell {
         return firstImage
     }()
     
+    public var activityIndicatorView: UIActivityIndicatorView = {
+        let activityIndicatorView = UIActivityIndicatorView()
+        activityIndicatorView.color = UIColor.gray
+        activityIndicatorView.activityIndicatorViewStyle = .gray
+        activityIndicatorView.translatesAutoresizingMaskIntoConstraints = false
+        return activityIndicatorView
+    }()
+    
     public var title:String? {
         set {
             nameLabel.text = newValue
@@ -91,7 +99,11 @@ public class DynamoCollectionViewCell: UICollectionViewCell {
     //private var overlayButton:UIButton!
     
     private func setupViews() {
+        
+        
         self.addSubview(self.backgroundImageView)
+        
+        
         self.backgroundColor = UIColor.white
         
         NSLayoutConstraint.activateViewConstraints(self.backgroundImageView, inSuperView: self, withLeading: 0.0, trailing: 0.0, top: 0.0, bottom: 0.0)
@@ -145,6 +157,9 @@ public class DynamoCollectionViewCell: UICollectionViewCell {
         tapGesture.numberOfTouchesRequired = 1
         tapGesture.numberOfTapsRequired = 1
         self.addGestureRecognizer(tapGesture)
+        
+        self.backgroundImageView.addSubview(activityIndicatorView)
+        NSLayoutConstraint.activateViewConstraints(self.activityIndicatorView, inSuperView: self.backgroundImageView, withLeading: 0, trailing: 0, top: 0, bottom: 0, width: nil, height: nil)
     }
     
     @objc func handleTap(_ recognizer:UITapGestureRecognizer) {

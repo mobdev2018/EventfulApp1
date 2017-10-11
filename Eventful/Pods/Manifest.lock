@@ -62,6 +62,9 @@ PODS:
     - nanopb/encode (= 0.3.8)
   - nanopb/decode (0.3.8)
   - nanopb/encode (0.3.8)
+  - SDWebImage (4.1.0):
+    - SDWebImage/Core (= 4.1.0)
+  - SDWebImage/Core (4.1.0)
   - SVProgressHUD (2.2.1)
   - SwiftLocation (2.0.7)
   - SwiftyCam (2.6.0)
@@ -80,6 +83,7 @@ DEPENDENCIES:
   - Firebase/Database
   - Firebase/Storage
   - IGListKit (from `https://github.com/Instagram/IGListKit.git`, branch `master`)
+  - SDWebImage
   - SVProgressHUD
   - SwiftLocation
   - SwiftyCam
@@ -115,12 +119,13 @@ SPEC CHECKSUMS:
   IGListKit: cb97f405ae43e59fe1da74271e19427ec20d3c07
   leveldb-library: 10fb39c39e243db4af1828441162405bbcec1404
   nanopb: 5601e6bca2dbf1ed831b519092ec110f66982ca3
+  SDWebImage: 0e435c14e402a6730315a0fb79f95e68654d55a4
   SVProgressHUD: db27c54e6e18bc903341661fc9feb55e04905cc4
   SwiftLocation: 1fe2e15a5812e961496e82eeaca71d03e829e47a
   SwiftyCam: 86c114177a1b1f5dc2c82384577d0c20b922a31b
   SwiftyJSON: c2842d878f95482ffceec5709abc3d05680c0220
   TextFieldEffects: 8706f53525f1ce51c8921b7af32237caab50c467
 
-PODFILE CHECKSUM: c4f0d185030834492a5645cd9d34278c4f27fbc5
+PODFILE CHECKSUM: 7027b4553d721faaa7fe04d2189bb26a03c8796b
 
 COCOAPODS: 1.3.1

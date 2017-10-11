@@ -196,6 +196,7 @@ class NewCommentsViewController: UIViewController, UITextFieldDelegate,CommentsS
     }
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        fetchComments()
         tabBarController?.tabBar.isHidden = true
         submitButton.isUserInteractionEnabled = true
         

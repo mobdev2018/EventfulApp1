@@ -19,10 +19,9 @@ target 'Eventful' do
     pod 'EZSwipeController'
     pod 'AMScrollingNavbar'
     pod 'IGListKit', :git => 'https://github.com/Instagram/IGListKit.git', :branch => 'master'
-    pod "ASPVideoPlayer"
+    pod "ASPVideoPlayer"    
+    pod 'SDWebImage', '~> 4.0'
 
-    
-    
     
     # Pods for Eventful
     

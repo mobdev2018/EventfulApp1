@@ -81,7 +81,11 @@ public class DynamoCollectionViewCell: UICollectionViewCell {
     
     public func refreshView() {
         if let img = backgroundImageView.image {
-            self.calenderUnit.backgroundColor = DynamoUtils.computeComplementaryColor(image: img)
+            let (brightColor, darkColor) = DynamoUtils.computeComplementaryColor(image: img)
+            self.calenderUnit.backgroundColor = brightColor
+            self.dayLabel.textColor = darkColor
+            self.monthLabel.textColor = darkColor
+            self.nameLabel.textColor = darkColor
         }
     }
     

@@ -397,7 +397,10 @@ extension HomeFeedController: DynamoCollectionViewDelegate, DynamoCollectionView
         let dateComponents = self.getDayAndMonthFromEvent(model)
         cell.day = dateComponents.0
         cell.month = dateComponents.1
-        cell.backgroundImageView.af_setImage(withURL: imageURL!)
+        cell.title = model.currentEventName.capitalized
+        cell.backgroundImageView.af_setImage(withURL: imageURL!, placeholderImage: nil, filter: nil, progress: nil, progressQueue: DispatchQueue.main, imageTransition: .noTransition, runImageTransitionIfCached: false) { (imageHolder) in
+            cell.refreshView()
+        }
         return cell
     }
     

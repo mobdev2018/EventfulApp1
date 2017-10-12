@@ -80,7 +80,7 @@ public class DynamoCollectionView: UIView, DynamoCollectionViewCellDelegate, UIG
         collectionView.dataSource = self
         collectionView.delegate = self
         collectionView.backgroundColor = .white
-
+        collectionView.showsHorizontalScrollIndicator = false
         backgroundColor = .white
         containerView.addSubview(collectionView)
         _ = NSLayoutConstraint.activateCentreXConstraint(withView: collectionView, superView: containerView)
@@ -143,6 +143,7 @@ public class DynamoCollectionView: UIView, DynamoCollectionViewCellDelegate, UIG
             numberOfItems = max(source.numberOfItems(self), 0)
             if numberOfItems > 0 {
                 topView = source.dynamoCollectionView(self, cellForItemAt: IndexPath(item: 0, section: 0))
+                topView.tag = 0
                 collectionView.reloadData()
             }
         }

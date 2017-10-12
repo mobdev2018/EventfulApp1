@@ -18,5 +18,4 @@ FOUNDATION_EXPORT const unsigned char DynamoCollectionViewVersionString[];
 
 #import <DynamoCollectionView/DynamoCollectionView.h>
 #import <DynamoCollectionView/CCColorCube.h>
-#import <DynamoCollectionView/CCImageColors.h>
 

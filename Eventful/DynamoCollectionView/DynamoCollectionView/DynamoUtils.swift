@@ -31,7 +31,7 @@ class DynamoUtils {
                 (brightColors[i] as! UIColor).getRed(&redV, green: &greenV, blue: &blueV, alpha: &alphaV)
                 let a = 1 - ( 0.299 * redV + 0.587 * greenV + 0.114 * blueV)/255
                 if a > 0.5 && (redV + greenV + blueV) < 2 {
-                    return (UIColor(red: redV, green: greenV, blue: blueV, alpha: 1.0), 0.9*(1 - complementaryOpacity*complementaryOpacity))
+                    return (UIColor(red: redV, green: greenV, blue: blueV, alpha: 1.0), 0.75*(1 - complementaryOpacity*complementaryOpacity))
                 }
             }
         }

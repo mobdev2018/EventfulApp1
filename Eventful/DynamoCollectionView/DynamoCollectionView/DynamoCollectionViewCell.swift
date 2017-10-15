@@ -55,6 +55,8 @@ public class DynamoCollectionViewCell: UICollectionViewCell {
         }
     }
     
+    public var topViewRatio: CGFloat = 0.6
+    
     override public var tag: Int {
         set {
             super.tag = newValue
@@ -85,6 +87,7 @@ public class DynamoCollectionViewCell: UICollectionViewCell {
             self.calenderUnit.backgroundColor = complementaryColor
             self.calenderUnit.layer.shadowColor = complementaryColor.cgColor
             self.darkOverlayImageView.alpha = complementaryOpacity
+            darkOverlayImageView.image = darkOverlayImageView.image?.featheredImageWithImage()
         }
     }
     
@@ -129,7 +132,7 @@ public class DynamoCollectionViewCell: UICollectionViewCell {
         
         // dark overlay
         self.addSubview(self.darkOverlayImageView)
-        NSLayoutConstraint.activateViewConstraints(self.darkOverlayImageView, inSuperView: self, withLeading: 0.0, trailing: 0.0, top: 0.0, bottom: 0.0)
+        NSLayoutConstraint.activateViewConstraints(self.darkOverlayImageView, inSuperView: self, withLeading: 0.0, trailing: 0, top: 0, bottom: 0)
         
         self.overlayTextView = UIView()
         self.overlayTextView.layer.cornerRadius = 5.0
@@ -197,6 +200,7 @@ public class DynamoCollectionViewCell: UICollectionViewCell {
             self.nameLabelLeading.constant = 10.0
             self.calenderToNameLabel.constant =  3.0
             self.nameLabelHeight.constant = 1.0
+            NSLayoutConstraint.activateViewConstraints(self.darkOverlayImageView, inSuperView: self, withLeading: 0.0, trailing: 0.0, top: 0 , bottom: -(1 - self.topViewRatio)*self.frame.size.height)
         }
         else {
             self.calenderUnitBottom.constant = -17.0
@@ -204,7 +208,9 @@ public class DynamoCollectionViewCell: UICollectionViewCell {
             self.nameLabelLeading.constant = 10.0
             self.calenderToNameLabel.constant = 3.0
             self.nameLabelHeight.constant = 1.0
+            NSLayoutConstraint.activateViewConstraints(self.darkOverlayImageView, inSuperView: self, withLeading: 0.0, trailing: 0.0, top: 0, bottom: 0)
         }
+        
     }
 }
 

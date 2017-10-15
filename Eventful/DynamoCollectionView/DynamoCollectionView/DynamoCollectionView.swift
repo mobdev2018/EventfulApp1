@@ -31,7 +31,6 @@ public class DynamoCollectionView: UIView, DynamoCollectionViewCellDelegate, UIG
     private var topView: DynamoCollectionViewCell!
     private var collectionView: UICollectionView!
     private var containerView: UIView!
-    private var topViewRatio: CGFloat = 0.6
     private var numberOfItems: Int = 0
     private let dynamoCollectionViewCellIdentifier = "DynamoCollectionViewCellIdentifier"
     // MARK: - Init
@@ -69,7 +68,7 @@ public class DynamoCollectionView: UIView, DynamoCollectionViewCellDelegate, UIG
         addSubview(containerView)
         
         NSLayoutConstraint.activateViewConstraints(containerView, inSuperView: self, withLeading: 0.0, trailing: 0.0, top: nil, bottom: 0.0, width: nil, height: nil)
-        _ = NSLayoutConstraint.activateEqualHeightConstraint(withView: containerView, referenceView: self, multiplier: (1.0 - topViewRatio))
+        _ = NSLayoutConstraint.activateEqualHeightConstraint(withView: containerView, referenceView: self, multiplier: (1.0 - topView.topViewRatio))
         
         // init collectionview
         
@@ -139,7 +138,7 @@ public class DynamoCollectionView: UIView, DynamoCollectionViewCellDelegate, UIG
     
     private func configureView() {
         if let source = dataSource {
-            topViewRatio = min(max(0, source.topViewRatio(self)), 1.0)
+            topView.topViewRatio = min(max(0, source.topViewRatio(self)), 1.0)
             numberOfItems = max(source.numberOfItems(self), 0)
             if numberOfItems > 0 {
                 topView = source.dynamoCollectionView(self, cellForItemAt: IndexPath(item: 0, section: 0))
@@ -197,7 +196,7 @@ extension DynamoCollectionView: UICollectionViewDelegate, UICollectionViewDataSo
     }
     
     public func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-        return 2.0
+        return 0.0
     }
     
     public func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {

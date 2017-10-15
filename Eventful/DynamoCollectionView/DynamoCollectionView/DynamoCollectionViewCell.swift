@@ -81,11 +81,10 @@ public class DynamoCollectionViewCell: UICollectionViewCell {
     
     public func refreshView() {
         if let img = backgroundImageView.image {
-            let (brightColor, darkColor) = DynamoUtils.computeComplementaryColor(image: img)
-            self.calenderUnit.backgroundColor = brightColor
-            self.dayLabel.textColor = darkColor
-            self.monthLabel.textColor = darkColor
-            self.nameLabel.textColor = darkColor
+            let (complementaryColor, complementaryOpacity) = DynamoUtils.computeComplementaryColor(image: img)
+            self.calenderUnit.backgroundColor = complementaryColor
+            self.darkOverlayImageView.alpha = complementaryOpacity
+            print("%s", self.nameLabel.text!)
         }
     }
     
@@ -97,7 +96,9 @@ public class DynamoCollectionViewCell: UICollectionViewCell {
     private var nameLabelHeight:NSLayoutConstraint!
     private var calenderToNameLabel:NSLayoutConstraint!
     private var calenderUnit:UIView!
+    private var overlayTextView:UIView!
     private var calenderUnitBottom:NSLayoutConstraint!
+    private var overlayTextViewBottom:NSLayoutConstraint!
     private var dayLabel:UILabel!
     private var monthLabel:UILabel!
     private var darkOverlayImageView: UIImageView = {
@@ -115,11 +116,7 @@ public class DynamoCollectionViewCell: UICollectionViewCell {
         self.backgroundColor = UIColor.white
         
         NSLayoutConstraint.activateViewConstraints(self.backgroundImageView, inSuperView: self, withLeading: 0.0, trailing: 0.0, top: 0.0, bottom: 0.0)
-        
-        // dark overlay
-        self.addSubview(self.darkOverlayImageView)
-        NSLayoutConstraint.activateViewConstraints(self.darkOverlayImageView, inSuperView: self, withLeading: 0.0, trailing: 0.0, top: 0.0, bottom: 0.0)
-        
+  
         self.calenderUnit = UIView()
         self.calenderUnit.layer.cornerRadius = 5.0
         self.calenderUnit.translatesAutoresizingMaskIntoConstraints = false
@@ -127,21 +124,32 @@ public class DynamoCollectionViewCell: UICollectionViewCell {
         NSLayoutConstraint.activateViewConstraints(self.calenderUnit, inSuperView: self, withLeading: 10.0, trailing: nil, top: nil, bottom: nil, width: 30.0, height: 30.0)
         self.calenderUnitBottom = NSLayoutConstraint.activateBottomConstraint(withView: self.calenderUnit, superView: self, andSeparation: 5.0)
         
+        // dark overlay
+        self.addSubview(self.darkOverlayImageView)
+        NSLayoutConstraint.activateViewConstraints(self.darkOverlayImageView, inSuperView: self, withLeading: 0.0, trailing: 0.0, top: 0.0, bottom: 0.0)
+        
+        self.overlayTextView = UIView()
+        self.overlayTextView.layer.cornerRadius = 5.0
+        self.overlayTextView.translatesAutoresizingMaskIntoConstraints = false
+        self.addSubview(self.overlayTextView)
+        NSLayoutConstraint.activateViewConstraints(self.overlayTextView, inSuperView: self, withLeading: 10.0, trailing: nil, top: nil, bottom: nil, width: 30.0, height: 30.0)
+        self.overlayTextViewBottom = NSLayoutConstraint.activateBottomConstraint(withView: self.overlayTextView, superView: self, andSeparation: 5.0)
+        
         self.dayLabel = UILabel()
         self.dayLabel.translatesAutoresizingMaskIntoConstraints = false
         self.dayLabel.font = UIFont.systemFont(ofSize: 10.0, weight: UIFont.Weight.semibold)
         self.dayLabel.textColor = .white
         self.dayLabel.textAlignment = .center
-        self.calenderUnit.addSubview(self.dayLabel)
-        NSLayoutConstraint.activateViewConstraints(self.dayLabel, inSuperView: self.calenderUnit, withLeading: 0.0, trailing: 0.0, top: 0.0, bottom: nil, width: nil, height: 20.0)
+        self.overlayTextView.addSubview(self.dayLabel)
+        NSLayoutConstraint.activateViewConstraints(self.dayLabel, inSuperView: self.overlayTextView, withLeading: 0.0, trailing: 0.0, top: 0.0, bottom: nil, width: nil, height: 20.0)
         
         self.monthLabel = UILabel()
         self.monthLabel.translatesAutoresizingMaskIntoConstraints = false
         self.monthLabel.font = UIFont.systemFont(ofSize: 8.0)
         self.monthLabel.textColor = .white
         self.monthLabel.textAlignment = .center
-        self.calenderUnit.addSubview(self.monthLabel)
-        NSLayoutConstraint.activateViewConstraints(self.monthLabel, inSuperView: self.calenderUnit, withLeading: 0.0, trailing: 0.0, top: nil, bottom: nil, width: nil, height: nil)
+        self.overlayTextView.addSubview(self.monthLabel)
+        NSLayoutConstraint.activateViewConstraints(self.monthLabel, inSuperView: self.overlayTextView, withLeading: 0.0, trailing: 0.0, top: nil, bottom: nil, width: nil, height: nil)
         _ = NSLayoutConstraint.activateVerticalSpacingConstraint(withFirstView: self.dayLabel, secondView: self.monthLabel, andSeparation: -5.0)
         _ = NSLayoutConstraint.activateHeightConstraint(view: self.dayLabel, withHeight: 1.0, andRelation: .greaterThanOrEqual)
         
@@ -182,12 +190,14 @@ public class DynamoCollectionViewCell: UICollectionViewCell {
         self.nameLabelWidth.constant = self.frame.width
         if mode == .Top {
             self.calenderUnitBottom.constant = -self.frame.height/2.0 + 15.0
+            self.overlayTextViewBottom.constant = -self.frame.height/2.0 + 15.0
             self.nameLabelLeading.constant = 10.0
             self.calenderToNameLabel.constant =  3.0
             self.nameLabelHeight.constant = 1.0
         }
         else {
             self.calenderUnitBottom.constant = -17.0
+            self.overlayTextViewBottom.constant = -17.0
             self.nameLabelLeading.constant = 10.0
             self.calenderToNameLabel.constant = 3.0
             self.nameLabelHeight.constant = 1.0

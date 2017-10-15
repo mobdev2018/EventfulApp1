@@ -84,7 +84,6 @@ public class DynamoCollectionViewCell: UICollectionViewCell {
             let (complementaryColor, complementaryOpacity) = DynamoUtils.computeComplementaryColor(image: img)
             self.calenderUnit.backgroundColor = complementaryColor
             self.darkOverlayImageView.alpha = complementaryOpacity
-            print("%s", self.nameLabel.text!)
         }
     }
     
@@ -145,7 +144,7 @@ public class DynamoCollectionViewCell: UICollectionViewCell {
         
         self.monthLabel = UILabel()
         self.monthLabel.translatesAutoresizingMaskIntoConstraints = false
-        self.monthLabel.font = UIFont.systemFont(ofSize: 8.0)
+        self.monthLabel.font = UIFont.systemFont(ofSize: 8.0, weight: UIFont.Weight.light)
         self.monthLabel.textColor = .white
         self.monthLabel.textAlignment = .center
         self.overlayTextView.addSubview(self.monthLabel)
@@ -156,7 +155,7 @@ public class DynamoCollectionViewCell: UICollectionViewCell {
         self.nameLabel = UILabel()
         self.nameLabel.numberOfLines = 2
         self.nameLabel.translatesAutoresizingMaskIntoConstraints = false
-        self.nameLabel.font = UIFont.systemFont(ofSize: 8.0, weight: UIFont.Weight.light)
+        self.nameLabel.font = UIFont.systemFont(ofSize: 8.0, weight: UIFont.Weight.regular)
         self.nameLabel.textColor = .white
         //self.nameLabel.shadowColor = UIColor.clear
         //self.nameLabel.shadowOffset = CGSize(width: 1, height: -2)

@@ -83,6 +83,7 @@ public class DynamoCollectionViewCell: UICollectionViewCell {
         if let img = backgroundImageView.image {
             let (complementaryColor, complementaryOpacity) = DynamoUtils.computeComplementaryColor(image: img)
             self.calenderUnit.backgroundColor = complementaryColor
+            self.calenderUnit.layer.shadowColor = complementaryColor.cgColor
             self.darkOverlayImageView.alpha = complementaryOpacity
         }
     }
@@ -119,6 +120,9 @@ public class DynamoCollectionViewCell: UICollectionViewCell {
         self.calenderUnit = UIView()
         self.calenderUnit.layer.cornerRadius = 5.0
         self.calenderUnit.translatesAutoresizingMaskIntoConstraints = false
+        self.calenderUnit.layer.shadowOpacity = 0.5
+        self.calenderUnit.layer.shadowOffset = CGSize.zero
+        self.calenderUnit.layer.shadowRadius = 3.0
         self.addSubview(self.calenderUnit)
         NSLayoutConstraint.activateViewConstraints(self.calenderUnit, inSuperView: self, withLeading: 10.0, trailing: nil, top: nil, bottom: nil, width: 30.0, height: 30.0)
         self.calenderUnitBottom = NSLayoutConstraint.activateBottomConstraint(withView: self.calenderUnit, superView: self, andSeparation: 5.0)

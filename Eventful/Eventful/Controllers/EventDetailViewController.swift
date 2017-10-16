@@ -132,7 +132,7 @@ class EventDetailViewController: UIViewController {
         print("Comments button pressed")
         commentsController.eventKey = eventKey
         newCommentsController.eventKey = eventKey
-        present(commentsController, animated: true, completion: nil)
+        present(newCommentsController, animated: true, completion: nil)
         
     }
     

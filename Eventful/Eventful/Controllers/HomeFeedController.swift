@@ -381,6 +381,20 @@ extension HomeFeedController: UICollectionViewDataSource {
 extension HomeFeedController: DynamoCollectionViewDelegate, DynamoCollectionViewDataSource {
     
     // MARK: DynamoCollectionView Datasource
+    func dynamoCollectionView(_ dynamoCollectionView: DynamoCollectionView, willDisplay cell: UICollectionViewCell, indexPath: IndexPath) {
+        
+        paginationHelper.paginate(completion: { [unowned self] (events) in
+            for event in events {
+                if !self.allEvents.contains(where: {$0.key == event.key}) {
+                    self.allEvents.append(event)
+                }
+            }
+            DispatchQueue.main.async {
+                self.dynamoCollectionView.reloadData()
+            }
+        })
+        
+    }
     
     func topViewRatio(_ dynamoCollectionView: DynamoCollectionView) -> CGFloat {
         return 0.6

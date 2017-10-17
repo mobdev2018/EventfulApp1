@@ -16,6 +16,8 @@ public protocol DynamoCollectionViewDataSource: NSObjectProtocol {
 
 public protocol DynamoCollectionViewDelegate: NSObjectProtocol {
     func dynamoCollectionView(_ dynamoCollectionView: DynamoCollectionView, didSelectItemAt indexPath: IndexPath)
+    
+    func dynamoCollectionView(_ dynamoCollectionView: DynamoCollectionView, willDisplay cell: UICollectionViewCell, indexPath: IndexPath)
 }
 
 public let DynamoCollectionViewEnableScrollingNotification = NSNotification.Name("DynamoCollectionViewEnableScrollingNotification")
@@ -31,6 +33,7 @@ public class DynamoCollectionView: UIView, DynamoCollectionViewCellDelegate, UIG
     private var topView: DynamoCollectionViewCell!
     private var collectionView: UICollectionView!
     private var containerView: UIView!
+    private var topViewRatio: CGFloat = 0.6
     private var numberOfItems: Int = 0
     private let dynamoCollectionViewCellIdentifier = "DynamoCollectionViewCellIdentifier"
     // MARK: - Init
@@ -44,7 +47,7 @@ public class DynamoCollectionView: UIView, DynamoCollectionViewCellDelegate, UIG
         super.init(coder: aDecoder)
         initViews()
     }
-
+    
     public func initViews() {
         
         // init topview
@@ -68,7 +71,7 @@ public class DynamoCollectionView: UIView, DynamoCollectionViewCellDelegate, UIG
         addSubview(containerView)
         
         NSLayoutConstraint.activateViewConstraints(containerView, inSuperView: self, withLeading: 0.0, trailing: 0.0, top: nil, bottom: 0.0, width: nil, height: nil)
-        _ = NSLayoutConstraint.activateEqualHeightConstraint(withView: containerView, referenceView: self, multiplier: (1.0 - topView.topViewRatio))
+        _ = NSLayoutConstraint.activateEqualHeightConstraint(withView: containerView, referenceView: self, multiplier: (1.0 - topViewRatio))
         
         // init collectionview
         
@@ -79,7 +82,7 @@ public class DynamoCollectionView: UIView, DynamoCollectionViewCellDelegate, UIG
         collectionView.dataSource = self
         collectionView.delegate = self
         collectionView.backgroundColor = .white
-        collectionView.showsHorizontalScrollIndicator = false
+        
         backgroundColor = .white
         containerView.addSubview(collectionView)
         _ = NSLayoutConstraint.activateCentreXConstraint(withView: collectionView, superView: containerView)
@@ -87,7 +90,7 @@ public class DynamoCollectionView: UIView, DynamoCollectionViewCellDelegate, UIG
         _ = NSLayoutConstraint.activateEqualWidthConstraint(withView: collectionView, referenceView: containerView)
         _ = NSLayoutConstraint.activateEqualHeightConstraint(withView: collectionView, referenceView: containerView)
         collectionView.register(DynamoCollectionViewCell.self, forCellWithReuseIdentifier: dynamoCollectionViewCellIdentifier)
-
+        
         // init view's gestures
         
         let panGesture = UIPanGestureRecognizer(target: self, action: #selector(handlePan(recognizer:)))
@@ -117,7 +120,7 @@ public class DynamoCollectionView: UIView, DynamoCollectionViewCellDelegate, UIG
     }
     
     // MARK: Public API
-
+    
     public func reloadData() {
         configureView()
     }
@@ -138,16 +141,15 @@ public class DynamoCollectionView: UIView, DynamoCollectionViewCellDelegate, UIG
     
     private func configureView() {
         if let source = dataSource {
-            topView.topViewRatio = min(max(0, source.topViewRatio(self)), 1.0)
+            topViewRatio = min(max(0, source.topViewRatio(self)), 1.0)
             numberOfItems = max(source.numberOfItems(self), 0)
             if numberOfItems > 0 {
                 topView = source.dynamoCollectionView(self, cellForItemAt: IndexPath(item: 0, section: 0))
-                topView.tag = 0
                 collectionView.reloadData()
             }
         }
     }
-
+    
     // MARK: DynamoCollectionViewCell Delegate
     
     func dynamoCollectionViewCellDidSelect(sender: UICollectionViewCell) {
@@ -158,7 +160,7 @@ public class DynamoCollectionView: UIView, DynamoCollectionViewCellDelegate, UIG
 }
 
 extension DynamoCollectionView: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout  {
-
+    
     // MARK: CollectionView Datasource
     
     public func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -179,6 +181,10 @@ extension DynamoCollectionView: UICollectionViewDelegate, UICollectionViewDataSo
         }
     }
     
+    public func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        delegate?.dynamoCollectionView(self, willDisplay: cell, indexPath: indexPath)
+    }
+    
     public func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
         return .zero
     }
@@ -196,7 +202,7 @@ extension DynamoCollectionView: UICollectionViewDelegate, UICollectionViewDataSo
     }
     
     public func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-        return 0.0
+        return 2.0
     }
     
     public func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {

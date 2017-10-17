@@ -15,7 +15,12 @@ class EventDetailViewController: UIViewController {
     var currentEvent : Event?{
         didSet{
             let imageURL = URL(string: (currentEvent?.currentEventImage)!)
-            currentEventImage.af_setImage(withURL: imageURL!)
+            //            currentEventImage.image = UIImage.init(named: "Blankimage")
+                        currentEventImage.af_setImage(withURL: imageURL!)
+//            currentEventImage.sd_setImage(with: imageURL!, placeholderImage: UIImage(), options: .highPriority) { (image, error, catcheType, url) in
+                //hide ActivityIndicator
+                //    cell.activityIndicatorView.stopAnimating()
+//            }
             currentEventTime.text = currentEvent?.currentEventTime
             currentEventDate.text = currentEvent?.currentEventDate
             eventNameLabel.text = currentEvent?.currentEventName.capitalized
@@ -40,7 +45,7 @@ class EventDetailViewController: UIViewController {
     
     var eventKey = ""
     var eventPromo = ""
- 
+    
     
     var currentEventAttendCount = 0
     //
@@ -132,6 +137,10 @@ class EventDetailViewController: UIViewController {
         print("Comments button pressed")
         commentsController.eventKey = eventKey
         newCommentsController.eventKey = eventKey
+        newCommentsController.comments.removeAll()
+        newCommentsController.adapter.reloadData { (updated) in
+            
+        }
         present(newCommentsController, animated: true, completion: nil)
         
     }
@@ -223,7 +232,7 @@ class EventDetailViewController: UIViewController {
     }
     
     
-
+    
     
     @objc func swipeAction(_ swipe: UIGestureRecognizer){
         if let swipeGesture = swipe as? UISwipeGestureRecognizer {
@@ -253,9 +262,9 @@ class EventDetailViewController: UIViewController {
         downSwipe.direction = .down
         view.addGestureRecognizer(downSwipe)
         view.backgroundColor = UIColor.white
-//        self.navigationItem.hidesBackButton = true
-//        let backButton = UIBarButtonItem(image: UIImage(named: "icons8-Back-64"), style: .plain, target: self, action: #selector(GoBack))
-//        self.navigationItem.leftBarButtonItem = backButton
+        //        self.navigationItem.hidesBackButton = true
+        //        let backButton = UIBarButtonItem(image: UIImage(named: "icons8-Back-64"), style: .plain, target: self, action: #selector(GoBack))
+        //        self.navigationItem.leftBarButtonItem = backButton
         
         //Subviews will be added here
         view.addSubview(currentEventImage)
@@ -315,7 +324,6 @@ class EventDetailViewController: UIViewController {
         })
         
     }
-    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.

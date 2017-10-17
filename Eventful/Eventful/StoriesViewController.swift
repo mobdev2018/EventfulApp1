@@ -22,7 +22,7 @@ class StoriesViewController: UIViewController, UICollectionViewDataSource, UICol
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
         layout.minimumLineSpacing = 0
-       let cv = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        let cv = UICollectionView(frame: .zero, collectionViewLayout: layout)
         cv.backgroundColor = UIColor.white
         cv.dataSource = self
         cv.delegate = self
@@ -41,7 +41,7 @@ class StoriesViewController: UIViewController, UICollectionViewDataSource, UICol
         cell.startPlayingVideo(urlEntered: desiredURL)
         cell.cellStry = allStories[indexPath.row]
         cell.backgroundColor = UIColor.white
-    return cell
+        return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
@@ -57,8 +57,8 @@ class StoriesViewController: UIViewController, UICollectionViewDataSource, UICol
         collectionView.anchor(top: view.topAnchor, left: view.leftAnchor, bottom: view.bottomAnchor, right: view.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
         //Do any additional setup after loading the view
         collectionView.register(StoryDisplayCell.self, forCellWithReuseIdentifier: cellID)
-        fetchStories()
-       
+        //        fetchStories()
+        
     }
     
     
@@ -89,9 +89,18 @@ class StoriesViewController: UIViewController, UICollectionViewDataSource, UICol
             print(self.allStories)
             
             DispatchQueue.main.async {
-            self.collectionView.reloadData()
+                self.collectionView.reloadData()
             }
         }
     }
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.allStories.removeAll()
+        self.collectionView.reloadData()
+        
+        
+        self.fetchStories();
+    }
     
 }
+

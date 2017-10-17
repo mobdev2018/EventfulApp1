@@ -29,35 +29,66 @@ struct PostService {
         postRef.updateChildValues(dict)
         userRef.updateChildValues(dict)
     }
-    static func showEvent(pageSize: UInt, lastPostKey: String? = nil, category: String? = nil,completion: @escaping ([Event]) -> Void) {
+    
+    static func showEvent(pageSize: UInt, lastPostKey: String? = nil, category: String? = nil,completion: @escaping ([Event],String) -> Void) {
         //getting firebase root directory
         // print(lastPostKey)
         //  print("came here")
         var currentEvents = [Event]()
         let eventsByLocationRef = Database.database().reference().child("eventsbylocation").child(User.current.location!)
         //let ref = Database.database().reference().child("events")
-        var query = eventsByLocationRef.queryOrderedByKey().queryLimited(toFirst: pageSize)
+        var query = eventsByLocationRef.queryOrderedByKey()
+        //        if let lastPostKey = lastPostKey {
+        //            //  print(lastPostKey)
+        //            query = query.queryStarting(atValue: lastPostKey).queryLimited(toFirst: pageSize + 1)
+        //        } else {
+        //            query = query.queryLimited(toFirst: pageSize)
+        //        }
+        var isStart = false
         if let lastPostKey = lastPostKey {
-            //  print(lastPostKey)
-            query = query.queryEnding(atValue: lastPostKey)
+            if category == nil || category == "" || category == "Home" {
+                query = query.queryStarting(atValue: lastPostKey).queryLimited(toFirst: pageSize + 1)
+                isStart = true
+            }else{
+                query = eventsByLocationRef.queryOrdered(byChild: "category").queryEqual(toValue: category)
+            }
+        }else{
+            if category == nil || category == "" || category == "Home" {
+                query = query.queryLimited(toFirst: pageSize)
+                isStart = true
+            }else{
+                query = eventsByLocationRef.queryOrdered(byChild: "category").queryEqual(toValue: category).queryLimited(toFirst: pageSize)
+                isStart = true
+            }
         }
+        var nCount = 0
         query.observeSingleEvent(of: .value, with: { (snapshot) in
             //   print(snapshot)
             // print(snapshot.value)
             guard let allObjects = snapshot.children.allObjects as? [DataSnapshot] else{
                 return
             }
-            allObjects.forEach({ (snapshot) in
+            var filteredObjects = allObjects
+            if let _ = lastPostKey {
+                filteredObjects.removeFirst()
+            }
+            var key = ""
+            
+            filteredObjects.forEach({ (snapshot) in
                 // print(snapshot.value ?? "")
-                print(category ?? "")
-                EventService.show(forEventKey: snapshot.value as! String,eventCategory: category, completion: { (event) in
-                    currentEvents.append(event!)
-                    // print("\n\n\n\n\n\n")
-                    // print("Finished an event")
-                    // print(currentEvents.count)
-                    completion(currentEvents)
-                })
-                
+                //                print(category ?? "")
+                key = snapshot.key
+                let value = snapshot.value as! [String:Any];
+                if((value["name"] as! String) == lastPostKey){
+                    isStart = true
+                    nCount = 0
+                }
+                if(isStart && nCount < pageSize){
+                    EventService.show(forEventKey: value["name"] as! String ,eventCategory: category, completion: { (event) in
+                        currentEvents.append(event!)
+                        completion(currentEvents,key)
+                    })
+                }
             })
             
             
@@ -68,3 +99,4 @@ struct PostService {
     
     
 }
+

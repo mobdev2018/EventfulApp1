@@ -16,7 +16,7 @@ import Firebase
 
 
 class SignUpViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
-
+    var selectedImageFromPicker: UIImage? = UIImage()
     var selectedUserGender: String = ""
     // creates a signup UILabel
     var userLocation:String?
@@ -38,10 +38,9 @@ class SignUpViewController: UIViewController, UIImagePickerControllerDelegate, U
     
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
-        
-        
         if let editedImage = info["UIImagePickerControllerEditedImage"] as? UIImage {
-            plusPhotoButton.setImage(editedImage.withRenderingMode(.alwaysOriginal), for: .normal)
+            selectedImageFromPicker = editedImage
+     plusPhotoButton.setImage(editedImage.withRenderingMode(.alwaysOriginal), for: .normal)
         } else if let originalImage =
             info["UIImagePickerControllerOriginalImage"] as? UIImage {
             plusPhotoButton.setImage(originalImage.withRenderingMode(.alwaysOriginal), for: .normal)
@@ -55,20 +54,20 @@ class SignUpViewController: UIViewController, UIImagePickerControllerDelegate, U
         dismiss(animated: true, completion: nil)
     }
     
-//    let signUp:UILabel = {
-//        let signUpLabel = UILabel()
-//        let myString = "Sign Up"
-//        let myAttribute = [NSFontAttributeName:UIFont(name: "Times New Roman", size: 20)!]
-//        let myAttrString = NSAttributedString(string: myString, attributes: myAttribute)
-//        signUpLabel.attributedText = myAttrString
-//        
-//        return signUpLabel
-//    }()
-//    
+    //    let signUp:UILabel = {
+    //        let signUpLabel = UILabel()
+    //        let myString = "Sign Up"
+    //        let myAttribute = [NSFontAttributeName:UIFont(name: "Times New Roman", size: 20)!]
+    //        let myAttrString = NSAttributedString(string: myString, attributes: myAttribute)
+    //        signUpLabel.attributedText = myAttrString
+    //
+    //        return signUpLabel
+    //    }()
+    //
     // creates a name UITextField to hold the name
-
+    
     let nameTextField : HoshiTextField = {
-       let nameText = HoshiTextField()
+        let nameText = HoshiTextField()
         nameText.placeholderColor = .white
         nameText.placeholder = "Username"
         nameText.layer.borderColor = UIColor.lightGray.cgColor
@@ -79,7 +78,7 @@ class SignUpViewController: UIViewController, UIImagePickerControllerDelegate, U
         nameText.textColor = .white
         return nameText
     }()
-
+    
     // creates a email UITextField to hold the email
     let emailTextField : HoshiTextField = {
         let emaiilText = HoshiTextField()
@@ -93,7 +92,7 @@ class SignUpViewController: UIViewController, UIImagePickerControllerDelegate, U
         emaiilText.textColor = .white
         return emaiilText
     }()
-
+    
     //creates a password UItextield
     let passwordTextField : HoshiTextField = {
         let passwordText = HoshiTextField()
@@ -108,7 +107,7 @@ class SignUpViewController: UIViewController, UIImagePickerControllerDelegate, U
         passwordText.textColor = .white
         return passwordText
     }()
-
+    
     //creates a confirm password UItextfield
     let confirmPasswordTextField : HoshiTextField = {
         let confirmPasswordText = HoshiTextField()
@@ -138,64 +137,73 @@ class SignUpViewController: UIViewController, UIImagePickerControllerDelegate, U
     
     // will handle the  sign up of a user
     @objc func handleSignUp(){
-            // first we cant to take sure that all of the fields are filled
-        let bio: String = ""
-        
-        let profilePic: String = ""
-            guard let username = self.nameTextField.text,
-                let confirmPassword = self.confirmPasswordTextField.text,
-                let email = self.emailTextField.text,
-                let password = self.passwordTextField.text,
-                !username.isEmpty,
-                !email.isEmpty,
-                !password.isEmpty,
+        // first we cant to take sure that all of the fields are filled
+        var profilePic: String = ""
+        // will take the user selected image and load it to firebase
+        let imageName = NSUUID().uuidString
+        guard let username = self.nameTextField.text,
+            let confirmPassword = self.confirmPasswordTextField.text,
+            let email = self.emailTextField.text,
+            let password = self.passwordTextField.text,
+            !username.isEmpty,
+            !email.isEmpty,
+            !password.isEmpty,
             !confirmPassword.isEmpty
-                else {
-                    
-                    print("Required fields are not all filled!")
-                    return
-            }
-            
-            let gender = self.selectedUserGender;
-            // will make sure user is validated before it even tries to create user
-            
-            if self.validateEmail(enteredEmail:email) != true{
-                let alertController = UIAlertController(title: "Error", message: "Please Enter A Valid Email", preferredStyle: .alert)
-                let defaultAction = UIAlertAction(title: "Ok", style: .cancel, handler: nil)
-                alertController.addAction(defaultAction)
-                present(alertController, animated: true, completion: nil)
-
-            }
+            else {
+                print("Required fields are not all filled!")
+                return
+        }
+        if self.validateEmail(enteredEmail:email) != true{
+            let alertController = UIAlertController(title: "Error", message: "Please Enter A Valid Email", preferredStyle: .alert)
+            let defaultAction = UIAlertAction(title: "Ok", style: .cancel, handler: nil)
+            alertController.addAction(defaultAction)
+            self.present(alertController, animated: true, completion: nil)
+        }
+        // will make sure user is validated before it even tries to create user
         // will make sure the password and confirm password textfields have the same value if so it will print an error
-        if passwordTextField.text != confirmPasswordTextField.text {
+        if self.passwordTextField.text != self.confirmPasswordTextField.text {
             let alertController = UIAlertController(title: "Error", message: "Passwords Don't Match", preferredStyle: .alert)
             let defaultAction = UIAlertAction(title: "Ok", style: .cancel, handler: nil)
             alertController.addAction(defaultAction)
-            present(alertController, animated: true, completion: nil)
+            self.present(alertController, animated: true, completion: nil)
         }
-        
-            // will authenticate a user into the authentication services with an email and passowrd
+        //create a reference to the sotrage database in firebase
+        let storageRef = Storage.storage().reference().child("profile_images").child("\(imageName).PNG")
+        //following function does the work of putting it into firebase
+        //notice I also set the value of profilepic oo it can be saved in the updated user instance in the database
+        if let userImage = selectedImageFromPicker,let uploadData = UIImageJPEGRepresentation(userImage, 0.1){
             AuthService.createUser(controller: self, email: email, password: password) { (authUser) in
-                guard let firUser = authUser else {
+                guard let firUser = authUser else{
                     return
                 }
-                
-                // wlll add the user to the firebase database
-                UserService.create(firUser, username: username, gender: gender , profilePic: profilePic , bio: bio, location: self.userLocation!) { (user) in
-                    guard let user = user else {
-                         print("User successfully loaded into firebase db")
+                storageRef.putData(uploadData, metadata: nil, completion: { (metadata, error) in
+                    if error != nil {
+                        print(error ?? "")
                         return
                     }
-                    // will set the current user for userdefaults to work
-                    User.setCurrent(user, writeToUserDefaults: true)
-                    // self.delegate?.finishSigningUp()
-
-                    self.finishSigningUp()
+                    profilePic = (metadata?.downloadURL()!.absoluteString)!
+                    //printing to make sure values are contained in these strings
+                    print(profilePic)
+                    print(username)
                     
-              
-                }
+                    UserService.create(firUser, username: username, profilePic: profilePic, location: self.userLocation!, completion: { (user) in
+                        guard let user = user else {
+                            print("User not loaded into firebase db")
+                            return
+                        }
+                        User.setCurrent(user, writeToUserDefaults: true)
+                        // will set the current user for userdefaults to work
+                        print(user.profilePic ?? "")
+                        print(user.username ?? "")
+                        
+                        // self.delegate?.finishSigningUp()
+                        self.finishSigningUp()
+                        
+                    })
+                })
             }
         }
+    }
     
     
     func finishSigningUp() {
@@ -208,7 +216,7 @@ class SignUpViewController: UIViewController, UIImagePickerControllerDelegate, U
     }
     
     
-// will validate email entry so user can not enter false text
+    // will validate email entry so user can not enter false text
     
     func validateEmail(enteredEmail:String) -> Bool {
         let emailFormat = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,64}"
@@ -217,7 +225,7 @@ class SignUpViewController: UIViewController, UIImagePickerControllerDelegate, U
     }
     //will create a label so users know to select gender when creating account
     let genderLabel: UILabel = {
-       let gender = UILabel()
+        let gender = UILabel()
         let myString = "Gender"
         let myAttribute = [NSAttributedStringKey.font:UIFont(name: "Times New Roman", size: 15)!]
         let myAttrString = NSAttributedString(string: myString, attributes: myAttribute)
@@ -234,19 +242,19 @@ class SignUpViewController: UIViewController, UIImagePickerControllerDelegate, U
     }()
     
     @objc func handleGenderSelection()  {
-       //print(genderSelector.selectedSegmentIndex)
+        //print(genderSelector.selectedSegmentIndex)
         if (genderSelector.selectedSegmentIndex == 0) {
             selectedUserGender = "Male"
         }else if(genderSelector.selectedSegmentIndex == 1 ){
             selectedUserGender = "Female"
         }
-       // print(selectedUserGender)
+        // print(selectedUserGender)
     }
     
-  // will create a cancel button so users can go back to login screen if they actually want to log in
-   // Buton setup as well as cancel will be in this code block
+    // will create a cancel button so users can go back to login screen if they actually want to log in
+    // Buton setup as well as cancel will be in this code block
     let cancelButton : UIButton = {
-       let cancel = UIButton()
+        let cancel = UIButton()
         cancel.setTitle("Cancel", for: .normal)
         cancel.titleLabel?.font = UIFont.boldSystemFont(ofSize: 14)
         cancel.setTitleColor(.black, for: .normal)
@@ -274,7 +282,7 @@ class SignUpViewController: UIViewController, UIImagePickerControllerDelegate, U
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIKeyboardWillShow, object: nil)
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIKeyboardWillHide, object: nil)
     }
-
+    
     
     // will properly show keyboard
     @objc func keyboardWillShow(sender: NSNotification) {
@@ -336,45 +344,45 @@ class SignUpViewController: UIViewController, UIImagePickerControllerDelegate, U
         tap.cancelsTouchesInView = false
         
         view.addGestureRecognizer(tap)
-
+        
         /////////////////////////  Where all the subviews will be added
         self.addScrollView()
         self.insertViewsInScrollView()
         self.addBottomMostItems()
         
-//        view.addSubview(plusPhotoButton)
-//        view.addSubview(cancelButton)
+        //        view.addSubview(plusPhotoButton)
+        //        view.addSubview(cancelButton)
         ////////////////////////////////////////////////////////////////////
         
         
         /////////////////////////  Where all the constraints will be added
         // constraints for the sign up label/title
-//             plusPhotoButton.anchor(top: view.topAnchor, left: nil, bottom: nil, right: nil, paddingTop: 50, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 140, height: 140)
-//        plusPhotoButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-//
-//        _ = cancelButton.anchor(top: view.centerYAnchor, left: view.leftAnchor, bottom: nil, right: nil, paddingTop: -300, paddingLeft: 20, paddingBottom: 0, paddingRight: 0, width: 0, height: 20)
-//
-//        ////////////////////////////////////////////////////////////////////
-//
-//        
-//        createSignUpScreen()
-
+        //             plusPhotoButton.anchor(top: view.topAnchor, left: nil, bottom: nil, right: nil, paddingTop: 50, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 140, height: 140)
+        //        plusPhotoButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        //
+        //        _ = cancelButton.anchor(top: view.centerYAnchor, left: view.leftAnchor, bottom: nil, right: nil, paddingTop: -300, paddingLeft: 20, paddingBottom: 0, paddingRight: 0, width: 0, height: 20)
+        //
+        //        ////////////////////////////////////////////////////////////////////
+        //
+        //
+        //        createSignUpScreen()
+        
         
         // Do any additional setup after loading the view.
     }
     
-//    var stackView: UIStackView?
-//    
-//    func  createSignUpScreen(){
-//        stackView = UIStackView(arrangedSubviews: [ nameTextField, emailTextField,passwordTextField,confirmPasswordTextField, signupButton])
-//        view.addSubview(stackView!)
-//        stackView?.distribution = .fillEqually
-//        stackView?.axis = .vertical
-//        stackView?.spacing = 15.0
-//        stackView?.anchor(top: plusPhotoButton.bottomAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, paddingTop: 40, paddingLeft: 40, paddingBottom: 0, paddingRight: 40, width: 0, height: 350)
-//        
-//        
-//    }
+    //    var stackView: UIStackView?
+    //
+    //    func  createSignUpScreen(){
+    //        stackView = UIStackView(arrangedSubviews: [ nameTextField, emailTextField,passwordTextField,confirmPasswordTextField, signupButton])
+    //        view.addSubview(stackView!)
+    //        stackView?.distribution = .fillEqually
+    //        stackView?.axis = .vertical
+    //        stackView?.spacing = 15.0
+    //        stackView?.anchor(top: plusPhotoButton.bottomAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, paddingTop: 40, paddingLeft: 40, paddingBottom: 0, paddingRight: 40, width: 0, height: 350)
+    //
+    //
+    //    }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -385,8 +393,8 @@ class SignUpViewController: UIViewController, UIImagePickerControllerDelegate, U
         super.viewWillDisappear(animated)
         self.removeKeyboardNotifications()
     }
-
-
+    
+    
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         let alertController = UIAlertController(title: "Enable access to your location \n Discover events near you", message: nil, preferredStyle: UIAlertControllerStyle.alert)
@@ -444,7 +452,7 @@ class SignUpViewController: UIViewController, UIImagePickerControllerDelegate, U
         
         self.present(alertController, animated: true)
     }
-   
+    
     
     //MARK:- View Builder
     fileprivate var contentScrollView:UIScrollView!
@@ -506,7 +514,7 @@ class SignUpViewController: UIViewController, UIImagePickerControllerDelegate, U
         
         
         let textFieldHeight:CGFloat = 47.5
-
+        
         self.nameTextField.translatesAutoresizingMaskIntoConstraints = false
         self.nameTextField.delegate = self
         self.scrollViewContent.addSubview(self.nameTextField)
@@ -578,7 +586,7 @@ class SignUpViewController: UIViewController, UIImagePickerControllerDelegate, U
         self.bottomPadding = NSLayoutConstraint.addHeightConstraint(view: pseudoView3, withHeight: 30.0)
         NSLayoutConstraint.activate([self.bottomPadding])
     }
-
+    
 }
 
 extension SignUpViewController: UITextFieldDelegate {

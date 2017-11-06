@@ -15,12 +15,14 @@ import  UIKit
 
 struct UserService {
     /// will create a user in the database
-    static func create(_ firUser: FIRUser, username: String, gender: String,profilePic: String,bio: String,location: String, completion: @escaping (User?) -> Void) {
+    static func create(_ firUser: FIRUser, username: String,profilePic: String,location: String, completion: @escaping (User?) -> Void) {
+        print(profilePic)
+        print(username)
+        
+        print("")
         let userAttrs = ["username": username,
-                         "gender": gender,
                          "location": location,
-                         "profilePic": profilePic,
-                         "bio": bio] as [String : Any]
+                         "profilePic": profilePic] as [String : Any]
         //creats the path in the database where we want our user attributes to be created
         //Also sets the value at that point in the tree to the user Attributes array
         let ref = Database.database().reference().child("users").child(firUser.uid)
@@ -36,9 +38,8 @@ struct UserService {
         }
     }
     //Will allow you to edit user data in firebase
-    static func edit(username: String, bio: String, completion: @escaping (User?) -> Void) {
-        let userAttrs = ["username": username,
-                         "bio": bio] as [String : Any]
+    static func edit(username: String, completion: @escaping (User?) -> Void) {
+        let userAttrs = ["username": username] as [String : Any]
         
         let ref = Database.database().reference().child("users").child(User.current.uid)
         ref.updateChildValues(userAttrs) { (error, ref) in
@@ -77,11 +78,13 @@ struct UserService {
         // 2
         return userRef.observe(.value, with: { snapshot in
             // 3
+            print(snapshot)
             guard let user = User(snapshot: snapshot) else {
                 return completion(userRef, nil, [])
             }
             
-          //  print(user)
+            print(user)
+            print(user.uid)
             // 4
             Events(for: user, completion: { events in
                 // 5

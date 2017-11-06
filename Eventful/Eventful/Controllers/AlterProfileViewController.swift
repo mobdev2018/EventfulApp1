@@ -161,13 +161,6 @@ class AlterProfileViewController: UIViewController, UIImagePickerControllerDeleg
     let changeQuote: UITextView = {
        let quoteAlter = UITextView()
         quoteAlter.textAlignment = .center
-        if User.current.bio == ""{
-            quoteAlter.textColor = UIColor.lightGray
-            quoteAlter.text = "Bio..."
-        }else{
-            quoteAlter.textColor = UIColor.lightGray
-            quoteAlter.text = User.current.bio
-        }
         quoteAlter.autocorrectionType = UITextAutocorrectionType.no
         quoteAlter.returnKeyType = UIReturnKeyType.done
         quoteAlter.layer.borderColor = UIColor.lightGray.cgColor
@@ -222,7 +215,7 @@ class AlterProfileViewController: UIViewController, UIImagePickerControllerDeleg
                         User.setCurrent(user, writeToUserDefaults: true)
                     }
                 })
-                UserService.edit(username: username, bio: bio ) { (user) in
+                UserService.edit(username: username) { (user) in
                     guard let user = user else {
                         return
                     }

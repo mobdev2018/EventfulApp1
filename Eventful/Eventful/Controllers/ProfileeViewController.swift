@@ -62,9 +62,6 @@
             collectionView?.register(EventsAttendingCell.self, forCellWithReuseIdentifier: cellID)
             //        fetchEvents()
             collectionView?.alwaysBounceVertical = true
-            
-            
-            
         }
         
         deinit {
@@ -77,6 +74,7 @@
             let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "headerID", for: indexPath) as! UserProfileHeader
             header.profileeSettings.addTarget(self, action: #selector(profileSettingsTapped), for: .touchUpInside)
             header.settings.addTarget(self, action: #selector(settingsButtonTapped), for: .touchUpInside)
+
             header.user = self.user
             header.backButton.addTarget(self, action: #selector(GoBack), for: .touchUpInside)
             return header

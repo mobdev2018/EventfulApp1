@@ -167,7 +167,7 @@ class UserProfileHeader: UICollectionViewCell {
         print("Did set username\(user?.username ?? "")")
         
         
-        guard let profileImageUrl = user?.profilePic else { return }
+        guard let profileImageUrl = user?.profilePic else {return }
         
         guard let url = URL(string: profileImageUrl) else { return }
         

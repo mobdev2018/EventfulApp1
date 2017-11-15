@@ -14,6 +14,7 @@ import SwiftLocation
 import CoreLocation
 import AMScrollingNavbar
 import DynamoCollectionView
+import FirebaseDatabase
 
 class ImageAndTitleItem: NSObject {
     public var name:String?
@@ -51,8 +52,11 @@ class HomeFeedController: UIViewController, UIGestureRecognizerDelegate {
     let paginationHelper = PaginationHelper<Event>(serviceMethod: PostService.showEvent)
     
     let dropDown: [ImageAndTitleItem] = {
-        return [ImageAndTitleItem(name: "Home", imageName: "home"), ImageAndTitleItem(name: "Seize The Night", imageName: "night"), ImageAndTitleItem(name: "Seize The Day", imageName: "summer"), ImageAndTitleItem(name: "Dress To Impress", imageName: "suit"), ImageAndTitleItem(name: "I Love College", imageName: "college"), ImageAndTitleItem(name: "21 & Up", imageName: "21")]
+        return [ImageAndTitleItem(name: "Home", imageName: "home"), ImageAndTitleItem(name: "Seize The Night", imageName: "night"), ImageAndTitleItem(name: "Seize The Day", imageName: "summer"), ImageAndTitleItem(name: "Dress To Impress", imageName: "suit"), ImageAndTitleItem(name: "I Love College", imageName: "college"), ImageAndTitleItem(name: "21 & Up", imageName: "21"), ImageAndTitleItem(name: "Followers are Going", imageName: "walkingNotFilled")]
     }()
+    
+    var profileHandle: DatabaseHandle = 0
+    var profileRef: DatabaseReference?
     
     fileprivate var selectedTopIndex:Int?
     
@@ -181,6 +185,20 @@ class HomeFeedController: UIViewController, UIGestureRecognizerDelegate {
     }
     
     func reloadHomeFeed() {
+        
+        if (navigationItem.title == "Followers are Going"){
+            let user = User.current
+            
+            profileHandle = UserService.observeProfile(for: user) { [unowned self](ref, user, events) in
+                self.profileRef = ref
+                self.allEvents = events
+                DispatchQueue.main.async {
+                    self.reloadCollection()
+                }
+                
+            }
+            return
+        }
 
         self.paginationHelper.reloadData(completion: { [unowned self] (events) in
             self.allEvents = events

@@ -111,7 +111,7 @@ struct UserService {
             }
             
             guard let eventDictionary = snapshot.value as? [String: Any] else {
-                return
+                return completion([])
             }
             
           //  print(snapshot)

@@ -210,14 +210,9 @@ class UserProfileHeader: UICollectionViewCell {
 //        addSubview(profileImage)
 //        profileImage.anchor(top: topAnchor, left: leftAnchor, bottom: nil, right: nil, paddingTop: 5, paddingLeft: 135, paddingBottom: 0, paddingRight: 0, width: 100, height: 100)
 //        profileImage.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
-
         profileImage.layer.cornerRadius = 100/2
-    
         setupToolBar()
         setupProfileStack()
-
-       
-        
     }
     
     required init?(coder aDecoder: NSCoder) {

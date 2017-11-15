@@ -26,7 +26,7 @@
     fileprivate var selectedTopIndex:Int!
 
     let topImages: [UIImage] = {
-        return [#imageLiteral(resourceName: "night"), #imageLiteral(resourceName: "home"), #imageLiteral(resourceName: "summer")]
+        return [#imageLiteral(resourceName: "icons8-Search-48"), #imageLiteral(resourceName: "home"), #imageLiteral(resourceName: "icons8-User Filled-50")]
     }()
     let topCell = "topCell"
 

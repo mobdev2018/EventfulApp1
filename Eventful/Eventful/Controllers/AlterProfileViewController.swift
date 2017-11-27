@@ -62,6 +62,7 @@ class AlterProfileViewController: UIViewController, UIImagePickerControllerDeleg
         
     }
     
+    
     lazy var backButton: UIButton = {
         let backButton = UIButton(type: .system)
         backButton.setImage(#imageLiteral(resourceName: "icons8-Expand Arrow-48").withRenderingMode(.alwaysOriginal), for: .normal)
@@ -96,7 +97,17 @@ class AlterProfileViewController: UIViewController, UIImagePickerControllerDeleg
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    
+    override func viewWillDisappear(_ animated: Bool) {
+        let imageUrl = URL(string: User.current.profilePic!)
+        
+        if User.current.profilePic != ""{
+            print("Tried to load default pic")
+            self.selectProfileImage.af_setImage(withURL: imageUrl!)
+        }else{
+            print("Set image Url")
+            selectProfileImage.image = UIImage(named: "no-profile-pic")
+        }
+    }
     
     //Where all buttons and labels will be added
     
@@ -187,9 +198,9 @@ class AlterProfileViewController: UIViewController, UIImagePickerControllerDeleg
         print("End edits pressed")
         var profilePic: String = ""
         // will set the username and bio and make sure that they are not empty
+        //let bio = changeQuote.text
         guard let username = changeUsername.text,
-            let bio = changeQuote.text,!username.isEmpty,
-        !bio.isEmpty
+            !username.isEmpty
             else { return }
         //will check for the change in value of username and bio
         

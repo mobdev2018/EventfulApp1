@@ -2,7 +2,7 @@
 //  DynamoCollectionView.h
 //  DynamoCollectionView
 //
-//  Created by Thang Pham on 10/3/17.
+//  Created by Shawn Miller on 10/3/17.
 //  Copyright © 2017 Make School. All rights reserved.
 //
 

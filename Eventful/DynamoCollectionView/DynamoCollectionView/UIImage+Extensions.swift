@@ -2,7 +2,7 @@
 //  UIImage+Extensions.swift
 //  DynamoCollectionView
 //
-//  Created by Thang Pham on 10/15/17.
+//  Created by Shawn Miller on 10/15/17.
 //  Copyright © 2017 Make School. All rights reserved.
 //
 

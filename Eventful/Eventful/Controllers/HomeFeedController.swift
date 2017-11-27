@@ -52,7 +52,7 @@ class HomeFeedController: UIViewController, UIGestureRecognizerDelegate {
     let paginationHelper = PaginationHelper<Event>(serviceMethod: PostService.showEvent)
     
     let dropDown: [ImageAndTitleItem] = {
-        return [ImageAndTitleItem(name: "Home", imageName: "home"), ImageAndTitleItem(name: "Seize The Night", imageName: "night"), ImageAndTitleItem(name: "Seize The Day", imageName: "summer"), ImageAndTitleItem(name: "Dress To Impress", imageName: "suit"), ImageAndTitleItem(name: "I Love College", imageName: "college"), ImageAndTitleItem(name: "21 & Up", imageName: "21"), ImageAndTitleItem(name: "Followers are Going", imageName: "walkingNotFilled")]
+        return [ImageAndTitleItem(name: "Home", imageName: "home"), ImageAndTitleItem(name: "Seize The Night", imageName: "night"), ImageAndTitleItem(name: "Seize The Day", imageName: "summer"), ImageAndTitleItem(name: "Dress To Impress", imageName: "suit"), ImageAndTitleItem(name: "I Love College", imageName: "college"), ImageAndTitleItem(name: "21 & Up", imageName: "21")]
     }()
     
     var profileHandle: DatabaseHandle = 0
@@ -93,6 +93,8 @@ class HomeFeedController: UIViewController, UIGestureRecognizerDelegate {
             topLayout.scrollDirection = .horizontal
             self.topCollectionView = UICollectionView(frame: .zero, collectionViewLayout: topLayout)
             //self.topCollectionView.tag = 0
+            //top collection View controls the top categories section
+            //any code here that references it just sets it up or positions it
             self.topCollectionView.backgroundColor = .white
             self.topCollectionView.dataSource = self
             self.topCollectionView.delegate = self
@@ -141,6 +143,7 @@ class HomeFeedController: UIViewController, UIGestureRecognizerDelegate {
         
         func configureCollectionCell(){
             //self.collectionView.register(HomeFeedCell.self, forCellWithReuseIdentifier: eventCellIdentifier)
+            //will register a category collectionview cell
             self.topCollectionView.register(DropDownCell.self, forCellWithReuseIdentifier: topCell)
         }
         configureViews()

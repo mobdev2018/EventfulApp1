@@ -6,7 +6,7 @@
  import DynamoCollectionView
  
  class HomeViewController: UIViewController  {
-    
+   
     fileprivate var pageController:UIPageViewController!
     fileprivate var topCollectionView:UICollectionView!
     lazy var viewControllerList: [UIViewController] = {
@@ -26,7 +26,8 @@
     fileprivate var selectedTopIndex:Int!
 
     let topImages: [UIImage] = {
-        return [#imageLiteral(resourceName: "icons8-Search-48"), #imageLiteral(resourceName: "home"), #imageLiteral(resourceName: "icons8-User Filled-50")]
+      // #imageLiteral(resourceName: "icons8-User Filled-50")
+        return [#imageLiteral(resourceName: "icons8-Search-48"), #imageLiteral(resourceName: "home"), UIImage()]
     }()
     let topCell = "topCell"
 
@@ -179,7 +180,13 @@
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: topCell, for: indexPath) as! ImageCollectionViewCell
-        cell.imageView.image = self.topImages[indexPath.row]
+        if indexPath.row == 0 || indexPath.row == 1{
+            cell.imageView.image = self.topImages[indexPath.row]
+        }else{
+            cell.imageView.loadImage(urlString: User.current.profilePic!)
+            cell.imageView.layer.cornerRadius = 50/2
+        }
+        
         var selected = false
         if self.selectedTopIndex != nil && self.selectedTopIndex == indexPath.item {
             selected = true

@@ -2,7 +2,7 @@
 //  DynamoCollectionViewCell.swift
 //  DynamoCollectionView
 //
-//  Created by Thang Pham on 10/4/17.
+//  Created by Shawn Miller on 10/4/17.
 //  Copyright © 2017 Make School. All rights reserved.
 //
 
@@ -13,6 +13,8 @@ enum DynamoDisplayMode {
     case Normal
 }
 
+//protocol to make sure that this function adhers to the blueprint of the dynamoCollectionViewCellDelegate and includes this method
+//the sender part lets us know where the message is and can be sent from
 protocol DynamoCollectionViewCellDelegate: NSObjectProtocol {
     func dynamoCollectionViewCellDidSelect(sender: UICollectionViewCell)
 }
@@ -22,6 +24,7 @@ public class DynamoCollectionViewCell: UICollectionViewCell {
     // MARK: - Public Variables
     var delegate: DynamoCollectionViewCellDelegate?
     
+    //simple image view created to contain the picture in each view
     public var backgroundImageView: UIImageView = {
         let firstImage = UIImageView()
         firstImage.clipsToBounds = true
@@ -30,6 +33,7 @@ public class DynamoCollectionViewCell: UICollectionViewCell {
         return firstImage
     }()
     
+    //creates a title variable that is a string that is settable and 
     public var title:String? {
         set {
             nameLabel.text = newValue
@@ -38,6 +42,8 @@ public class DynamoCollectionViewCell: UICollectionViewCell {
             return nameLabel.text
         }
     }
+    
+    //creates a day variable that is a string that is settable and gettable
     public var day:String? {
         set {
             dayLabel.text = newValue
@@ -46,6 +52,7 @@ public class DynamoCollectionViewCell: UICollectionViewCell {
             return dayLabel.text
         }
     }
+    //creates a month variable that is a string that is settable and gettable
     public var month:String? {
         set {
             monthLabel.text = newValue
@@ -55,8 +62,9 @@ public class DynamoCollectionViewCell: UICollectionViewCell {
         }
     }
     
+    //sets a topViewRatio for the collectionViewCell that is created
     public var topViewRatio: CGFloat = 0.6
-    
+    //tags which lets you know if we are the top cell or the normal/bottom cell
     override public var tag: Int {
         set {
             super.tag = newValue
@@ -114,12 +122,13 @@ public class DynamoCollectionViewCell: UICollectionViewCell {
     }()
     //private var overlayButton:UIButton!
     
+    //will set up the actual dynamoCollectionViewCell
     private func setupViews() {
         self.addSubview(self.backgroundImageView)
         self.backgroundColor = UIColor.white
         
         NSLayoutConstraint.activateViewConstraints(self.backgroundImageView, inSuperView: self, withLeading: 0.0, trailing: 0.0, top: 0.0, bottom: 0.0)
-  
+  //will create a UIView that will function as the little calendar square you notice in the collectionViewCell, this just controls where it is placed in the cell and how it looks
         self.calenderUnit = UIView()
         self.calenderUnit.layer.cornerRadius = 5.0
         self.calenderUnit.translatesAutoresizingMaskIntoConstraints = false
@@ -130,10 +139,10 @@ public class DynamoCollectionViewCell: UICollectionViewCell {
         NSLayoutConstraint.activateViewConstraints(self.calenderUnit, inSuperView: self, withLeading: 10.0, trailing: nil, top: nil, bottom: nil, width: 30.0, height: 30.0)
         self.calenderUnitBottom = NSLayoutConstraint.activateBottomConstraint(withView: self.calenderUnit, superView: self, andSeparation: 5.0)
         
-        // dark overlay
+        // will add the dark overlay to each image view
         self.addSubview(self.darkOverlayImageView)
         NSLayoutConstraint.activateViewConstraints(self.darkOverlayImageView, inSuperView: self, withLeading: 0.0, trailing: 0, top: 0, bottom: 0)
-        
+        //will control the look and appearance of the text in the collection view cell. Will also control where it is placed
         self.overlayTextView = UIView()
         self.overlayTextView.layer.cornerRadius = 5.0
         self.overlayTextView.translatesAutoresizingMaskIntoConstraints = false
@@ -141,6 +150,7 @@ public class DynamoCollectionViewCell: UICollectionViewCell {
         NSLayoutConstraint.activateViewConstraints(self.overlayTextView, inSuperView: self, withLeading: 10.0, trailing: nil, top: nil, bottom: nil, width: 30.0, height: 30.0)
         self.overlayTextViewBottom = NSLayoutConstraint.activateBottomConstraint(withView: self.overlayTextView, superView: self, andSeparation: 5.0)
         
+        //will do the job of creating, presenting, and positioning the label that controls the day portion of the date/day(number) in the little date square
         self.dayLabel = UILabel()
         self.dayLabel.translatesAutoresizingMaskIntoConstraints = false
         self.dayLabel.font = UIFont.systemFont(ofSize: 10.0, weight: UIFont.Weight.semibold)
@@ -148,7 +158,7 @@ public class DynamoCollectionViewCell: UICollectionViewCell {
         self.dayLabel.textAlignment = .center
         self.overlayTextView.addSubview(self.dayLabel)
         NSLayoutConstraint.activateViewConstraints(self.dayLabel, inSuperView: self.overlayTextView, withLeading: 0.0, trailing: 0.0, top: 0.0, bottom: nil, width: nil, height: 20.0)
-        
+          //will do the job of creating, presenting, and positioning the label that controls the month portion in the little date square
         self.monthLabel = UILabel()
         self.monthLabel.translatesAutoresizingMaskIntoConstraints = false
         self.monthLabel.font = UIFont.systemFont(ofSize: 8.0, weight: UIFont.Weight.light)
@@ -159,6 +169,7 @@ public class DynamoCollectionViewCell: UICollectionViewCell {
         _ = NSLayoutConstraint.activateVerticalSpacingConstraint(withFirstView: self.dayLabel, secondView: self.monthLabel, andSeparation: -5.0)
         _ = NSLayoutConstraint.activateHeightConstraint(view: self.dayLabel, withHeight: 1.0, andRelation: .greaterThanOrEqual)
         
+      //will do the job of creating, presenting, and positioning the label that controls the name of the event that is presented in the collectionViewCell
         self.nameLabel = UILabel()
         self.nameLabel.numberOfLines = 2
         self.nameLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -176,6 +187,8 @@ public class DynamoCollectionViewCell: UICollectionViewCell {
         //variable height
         self.nameLabelHeight = NSLayoutConstraint.activateHeightConstraint(view: self.nameLabel, withHeight: 1.0, andRelation: .greaterThanOrEqual)
 
+        //will add a tapGesture to the cell so one can interact with it.
+        //will control the numberOfTouches/Taps required to trigger some sort of action
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTap(_:)))
         tapGesture.delaysTouchesBegan = false
         tapGesture.numberOfTouchesRequired = 1
@@ -191,7 +204,7 @@ public class DynamoCollectionViewCell: UICollectionViewCell {
             break
         }
     }
-    
+    //sets whcih display mode we are in for the top and bottom cell
     private func setDisplayMode(_ mode: DynamoDisplayMode) {
         self.nameLabelWidth.constant = self.frame.width
         if mode == .Top {

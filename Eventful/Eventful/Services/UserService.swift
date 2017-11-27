@@ -55,6 +55,8 @@ struct UserService {
     }
     // will strictly handle editing the user section in the database
     static func editProfileImage(url: String, completion: @escaping (User?) -> Void) {
+        print(url)
+        
         let userAttrs = ["profilePic": url]
         let ref = Database.database().reference().child("users").child(User.current.uid)
         ref.updateChildValues(userAttrs) { (error, ref) in

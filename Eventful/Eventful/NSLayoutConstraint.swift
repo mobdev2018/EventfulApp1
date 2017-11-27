@@ -2,8 +2,7 @@
 //  NSLayoutConstaint.swift
 //  EventApp
 //
-//  Created by Devanshu Saini on 05/02/17.
-//  Copyright © 2017 Devanshu Saini devanshu2@gmail.com . All rights reserved.
+//  Created by Shawn Miller on 05/02/17.
 //
 
 import UIKit

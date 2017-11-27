@@ -2,7 +2,7 @@
 //  DynamoUtils.swift
 //  DynamoCollectionView
 //
-//  Created by Thang Pham on 10/11/17.
+//  Created by Shawn Miller on 10/11/17.
 //  Copyright © 2017 Make School. All rights reserved.
 //
 

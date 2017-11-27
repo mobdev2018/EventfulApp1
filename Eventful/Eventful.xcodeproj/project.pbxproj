@@ -11,6 +11,7 @@
 		07087C1A1F48FBB10099B91F /* CameraController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07087C191F48FBB10099B91F /* CameraController.swift */; };
 		07087C1F1F4946DA0099B91F /* VideoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07087C1E1F4946DA0099B91F /* VideoViewController.swift */; };
 		07087C211F49470A0099B91F /* PhotoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07087C201F49470A0099B91F /* PhotoViewController.swift */; };
+		0714255D1FBCE3330020A4E7 /* ProfileCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0714255C1FBCE3330020A4E7 /* ProfileCollectionViewCell.swift */; };
 		0719CDF31F54CF580076E678 /* CommentsHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0719CDF21F54CF580076E678 /* CommentsHeader.swift */; };
 		0719CDF51F54DC360076E678 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0719CDF41F54DC360076E678 /* Assets.xcassets */; };
 		0719CDFB1F5639690076E678 /* MGPaginationHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0719CDFA1F5639690076E678 /* MGPaginationHelper.swift */; };
@@ -89,6 +90,7 @@
 		07087C191F48FBB10099B91F /* CameraController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CameraController.swift; path = Controllers/CameraController.swift; sourceTree = "<group>"; };
 		07087C1E1F4946DA0099B91F /* VideoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = VideoViewController.swift; path = Controllers/VideoViewController.swift; sourceTree = "<group>"; };
 		07087C201F49470A0099B91F /* PhotoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoViewController.swift; sourceTree = "<group>"; };
+		0714255C1FBCE3330020A4E7 /* ProfileCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ProfileCollectionViewCell.swift; path = Controllers/ProfileCollectionViewCell.swift; sourceTree = "<group>"; };
 		0719CDF21F54CF580076E678 /* CommentsHeader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CommentsHeader.swift; path = Controllers/CommentsHeader.swift; sourceTree = "<group>"; };
 		0719CDF41F54DC360076E678 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		0719CDFA1F5639690076E678 /* MGPaginationHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MGPaginationHelper.swift; path = Services/MGPaginationHelper.swift; sourceTree = "<group>"; };
@@ -331,6 +333,7 @@
 			isa = PBXGroup;
 			children = (
 				07437F501F2A63B600CE728B /* HomeViewController.swift */,
+				0714255C1FBCE3330020A4E7 /* ProfileCollectionViewCell.swift */,
 				5074F1C11F7648D10082E016 /* ImageCollectionViewCell.swift */,
 			);
 			name = "Root View";
@@ -604,6 +607,7 @@
 				07437F311F27D3EB00CE728B /* SignUpViewController.swift in Sources */,
 				071C9E0A1F3FBBB00021D5A3 /* EventSearchCell.swift in Sources */,
 				07437F441F290F9F00CE728B /* User.swift in Sources */,
+				0714255D1FBCE3330020A4E7 /* ProfileCollectionViewCell.swift in Sources */,
 				07FF92BB1F39051900FC9716 /* EventDetailViewController.swift in Sources */,
 				07437F461F2911E500CE728B /* AuthService.swift in Sources */,
 				07F3EC601F4B7BE9005296EB /* Story.swift in Sources */,
@@ -746,6 +750,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = W8XH6RU95C;
 				INFOPLIST_FILE = "$(SRCROOT)/Eventful/Supporting/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 11.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.makeschool.Eventful;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -762,6 +767,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = W8XH6RU95C;
 				INFOPLIST_FILE = "$(SRCROOT)/Eventful/Supporting/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 11.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.makeschool.Eventful;
 				PRODUCT_NAME = "$(TARGET_NAME)";

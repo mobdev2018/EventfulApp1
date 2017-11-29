@@ -17,13 +17,12 @@ target 'Eventful' do
     pod 'SwiftLocation'
     pod ‘TextFieldEffects’
     pod 'EZSwipeController'
-    pod 'AMScrollingNavbar'
     pod 'IGListKit', :git => 'https://github.com/Instagram/IGListKit.git', :branch => 'master'
-    pod "ASPVideoPlayer"
-
+    
     
     
     
     # Pods for Eventful
     
 end
+

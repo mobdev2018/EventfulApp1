@@ -51,6 +51,7 @@
 		07D9239F1F2EEE460069613D /* AlterProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07D9239E1F2EEE460069613D /* AlterProfileViewController.swift */; };
 		07D923A81F33C61D0069613D /* Storyboard+Utility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07D923A71F33C61D0069613D /* Storyboard+Utility.swift */; };
 		07D923AA1F34B44F0069613D /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07D923A91F34B44F0069613D /* SettingsViewController.swift */; };
+		07DDE4EB1FCDBAB600B6AAEC /* EventPromoVideoPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07DDE4EA1FCDBAB600B6AAEC /* EventPromoVideoPlayer.swift */; };
 		07E932F71F768E8300A0A479 /* NewCommentsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07E932F61F768E8300A0A479 /* NewCommentsViewController.swift */; };
 		07E932F91F76D13300A0A479 /* CommentsSectionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07E932F81F76D13300A0A479 /* CommentsSectionController.swift */; };
 		07E933011F7AF30600A0A479 /* CommentsHeaderSectionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07E933001F7AF30600A0A479 /* CommentsHeaderSectionController.swift */; };
@@ -132,6 +133,7 @@
 		07D9239E1F2EEE460069613D /* AlterProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AlterProfileViewController.swift; path = Controllers/AlterProfileViewController.swift; sourceTree = "<group>"; };
 		07D923A71F33C61D0069613D /* Storyboard+Utility.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "Storyboard+Utility.swift"; path = "Extensions/Storyboard+Utility.swift"; sourceTree = "<group>"; };
 		07D923A91F34B44F0069613D /* SettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SettingsViewController.swift; path = Controllers/SettingsViewController.swift; sourceTree = "<group>"; };
+		07DDE4EA1FCDBAB600B6AAEC /* EventPromoVideoPlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = EventPromoVideoPlayer.swift; path = Controllers/EventPromoVideoPlayer.swift; sourceTree = "<group>"; };
 		07E932F61F768E8300A0A479 /* NewCommentsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = NewCommentsViewController.swift; path = Controllers/NewCommentsViewController.swift; sourceTree = "<group>"; };
 		07E932F81F76D13300A0A479 /* CommentsSectionController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CommentsSectionController.swift; path = Controllers/CommentsSectionController.swift; sourceTree = "<group>"; };
 		07E933001F7AF30600A0A479 /* CommentsHeaderSectionController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CommentsHeaderSectionController.swift; path = Controllers/CommentsHeaderSectionController.swift; sourceTree = "<group>"; };
@@ -362,6 +364,7 @@
 				07FF92BA1F39051900FC9716 /* EventDetailViewController.swift */,
 				071F2E171F4CAFDE00FEDDCF /* VideoLauncher.swift */,
 				070599AB1F6464C0006D1BF9 /* CircularTransition.swift */,
+				07DDE4EA1FCDBAB600B6AAEC /* EventPromoVideoPlayer.swift */,
 			);
 			name = "Event Detail";
 			sourceTree = "<group>";
@@ -475,13 +478,11 @@
 /* Begin PBXShellScriptBuildPhase section */
 		DEBC6E9D19E14CC939269E2F /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
+			buildActionMask = 12;
 			files = (
 			);
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-Eventful/Pods-Eventful-frameworks.sh",
-				"${BUILT_PRODUCTS_DIR}/AMScrollingNavbar/AMScrollingNavbar.framework",
-				"${BUILT_PRODUCTS_DIR}/ASPVideoPlayer/ASPVideoPlayer.framework",
 				"${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework",
 				"${BUILT_PRODUCTS_DIR}/AlamofireImage/AlamofireImage.framework",
 				"${BUILT_PRODUCTS_DIR}/AlamofireNetworkActivityIndicator/AlamofireNetworkActivityIndicator.framework",
@@ -499,8 +500,6 @@
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AMScrollingNavbar.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ASPVideoPlayer.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Alamofire.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AlamofireImage.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AlamofireNetworkActivityIndicator.framework",
@@ -523,7 +522,7 @@
 		};
 		FB28EFBE4E0CD2AF98041A34 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
+			buildActionMask = 12;
 			files = (
 			);
 			inputPaths = (
@@ -541,7 +540,7 @@
 		};
 		FDF21954F6D4CFA39B24B91D /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
+			buildActionMask = 12;
 			files = (
 			);
 			inputPaths = (
@@ -597,6 +596,7 @@
 				073AFDBF1F4309DC009D4773 /* UserHeader.swift in Sources */,
 				071C9E0C1F3FD7DB0021D5A3 /* Event.swift in Sources */,
 				073AFDC11F43F5FF009D4773 /* UserEventAttendingCell.swift in Sources */,
+				07DDE4EB1FCDBAB600B6AAEC /* EventPromoVideoPlayer.swift in Sources */,
 				073AFDC31F4478CD009D4773 /* EventService.swift in Sources */,
 				07D923AA1F34B44F0069613D /* SettingsViewController.swift in Sources */,
 				07437F511F2A63B600CE728B /* HomeViewController.swift in Sources */,

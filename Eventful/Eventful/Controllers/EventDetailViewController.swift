@@ -67,8 +67,8 @@ class EventDetailViewController: UIViewController {
     
     
     
-    fileprivate func extractedFunc(_ url: URL?) -> VideoViewController {
-        return VideoViewController(videoURL: url!)
+    fileprivate func extractedFunc(_ url: URL?) -> EventPromoVideoPlayer {
+        return EventPromoVideoPlayer(videoURL: url!)
     }
     
     @objc func handlePromoVid(){
@@ -76,7 +76,6 @@ class EventDetailViewController: UIViewController {
         print(eventPromo)
         let url = URL(string: eventPromo)
         let videoLauncher = extractedFunc(url)
-        videoLauncher.nextButton.isHidden = true
         present(videoLauncher, animated: true, completion: nil)
         
         //        self.navigationController?.pushViewController(videoLauncher, animated: true)

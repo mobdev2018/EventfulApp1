@@ -2,7 +2,6 @@
  import UIKit
  import Firebase
  import FirebaseAuth
- import AMScrollingNavbar
  import DynamoCollectionView
  
  class HomeViewController: UIViewController  {

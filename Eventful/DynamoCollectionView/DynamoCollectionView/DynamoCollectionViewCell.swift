@@ -183,7 +183,7 @@ public class DynamoCollectionViewCell: UICollectionViewCell {
         self.nameLabelLeading = NSLayoutConstraint.activateLeadingConstraint(withView: self.nameLabel, superView: self, andSeparation: 5.0)
         //variable width
         self.nameLabelWidth = NSLayoutConstraint.activateWidthConstraint(view: self.nameLabel, withWidth: min(UIScreen.main.bounds.size.width, UIScreen.main.bounds.size.height)/3)
-        //variable that controls the vertical space between the calendar and namelabel
+        //variable that controls/allows the vertical space between the calendar and namelabel
         self.calenderToNameLabel = NSLayoutConstraint.activateVerticalSpacingConstraint(withFirstView: self.calenderUnit, secondView: self.nameLabel, andSeparation: 5.0)
         //controls height of the name label
         self.nameLabelHeight = NSLayoutConstraint.activateHeightConstraint(view: self.nameLabel, withHeight: 1.0, andRelation: .greaterThanOrEqual)
@@ -210,9 +210,15 @@ public class DynamoCollectionViewCell: UICollectionViewCell {
         self.nameLabelWidth.constant = self.frame.width
         //when value is not 0 mode is set to normal which would let one know that they will be displaying blocks in the bottom view?
         if mode == .Top {
+            //so these constants are directly altering the elements in the cell assuming it is the bottom colletionView and where they are positioned
+            //seems to be moving the dark or colored square in the calendar unit as well as the name of the app
+            //calendar unit seems to be attached to the name of event so moving one moves both
             self.calenderUnitBottom.constant = -self.frame.height/2.0 + 15.0
+            //controls the placement of text in the calendar unit
             self.overlayTextViewBottom.constant = -self.frame.height/2.0 + 15.0
+            //controls the leading space for the name label
             self.nameLabelLeading.constant = 10.0
+            //controls the space between the calendar unit and the name of the event
             self.calenderToNameLabel.constant =  3.0
             self.nameLabelHeight.constant = 1.0
             NSLayoutConstraint.activateViewConstraints(self.darkOverlayImageView, inSuperView: self, withLeading: 0.0, trailing: 0.0, top: 0 , bottom: -(1 - self.topViewRatio)*self.frame.size.height)
@@ -222,9 +228,11 @@ public class DynamoCollectionViewCell: UICollectionViewCell {
             //seems to be moving the dark or colored square in the calendar unit as well as the name of the app
             //calendar unit seems to be attached to the name of event so moving one moves both
             self.calenderUnitBottom.constant = -17.0
-            //seems to be moving the text in the calendar unit
+            //controls the placement of text in the calendar unit
             self.overlayTextViewBottom.constant = -17.0
+            //controls the leading space for the name label
             self.nameLabelLeading.constant = 10.0
+            //controls the space between the calendar unit and the name of the event
             self.calenderToNameLabel.constant = 3.0
             self.nameLabelHeight.constant = 1.0
             NSLayoutConstraint.activateViewConstraints(self.darkOverlayImageView, inSuperView: self, withLeading: 0.0, trailing: 0.0, top: 0, bottom: 0)

@@ -15,11 +15,13 @@
 
 #import "IGListSectionControllerInternal.h"
 #import "IGListDebugger.h"
+#import "IGListArrayUtilsInternal.h"
 
 @implementation IGListAdapter {
     NSMapTable<UICollectionReusableView *, IGListSectionController *> *_viewSectionControllerMap;
     // An array of blocks to execute once batch updates are finished
-    NSMutableArray<void (^)()> *_queuedCompletionBlocks;
+    NSMutableArray<void (^)(void)> *_queuedCompletionBlocks;
+    NSHashTable<id<IGListAdapterUpdateListener>> *_updateListeners;
 }
 
 - (void)dealloc {
@@ -50,6 +52,7 @@
 
         _displayHandler = [IGListDisplayHandler new];
         _workingRangeHandler = [[IGListWorkingRangeHandler alloc] initWithWorkingRangeSize:workingRangeSize];
+        _updateListeners = [NSHashTable weakObjectsHashTable];
 
         _viewSectionControllerMap = [NSMapTable mapTableWithKeyOptions:NSMapTableObjectPointerPersonality | NSMapTableStrongMemory
                                                           valueOptions:NSMapTableStrongMemory];
@@ -141,7 +144,8 @@
 - (void)updateAfterPublicSettingsChange {
     id<IGListAdapterDataSource> dataSource = _dataSource;
     if (_collectionView != nil && dataSource != nil) {
-        [self updateObjects:[[dataSource objectsForListAdapter:self] copy] dataSource:dataSource];
+        NSArray *uniqueObjects = objectsWithDuplicateIdentifiersRemoved([dataSource objectsForListAdapter:self]);
+        [self updateObjects:uniqueObjects dataSource:dataSource];
     }
 }
 
@@ -336,10 +340,10 @@
                                 // release the previous items
                                 weakSelf.previousSectionMap = nil;
 
+                                [weakSelf notifyDidUpdate:IGListAdapterUpdateTypePerformUpdates animated:animated];
                                 if (completion) {
                                     completion(finished);
                                 }
-
                                 [weakSelf exitBatchUpdates];
                             }];
 }
@@ -357,14 +361,19 @@
         return;
     }
 
-    NSArray *newItems = [[dataSource objectsForListAdapter:self] copy];
+    NSArray *uniqueObjects = objectsWithDuplicateIdentifiersRemoved([dataSource objectsForListAdapter:self]);
 
     __weak __typeof__(self) weakSelf = self;
     [self.updater reloadDataWithCollectionView:collectionView reloadUpdateBlock:^{
         // purge all section controllers from the item map so that they are regenerated
         [weakSelf.sectionMap reset];
-        [weakSelf updateObjects:newItems dataSource:dataSource];
-    } completion:completion];
+        [weakSelf updateObjects:uniqueObjects dataSource:dataSource];
+    } completion:^(BOOL finished) {
+        [weakSelf notifyDidUpdate:IGListAdapterUpdateTypeReloadData animated:NO];
+        if (completion) {
+            completion(finished);
+        }
+    }];
 }
 
 - (void)reloadObjects:(NSArray *)objects {
@@ -396,6 +405,26 @@
     IGAssert(collectionView != nil, @"Tried to reload the adapter without a collection view");
 
     [self.updater reloadCollectionView:collectionView sections:sections];
+}
+
+- (void)addUpdateListener:(id<IGListAdapterUpdateListener>)updateListener {
+    IGAssertMainThread();
+    IGParameterAssert(updateListener != nil);
+
+    [_updateListeners addObject:updateListener];
+}
+
+- (void)removeUpdateListener:(id<IGListAdapterUpdateListener>)updateListener {
+    IGAssertMainThread();
+    IGParameterAssert(updateListener != nil);
+
+    [_updateListeners removeObject:updateListener];
+}
+
+- (void)notifyDidUpdate:(IGListAdapterUpdateType)update animated:(BOOL)animated {
+    for (id<IGListAdapterUpdateListener> listener in _updateListeners) {
+        [listener listAdapter:self didFinishUpdate:update animated:animated];
+    }
 }
 
 
@@ -455,6 +484,14 @@
 
 - (NSArray<IGListSectionController *> *)visibleSectionControllers {
     IGAssertMainThread();
+    if (IGListExperimentEnabled(self.experiments, IGListExperimentFasterVisibleSectionController)) {
+        return [self visibleSectionControllersFromDisplayHandler];
+    } else {
+        return [self visibleSectionControllersFromLayoutAttributes];
+    }
+}
+
+- (NSArray<IGListSectionController *> *)visibleSectionControllersFromLayoutAttributes {
     NSMutableSet *visibleSectionControllers = [NSMutableSet new];
     NSArray<UICollectionViewLayoutAttributes *> *attributes =
     [self.collectionView.collectionViewLayout layoutAttributesForElementsInRect:self.collectionView.bounds];
@@ -466,6 +503,10 @@
         }
     }
     return [visibleSectionControllers allObjects];
+}
+
+- (NSArray<IGListSectionController *> *)visibleSectionControllersFromDisplayHandler {
+    return [[self.displayHandler visibleListSections] allObjects];
 }
 
 - (NSArray *)visibleObjects {
@@ -536,11 +577,8 @@
     IGParameterAssert(dataSource != nil);
 
 #if DEBUG
-    NSCountedSet *identifiersSet = [NSCountedSet new];
     for (id object in objects) {
-        [identifiersSet addObject:[object diffIdentifier]];
         IGAssert([object isEqualToDiffableObject:object], @"Object instance %@ not equal to itself. This will break infra map tables.", object);
-        IGAssert([identifiersSet countForObject:[object diffIdentifier]] <= 1, @"Diff identifier %@ for object %@ occurs more than once. Identifiers must be unique!", [object diffIdentifier], object);
     }
 #endif
 
@@ -708,7 +746,7 @@
     [_viewSectionControllerMap removeObjectForKey:view];
 }
 
-- (void)deferBlockBetweenBatchUpdates:(void (^)())block {
+- (void)deferBlockBetweenBatchUpdates:(void (^)(void))block {
     IGAssertMainThread();
     if (_queuedCompletionBlocks == nil) {
         block();
@@ -722,10 +760,11 @@
 }
 
 - (void)exitBatchUpdates {
-    for (void (^block)() in _queuedCompletionBlocks) {
+    NSArray *blocks = [_queuedCompletionBlocks copy];
+    _queuedCompletionBlocks = nil;
+    for (void (^block)(void) in blocks) {
         block();
     }
-    _queuedCompletionBlocks = nil;
 }
 
 #pragma mark - UIScrollViewDelegate
@@ -1001,10 +1040,10 @@
         weakSelf.isInUpdateBlock = NO;
     } completion: ^(BOOL finished) {
         [weakSelf updateBackgroundViewShouldHide:![weakSelf itemCountIsZero]];
+        [weakSelf notifyDidUpdate:IGListAdapterUpdateTypeItemUpdates animated:animated];
         if (completion) {
             completion(finished);
         }
-
         [weakSelf exitBatchUpdates];
     }];
 }

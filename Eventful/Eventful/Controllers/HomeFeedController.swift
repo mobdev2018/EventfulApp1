@@ -12,7 +12,6 @@ import Alamofire
 import AlamofireNetworkActivityIndicator
 import SwiftLocation
 import CoreLocation
-import AMScrollingNavbar
 import DynamoCollectionView
 import FirebaseDatabase
 
@@ -435,6 +434,7 @@ extension HomeFeedController: DynamoCollectionViewDelegate, DynamoCollectionView
     }
     //controls info related to each cell 
     func dynamoCollectionView(_ dynamoCollectionView: DynamoCollectionView, cellForItemAt indexPath: IndexPath) -> DynamoCollectionViewCell {
+        //c2
         let cell = dynamoCollectionView.dequeueReusableCell(for: indexPath)
         let model = allEvents[indexPath.item]
         let imageURL = URL(string: model.currentEventImage)

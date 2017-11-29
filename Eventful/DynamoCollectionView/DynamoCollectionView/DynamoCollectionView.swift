@@ -214,6 +214,7 @@ public class DynamoCollectionView: UIView, DynamoCollectionViewCellDelegate, UIG
         //if the indexpath.item is 0 or in other words you are the top big cell it will return the topView
         //Shawn please change here to add the functionality you want with the auto scrolling
         if indexPath.item == 0 {
+            print(indexPath.item)
             return topCollectionView.dequeueReusableCell(withReuseIdentifier: dynamoCollectionViewCellIdentifier1, for: IndexPath(item: indexPath.item, section: 0)) as! DynamoCollectionViewCell
         }else {
             //else do the proper dequeueReusable cell functionality because we will need multiple of them unlike the top one which seemingly only needs one at the momnent
@@ -225,7 +226,7 @@ public class DynamoCollectionView: UIView, DynamoCollectionViewCellDelegate, UIG
     public func invalidateLayout() {
         //Invalidates the current layout and triggers a layout update.
         topCollectionView.collectionViewLayout.invalidateLayout()
-
+        //Invalidates the current layout and triggers a layout update.
         bottomCollectionView.collectionViewLayout.invalidateLayout()
     }
     
@@ -276,6 +277,7 @@ extension DynamoCollectionView: UICollectionViewDelegate, UICollectionViewDataSo
     //seems to come here to determine what source data goes to the top or bottom based off the tag
     public func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         if let source = dataSource {
+            //c1
             let cell = source.dynamoCollectionView(self, cellForItemAt: IndexPath(item: indexPath.item + 1, section: 0))
             cell.tag = indexPath.item + 1
             cell.delegate = self

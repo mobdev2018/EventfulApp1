@@ -4,76 +4,71 @@ PODS:
     - Alamofire (~> 4.5)
   - AlamofireNetworkActivityIndicator (2.2.0):
     - Alamofire (~> 4.5)
-  - AMScrollingNavbar (4.0.1)
-  - ASPVideoPlayer (3.0.0)
   - EZSwipeController (0.6.1)
-  - Firebase/Auth (4.2.0):
+  - Firebase/Auth (4.6.0):
     - Firebase/Core
-    - FirebaseAuth (= 4.2.0)
-  - Firebase/Core (4.2.0):
-    - FirebaseAnalytics (= 4.0.3)
-    - FirebaseCore (= 4.0.7)
-  - Firebase/Database (4.2.0):
+    - FirebaseAuth (= 4.3.2)
+  - Firebase/Core (4.6.0):
+    - FirebaseAnalytics (= 4.0.5)
+    - FirebaseCore (= 4.0.11)
+  - Firebase/Database (4.6.0):
     - Firebase/Core
-    - FirebaseDatabase (= 4.0.3)
-  - Firebase/Storage (4.2.0):
+    - FirebaseDatabase (= 4.1.1)
+  - Firebase/Storage (4.6.0):
     - Firebase/Core
     - FirebaseStorage (= 2.0.2)
-  - FirebaseAnalytics (4.0.3):
+  - FirebaseAnalytics (4.0.5):
     - FirebaseCore (~> 4.0)
     - FirebaseInstanceID (~> 2.0)
     - GoogleToolboxForMac/NSData+zlib (~> 2.1)
     - nanopb (~> 0.3)
-  - FirebaseAuth (4.2.0):
+  - FirebaseAuth (4.3.2):
     - FirebaseAnalytics (~> 4.0)
     - GoogleToolboxForMac/NSDictionary+URLArguments (~> 2.1)
     - GTMSessionFetcher/Core (~> 1.1)
-  - FirebaseCore (4.0.7):
+  - FirebaseCore (4.0.11):
     - GoogleToolboxForMac/NSData+zlib (~> 2.1)
-    - nanopb (~> 0.3)
-  - FirebaseDatabase (4.0.3):
+  - FirebaseDatabase (4.1.1):
     - FirebaseAnalytics (~> 4.0)
     - FirebaseCore (~> 4.0)
     - leveldb-library (~> 1.18)
-  - FirebaseInstanceID (2.0.3)
+  - FirebaseInstanceID (2.0.6)
   - FirebaseStorage (2.0.2):
     - FirebaseAnalytics (~> 4.0)
     - FirebaseCore (~> 4.0)
     - GTMSessionFetcher/Core (~> 1.1)
-  - GoogleToolboxForMac/DebugUtils (2.1.1):
-    - GoogleToolboxForMac/Defines (= 2.1.1)
-  - GoogleToolboxForMac/Defines (2.1.1)
-  - GoogleToolboxForMac/NSData+zlib (2.1.1):
-    - GoogleToolboxForMac/Defines (= 2.1.1)
-  - GoogleToolboxForMac/NSDictionary+URLArguments (2.1.1):
-    - GoogleToolboxForMac/DebugUtils (= 2.1.1)
-    - GoogleToolboxForMac/Defines (= 2.1.1)
-    - GoogleToolboxForMac/NSString+URLArguments (= 2.1.1)
-  - GoogleToolboxForMac/NSString+URLArguments (2.1.1)
-  - GTMSessionFetcher/Core (1.1.11)
+  - GoogleToolboxForMac/DebugUtils (2.1.3):
+    - GoogleToolboxForMac/Defines (= 2.1.3)
+  - GoogleToolboxForMac/Defines (2.1.3)
+  - GoogleToolboxForMac/NSData+zlib (2.1.3):
+    - GoogleToolboxForMac/Defines (= 2.1.3)
+  - GoogleToolboxForMac/NSDictionary+URLArguments (2.1.3):
+    - GoogleToolboxForMac/DebugUtils (= 2.1.3)
+    - GoogleToolboxForMac/Defines (= 2.1.3)
+    - GoogleToolboxForMac/NSString+URLArguments (= 2.1.3)
+  - GoogleToolboxForMac/NSString+URLArguments (2.1.3)
+  - GTMSessionFetcher/Core (1.1.12)
   - IGListKit (3.1.1):
     - IGListKit/Default (= 3.1.1)
   - IGListKit/Default (3.1.1):
     - IGListKit/Diffing
   - IGListKit/Diffing (3.1.1)
-  - leveldb-library (1.18.3)
+  - leveldb-library (1.20)
   - nanopb (0.3.8):
     - nanopb/decode (= 0.3.8)
     - nanopb/encode (= 0.3.8)
   - nanopb/decode (0.3.8)
   - nanopb/encode (0.3.8)
-  - SVProgressHUD (2.2.1)
+  - SVProgressHUD (2.2.2)
   - SwiftLocation (2.0.7)
   - SwiftyCam (2.6.0)
-  - SwiftyJSON (3.1.4)
-  - TextFieldEffects (1.3.3)
+  - SwiftyJSON (4.0.0)
+  - TextFieldEffects (1.4.0)
 
 DEPENDENCIES:
   - Alamofire
   - AlamofireImage
   - AlamofireNetworkActivityIndicator
-  - AMScrollingNavbar
-  - ASPVideoPlayer
   - EZSwipeController
   - Firebase/Auth
   - Firebase/Core
@@ -93,34 +88,32 @@ EXTERNAL SOURCES:
 
 CHECKOUT OPTIONS:
   IGListKit:
-    :commit: 0f04a073194033fbfc6f1d916fad83838042a7c0
+    :commit: 85b1a42ec6a949e1021d84cd7326a6216efa26f0
     :git: https://github.com/Instagram/IGListKit.git
 
 SPEC CHECKSUMS:
   Alamofire: 2d95912bf4c34f164fdfc335872e8c312acaea4a
   AlamofireImage: 2e784dc5d00f04903a52c1d169181469c805c3df
   AlamofireNetworkActivityIndicator: 81e1630e7cfed22a4e4e82a174c59e651dc4f8ca
-  AMScrollingNavbar: fa8d1497594be6f65693d0746b315f4d5328055c
-  ASPVideoPlayer: 2959166f1e01c418bc02fa08e4a8f589f1a7b8e9
   EZSwipeController: 255b0f8aed31963b0236802c926e27dd006a2532
-  Firebase: 9548cae14d69718add12d75a5b312893f7ef89c7
-  FirebaseAnalytics: 76f754d37ca5b04f36856729b6af3ca0152d1069
-  FirebaseAuth: 22f8a5170f31d1f111141950590f071f35df3229
-  FirebaseCore: 9a6cc1e3eaf75905390f9220596ad4fd8f92faee
-  FirebaseDatabase: 03940adcac54ce30db06f1fc2136f8581734ce2c
-  FirebaseInstanceID: a4fc702b5a026f7322964376047f1a3f1f7cc6ff
+  Firebase: 27321a925aa85520618255a7c630859e0502ccbd
+  FirebaseAnalytics: 5b02a63ead2c3f0259cfc7f15e053e440587ecf8
+  FirebaseAuth: e58563adb207a43910a2ed87fecb9fa7d556df5a
+  FirebaseCore: 2a946ece8fbe3ce1fdeeb55324f273caade22df9
+  FirebaseDatabase: 2e6e8e110b93b9a6e7aac71774c769a363035cb1
+  FirebaseInstanceID: 24958382a1011bba5aaff37e334e7a650b9118f5
   FirebaseStorage: 0cca42d9b889a0227c3a50121f45a4469fc9eb27
-  GoogleToolboxForMac: 8e329f1b599f2512c6b10676d45736bcc2cbbeb0
-  GTMSessionFetcher: 5ad62e8200fa00ed011fe5e08d27fef72c5b1429
+  GoogleToolboxForMac: 2501e2ad72a52eb3dfe7bd9aee7dad11b858bd20
+  GTMSessionFetcher: ebaa1f79a5366922c1735f1566901f50beba23b7
   IGListKit: cb97f405ae43e59fe1da74271e19427ec20d3c07
-  leveldb-library: 10fb39c39e243db4af1828441162405bbcec1404
+  leveldb-library: 4f9eedf84ab46b4fa3b7893bf30714b2a1a74022
   nanopb: 5601e6bca2dbf1ed831b519092ec110f66982ca3
-  SVProgressHUD: db27c54e6e18bc903341661fc9feb55e04905cc4
+  SVProgressHUD: 59b2d3dabacbd051576d21d32293ca7228dc18b0
   SwiftLocation: 1fe2e15a5812e961496e82eeaca71d03e829e47a
   SwiftyCam: 86c114177a1b1f5dc2c82384577d0c20b922a31b
-  SwiftyJSON: c2842d878f95482ffceec5709abc3d05680c0220
-  TextFieldEffects: 8706f53525f1ce51c8921b7af32237caab50c467
+  SwiftyJSON: 070dabdcb1beb81b247c65ffa3a79dbbfb3b48aa
+  TextFieldEffects: 4ee41b5216e674d55fb6ac25107bf1af7629176f
 
-PODFILE CHECKSUM: c4f0d185030834492a5645cd9d34278c4f27fbc5
+PODFILE CHECKSUM: b058f5003e29238308917d48dc4e6cb35a434660
 
 COCOAPODS: 1.3.1

@@ -13,30 +13,25 @@ class User : NSObject {
     let uid : String
     let username : String?
     let profilePic: String?
-    var location: String?
     var isFollowed = false
     var dictValue: [String : Any] {
         return ["username" : username as Any,
-                "profilePic" : profilePic as Any,
-                "location": location as Any]
+                "profilePic" : profilePic as Any]
     }
     //Standard User init()
-    init(uid: String, username: String, profilePic: String, location: String = "") {
+    init(uid: String, username: String, profilePic: String) {
         self.uid = uid
         self.username = username
         self.profilePic = profilePic
-        self.location = location
         super.init()
     }
     //User init using Firebase snapshots
     init?(snapshot: DataSnapshot) {
         guard let dict = snapshot.value as? [String : Any],
             let username = dict["username"] as? String,
-            let profilePic = dict["profilePic"] as? String,
-            let location = dict["location"] as? String
+            let profilePic = dict["profilePic"] as? String
             else { return nil }
         self.uid = snapshot.key
-        self.location = location
         self.username = username
         self.profilePic = profilePic
     }
@@ -44,13 +39,10 @@ class User : NSObject {
     required init?(coder aDecoder: NSCoder) {
         guard let uid = aDecoder.decodeObject(forKey: "uid") as? String,
             let username = aDecoder.decodeObject(forKey: "username") as? String,
-            let profilePic = aDecoder.decodeObject(forKey: "profilePic") as? String,
-            let location = aDecoder.decodeObject(forKey: "location") as? String
-            else { return nil }
+            let profilePic = aDecoder.decodeObject(forKey: "profilePic") as? String            else { return nil }
         self.uid = uid
         self.username = username
         self.profilePic = profilePic
-        self.location = location
         super.init()
     }
     init?(key: String, postDictionary: [String : Any]) {
@@ -60,9 +52,7 @@ class User : NSObject {
         print(dict)
         let profilePic = dict["profilePic"] as? String ?? ""
         let username = dict["username"] as? String ?? ""
-        let location = dict["location"] as? String ?? ""
         self.uid = key
-        self.location = location
         self.profilePic = profilePic
         self.username = username
     }
@@ -85,7 +75,7 @@ class User : NSObject {
             UserDefaults.standard.synchronize()
         }
         _current = user
-        print(_current)
+        print(_current ?? "")
     }
 }
 
@@ -93,8 +83,6 @@ extension User: NSCoding {
     func encode(with aCoder: NSCoder) {
         aCoder.encode(uid, forKey: "uid")
         aCoder.encode(username, forKey: "username")
-        aCoder.encode(profilePic, forKey: "profilePic")
-        aCoder.encode(location, forKey: "location")
-        
+        aCoder.encode(profilePic, forKey: "profilePic")        
     }
 }

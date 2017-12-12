@@ -13,11 +13,15 @@ import SwiftLocation
 import CoreLocation
 import TextFieldEffects
 import Firebase
+import GeoFire
+
 
 
 class SignUpViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     var selectedImageFromPicker: UIImage? = UIImage()
-    var selectedUserGender: String = ""
+    //creating a variable of type geofire
+    var geoFire: GeoFire!
+    var geoFireRef: DatabaseReference!
     // creates a signup UILabel
     var userLocation:String?
     
@@ -53,18 +57,6 @@ class SignUpViewController: UIViewController, UIImagePickerControllerDelegate, U
         
         dismiss(animated: true, completion: nil)
     }
-    
-    //    let signUp:UILabel = {
-    //        let signUpLabel = UILabel()
-    //        let myString = "Sign Up"
-    //        let myAttribute = [NSFontAttributeName:UIFont(name: "Times New Roman", size: 20)!]
-    //        let myAttrString = NSAttributedString(string: myString, attributes: myAttribute)
-    //        signUpLabel.attributedText = myAttrString
-    //
-    //        return signUpLabel
-    //    }()
-    //
-    // creates a name UITextField to hold the name
     
     let nameTextField : HoshiTextField = {
         let nameText = HoshiTextField()
@@ -171,40 +163,70 @@ class SignUpViewController: UIViewController, UIImagePickerControllerDelegate, U
         let storageRef = Storage.storage().reference().child("profile_images").child("\(imageName).PNG")
         //following function does the work of putting it into firebase
         //notice I also set the value of profilepic oo it can be saved in the updated user instance in the database
+                        let alertController = UIAlertController(title: "Enable access to your location \n Discover events near you", message: nil, preferredStyle: UIAlertControllerStyle.alert)
         if let userImage = selectedImageFromPicker,let uploadData = UIImageJPEGRepresentation(userImage, 0.1){
             AuthService.createUser(controller: self, email: email, password: password) { (authUser) in
                 guard let firUser = authUser else{
                     return
                 }
-                storageRef.putData(uploadData, metadata: nil, completion: { (metadata, error) in
-                    if error != nil {
-                        print(error ?? "")
-                        return
-                    }
-                    profilePic = (metadata?.downloadURL()!.absoluteString)!
-                    //printing to make sure values are contained in these strings
-                    print(profilePic)
-                    print(username)
-                    
-                    UserService.create(firUser, username: username, profilePic: profilePic, location: self.userLocation!, completion: { (user) in
-                        guard let user = user else {
-                            print("User not loaded into firebase db")
-                            return
-                        }
-                        User.setCurrent(user, writeToUserDefaults: true)
-                        // will set the current user for userdefaults to work
-                        print(user.profilePic ?? "")
-                        print(user.username ?? "")
+                
+                let ref = Database.database().reference()
+                self.geoFireRef = ref.child("userlocations")
+                self.geoFire = GeoFire(firebaseRef: self.geoFireRef)
+                
+                
+
+                
+                let cancelAction = UIAlertAction(title: "Deny", style: .cancel, handler: nil)
+                
+                alertController.addAction(cancelAction)
+                let locationAction = UIAlertAction(title: "Allow", style: .default){_ in
+                    Location.getLocation(accuracy: .city, frequency: .oneShot, success: { (_, location) -> (Void) in
+                        print("Latitide: \(location.coordinate.latitude)")
+                        print("Longitude: \(location.coordinate.longitude)")
+                        let location = CLLocation(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude)
+                        print(firUser.uid)
+                        self.geoFire.setLocation(location, forKey: firUser.uid)
                         
-                        // self.delegate?.finishSigningUp()
-                        self.finishSigningUp()
+                        storageRef.putData(uploadData, metadata: nil, completion: { (metadata, error) in
+                            if error != nil {
+                                print(error ?? "")
+                                return
+                            }
+                            profilePic = (metadata?.downloadURL()!.absoluteString)!
+                            //printing to make sure values are contained in these strings
+                            print(profilePic)
+                            print(username)
+                            
+                            UserService.create(firUser, username: username, profilePic: profilePic, completion: { (user) in
+                                guard let user = user else {
+                                    print("User not loaded into firebase db")
+                                    return
+                                }
+
+                                User.setCurrent(user, writeToUserDefaults: true)
+                                
+                                // will set the current user for userdefaults to work
+                                print(user.profilePic ?? "")
+                                print(user.username ?? "")
+                                // self.delegate?.finishSigningUp()
+                                self.finishSigningUp()
+                                
+                            })
+                        })
                         
+                    }, error: { (request, last, error) -> (Void) in
+                        request.cancel()
+                        print("Location monitoring failed due to an error \(error)")
                     })
-                })
+
+                }
+                alertController.addAction(locationAction)
             }
         }
+        self.present(alertController, animated: true, completion: nil)
+
     }
-    
     
     func finishSigningUp() {
         print("Finish signing up from signup view controller")
@@ -223,33 +245,8 @@ class SignUpViewController: UIViewController, UIImagePickerControllerDelegate, U
         let emailPredicate = NSPredicate(format:"SELF MATCHES %@", emailFormat)
         return emailPredicate.evaluate(with: enteredEmail)
     }
-    //will create a label so users know to select gender when creating account
-    let genderLabel: UILabel = {
-        let gender = UILabel()
-        let myString = "Gender"
-        let myAttribute = [NSAttributedStringKey.font:UIFont(name: "Times New Roman", size: 15)!]
-        let myAttrString = NSAttributedString(string: myString, attributes: myAttribute)
-        gender.attributedText = myAttrString
-        return gender
-    }()
-    //will create a segmented control button to add gender
-    lazy var genderSelector: UISegmentedControl = {
-        let genderSelect = UISegmentedControl(items: ["Male", "Female"])
-        genderSelect.tintColor = UIColor.black
-        genderSelect.addTarget(self, action: #selector(handleGenderSelection), for: .valueChanged)
-        
-        return genderSelect
-    }()
+
     
-    @objc func handleGenderSelection()  {
-        //print(genderSelector.selectedSegmentIndex)
-        if (genderSelector.selectedSegmentIndex == 0) {
-            selectedUserGender = "Male"
-        }else if(genderSelector.selectedSegmentIndex == 1 ){
-            selectedUserGender = "Female"
-        }
-        // print(selectedUserGender)
-    }
     
     // will create a cancel button so users can go back to login screen if they actually want to log in
     // Buton setup as well as cancel will be in this code block
@@ -263,6 +260,7 @@ class SignUpViewController: UIViewController, UIImagePickerControllerDelegate, U
     }()
     
     @objc func handleCancel(){
+        
         self.dismiss(animated: true, completion: nil)
     }
     
@@ -319,7 +317,7 @@ class SignUpViewController: UIViewController, UIImagePickerControllerDelegate, U
     }
     
     //Calls this function when the tap is recognized.
-    func dismissKeyboard() {
+    @objc func dismissKeyboard() {
         //Causes the view (or one of its embedded text fields) to resign the first responder status.
         view.endEditing(true)
     }
@@ -338,51 +336,20 @@ class SignUpViewController: UIViewController, UIImagePickerControllerDelegate, U
         super.viewDidLoad()
         self.bgGradientLayer.frame = self.view.layer.bounds
         self.view.layer.addSublayer(self.bgGradientLayer)
-        let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(LoginViewController.dismissKeyboard))
-        
-        //Uncomment the line below if you want the tap not not interfere and cancel other interactions.
+        let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
         tap.cancelsTouchesInView = false
-        
+        let ref = Database.database().reference()
+        geoFireRef = ref.child("userlocations")
+        geoFire = GeoFire(firebaseRef: geoFireRef)
         view.addGestureRecognizer(tap)
-        
-        /////////////////////////  Where all the subviews will be added
         self.addScrollView()
         self.insertViewsInScrollView()
         self.addBottomMostItems()
-        
-        //        view.addSubview(plusPhotoButton)
-        //        view.addSubview(cancelButton)
-        ////////////////////////////////////////////////////////////////////
-        
-        
-        /////////////////////////  Where all the constraints will be added
-        // constraints for the sign up label/title
-        //             plusPhotoButton.anchor(top: view.topAnchor, left: nil, bottom: nil, right: nil, paddingTop: 50, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 140, height: 140)
-        //        plusPhotoButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        //
-        //        _ = cancelButton.anchor(top: view.centerYAnchor, left: view.leftAnchor, bottom: nil, right: nil, paddingTop: -300, paddingLeft: 20, paddingBottom: 0, paddingRight: 0, width: 0, height: 20)
-        //
-        //        ////////////////////////////////////////////////////////////////////
-        //
-        //
-        //        createSignUpScreen()
-        
-        
-        // Do any additional setup after loading the view.
+
+
     }
     
-    //    var stackView: UIStackView?
-    //
-    //    func  createSignUpScreen(){
-    //        stackView = UIStackView(arrangedSubviews: [ nameTextField, emailTextField,passwordTextField,confirmPasswordTextField, signupButton])
-    //        view.addSubview(stackView!)
-    //        stackView?.distribution = .fillEqually
-    //        stackView?.axis = .vertical
-    //        stackView?.spacing = 15.0
-    //        stackView?.anchor(top: plusPhotoButton.bottomAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, paddingTop: 40, paddingLeft: 40, paddingBottom: 0, paddingRight: 40, width: 0, height: 350)
-    //
-    //
-    //    }
+
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -397,60 +364,7 @@ class SignUpViewController: UIViewController, UIImagePickerControllerDelegate, U
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        let alertController = UIAlertController(title: "Enable access to your location \n Discover events near you", message: nil, preferredStyle: UIAlertControllerStyle.alert)
-        
-        let cancelAction = UIAlertAction(title: "Deny", style: .cancel, handler: nil)
-        
-        alertController.addAction(cancelAction)
-        let locationAction = UIAlertAction(title: "Allow", style: .default){_ in
-            Location.getLocation(accuracy: .city, frequency: .oneShot, success: { (_, location) -> (Void) in
-                print("Latitide: \(location.coordinate.latitude)")
-                print("Longitude: \(location.coordinate.longitude)")
-                let roughLatitude = location.coordinate.latitude.truncator(places: 1)
-                let roughLongitude = location.coordinate.longitude.truncator(places: 1)
-                let locationKey = String(format: "%.1f,%.1f", roughLatitude, roughLongitude).replacingOccurrences(of: ".", with: "%2e")
-                print("LocationKey: \(locationKey)")
-                
-                let roughLocationFromKey = locationKey.replacingOccurrences(of: "%2e", with: ".").components(separatedBy: ",").map { Double($0)}
-                
-                print(roughLocationFromKey)
-                
-                let searchBoxes = [
-                    String(format: "%.1f,%.1f", roughLatitude + 0.1, roughLongitude - 0.1).replacingOccurrences(of: ".", with: "%2e"),
-                    String(format: "%.1f,%.1f", roughLatitude + 0.1 , roughLongitude).replacingOccurrences(of: ".", with: "%2e"),
-                    String(format: "%.1f,%.1f", roughLatitude + 0.1, roughLongitude + 0.1).replacingOccurrences(of: ".", with: "%2e"),
-                    String(format: "%.1f,%.1f", roughLatitude, roughLongitude - 0.1).replacingOccurrences(of: ".", with: "%2e"),
-                    String(format: "%.1f,%.1f", roughLatitude, roughLongitude).replacingOccurrences(of: ".", with: "%2e"),
-                    String(format: "%.1f,%.1f", roughLatitude, roughLongitude + 0.1).replacingOccurrences(of: ".", with: "%2e"),
-                    String(format: "%.1f,%.1f", roughLatitude - 0.1, roughLongitude - 0.1).replacingOccurrences(of: ".", with: "%2e"),
-                    String(format: "%.1f,%.1f", roughLatitude - 0.1, roughLongitude).replacingOccurrences(of: ".", with: "%2e"),
-                    String(format: "%.1f,%.1f", roughLatitude - 0.1, roughLongitude + 0.1).replacingOccurrences(of: ".", with: "%2e")
-                ]
-                
-                print(searchBoxes)
-                
-                let location = CLLocation(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude)
-                print(location)
-                Location.getPlacemark(forLocation: location, success: { placemarks -> (Void) in
-                    //print(placemarks)
-                    guard let currentCityLoc = placemarks.first?.locality else { return }
-                    self.userLocation = locationKey
-                    guard case self.userLocation! = locationKey else {
-                        return
-                    }
-                    // print(placemarks.first?.locality)
-                }, failure: { error -> (Void) in
-                    print("Cannot retrive placemark due to an error \(error)")
-                })
-            }, error: { (request, last, error) -> (Void) in
-                request.cancel()
-                print("Location monitoring failed due to an error \(error)")
-            })
-        }
-        alertController.addAction(locationAction)
-        
-        
-        self.present(alertController, animated: true)
+       
     }
     
     

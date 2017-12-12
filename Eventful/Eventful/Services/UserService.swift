@@ -15,13 +15,12 @@ import  UIKit
 
 struct UserService {
     /// will create a user in the database
-    static func create(_ firUser: FIRUser, username: String,profilePic: String,location: String, completion: @escaping (User?) -> Void) {
+    static func create(_ firUser: FIRUser, username: String,profilePic: String, completion: @escaping (User?) -> Void) {
         print(profilePic)
         print(username)
         
         print("")
         let userAttrs = ["username": username,
-                         "location": location,
                          "profilePic": profilePic] as [String : Any]
         //creats the path in the database where we want our user attributes to be created
         //Also sets the value at that point in the tree to the user Attributes array
@@ -108,7 +107,7 @@ struct UserService {
         ref.observe(.value, with: { (snapshot) in
          //   print(snapshot)
             
-            guard let allObjects = snapshot.children.allObjects as? [DataSnapshot] else {
+            guard snapshot.children.allObjects is [DataSnapshot] else {
                 return completion([])
             }
             

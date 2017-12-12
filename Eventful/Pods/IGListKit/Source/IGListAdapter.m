@@ -103,7 +103,15 @@
         _collectionView.dataSource = self;
 
         if ([_collectionView respondsToSelector:@selector(setPrefetchingEnabled:)]) {
-            _collectionView.prefetchingEnabled = NO;
+            if (@available(iOS 10.0, *)) {
+                if (@available(iOS 10.0, *)) {
+                    
+                } else {
+                    // Fallback on earlier versions
+                }       _collectionView.prefetchingEnabled = NO;
+            } else {
+                // Fallback on earlier versions
+            }
         }
 
         [_collectionView.collectionViewLayout invalidateLayout];

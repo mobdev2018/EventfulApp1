@@ -68,7 +68,7 @@ class EventPromoVideoPlayer: UIViewController {
         navigationController?.navigationBar.isHidden = true
         tabBarController?.tabBar.isHidden = true
     }
-    
+
     // Allows the video to keep playing on a loop
     @objc fileprivate func playerItemDidReachEnd(_ notification: Notification) {
         if self.player != nil {
@@ -77,9 +77,6 @@ class EventPromoVideoPlayer: UIViewController {
         }
     }
     
-    @objc func cancel() {
-        dismiss(animated: true, completion: nil)
-    }
     
     @objc func swipeAction(_ swipe: UIGestureRecognizer){
         if let swipeGesture = swipe as? UISwipeGestureRecognizer {
@@ -102,4 +99,7 @@ class EventPromoVideoPlayer: UIViewController {
             }
         }
     }
+
 }
+
+

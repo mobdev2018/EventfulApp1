@@ -19,9 +19,6 @@ class Comments {
     let uid: String
     let eventKey: String
     
-    
-    
-    
     init?(snapshot: DataSnapshot) {
         guard let dict = snapshot.value as? [String : Any],
             let content = dict["content"] as? String,

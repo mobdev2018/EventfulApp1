@@ -12,43 +12,38 @@ import FirebaseStorage
 import  Alamofire
 import AlamofireImage
 import SVProgressHUD
+import SwiftLocation
+import CoreLocation
 
 //let updateProfileTab : ProfileeViewController = ProfileeViewController()
 
 class AlterProfileViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
-//temporary holder for profile pic
+    //temporary holder for profile pic
     var profileImageTemp: UIImage? = UIImage()
     var uid = ""
     override func viewDidLoad() {
         super.viewDidLoad()
         view?.backgroundColor = UIColor.white
         navigationItem.title = "Profile Settings"
-//        self.navigationItem.hidesBackButton = true
-//        let backButton = UIBarButtonItem(image: UIImage(named: "icons8-Back-64"), style: .plain, target: self, action: #selector(GoBack))
-//        self.navigationItem.leftBarButtonItem = backButton
-        //Will add the subviews to the screen
         view.addSubview(selectProfileImage)
         view.addSubview(changeProfilePicture)
         view.addSubview(changeUsername)
-        view.addSubview(changeQuote)
+        view.addSubview(currentLocationLabel)
         view.addSubview(saveProfileEdits)
         view.addSubview(backButton)
-
-        
         ///Constraints for all views will go here
-        
         //Constraints for the profile image
         _ = selectProfileImage.anchor(top: view.centerYAnchor, left: nil, bottom: nil, right: nil, paddingTop: -275, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 100, height: 100)
         selectProfileImage.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-
+        
         //Constraints for the change profile picture button
-         _ = changeProfilePicture.anchor(top: selectProfileImage.bottomAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, paddingTop: 30, paddingLeft: 70, paddingBottom: 0, paddingRight: 70, width: 0, height: 35)
+        _ = changeProfilePicture.anchor(top: selectProfileImage.bottomAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, paddingTop: 30, paddingLeft: 70, paddingBottom: 0, paddingRight: 70, width: 0, height: 35)
         //Constraints for the text field that corresponds to the user name
-         _ = changeUsername.anchor(top: changeProfilePicture.bottomAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, paddingTop: 15, paddingLeft: 32, paddingBottom: 0, paddingRight: 32, width: 0, height: 35)
+        _ = changeUsername.anchor(top: changeProfilePicture.bottomAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, paddingTop: 15, paddingLeft: 32, paddingBottom: 0, paddingRight: 32, width: 0, height: 35)
         //Constraints for the text field that corresponds to the label
-        _ = changeQuote.anchor(top: changeUsername.bottomAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, paddingTop: 15, paddingLeft: 32, paddingBottom: 0, paddingRight: 32, width: 0, height: 35)
-        _ = saveProfileEdits.anchor(top: changeQuote.bottomAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, paddingTop: 200, paddingLeft: 32, paddingBottom: 0, paddingRight: 32, width: 200, height: 35)
-         _ = backButton.anchor(top: view.topAnchor, left: view.leftAnchor, bottom: nil, right: nil, paddingTop: 10, paddingLeft: 4, paddingBottom: 0, paddingRight: 0, width: 40, height: 40)
+        _ = currentLocationLabel.anchor(top: changeUsername.bottomAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, paddingTop: 15, paddingLeft: 32, paddingBottom: 0, paddingRight: 32, width: 0, height: 35)
+        _ = saveProfileEdits.anchor(top: currentLocationLabel.bottomAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, paddingTop: 200, paddingLeft: 32, paddingBottom: 0, paddingRight: 32, width: 200, height: 35)
+        _ = backButton.anchor(top: view.topAnchor, left: view.leftAnchor, bottom: nil, right: nil, paddingTop: 10, paddingLeft: 4, paddingBottom: 0, paddingRight: 0, width: 40, height: 40)
         ///////////////////////////////////////////////
         
         
@@ -80,11 +75,11 @@ class AlterProfileViewController: UIViewController, UIImagePickerControllerDeleg
         //Causes the view (or one of its embedded text fields) to resign the first responder status.
         view.endEditing(true)
     }
-
-//    func GoBack(){
-//        _ = self.navigationController?.popViewController(animated: true)
-//    }
-//    
+    
+    //    func GoBack(){
+    //        _ = self.navigationController?.popViewController(animated: true)
+    //    }
+    //
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         selectProfileImage.layer.cornerRadius = selectProfileImage.frame.size.width / 2;
@@ -114,9 +109,9 @@ class AlterProfileViewController: UIViewController, UIImagePickerControllerDeleg
     lazy var selectProfileImage: UIImageView = {
         let selectPicture = UIImageView()
         //will set the default pic
-       // self.selectProfileImage.layer.cornerRadius = self.selectProfileImage.frame.size.width / 2;
+        // self.selectProfileImage.layer.cornerRadius = self.selectProfileImage.frame.size.width / 2;
         let imageUrl = URL(string: User.current.profilePic!)
-      //  print(imageUrl as Any)
+        //  print(imageUrl as Any)
         if User.current.profilePic != ""{
             print("Tried to load default pic")
             selectPicture.af_setImage(withURL: imageUrl!)
@@ -139,9 +134,9 @@ class AlterProfileViewController: UIViewController, UIImagePickerControllerDeleg
         selectPicture.layer.masksToBounds = true
         return selectPicture
     }()
-
+    
     //The button to trigger the image picker and change the image
-    let changeProfilePicture: UIButton = {
+    lazy var changeProfilePicture: UIButton = {
         let changePicture = UIButton(type: .system)
         changePicture.backgroundColor = .black
         changePicture.setTitle("Choose Another Image", for: .normal)
@@ -154,11 +149,11 @@ class AlterProfileViewController: UIViewController, UIImagePickerControllerDeleg
     
     //The text field that corresponds to changng the username
     
-    let changeUsername: UITextField = {
-      let changeName = UITextField()
+    lazy var changeUsername: UITextField = {
+        let changeName = UITextField()
         if User.current.username != ""{
             changeName.text = User.current.username
-           // print(changeName.text ?? "")
+            // print(changeName.text ?? "")
         }else{
             changeName.placeholder = "Username"
         }
@@ -169,8 +164,8 @@ class AlterProfileViewController: UIViewController, UIImagePickerControllerDeleg
     }()
     
     //The text view that will correspond to the quote
-    let changeQuote: UITextView = {
-       let quoteAlter = UITextView()
+    lazy var changeQuote: UITextView = {
+        let quoteAlter = UITextView()
         quoteAlter.textAlignment = .center
         quoteAlter.autocorrectionType = UITextAutocorrectionType.no
         quoteAlter.returnKeyType = UIReturnKeyType.done
@@ -179,6 +174,15 @@ class AlterProfileViewController: UIViewController, UIImagePickerControllerDeleg
         quoteAlter.isEditable = true
         quoteAlter.textContainer.maximumNumberOfLines = 1
         return quoteAlter
+    }()
+    
+    lazy var currentLocationLabel : UILabel = {
+        let locLabel = UILabel()
+        locLabel.textAlignment = .center
+        locLabel.numberOfLines = 0
+        locLabel.text = "Current city will go here"
+//            String(describing: myString!.replacingOccurrences(of: "%2e", with: ".").components(separatedBy: ",").map { String($0)})
+        return locLabel
     }()
     //need to change to make sure user can not enter a million characters
     
@@ -209,14 +213,14 @@ class AlterProfileViewController: UIViewController, UIImagePickerControllerDeleg
         //create a reference to the sotrage database in firebase
         let storageRef = Storage.storage().reference().child("profile_images").child("\(imageName).PNG")
         //following function does the work of putting it into firebase
-            //notice I also set the value of profilepic oo it can be saved in the updated user instance in the database
+        //notice I also set the value of profilepic oo it can be saved in the updated user instance in the database
         if let userImage = profileImageTemp,let uploadData = UIImageJPEGRepresentation(userImage, 0.1){
             storageRef.putData(uploadData, metadata: nil, completion: { (metadata, error) in
                 if error != nil{
                     print(error ?? "")
                     return
                 }
-               // print(metadata ?? "")
+                // print(metadata ?? "")
                 //print(metadata?.downloadURL()!.absoluteString ?? "")
                 profilePic = (metadata?.downloadURL()!.absoluteString)!
                 //print(profilePic)
@@ -234,19 +238,19 @@ class AlterProfileViewController: UIViewController, UIImagePickerControllerDeleg
                     //SCLAlertView().showSuccess("Success!", subTitle: "Your changes have been saved.")
                     
                 }
-                    print("User defaults reset")
-                    
-                }
+                print("User defaults reset")
+                
+            }
             )
-           // print("Image added to storage")
+            // print("Image added to storage")
         }
         //   SCLAlertView().showNotice("Success!", subTitle: "Your changes have been saved.")
         
         _ = self.navigationController?.popViewController(animated: true)
-    
+        
         print("Image pushed off of stack")
-    
-        }
+        
+    }
     ////////////////////////////////////////////////////////////////////////////
     //Will handle image selection
     
@@ -268,24 +272,24 @@ class AlterProfileViewController: UIViewController, UIImagePickerControllerDeleg
         print("info")
         var selectedImageFromPicker: UIImage?
         if let editedImage = info[UIImagePickerControllerEditedImage] as? UIImage{
-          //  print(editedImage.size)
+            //  print(editedImage.size)
             selectedImageFromPicker = editedImage
             profileImageTemp = selectedImageFromPicker!
             //added completion handler to grab image once it is seleted
             self.selectProfileImage.image = selectedImageFromPicker
             picker.dismiss(animated: true, completion: nil)
-
+            
         }else if let originalImage = info[UIImagePickerControllerOriginalImage] as? UIImage{
-          //  print(originalImage.size)
+            //  print(originalImage.size)
             selectedImageFromPicker = originalImage
             //added completion handler to grab image once it is seleted
             self.selectProfileImage.image = selectedImageFromPicker
             profileImageTemp = selectedImageFromPicker!
             picker.dismiss(animated: true, completion: nil)
-        
+            
         }
         
-
+        
     }
     // will handle the picker being closed/canceled
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
@@ -297,5 +301,5 @@ class AlterProfileViewController: UIViewController, UIImagePickerControllerDeleg
     
     /////
     
-
+    
 }

@@ -200,12 +200,12 @@
  
  extension HomeViewController {
     
-    func handleDynamoCollectionViewEnableScrolling(notification: Notification) {
+    @objc func handleDynamoCollectionViewEnableScrolling(notification: Notification) {
         let scrollView = pageController.view.subviews.filter{ $0 is UIScrollView}.first as! UIScrollView
           scrollView.isScrollEnabled = false
     }
     
-    func handleDynamoCollectionViewDisableScrolling(notification: Notification) {
+    @objc func handleDynamoCollectionViewDisableScrolling(notification: Notification) {
         let scrollView = pageController.view.subviews.filter{ $0 is UIScrollView}.first as! UIScrollView
             scrollView.isScrollEnabled = true
     }

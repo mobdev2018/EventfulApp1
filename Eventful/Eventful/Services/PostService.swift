@@ -35,7 +35,7 @@ struct PostService {
         // print(lastPostKey)
         //  print("came here")
         var currentEvents = [Event]()
-        let eventsByLocationRef = Database.database().reference().child("eventsbylocation").child(User.current.location!)
+        let eventsByLocationRef = Database.database().reference().child("eventsbylocation").child("37%2e7,-122%2e4")
         //let ref = Database.database().reference().child("events")
         var query = eventsByLocationRef.queryOrderedByKey()
         //        if let lastPostKey = lastPostKey {

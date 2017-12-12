@@ -14,6 +14,7 @@ import SwiftLocation
 import CoreLocation
 import DynamoCollectionView
 import FirebaseDatabase
+import SVProgressHUD
 
 class ImageAndTitleItem: NSObject {
     public var name:String?
@@ -63,6 +64,7 @@ class HomeFeedController: UIViewController, UIGestureRecognizerDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationItem.title = "Home"
+        SVProgressHUD.dismiss()
         //  self.navigationItem.hidesBackButton = true
         self.configure()
         reloadHomeFeed()

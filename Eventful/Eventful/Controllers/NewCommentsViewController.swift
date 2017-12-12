@@ -45,9 +45,9 @@ class NewCommentsViewController: UIViewController, UITextFieldDelegate,CommentsS
         messagesRef = Database.database().reference().child("Comments").child(eventKey)
         print(eventKey)
         // print(comments.count)
-        var query = messagesRef?.queryOrderedByKey()
+        let query = messagesRef?.queryOrderedByKey()
         query?.observe(.value, with: { (snapshot) in
-            guard var allObjects = snapshot.children.allObjects as? [DataSnapshot] else {
+            guard let allObjects = snapshot.children.allObjects as? [DataSnapshot] else {
                 return
             }
             print(snapshot)
@@ -61,7 +61,7 @@ class NewCommentsViewController: UIViewController, UITextFieldDelegate,CommentsS
                 }
                 UserService.show(forUID: uid, completion: { (user) in
                     if let user = user {
-                        var commentFetched = CommentGrabbed(user: user, dictionary: commentDictionary)
+                        let commentFetched = CommentGrabbed(user: user, dictionary: commentDictionary)
                         commentFetched.commentID = snapshot.key
                         let filteredArr = self.comments.filter { (comment) -> Bool in
                             return comment.commentID == commentFetched.commentID
@@ -125,7 +125,7 @@ class NewCommentsViewController: UIViewController, UITextFieldDelegate,CommentsS
     }()
     
     @objc func textFieldDidChange(_ textField: UITextField) {
-        let isCommentValid = commentTextField.text?.characters.count ?? 0 > 0
+        let isCommentValid = commentTextField.text?.count ?? 0 > 0
         if isCommentValid {
             submitButton.isEnabled = true
         }else{
@@ -134,7 +134,7 @@ class NewCommentsViewController: UIViewController, UITextFieldDelegate,CommentsS
     }
     
     @objc func handleSubmit(){
-        guard let comment = commentTextField.text, comment.characters.count > 0 else{
+        guard let comment = commentTextField.text, comment.count > 0 else{
             return
         }
         let userText = Comments(content: comment, uid: User.current.uid, profilePic: User.current.profilePic!,eventKey: eventKey)
@@ -248,7 +248,7 @@ class NewCommentsViewController: UIViewController, UITextFieldDelegate,CommentsS
 extension NewCommentsViewController: ListAdapterDataSource {
     // 1 objects(for:) returns an array of data objects that should show up in the collection view. loader.entries is provided here as it contains the journal entries.
     func objects(for listAdapter: ListAdapter) -> [ListDiffable] {
-        var items:[ListDiffable] = comments
+        let items:[ListDiffable] = comments
         print("comments = \(comments)")
         return [addHeader] + items
     }

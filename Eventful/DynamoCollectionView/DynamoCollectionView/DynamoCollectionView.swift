@@ -54,6 +54,9 @@ public class DynamoCollectionView: UIView, DynamoCollectionViewCellDelegate, UIG
     private let dynamoCollectionViewCellIdentifier = "DynamoCollectionViewCellIdentifier"
         //a cell identifier that will let you register a unique instance of a dynamoCollectionViewCell
         private let dynamoCollectionViewCellIdentifier1 = "DynamoCollectionViewCellIdentifier1"
+   //Timer user for call autoscroller of top collection view
+    private var timer:Timer?
+    
     // MARK: - Init
     
     override public init(frame: CGRect) {
@@ -164,9 +167,7 @@ public class DynamoCollectionView: UIView, DynamoCollectionViewCellDelegate, UIG
         _ = NSLayoutConstraint.activateEqualHeightConstraint(withView: bottomCollectionView, referenceView: bottomContainerView)
         //registers a DynamoCollectionViewCell inside of the collectionVieww that we previously created
         bottomCollectionView.register(DynamoCollectionViewCell.self, forCellWithReuseIdentifier: dynamoCollectionViewCellIdentifier)
-        
         // init view's gestures
-        
         //will create a pan gesture inside the collection/ContainerView
         let panGesture = UIPanGestureRecognizer(target: self, action: #selector(handlePan(recognizer:)))
         panGesture.delaysTouchesBegan = false
@@ -175,7 +176,41 @@ public class DynamoCollectionView: UIView, DynamoCollectionViewCellDelegate, UIG
         panGesture.delegate = self
         panGesture.cancelsTouchesInView = false
         self.addGestureRecognizer(panGesture)
+        //set timer
+        self.setTimer()
     }
+    
+    //set timer or start timer
+    func setTimer(){
+        //auto scroll method to call every 2.5 seconds interval
+        self.timer = Timer.scheduledTimer(timeInterval: 3, target: self, selector: #selector(self.autoScroller), userInfo: nil, repeats: true)
+    }
+    
+    func closeTimer(){
+        if let time = self.timer{
+            time.invalidate()
+            self.timer = nil
+        }
+    }
+    
+    //Auto scroller timer call this method after X = 3 seconds time interval
+    @objc func autoScroller(){
+        //retireve last visible cell from top collection view
+        if let currentIndexPath = self.topCollectionView.indexPathsForVisibleItems.last{
+            //Check visible cell is last cell of top collection view then set first index as visible
+            if currentIndexPath.item == 4{
+                let nextIndexPath = NSIndexPath(item: 0, section: 0)
+                //top collection view scroller in first item
+                self.topCollectionView.scrollToItem(at: nextIndexPath as IndexPath, at: .right, animated: false)
+            }else{
+                //create next index path from current index path of the top collection view
+                let nextIndexPath = NSIndexPath(item: currentIndexPath.item + 1, section: 0)
+                //top collection view scroller to next item
+                self.topCollectionView.scrollToItem(at: nextIndexPath as IndexPath, at: .left, animated: true)
+            }
+        }
+    }
+    
     
     // MARK: Gesture Recognizers
     
@@ -271,27 +306,49 @@ extension DynamoCollectionView: UICollectionViewDelegate, UICollectionViewDataSo
     // MARK: CollectionView Datasource
     
     public func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return max(0, numberOfItems - 1)
+        if collectionView == self.topCollectionView{
+            //hard coded item
+            return 5
+        }else{
+            return max(0, numberOfItems - 1)
+        }
     }
     
     //seems to come here to determine what source data goes to the top or bottom based off the tag
     public func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        if let source = dataSource {
-            //c1
-            let cell = source.dynamoCollectionView(self, cellForItemAt: IndexPath(item: indexPath.item + 1, section: 0))
+        if collectionView == self.topCollectionView{
+            let cell = topCollectionView.dequeueReusableCell(withReuseIdentifier: dynamoCollectionViewCellIdentifier1, for: indexPath) as! DynamoCollectionViewCell
             cell.tag = indexPath.item + 1
+            if indexPath.item % 2 == 0{
+                cell.backgroundColor = UIColor.yellow
+            }else{
+                cell.backgroundColor = UIColor.green
+            }
             cell.delegate = self
             return cell
-        }else {
-            let cell = DynamoCollectionViewCell()
-            cell.tag = indexPath.item + 1
-            cell.delegate = self
-            return cell
+        }else{
+            
+            if let source = dataSource {
+                //c1
+                let cell = source.dynamoCollectionView(self, cellForItemAt: IndexPath(item: indexPath.item + 1, section: 0))
+                cell.tag = indexPath.item + 1
+                cell.delegate = self
+                return cell
+            }else {
+                let cell = DynamoCollectionViewCell()
+                cell.tag = indexPath.item + 1
+                cell.delegate = self
+                return cell
+            }
+            
         }
     }
     
     public func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        //delegate method only call for bottom collection view
+        if collectionView == self.bottomCollectionView{
         delegate?.dynamoCollectionView(self, willDisplay: cell, indexPath: indexPath)
+        }
     }
     
     //Asks the delegate for the size of the header view in the specified section.
@@ -304,7 +361,11 @@ extension DynamoCollectionView: UICollectionViewDelegate, UICollectionViewDataSo
     }
     //Asks the delegate for the size of the specified item’s cell.
     public func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+          if collectionView == self.bottomCollectionView{
         return CGSize(width: collectionView.bounds.size.width/2.2, height: collectionView.bounds.size.height)
+          }else{
+            return CGSize(width: collectionView.bounds.size.width, height: collectionView.bounds.size.height)
+        }
     }
     //Asks the delegate for the margins to apply to content in the specified section.
     //in short in controls the amount of space between the items above,left,right, and below

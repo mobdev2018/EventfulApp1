@@ -18,7 +18,9 @@ target 'Eventful' do
     pod ‘TextFieldEffects’
     pod 'EZSwipeController'
     pod 'IGListKit', :git => 'https://github.com/Instagram/IGListKit.git', :branch => 'master'
-    
+    pod 'GeoFire', :git => 'https://github.com/firebase/geofire-objc.git'
+
+
     
     
     

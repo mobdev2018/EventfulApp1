@@ -29,10 +29,11 @@ class SettingsViewController: UIViewController {
         //Constraints
         
         //Constraints for the logout image
-        _ = logoutImage.anchor(top: view.centerYAnchor, left: view.leftAnchor, bottom: nil, right: nil, paddingTop: 120, paddingLeft: 32, paddingBottom: 0, paddingRight: 0, width: 15, height: 15)
+                _ = backButton.anchor(top: view.topAnchor, left: view.leftAnchor, bottom: nil, right: nil, paddingTop: 10, paddingLeft: 4, paddingBottom: 0, paddingRight: 0, width: 40, height: 40)
+        _ = logoutImage.anchor(top: backButton.bottomAnchor, left: view.leftAnchor, bottom: nil, right: nil, paddingTop: 20, paddingLeft: 32, paddingBottom: 0, paddingRight: 0, width: 15, height: 15)
         //Constraints for the logout button
-        _ = logoutButton.anchor(top: view.centerYAnchor, left: logoutImage.rightAnchor, bottom: nil, right: nil, paddingTop: 120, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 70, height: 15)
-        _ = backButton.anchor(top: view.topAnchor, left: view.leftAnchor, bottom: nil, right: nil, paddingTop: 10, paddingLeft: 4, paddingBottom: 0, paddingRight: 0, width: 40, height: 40)
+        _ = logoutButton.anchor(top: backButton.bottomAnchor, left: logoutImage.rightAnchor, bottom: nil, right: nil, paddingTop: 20, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 70, height: 15)
+
     }
     
     

@@ -79,9 +79,9 @@ class CommentsViewController: UICollectionViewController, UICollectionViewDelega
         messagesRef = Database.database().reference().child("Comments").child(eventKey)
 print(eventKey)
        // print(comments.count)
-        var query = messagesRef?.queryOrderedByKey()
+        let query = messagesRef?.queryOrderedByKey()
         query?.observe(.value, with: { (snapshot) in
-            guard var allObjects = snapshot.children.allObjects as? [DataSnapshot] else {
+            guard let allObjects = snapshot.children.allObjects as? [DataSnapshot] else {
                 return
             }
             
@@ -96,7 +96,7 @@ print(eventKey)
                 }
                 UserService.show(forUID: uid, completion: { (user) in
                     if let user = user {
-                        var commentFetched = CommentGrabbed(user: user, dictionary: commentDictionary)
+                        let commentFetched = CommentGrabbed(user: user, dictionary: commentDictionary)
                         commentFetched.commentID = snapshot.key
                         let filteredArr = self.comments.filter { (comment) -> Bool in
                             return comment.commentID == commentFetched.commentID
@@ -255,7 +255,7 @@ print(eventKey)
     }()
     
     @objc func textFieldDidChange(_ textField: UITextField) {
-        let isCommentValid = commentTextField.text?.characters.count ?? 0 > 0
+        let isCommentValid = commentTextField.text?.count ?? 0 > 0
         if isCommentValid {
             submitButton.isEnabled = true
         }else{
@@ -279,7 +279,7 @@ print(eventKey)
     
     
     @objc func handleSubmit(){
-        guard let comment = commentTextField.text, comment.characters.count > 0 else{
+        guard let comment = commentTextField.text, comment.count > 0 else{
             return
         }
         let userText = Comments(content: comment, uid: User.current.uid, profilePic: User.current.profilePic!, eventKey: eventKey)

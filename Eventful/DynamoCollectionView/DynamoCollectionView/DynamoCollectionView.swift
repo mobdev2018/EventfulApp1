@@ -224,12 +224,21 @@ public class DynamoCollectionView: UIView, DynamoCollectionViewCellDelegate, UIG
     //Ask the delegate if a gesture recognizer should receive an object representing a touch.
     public func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
         let touchPoint  = touch.location(in: bottomContainerView)
+        let topTouchPoint = touch.location(in: topContainerView)
         if touchPoint.y > 0 {
             // Creates a notification with a given name and sender and posts it to the notification center.
             //The Notification center A notification dispatch mechanism that enables the broadcast of information to registered observers.
             NotificationCenter.default.post(name: DynamoCollectionViewEnableScrollingNotification, object: nil)
             return true
         }
+        if topTouchPoint.y > 0 {
+            // Creates a notification with a given name and sender and posts it to the notification center.
+            //The Notification center A notification dispatch mechanism that enables the broadcast of information to registered observers.
+            NotificationCenter.default.post(name: DynamoCollectionViewEnableScrollingNotification, object: nil)
+            return true
+        }
+        
+        
         //Creates a notification with a given name and sender and posts it to the notification center.
         //The Notification center A notification dispatch mechanism that enables the broadcast of information to registered observers.
         NotificationCenter.default.post(name: DynamoCollectionViewDisableScrollingNotification, object: nil)

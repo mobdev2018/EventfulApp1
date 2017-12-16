@@ -208,8 +208,6 @@ class EventDetailViewController: UIViewController {
     }
     
     
-    
-    
     @objc func swipeAction(_ swipe: UIGestureRecognizer){
         if let swipeGesture = swipe as? UISwipeGestureRecognizer {
             switch swipeGesture.direction {

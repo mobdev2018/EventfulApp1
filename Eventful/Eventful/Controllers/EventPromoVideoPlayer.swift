@@ -17,6 +17,7 @@ class EventPromoVideoPlayer: UIViewController {
     override var prefersStatusBarHidden: Bool {
         return true
     }
+
     //URL of promo video that is about to be played
     private var videoURL: URL
     // Allows you to play the actual mp4 or video
@@ -37,9 +38,11 @@ class EventPromoVideoPlayer: UIViewController {
         self.view.backgroundColor = UIColor.gray
         let downSwipe = UISwipeGestureRecognizer(target: self, action: #selector(swipeAction(_:)))
         downSwipe.direction = .down
+        let rightSwipe = UISwipeGestureRecognizer(target: self, action: #selector(swipeAction(_:)))
+        rightSwipe.direction = .right
         view.addGestureRecognizer(downSwipe)
-        
-        
+        view.addGestureRecognizer(rightSwipe)
+
         //Setting the video url of the AVPlayer
         player = AVPlayer(url: videoURL)
         playerController = AVPlayerViewController()
@@ -62,13 +65,28 @@ class EventPromoVideoPlayer: UIViewController {
         super.viewDidAppear(animated)
         player?.play()
     }
+    func transformViewToLansdcape(){
+        var rotationDir : Int
+        if(UIDeviceOrientationIsLandscape(UIDevice.current.orientation)){
+            rotationDir = 1
+        }else{
+            rotationDir = -1
+        }
+        var transform = self.view.transform
+        //90 for landscapeLeft and 270 for landscapeRight
+        transform = transform.rotated(by: (rotationDir*270).degreesToRadians)
+        self.view.transform = transform
+    }
+    
+
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        transformViewToLansdcape()
         navigationController?.navigationBar.isHidden = true
         tabBarController?.tabBar.isHidden = true
     }
-
+    
     // Allows the video to keep playing on a loop
     @objc fileprivate func playerItemDidReachEnd(_ notification: Notification) {
         if self.player != nil {
@@ -83,6 +101,7 @@ class EventPromoVideoPlayer: UIViewController {
             switch swipeGesture.direction {
             case UISwipeGestureRecognizerDirection.right:
                 print("Swiped right")
+                dismiss(animated: true, completion: nil)
                 break
             case UISwipeGestureRecognizerDirection.down:
                 print("Swiped Down")
@@ -100,6 +119,11 @@ class EventPromoVideoPlayer: UIViewController {
         }
     }
 
+}
+extension BinaryInteger {
+    var degreesToRadians: CGFloat {
+        return CGFloat(Int(self)) * .pi / 180
+    }
 }
 
 

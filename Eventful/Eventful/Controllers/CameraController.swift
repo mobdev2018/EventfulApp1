@@ -71,7 +71,7 @@ class CameraViewController: SwiftyCamViewController {
     
     
     override var prefersStatusBarHidden: Bool {
-        return false
+        return true
     }
     
     override func viewDidAppear(_ animated: Bool) {

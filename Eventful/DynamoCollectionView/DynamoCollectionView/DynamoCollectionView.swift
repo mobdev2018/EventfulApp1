@@ -183,7 +183,7 @@ public class DynamoCollectionView: UIView, DynamoCollectionViewCellDelegate, UIG
     //set timer or start timer
     func setTimer(){
         //auto scroll method to call every 2.5 seconds interval
-        self.timer = Timer.scheduledTimer(timeInterval: 3, target: self, selector: #selector(self.autoScroller), userInfo: nil, repeats: true)
+        self.timer = Timer.scheduledTimer(timeInterval: 5, target: self, selector: #selector(self.autoScroller), userInfo: nil, repeats: true)
     }
     
     func closeTimer(){

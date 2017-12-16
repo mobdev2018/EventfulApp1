@@ -15,20 +15,20 @@ class EventDetailViewController: UIViewController {
     var currentEvent : Event?{
         didSet{
             let imageURL = URL(string: (currentEvent?.currentEventImage)!)
-            //            currentEventImage.image = UIImage.init(named: "Blankimage")
                         currentEventImage.af_setImage(withURL: imageURL!)
-//            currentEventImage.sd_setImage(with: imageURL!, placeholderImage: UIImage(), options: .highPriority) { (image, error, catcheType, url) in
-                //hide ActivityIndicator
-                //    cell.activityIndicatorView.stopAnimating()
-//            }
+
             currentEventTime.text = currentEvent?.currentEventTime
             currentEventDate.text = currentEvent?.currentEventDate
             eventNameLabel.text = currentEvent?.currentEventName.capitalized
+            guard let currentZip = currentEvent?.currentEventZip else{
+                return
+            }
             let firstPartOfAddress = (currentEvent?.currentEventStreetAddress)!  + "\n" + (currentEvent?.currentEventCity)! + ", " + (currentEvent?.currentEventState)!
-            let secondPartOfAddress = firstPartOfAddress + " " + String(describing: currentEvent?.currentEventZip)
+            let secondPartOfAddress = firstPartOfAddress + " " + String(describing: currentZip)
             addressLabel.text = secondPartOfAddress
             descriptionLabel.text = currentEvent?.currentEventDescription
-            descriptionLabel.font = UIFont(name: (descriptionLabel.font?.fontName)!, size: 12)
+            descriptionLabel.font = UIFont(name: (descriptionLabel.font?.fontName)!, size: 14)
+            updateWithSpacing(lineSpacing: 7.0)
             navigationItem.title = currentEvent?.currentEventName.capitalized
         }
     }
@@ -47,7 +47,6 @@ class EventDetailViewController: UIViewController {
     var eventPromo = ""
     
     
-    var currentEventAttendCount = 0
     //
     lazy var currentEventImage : UIImageView = {
         let currentEvent = UIImageView()
@@ -84,7 +83,6 @@ class EventDetailViewController: UIViewController {
     
     lazy var currentEventTime: UILabel = {
         let currentEventTime = UILabel()
-        //        currentEventTime.text = self.eventTime
         currentEventTime.font = UIFont(name: currentEventTime.font.fontName, size: 12)
         return currentEventTime
     }()
@@ -92,7 +90,6 @@ class EventDetailViewController: UIViewController {
     
     lazy var currentEventDate: UILabel = {
         let currentEventDate = UILabel()
-        //        currentEventDate.text = self.eventDate
         currentEventDate.font = UIFont(name: currentEventDate.font.fontName, size: 12)
         return currentEventDate
     }()
@@ -101,7 +98,6 @@ class EventDetailViewController: UIViewController {
     //will show the event name
     lazy var eventNameLabel: UILabel = {
         let currentEventName = UILabel()
-        //        currentEventName.text = self.eventName.capitalized
         currentEventName.translatesAutoresizingMaskIntoConstraints = false
         return currentEventName
     }()
@@ -120,6 +116,7 @@ class EventDetailViewController: UIViewController {
         currentDescriptionLabel.textContainer.maximumNumberOfLines = 0
         currentDescriptionLabel.textColor = UIColor.black
         currentDescriptionLabel.textAlignment = .justified
+        currentDescriptionLabel.isUserInteractionEnabled = false
         return currentDescriptionLabel
     }()
     
@@ -152,28 +149,8 @@ class EventDetailViewController: UIViewController {
         return attendButton
     }()
     
-    lazy var attendCount : UILabel = {
-        let currentAttendCount = UILabel()
-        currentAttendCount.textColor = UIColor.black
-        var numberAttending = 0
-        //numberAttending = AttendService.fethAttendCount(for: self.eventKey)
-        let ref = Database.database().reference().child("Attending").child(self.eventKey)
-        
-        ref.observe(.value, with: { (snapshot: DataSnapshot!) in
-            numberAttending += Int(snapshot.childrenCount)
-            currentAttendCount.text  = String(numberAttending)
-            
-        })
-        
-        return currentAttendCount
-    }()
-    
-    lazy var commentCount : UILabel = {
-        let currentCommentCount = UILabel()
-        currentCommentCount.textColor = UIColor.black
-        //numberAttending = AttendService.fethAttendCount(for: self.eventKey)
-        return currentCommentCount
-    }()
+ 
+
     
     
     @objc func handleAttend(){
@@ -255,45 +232,34 @@ class EventDetailViewController: UIViewController {
     }
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        
+
         let downSwipe = UISwipeGestureRecognizer(target: self, action: #selector(swipeAction(_:)))
         downSwipe.direction = .down
         view.addGestureRecognizer(downSwipe)
         view.backgroundColor = UIColor.white
-        //        self.navigationItem.hidesBackButton = true
-        //        let backButton = UIBarButtonItem(image: UIImage(named: "icons8-Back-64"), style: .plain, target: self, action: #selector(GoBack))
-        //        self.navigationItem.leftBarButtonItem = backButton
-        
+
         //Subviews will be added here
         view.addSubview(currentEventImage)
         view.addSubview(currentEventDate)
-        
-        //        view.addSubview(attendCount)
-        //        view.addSubview(commentCount)
-        
+
         //Constraints will be added here
         _ = currentEventImage.anchor(top: view.centerYAnchor, left: nil, bottom: nil, right: nil, paddingTop: -305, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: self.view.frame.width, height: 200)
-        _ = currentEventDate.anchor(top: currentEventImage.bottomAnchor, left: userInteractStackView?.rightAnchor, bottom: nil, right: view.rightAnchor, paddingTop: 10, paddingLeft: 10, paddingBottom: 0, paddingRight: 0, width: 90, height: 50)
-        //          _ = attendCount.anchor(top: attendingButton.bottomAnchor, left: commentCount.leftAnchor, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 60, paddingBottom: 0, paddingRight: 0, width: 20, height: 20)
-        //        _ = commentCount.anchor(top: commentsViewButton.bottomAnchor, left: view.leftAnchor, bottom: nil, right: nil, paddingTop: 5, paddingLeft: 40, paddingBottom: 0, paddingRight: 0, width: 20, height: 20)
-        //        _ = addToStoryButton.anchor(top: stackView?.bottomAnchor, left: attendingButton.rightAnchor, bottom: nil, right: nil, paddingTop: 3, paddingLeft: 25, paddingBottom: 0, paddingRight: 0, width: 40, height: 30)
-        //        _ = viewStoryButton.anchor(top: stackView?.bottomAnchor, left: addToStoryButton.rightAnchor, bottom: nil, right: nil, paddingTop: 3, paddingLeft: 25, paddingBottom: 0, paddingRight: 0, width: 40, height: 40)
-        //        viewStoryButton.layer.cornerRadius = 40/2
+        _ = currentEventDate.anchor(top: currentEventImage.bottomAnchor, left: stackView?.rightAnchor, bottom: nil, right: view.rightAnchor, paddingTop: 5, paddingLeft: 10, paddingBottom: 0, paddingRight: 0, width: 90, height: 50)
+
         attendingButton.isSelected = (currentEvent?.isAttending)!
         setupEventDisplayScreen()
         userInteractionView()
-        
-        // navigationController?.isHeroEnabled = true
     }
     
     fileprivate func setupEventDisplayScreen(){
-        stackView = UIStackView(arrangedSubviews: [ eventNameLabel,addressLabel,descriptionLabel])
+        stackView = UIStackView(arrangedSubviews: [eventNameLabel,addressLabel])
         view.addSubview(stackView!)
+        view.addSubview(descriptionLabel)
         stackView?.distribution = .fill
         stackView?.axis = .vertical
-        stackView?.spacing = 5.0
-        stackView?.anchor(top: currentEventImage.bottomAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, paddingTop: 0, paddingLeft: 20, paddingBottom: 0, paddingRight: 20, width: 0, height: 250)
+        stackView?.spacing = 0.0
+        stackView?.anchor(top: currentEventImage.bottomAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, paddingTop: 10, paddingLeft: 15, paddingBottom: 0, paddingRight: 20, width: 0, height: 70)
+        descriptionLabel.anchor(top: stackView?.bottomAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, paddingTop: 10, paddingLeft: 10, paddingBottom: 0, paddingRight: 10, width: 90, height: 200)
     }
     
     fileprivate func userInteractionView(){
@@ -305,8 +271,7 @@ class EventDetailViewController: UIViewController {
         userInteractStackView?.distribution = .fillEqually
         userInteractStackView?.axis = .horizontal
         userInteractStackView?.spacing = 10.0
-        userInteractStackView?.anchor(top: stackView?.bottomAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, paddingTop: 0, paddingLeft: 20, paddingBottom: 0, paddingRight: 20, width: 0, height: 50)
-        
+        userInteractStackView?.anchor(top: descriptionLabel.bottomAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, paddingTop: 50, paddingLeft: 20, paddingBottom: 0, paddingRight: 20, width: 0, height: 50)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -318,14 +283,29 @@ class EventDetailViewController: UIViewController {
         ref.observe(.value, with: { (snapshot: DataSnapshot!) in
             var numberOfComments = 0
             numberOfComments = numberOfComments + Int(snapshot.childrenCount)
-            self.commentCount.text  = String(numberOfComments)
-            
         })
         
     }
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    func updateWithSpacing(lineSpacing: Float) {
+        // The attributed string to which the
+        // paragraph line spacing style will be applied.
+        let attributedString = NSMutableAttributedString(string: descriptionLabel.text)
+        let mutableParagraphStyle = NSMutableParagraphStyle()
+        // Customize the line spacing for paragraph.
+        mutableParagraphStyle.lineSpacing = CGFloat(lineSpacing)
+        mutableParagraphStyle.alignment = .justified
+        if let stringLength = descriptionLabel.text?.characters.count {
+            attributedString.addAttribute(NSAttributedStringKey.paragraphStyle, value: mutableParagraphStyle, range: NSMakeRange(0, stringLength))
+        }
+        // textLabel is the UILabel subclass
+        // which shows the custom text on the screen
+        descriptionLabel.attributedText = attributedString
+
     }
     
 }

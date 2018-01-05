@@ -45,6 +45,8 @@
 		076428B31F4B9289003D1B43 /* Storage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 076428B21F4B9289003D1B43 /* Storage.swift */; };
 		079F52DA1F5E386C0043F9EF /* DropDownLauncher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 079F52D91F5E386C0043F9EF /* DropDownLauncher.swift */; };
 		079F52DC1F5E47EE0043F9EF /* DropDownCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 079F52DB1F5E47EE0043F9EF /* DropDownCell.swift */; };
+		07A15CFD1FFFF3E900CA4309 /* CommentInputAccessoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07A15CFC1FFFF3E900CA4309 /* CommentInputAccessoryView.swift */; };
+		07A15CFF20001B9900CA4309 /* CommentInputTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07A15CFE20001B9900CA4309 /* CommentInputTextView.swift */; };
 		07B9145D1F3D416900A02952 /* CommentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07B9145C1F3D416900A02952 /* CommentCell.swift */; };
 		07B9145F1F3D4DE100A02952 /* CommentGrabbed.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07B9145E1F3D4DE100A02952 /* CommentGrabbed.swift */; };
 		07CB4B2E1F4B9EBB006E5D51 /* StroyCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07CB4B2D1F4B9EBB006E5D51 /* StroyCell.swift */; };
@@ -127,6 +129,8 @@
 		076428B21F4B9289003D1B43 /* Storage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Storage.swift; sourceTree = "<group>"; };
 		079F52D91F5E386C0043F9EF /* DropDownLauncher.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DropDownLauncher.swift; path = Controllers/DropDownLauncher.swift; sourceTree = "<group>"; };
 		079F52DB1F5E47EE0043F9EF /* DropDownCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DropDownCell.swift; path = Controllers/DropDownCell.swift; sourceTree = "<group>"; };
+		07A15CFC1FFFF3E900CA4309 /* CommentInputAccessoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = CommentInputAccessoryView.swift; path = Controllers/CommentInputAccessoryView.swift; sourceTree = "<group>"; };
+		07A15CFE20001B9900CA4309 /* CommentInputTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = CommentInputTextView.swift; path = Controllers/CommentInputTextView.swift; sourceTree = "<group>"; };
 		07B9145C1F3D416900A02952 /* CommentCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CommentCell.swift; path = Controllers/CommentCell.swift; sourceTree = "<group>"; };
 		07B9145E1F3D4DE100A02952 /* CommentGrabbed.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommentGrabbed.swift; sourceTree = "<group>"; };
 		07CB4B2D1F4B9EBB006E5D51 /* StroyCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = StroyCell.swift; path = Controllers/StroyCell.swift; sourceTree = "<group>"; };
@@ -378,6 +382,8 @@
 				07E932F61F768E8300A0A479 /* NewCommentsViewController.swift */,
 				07E932F81F76D13300A0A479 /* CommentsSectionController.swift */,
 				07E933001F7AF30600A0A479 /* CommentsHeaderSectionController.swift */,
+				07A15CFC1FFFF3E900CA4309 /* CommentInputAccessoryView.swift */,
+				07A15CFE20001B9900CA4309 /* CommentInputTextView.swift */,
 			);
 			name = Comments;
 			sourceTree = "<group>";
@@ -574,6 +580,7 @@
 				0719CDF31F54CF580076E678 /* CommentsHeader.swift in Sources */,
 				07B9145F1F3D4DE100A02952 /* CommentGrabbed.swift in Sources */,
 				071F2E181F4CAFDE00FEDDCF /* VideoLauncher.swift in Sources */,
+				07A15CFF20001B9900CA4309 /* CommentInputTextView.swift in Sources */,
 				07D923A81F33C61D0069613D /* Storyboard+Utility.swift in Sources */,
 				07FF92CB1F3B925800FC9716 /* ChatService.swift in Sources */,
 				07437F2C1F267E1300CE728B /* LoginViewController.swift in Sources */,
@@ -582,6 +589,7 @@
 				07CB4B2E1F4B9EBB006E5D51 /* StroyCell.swift in Sources */,
 				07FF92C91F3B898C00FC9716 /* Comment.swift in Sources */,
 				07087C1F1F4946DA0099B91F /* VideoViewController.swift in Sources */,
+				07A15CFD1FFFF3E900CA4309 /* CommentInputAccessoryView.swift in Sources */,
 				0738DD391F3DC1340093F51B /* CustomImageView.swift in Sources */,
 				07437F1A1F267CA900CE728B /* AppDelegate.swift in Sources */,
 				07F3EC5B1F4B53A6005296EB /* StoriesViewController.swift in Sources */,
@@ -752,7 +760,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = W8XH6RU95C;
 				INFOPLIST_FILE = "$(SRCROOT)/Eventful/Supporting/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 11.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.makeschool.Eventful;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -769,7 +777,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = W8XH6RU95C;
 				INFOPLIST_FILE = "$(SRCROOT)/Eventful/Supporting/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 11.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.makeschool.Eventful;
 				PRODUCT_NAME = "$(TARGET_NAME)";

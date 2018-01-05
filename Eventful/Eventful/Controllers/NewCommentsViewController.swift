@@ -11,7 +11,7 @@ import IGListKit
 import Firebase
 
 
-class NewCommentsViewController: UIViewController, UITextFieldDelegate,CommentsSectionDelegate {
+class NewCommentsViewController: UIViewController, UITextFieldDelegate,CommentsSectionDelegate,CommentInputAccessoryViewDelegate {
     //array of comments which will be loaded by a service function
     var comments = [CommentGrabbed]()
     var messagesRef: DatabaseReference?
@@ -40,11 +40,9 @@ class NewCommentsViewController: UIViewController, UITextFieldDelegate,CommentsS
     //will fetch the comments from the database and append them to an array
     fileprivate func fetchComments(){
         comments.removeAll()
-        //        collectionView.reloadData()
-        //        view.subviews[0].clearsContextBeforeDrawing.customPlaygroundQuickLook
         messagesRef = Database.database().reference().child("Comments").child(eventKey)
         print(eventKey)
-        // print(comments.count)
+         print(comments.count)
         let query = messagesRef?.queryOrderedByKey()
         query?.observe(.value, with: { (snapshot) in
             guard let allObjects = snapshot.children.allObjects as? [DataSnapshot] else {
@@ -71,6 +69,9 @@ class NewCommentsViewController: UIViewController, UITextFieldDelegate,CommentsS
                             
                         }
                         self.adapter.performUpdates(animated: true)
+                    }else{
+                        print("user is null")
+                        
                     }
                     self.comments.sort(by: { (comment1, comment2) -> Bool in
                         return comment1.creationDate.compare(comment2.creationDate) == .orderedAscending
@@ -88,59 +89,25 @@ class NewCommentsViewController: UIViewController, UITextFieldDelegate,CommentsS
         //first lets fetch comments for current event
     }
     
-    lazy var submitButton : UIButton = {
-        let submitButton = UIButton(type: .system)
-        submitButton.setTitle("Submit", for: .normal)
-        submitButton.setTitleColor(.black, for: .normal)
-        submitButton.titleLabel?.font = UIFont.boldSystemFont(ofSize: 14)
-        submitButton.addTarget(self, action: #selector(handleSubmit), for: .touchUpInside)
-        submitButton.isEnabled = false
-        return submitButton
-    }()
-    
     //allows you to gain access to the input accessory view that each view controller has for inputting text
-    lazy var containerView: UIView = {
-        let containerView = UIView()
-        containerView.backgroundColor = .white
-        containerView.addSubview(self.submitButton)
-        self.submitButton.anchor(top: containerView.topAnchor, left: nil, bottom: containerView.bottomAnchor, right: containerView.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 12, width: 50, height: 0)
-        
-        containerView.addSubview(self.commentTextField)
-        self.commentTextField.anchor(top: containerView.topAnchor, left: containerView.leftAnchor, bottom: containerView.bottomAnchor, right: self.submitButton.leftAnchor, paddingTop: 0, paddingLeft: 12, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
-        self.commentTextField.delegate = self
-        let lineSeparatorView = UIView()
-        lineSeparatorView.backgroundColor = UIColor.rgb(red: 230, green: 230, blue: 230)
-        containerView.addSubview(lineSeparatorView)
-        lineSeparatorView.anchor(top: containerView.topAnchor, left: containerView.leftAnchor, bottom: nil, right: containerView.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0.5)
-        
-        return containerView
+    lazy var containerView: CommentInputAccessoryView = {
+        let frame = CGRect(x: 0, y: 0, width: view.frame.width, height: 50)
+        let commentInputAccessoryView = CommentInputAccessoryView(frame:frame)
+        commentInputAccessoryView.delegate = self
+        return commentInputAccessoryView
+
     }()
     
-    lazy var commentTextField: UITextField = {
-        let textField = UITextField()
-        textField.placeholder = "Add a comment"
-        textField.delegate = self
-        textField.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
-        return textField
-    }()
-    
-    @objc func textFieldDidChange(_ textField: UITextField) {
-        let isCommentValid = commentTextField.text?.count ?? 0 > 0
-        if isCommentValid {
-            submitButton.isEnabled = true
-        }else{
-            submitButton.isEnabled = false
-        }
-    }
-    
-    @objc func handleSubmit(){
-        guard let comment = commentTextField.text, comment.count > 0 else{
+
+    @objc func handleSubmit(for comment: String?){
+        guard let comment = comment, comment.count > 0 else{
             return
         }
+        
         let userText = Comments(content: comment, uid: User.current.uid, profilePic: User.current.profilePic!,eventKey: eventKey)
         sendMessage(userText)
-        // will remove text after entered
-        self.commentTextField.text = nil
+        // will clear the comment text field
+        self.containerView.clearCommentTextField()
     }
     
     
@@ -155,10 +122,6 @@ class NewCommentsViewController: UIViewController, UITextFieldDelegate,CommentsS
                 let isKeyboardShowing = notification.name == NSNotification.Name.UIKeyboardWillShow
                 
                 self.bottomConstraint?.constant = isKeyboardShowing ? -(keyboardFrame.height) : 0
-                //                let f = self.collectionView.frame
-                //                let f1 = CGRect(x: f.origin.x, y: f.origin.y, width: f.width, height: f.height - (keyboardFrame.height))
-                //                self.collectionView.frame = isKeyboardShowing ? f1 : f
-                //              self.collectionView.frame = CGRect(x: f.origin.x, y: f.origin.y, width: f.width, height: f.height - (keyboardFrame.height))
                 if isKeyboardShowing{
                     let contentInset = UIEdgeInsetsMake(0, 0, (keyboardFrame.height), 0)
                     collectionView.contentInset = UIEdgeInsetsMake(0, 0, (keyboardFrame.height), 0)
@@ -169,15 +132,11 @@ class NewCommentsViewController: UIViewController, UITextFieldDelegate,CommentsS
                     collectionView.scrollIndicatorInsets = contentInset
                 }
                 
-                
-                
+    
                 UIView.animate(withDuration: 0, delay: 0, options: UIViewAnimationOptions.curveEaseOut, animations: {
                     self.view.layoutIfNeeded()
                 }, completion: { (completion) in
                     if self.comments.count > 0  && isKeyboardShowing {
-                        //                        let indexPath = IndexPath(row: self.comments.count-1, section: 0)
-                        //                        self.collectionView.scrollToItem(at: indexPath, at: .top, animated: true)
-                        
                         let item = self.collectionView.numberOfItems(inSection: self.collectionView.numberOfSections - 1)-1
                         let lastItemIndex = IndexPath(item: item, section: self.collectionView.numberOfSections - 1)
                         self.collectionView.scrollToItem(at: lastItemIndex, at: UICollectionViewScrollPosition.top, animated: true)
@@ -201,23 +160,15 @@ class NewCommentsViewController: UIViewController, UITextFieldDelegate,CommentsS
         bottomConstraint = NSLayoutConstraint(item: containerView, attribute: .bottom, relatedBy: .equal, toItem: view, attribute: .bottom, multiplier: 1, constant: 0)
         view.addConstraint(bottomConstraint!)
         adapter.collectionView = collectionView
-        
         adapter.dataSource = self
         NotificationCenter.default.addObserver(self, selector: #selector(handleKeyboardNotification), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
         
         NotificationCenter.default.addObserver(self, selector: #selector(handleKeyboardNotification), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
         collectionView.register(CommentCell.self, forCellWithReuseIdentifier: "CommentCell")
         collectionView.register(CommentHeader.self, forCellWithReuseIdentifier: "HeaderCell")
-        //        let collectionViewLayout = collectionView.collectionViewLayout as? UICollectionViewFlowLayout
-        //        collectionViewLayout?.sectionInset = UIEdgeInsets.init(top: 20, left: 0, bottom: 50, right: 0)
-        //        collectionViewLayout?.invalidateLayout()
         collectionView.keyboardDismissMode = .onDrag
-        
-        //        self.collectionView.contentInset = UIEdgeInsetsMake(20, 0, 0, 0)
-        //        let contentInset = UIEdgeInsetsMake(0, 0, 0, 0)
-        //        collectionView.contentInset = UIEdgeInsetsMake(0, 0, 50, 0)
-        //        collectionView.scrollIndicatorInsets = contentInset
-        fetchComments()
+
+      //  fetchComments()
         // Do any additional setup after loading the view.
     }
     //look here
@@ -231,7 +182,7 @@ class NewCommentsViewController: UIViewController, UITextFieldDelegate,CommentsS
         
         fetchComments()
         tabBarController?.tabBar.isHidden = true
-        submitButton.isUserInteractionEnabled = true
+        //submitButton.isUserInteractionEnabled = true
         
     }
     //viewDidLayoutSubviews() is overridden, setting the collectionView frame to match the view bounds.

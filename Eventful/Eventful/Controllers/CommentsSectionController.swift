@@ -62,24 +62,6 @@ class CommentsSectionController: ListSectionController,CommentCellDelegate {
     }
     override func didSelectItem(at index: Int){
     }
-    /*
-     func supportedElementKinds() -> [String] {
-     return [UICollectionElementKindSectionHeader]
-     }
-     func viewForSupplementaryElement(ofKind elementKind: String, at index: Int) -> UICollectionReusableView {
-     guard let view = collectionContext?.dequeueReusableSupplementaryView(ofKind: elementKind, for: self, class: CommentHeader.self, at: index) as? CommentHeader else{
-     fatalError()
-     }
-     view.handle = "Comments"
-     return view
-     }
-     */
-    //    func optionsButtonTapped(cell: CommentCell) {
-    //        print("like")
-    //
-    //
-    //    }
-    
     
     func optionsButtonTapped(cell: CommentCell){
         print("like")

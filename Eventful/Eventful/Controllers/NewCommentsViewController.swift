@@ -95,7 +95,6 @@ class NewCommentsViewController: UIViewController, UITextFieldDelegate,CommentsS
         let commentInputAccessoryView = CommentInputAccessoryView(frame:frame)
         commentInputAccessoryView.delegate = self
         return commentInputAccessoryView
-
     }()
     
 
@@ -148,29 +147,30 @@ class NewCommentsViewController: UIViewController, UITextFieldDelegate,CommentsS
         }
     }
     
+    override var inputAccessoryView: UIView? {
+        get {
+            return containerView
+        }
+    }
+    
+    override var canBecomeFirstResponder: Bool {
+        return true
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         collectionView.frame = CGRect.init(x: 0, y: 0, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height-40)
         view.addSubview(collectionView)
-        view.addSubview(containerView)
         collectionView.alwaysBounceVertical = true
-        containerView.anchor(top: nil, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 40)
-        //view.addConstraintsWithFormatt("H:|[v0]|", views: containerView)
-        // view.addConstraintsWithFormatt("V:[v0(48)]", views: containerView)
-        bottomConstraint = NSLayoutConstraint(item: containerView, attribute: .bottom, relatedBy: .equal, toItem: view, attribute: .bottom, multiplier: 1, constant: 0)
-        view.addConstraint(bottomConstraint!)
         adapter.collectionView = collectionView
         adapter.dataSource = self
         NotificationCenter.default.addObserver(self, selector: #selector(handleKeyboardNotification), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
-        
         NotificationCenter.default.addObserver(self, selector: #selector(handleKeyboardNotification), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
         collectionView.register(CommentCell.self, forCellWithReuseIdentifier: "CommentCell")
         collectionView.register(CommentHeader.self, forCellWithReuseIdentifier: "HeaderCell")
         collectionView.keyboardDismissMode = .onDrag
-
-      //  fetchComments()
-        // Do any additional setup after loading the view.
     }
+    
     //look here
     func CommentSectionUpdared(sectionController: CommentsSectionController){
         print("like")

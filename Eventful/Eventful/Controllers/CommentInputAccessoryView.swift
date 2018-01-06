@@ -37,7 +37,7 @@ class CommentInputAccessoryView: UIView, UITextViewDelegate {
         textView.delegate = self
         textView.isScrollEnabled = false
         textView.backgroundColor = .white
-        textView.font = UIFont.boldSystemFont(ofSize: 12)
+        textView.font = UIFont.boldSystemFont(ofSize: 15)
         textView.textContainer.lineBreakMode = .byWordWrapping
        // textView.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
         return textView
@@ -53,7 +53,7 @@ class CommentInputAccessoryView: UIView, UITextViewDelegate {
         addSubview(commentTextView)
         //3
         if #available(iOS 11.0, *){
-                    commentTextView.anchor(top: topAnchor, left: leftAnchor, bottom: safeAreaLayoutGuide.bottomAnchor, right: submitButton.leftAnchor, paddingTop: 0, paddingLeft: 8, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+                    commentTextView.anchor(top: topAnchor, left: leftAnchor, bottom: safeAreaLayoutGuide.bottomAnchor, right: submitButton.leftAnchor, paddingTop: 8, paddingLeft: 8, paddingBottom: 8, paddingRight: 0, width: 0, height: 0)
         }else{
             //fallback on earlier versions
         }

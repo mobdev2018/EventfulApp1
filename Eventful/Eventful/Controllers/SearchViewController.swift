@@ -158,7 +158,7 @@ class EventSearchController: UICollectionViewController, UISearchBarDelegate, UI
         let ref = Database.database().reference().child("users")
         let endString = stringValue + "\\uf8ff"
         ref.queryOrdered(byChild: "username").queryStarting(atValue: stringValue).queryEnding(atValue: endString).observeSingleEvent(of: .value, with: { (snapshot) in
-          //  print(snapshot)
+            print(snapshot)
             guard let dictionaries = snapshot.value as? [String: Any] else{
                 return print(snapshot.value ?? "nil")
             }

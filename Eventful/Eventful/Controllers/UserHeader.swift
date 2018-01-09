@@ -16,7 +16,6 @@ import FirebaseStorage
 
 class UserProfileHeader: UICollectionViewCell {
     
-
     var user: User?{
         didSet {
             setupProfileImage()
@@ -24,6 +23,7 @@ class UserProfileHeader: UICollectionViewCell {
             setupUserInteraction()
         }
     }
+
     
     lazy var profileImage: UIImageView = {
         let profilePicture = UIImageView()
@@ -94,22 +94,22 @@ class UserProfileHeader: UICollectionViewCell {
    
    lazy var followButton: UIButton = {
         let follow = UIButton(type: .system)
-        follow.setImage(#imageLiteral(resourceName: "icons8-Unchecked Checkbox-64").withRenderingMode(.alwaysOriginal), for: .normal)
-        follow.setTitleColor(.black, for: .normal)
+       // follow.setTitleColor(.black, for: .normal)
+    follow.addTarget(self, action: #selector(didTapFollowButton), for: .touchUpInside)
         return follow
     }()
     
     lazy var backButton: UIButton = {
        let backButton = UIButton(type: .system)
         backButton.setImage(UIImage(named: "icons8-Back-64"), for: .normal)
-
         return backButton
     }()
     
   
     
     fileprivate func setupUserInteraction (){
-        
+        followButton.setImage(#imageLiteral(resourceName: "icons8-Unchecked Checkbox-64").withRenderingMode(.alwaysOriginal), for: .normal)
+
         guard let currentLoggedInUser = Auth.auth().currentUser?.uid else{
             return
         }
@@ -128,15 +128,28 @@ class UserProfileHeader: UICollectionViewCell {
         } else{
              let userStackView = UIStackView(arrangedSubviews: [backButton, followButton])
             userStackView.distribution = .fillEqually
+            userStackView.spacing = 10.0
             userStackView.axis = .vertical
             addSubview(userStackView)
             userStackView.anchor(top: topAnchor, left: leftAnchor, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 15, paddingBottom: 0, paddingRight: 0, width: 0, height: 40)
-            followButton.addTarget(self, action: #selector(handleFollow), for: .touchUpInside)
         }
     }
     
-    @objc func handleFollow(){
+    @objc func didTapFollowButton(){
         print("function handled")
+        followButton.isUserInteractionEnabled = false
+        let followee = user
+        
+        FollowService.setIsFollowing(!(followee?.isFollowed)!, fromCurrentUserTo: followee!) { (success) in
+            defer {
+                self.followButton.isUserInteractionEnabled = true
+            }
+            
+            guard success else { return }
+            
+            followee?.isFollowed = !(followee?.isFollowed)!
+            ///self.tableView.reloadRows(at: [indexPath], with: .none)
+        }
     }
     
     
@@ -190,9 +203,6 @@ class UserProfileHeader: UICollectionViewCell {
             }
             
             }.resume()
-        
-        
-        
     }
     
     fileprivate func setupProfileStack(){
@@ -207,17 +217,9 @@ class UserProfileHeader: UICollectionViewCell {
     override init(frame: CGRect) {
         super.init(frame: frame)
         backgroundColor = UIColor.white
-//        addSubview(profileImage)
-//        profileImage.anchor(top: topAnchor, left: leftAnchor, bottom: nil, right: nil, paddingTop: 5, paddingLeft: 135, paddingBottom: 0, paddingRight: 0, width: 100, height: 100)
-//        profileImage.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
-
         profileImage.layer.cornerRadius = 100/2
-    
         setupToolBar()
         setupProfileStack()
-
-       
-        
     }
     
     required init?(coder aDecoder: NSCoder) {

@@ -133,7 +133,7 @@ class SignUpViewController: UIViewController, UIImagePickerControllerDelegate, U
         var profilePic: String = ""
         // will take the user selected image and load it to firebase
         let imageName = NSUUID().uuidString
-        guard let username = self.nameTextField.text,
+        guard let username = self.nameTextField.text?.lowercased(),
             let confirmPassword = self.confirmPasswordTextField.text,
             let email = self.emailTextField.text,
             let password = self.passwordTextField.text,

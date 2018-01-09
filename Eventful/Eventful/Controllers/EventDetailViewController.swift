@@ -36,7 +36,6 @@ class EventDetailViewController: UIViewController {
     var userInteractStackView: UIStackView?
     //    var users = [User]()
     let camera = CameraViewController()
-    let commentsController = CommentsViewController(collectionViewLayout: UICollectionViewFlowLayout())
     let eventStory = StoriesViewController()
     let newCommentsController = NewCommentsViewController()
     
@@ -50,8 +49,6 @@ class EventDetailViewController: UIViewController {
     //
     lazy var currentEventImage : UIImageView = {
         let currentEvent = UIImageView()
-        //let imageURL = URL(string: self.eventImage)
-        // currentEvent.af_setImage(withURL: imageURL!)
         currentEvent.clipsToBounds = true
         currentEvent.translatesAutoresizingMaskIntoConstraints = false
         currentEvent.contentMode = .scaleAspectFit
@@ -76,8 +73,6 @@ class EventDetailViewController: UIViewController {
         let url = URL(string: eventPromo)
         let videoLauncher = extractedFunc(url)
         present(videoLauncher, animated: true, completion: nil)
-        
-        //        self.navigationController?.pushViewController(videoLauncher, animated: true)
         
     }
     
@@ -131,7 +126,6 @@ class EventDetailViewController: UIViewController {
     
     @objc func presentComments(){
         print("Comments button pressed")
-        commentsController.eventKey = eventKey
         newCommentsController.eventKey = eventKey
         newCommentsController.comments.removeAll()
         newCommentsController.adapter.reloadData { (updated) in

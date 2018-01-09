@@ -63,7 +63,6 @@
 		07F3EC601F4B7BE9005296EB /* Story.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07F3EC5F1F4B7BE9005296EB /* Story.swift */; };
 		07FF92B91F3627A300FC9716 /* Post.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07FF92B81F3627A300FC9716 /* Post.swift */; };
 		07FF92BB1F39051900FC9716 /* EventDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07FF92BA1F39051900FC9716 /* EventDetailViewController.swift */; };
-		07FF92C31F3ABC4900FC9716 /* CommentsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07FF92C21F3ABC4900FC9716 /* CommentsViewController.swift */; };
 		07FF92C91F3B898C00FC9716 /* Comment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07FF92C81F3B898C00FC9716 /* Comment.swift */; };
 		07FF92CB1F3B925800FC9716 /* ChatService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07FF92CA1F3B925800FC9716 /* ChatService.swift */; };
 		50360FAF1F755DCF00AB3BD0 /* HomeFeedCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50360FAE1F755DCF00AB3BD0 /* HomeFeedCell.swift */; };
@@ -147,7 +146,6 @@
 		07F3EC5F1F4B7BE9005296EB /* Story.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Story.swift; path = Models/Story.swift; sourceTree = "<group>"; };
 		07FF92B81F3627A300FC9716 /* Post.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Post.swift; path = Models/Post.swift; sourceTree = "<group>"; };
 		07FF92BA1F39051900FC9716 /* EventDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = EventDetailViewController.swift; path = Controllers/EventDetailViewController.swift; sourceTree = "<group>"; };
-		07FF92C21F3ABC4900FC9716 /* CommentsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CommentsViewController.swift; path = Controllers/CommentsViewController.swift; sourceTree = "<group>"; };
 		07FF92C81F3B898C00FC9716 /* Comment.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Comment.swift; path = Models/Comment.swift; sourceTree = "<group>"; };
 		07FF92CA1F3B925800FC9716 /* ChatService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ChatService.swift; path = Services/ChatService.swift; sourceTree = "<group>"; };
 		1746B55EBA2E6BE797E81DA6 /* Pods_Eventful.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Eventful.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -376,7 +374,6 @@
 		07FF92BF1F3AA49100FC9716 /* Comments */ = {
 			isa = PBXGroup;
 			children = (
-				07FF92C21F3ABC4900FC9716 /* CommentsViewController.swift */,
 				07B9145C1F3D416900A02952 /* CommentCell.swift */,
 				0719CDF21F54CF580076E678 /* CommentsHeader.swift */,
 				07E932F61F768E8300A0A479 /* NewCommentsViewController.swift */,
@@ -574,7 +571,6 @@
 				073B120A1F2C264000031044 /* HomeFeedController.swift in Sources */,
 				073B120C1F2ED42C00031044 /* ProfileeViewController.swift in Sources */,
 				076428B31F4B9289003D1B43 /* Storage.swift in Sources */,
-				07FF92C31F3ABC4900FC9716 /* CommentsViewController.swift in Sources */,
 				07437F3D1F28D4C500CE728B /* Extensions.swift in Sources */,
 				50717DDA1F6EFE2600AADB66 /* NSLayoutConstraint.swift in Sources */,
 				0719CDF31F54CF580076E678 /* CommentsHeader.swift in Sources */,

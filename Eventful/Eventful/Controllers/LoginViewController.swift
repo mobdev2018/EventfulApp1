@@ -29,7 +29,7 @@ class LoginViewController: UIViewController , LoginViewControllerDelegate {
     // creates a UILabel
     let nameOfAppLabel : UILabel =  {
         let nameLabel = UILabel()
-        nameLabel.textColor = .white
+        nameLabel.textColor = UIColor.logoColor
         let myString = "[Name of App]"
         let myAttribute = [NSAttributedStringKey.font:UIFont(name: "Times New Roman", size: 7.3)!]
         let myAttrString = NSAttributedString(string: myString, attributes: myAttribute)
@@ -41,7 +41,7 @@ class LoginViewController: UIViewController , LoginViewControllerDelegate {
     
     let welcomeBackLabel : UILabel =  {
         let welcomeLabel = UILabel()
-        welcomeLabel.textColor = .white
+        welcomeLabel.textColor = UIColor.logoColor
         let myString = "Welcome Back!"
         let myAttribute = [NSAttributedStringKey.font:UIFont(name: "Times New Roman", size: 20.7)!]
         let myAttrString = NSAttributedString(string: myString, attributes: myAttribute)
@@ -54,7 +54,7 @@ class LoginViewController: UIViewController , LoginViewControllerDelegate {
     
     let goalLabel : UILabel =  {
         let primaryGoalLabel = UILabel()
-        primaryGoalLabel.textColor = .white
+        primaryGoalLabel.textColor = UIColor.logoColor
         let myString = "Use our application to find events"
         let myAttribute = [NSAttributedStringKey.font:UIFont(name: "Times New Roman", size: 13)!]
         let myAttrString = NSAttributedString(string: myString, attributes: myAttribute)
@@ -66,32 +66,34 @@ class LoginViewController: UIViewController , LoginViewControllerDelegate {
     
     let emailTextField : HoshiTextField = {
         let textField = HoshiTextField()
-        textField.placeholderColor = .white
+//        textField.placeholderColor = UIColor.logoColor
+        textField.placeholderColor = UIColor.black
         textField.placeholder = "Email"
         textField.layer.borderColor = UIColor.lightGray.cgColor
         textField.layer.borderWidth = 0
         textField.borderStyle = .roundedRect
         textField.keyboardType = .emailAddress
         textField.borderStyle = .none
-        textField.borderInactiveColor = .white
-        textField.borderActiveColor = UIColor.white
-        textField.textColor = .white
+        textField.borderInactiveColor = UIColor.black
+        textField.borderActiveColor = UIColor.black
+        textField.textColor = .black
         return textField
     }()
 
     // creates a UITextField
     let passwordTextField : HoshiTextField = {
         let textField = HoshiTextField()
-        textField.placeholderColor = .white
+//        textField.placeholderColor = UIColor.logoColor
+        textField.placeholderColor = UIColor.black
         textField.placeholder = "Password"
         textField.layer.borderColor = UIColor.lightGray.cgColor
         textField.layer.borderWidth = 0
         textField.borderStyle = .roundedRect
         textField.isSecureTextEntry = true
         textField.borderStyle = .none
-        textField.borderInactiveColor = .white
-        textField.borderActiveColor = UIColor.white
-        textField.textColor = .white
+        textField.borderInactiveColor = UIColor.black
+        textField.borderActiveColor = UIColor.black
+        textField.textColor = .black
         return textField
     }()
     // creates a UIButton and transitions to a different screen after button is selected
@@ -153,7 +155,7 @@ class LoginViewController: UIViewController , LoginViewControllerDelegate {
     //creatas a UILabel
     let signUpLabel: UILabel = {
         let signUp = UILabel()
-        signUp.textColor = .white
+        signUp.textColor = UIColor.black
         let myString = "Don't have an account?"
         let myAttribute = [NSAttributedStringKey.font:UIFont(name: "Times New Roman", size: 15)!]
         let myAttrString = NSAttributedString(string: myString, attributes: myAttribute)
@@ -187,27 +189,28 @@ class LoginViewController: UIViewController , LoginViewControllerDelegate {
         super.viewDidLoad()
         // will add each of the screen elements to the current view
         
-        self.bgGradientLayer.frame = self.view.layer.bounds
-        self.view.layer.addSublayer(self.bgGradientLayer)
+//        self.bgGradientLayer.frame = self.view.layer.bounds
+//        self.view.layer.addSublayer(self.bgGradientLayer)
+        self.view.backgroundColor = UIColor.white
         
-        self.view.addSubview(nameOfAppLabel)
-        self.view.addSubview(welcomeBackLabel)
-        self.view.addSubview(goalLabel)
+       // self.view.addSubview(nameOfAppLabel)
+       // self.view.addSubview(welcomeBackLabel)
+       // self.view.addSubview(goalLabel)
         //////////////////////////////////////////////////////////////////////
         
         // All Constraints for Elements in Screen
         // constraints for the nameOfAppLabel
-        _ = nameOfAppLabel.anchor(top: self.view.centerYAnchor, left: nil, bottom: nil, right: nil, paddingTop: -215.0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 49.7, height: 9.7)
-        nameOfAppLabel.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
+      //  _ = nameOfAppLabel.anchor(top: self.view.centerYAnchor, left: nil, bottom: nil, right: nil, paddingTop: -215.0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 49.7, height: 9.7)
+      //  nameOfAppLabel.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
         
         //constrints for the welcome back label
-        _ = welcomeBackLabel.anchor(top: nameOfAppLabel.bottomAnchor, left: nil, bottom: nil, right: nil, paddingTop: 15.7, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 12.7)
+      //  _ = welcomeBackLabel.anchor(top: nameOfAppLabel.bottomAnchor, left: nil, bottom: nil, right: nil, paddingTop: 15.7, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 12.7)
         
-        welcomeBackLabel.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
+      //  welcomeBackLabel.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
         //constrints for the goal label
-        _ = goalLabel.anchor(top: welcomeBackLabel.bottomAnchor, left: nil, bottom: nil, right: nil, paddingTop: 10, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 180, height: 14)
+       // _ = goalLabel.anchor(top: welcomeBackLabel.bottomAnchor, left: nil, bottom: nil, right: nil, paddingTop: 10, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 180, height: 14)
         
-        goalLabel.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
+       // goalLabel.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
 
         
         self.view.backgroundColor = UIColor(r: 255, g: 255 , b: 255)
@@ -236,8 +239,8 @@ class LoginViewController: UIViewController , LoginViewControllerDelegate {
         self.view.addSubview(stackView!)
         stackView?.distribution = .fillEqually
         stackView?.axis = .vertical
-        stackView?.spacing = 5.0
-        stackView?.anchor(top: goalLabel.bottomAnchor, left: self.view.leftAnchor, bottom: nil, right: self.view.rightAnchor, paddingTop: 40, paddingLeft: 40, paddingBottom: 0, paddingRight: 40, width: 0, height: 152)
+        stackView?.spacing = 15.0
+        stackView?.anchor(top: self.view.topAnchor, left: self.view.leftAnchor, bottom: nil, right: self.view.rightAnchor, paddingTop: 260, paddingLeft: 40, paddingBottom: 0, paddingRight: 40, width: 0, height: 152)
         self.addBottomMostItems()
     }
     

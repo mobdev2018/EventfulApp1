@@ -19,11 +19,11 @@ class UserProfileHeader: UICollectionViewCell {
     var user: User?{
         didSet {
             setupProfileImage()
-          //  userNameLabel.text = user?.username
+            //  userNameLabel.text = user?.username
             setupUserInteraction()
         }
     }
-
+    
     
     lazy var profileImage: UIImageView = {
         let profilePicture = UIImageView()
@@ -43,9 +43,9 @@ class UserProfileHeader: UICollectionViewCell {
     
     
     //creatas a UILabel
-  
+    
     lazy var statsLabel : UILabel = {
-       let statsLabel = UILabel()
+        let statsLabel = UILabel()
         let attributedText = NSMutableAttributedString(string: "0\n", attributes: [NSAttributedStringKey.font: UIFont.boldSystemFont(ofSize: 14)])
         attributedText.append(NSAttributedString(string: "Score", attributes: [NSAttributedStringKey.foregroundColor: UIColor.lightGray, NSAttributedStringKey.font: UIFont.systemFont(ofSize: 14)]))
         statsLabel.attributedText = attributedText
@@ -91,25 +91,29 @@ class UserProfileHeader: UICollectionViewCell {
         return settings
     }()
     
-   
-   lazy var followButton: UIButton = {
-        let follow = UIButton(type: .system)
-       // follow.setTitleColor(.black, for: .normal)
-    follow.addTarget(self, action: #selector(didTapFollowButton), for: .touchUpInside)
-        return follow
+    lazy var followButton: UIButton = {
+        let button = UIButton(type: .system)
+       // button.setTitle("Edit Profile", for: .normal)
+        button.setTitleColor(.black, for: .normal)
+        button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 14)
+        button.layer.borderColor = UIColor.lightGray.cgColor
+        button.layer.borderWidth = 1
+        button.layer.cornerRadius = 3
+        button.addTarget(self, action: #selector(didTapFollowButton), for: .touchUpInside)
+        return button
     }()
     
     lazy var backButton: UIButton = {
-       let backButton = UIButton(type: .system)
+        let backButton = UIButton(type: .system)
         backButton.setImage(UIImage(named: "icons8-Back-64"), for: .normal)
         return backButton
     }()
     
-  
+    
     
     fileprivate func setupUserInteraction (){
-        followButton.setImage(#imageLiteral(resourceName: "icons8-Unchecked Checkbox-64").withRenderingMode(.alwaysOriginal), for: .normal)
-
+        //   followButton.setImage(#imageLiteral(resourceName: "icons8-Unchecked Checkbox-64").withRenderingMode(.alwaysOriginal), for: .normal)
+        
         guard let currentLoggedInUser = Auth.auth().currentUser?.uid else{
             return
         }
@@ -118,7 +122,7 @@ class UserProfileHeader: UICollectionViewCell {
         }
         
         if currentLoggedInUser == uid {
-             let userStackView = UIStackView(arrangedSubviews: [profileeSettings, settings])
+            let userStackView = UIStackView(arrangedSubviews: [profileeSettings, settings])
             userStackView.distribution = .fillEqually
             userStackView.axis = .vertical
             userStackView.spacing = 10.0
@@ -126,12 +130,30 @@ class UserProfileHeader: UICollectionViewCell {
             userStackView.anchor(top: topAnchor, left: leftAnchor, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 15, paddingBottom: 0, paddingRight: 0, width: 0, height: 90)
             
         } else{
-             let userStackView = UIStackView(arrangedSubviews: [backButton, followButton])
+            let userStackView = UIStackView(arrangedSubviews: [backButton])
             userStackView.distribution = .fillEqually
             userStackView.spacing = 10.0
             userStackView.axis = .vertical
             addSubview(userStackView)
             userStackView.anchor(top: topAnchor, left: leftAnchor, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 15, paddingBottom: 0, paddingRight: 0, width: 0, height: 40)
+            addSubview(followButton)
+            followButton.anchor(top: profileStackView.bottomAnchor, left: leftAnchor, bottom: nil, right: rightAnchor, paddingTop: 10, paddingLeft: 50, paddingBottom:0 , paddingRight: 50, width: 0, height: 0)
+            
+            // check if following
+            Database.database().reference().child("following").child(currentLoggedInUser).child(uid).observeSingleEvent(of: .value, with: { (snapshot) in
+                
+                if let isFollowing = snapshot.value as? Int, isFollowing == 1 {
+                    
+                    self.followButton.setTitle("Unfollow", for: .normal)
+                    
+                } else {
+                    self.setupFollowStyle()
+                }
+                
+            }, withCancel: { (err) in
+                print("Failed to check if following:", err)
+            })
+            
         }
     }
     
@@ -140,18 +162,51 @@ class UserProfileHeader: UICollectionViewCell {
         followButton.isUserInteractionEnabled = false
         let followee = user
         
-        FollowService.setIsFollowing(!(followee?.isFollowed)!, fromCurrentUserTo: followee!) { (success) in
-            defer {
-                self.followButton.isUserInteractionEnabled = true
+        
+        //will check if the user if being followed or not
+        if (followee?.isFollowed)! {
+            //will unfollow the user
+            FollowService.setIsFollowing(!(followee?.isFollowed)!, fromCurrentUserTo: followee!) { (success) in
+                defer {
+                    self.followButton.isUserInteractionEnabled = true
+                }
+                
+                guard success else { return }
+                followee?.isFollowed = !(followee?.isFollowed)!
+                print(followee?.isFollowed)
+                print("Successfully unfollowed user:", self.user?.username ?? "")
+                self.setupFollowStyle()
+                ///self.tableView.reloadRows(at: [indexPath], with: .none)
+            }
+        }else{
+            //will follow the user
+            FollowService.setIsFollowing(!(followee?.isFollowed)!, fromCurrentUserTo: followee!) { (success) in
+                defer {
+                    self.followButton.isUserInteractionEnabled = true
+                }
+                
+                guard success else { return }
+                print(followee?.isFollowed)
+                
+                followee?.isFollowed = !(followee?.isFollowed)!
+                print(followee?.isFollowed)
+                print("Successfully followed user: ", self.user?.username ?? "")
+                self.followButton.setTitle("Unfollow", for: .normal)
+                self.followButton.backgroundColor = .white
+                self.followButton.setTitleColor(.black, for: .normal)
             }
             
-            guard success else { return }
-            
-            followee?.isFollowed = !(followee?.isFollowed)!
-            ///self.tableView.reloadRows(at: [indexPath], with: .none)
         }
+        
+        
     }
     
+    fileprivate func setupFollowStyle() {
+        self.followButton.setTitle("Follow", for: .normal)
+        self.followButton.backgroundColor = UIColor.rgb(red: 17, green: 154, blue: 237)
+        self.followButton.setTitleColor(.white, for: .normal)
+        self.followButton.layer.borderColor = UIColor(white: 0, alpha: 0.2).cgColor
+    }
     
     fileprivate func setupToolBar(){
         
@@ -163,14 +218,14 @@ class UserProfileHeader: UICollectionViewCell {
         
         let stackview = UIStackView(arrangedSubviews: [statsLabel,followersLabel,followingLabel])
         stackview.distribution = .fillEqually
-        addSubview(stackview)
-        addSubview(topDividerView)
-        addSubview(bottomDividerView)
-        stackview.anchor(top: nil, left: leftAnchor, bottom: self.bottomAnchor, right: rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 10, paddingRight: 0, width: 0, height: 60)
+        // addSubview(stackview)
+        // addSubview(topDividerView)
+        //  addSubview(bottomDividerView)
+        //  stackview.anchor(top: nil, left: leftAnchor, bottom: self.bottomAnchor, right: rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 10, paddingRight: 0, width: 0, height: 60)
         
-        topDividerView.anchor(top: stackview.topAnchor, left: leftAnchor, bottom: nil, right: rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0.5)
+        //  topDividerView.anchor(top: stackview.topAnchor, left: leftAnchor, bottom: nil, right: rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0.5)
         
-        bottomDividerView.anchor(top: stackview.bottomAnchor, left: leftAnchor, bottom: nil, right: rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0.5)
+        //  bottomDividerView.anchor(top: stackview.bottomAnchor, left: leftAnchor, bottom: nil, right: rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0.5)
     }
     
     
@@ -205,8 +260,9 @@ class UserProfileHeader: UICollectionViewCell {
             }.resume()
     }
     
+    lazy var profileStackView = UIStackView(arrangedSubviews: [profileImage])
+    
     fileprivate func setupProfileStack(){
-        let profileStackView = UIStackView(arrangedSubviews: [profileImage])
         addSubview(profileStackView)
         profileStackView.anchor(top: topAnchor, left: nil, bottom: nil, right: nil, paddingTop: 10, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 100, height: 100)
         profileStackView.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true

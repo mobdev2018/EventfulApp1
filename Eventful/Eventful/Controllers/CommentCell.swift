@@ -49,8 +49,6 @@ class CommentCell: UICollectionViewCell {
         textView.font = UIFont.systemFont(ofSize: 14)
         textView.isScrollEnabled = false
         textView.isEditable = false
-        // label.numberOfLines = 0
-        //label.backgroundColor = UIColor.lightGray
         return textView
     }()
     
@@ -81,7 +79,6 @@ class CommentCell: UICollectionViewCell {
     
     override init(frame: CGRect){
         super.init(frame: frame)
-        // backgroundColor = .yellow
         addSubview(textView)
         addSubview(profileImageView)
         addSubview(flagButton)

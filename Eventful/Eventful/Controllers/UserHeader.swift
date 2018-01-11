@@ -13,9 +13,7 @@ import FirebaseAuth
 import FirebaseDatabase
 import FirebaseStorage
 
-
 class UserProfileHeader: UICollectionViewCell {
-    
     var user: User?{
         didSet {
             setupProfileImage()
@@ -23,8 +21,6 @@ class UserProfileHeader: UICollectionViewCell {
             setupUserInteraction()
         }
     }
-    
-    
     lazy var profileImage: UIImageView = {
         let profilePicture = UIImageView()
         profilePicture.layer.borderWidth = 1.0
@@ -40,10 +36,6 @@ class UserProfileHeader: UICollectionViewCell {
         profilePicture.layer.masksToBounds = true
         return profilePicture
     }()
-    
-    
-    //creatas a UILabel
-    
     lazy var statsLabel : UILabel = {
         let statsLabel = UILabel()
         let attributedText = NSMutableAttributedString(string: "0\n", attributes: [NSAttributedStringKey.font: UIFont.boldSystemFont(ofSize: 14)])
@@ -53,29 +45,24 @@ class UserProfileHeader: UICollectionViewCell {
         statsLabel.textAlignment = .center
         return statsLabel
     }()
-    
-    lazy var followersLabel : UILabel = {
-        let followersLabel = UILabel()
-        let attributedText = NSMutableAttributedString(string: "0\n", attributes: [NSAttributedStringKey.font: UIFont.boldSystemFont(ofSize: 14)])
-        attributedText.append(NSAttributedString(string: "Followers", attributes: [NSAttributedStringKey.foregroundColor: UIColor.lightGray, NSAttributedStringKey.font: UIFont.systemFont(ofSize: 14)]))
-        followersLabel.attributedText = attributedText
-        followersLabel.numberOfLines = 0
-        followersLabel.textAlignment = .center
-        return followersLabel
-    }()
-    
-    
-    lazy var followingLabel : UILabel = {
-        let followingLabel = UILabel()
-        let attributedText = NSMutableAttributedString(string: "0\n", attributes: [NSAttributedStringKey.font: UIFont.boldSystemFont(ofSize: 14)])
-        attributedText.append(NSAttributedString(string: "Following", attributes: [NSAttributedStringKey.foregroundColor: UIColor.lightGray, NSAttributedStringKey.font: UIFont.systemFont(ofSize: 14)]))
-        followingLabel.attributedText = attributedText
-        followingLabel.numberOfLines = 0
-        followingLabel.textAlignment = .center
-        return followingLabel
-    }()
-    
-    
+//    lazy var followersLabel : UILabel = {
+//        let followersLabel = UILabel()
+//        let attributedText = NSMutableAttributedString(string: "0\n", attributes: [NSAttributedStringKey.font: UIFont.boldSystemFont(ofSize: 14)])
+//        attributedText.append(NSAttributedString(string: "Followers", attributes: [NSAttributedStringKey.foregroundColor: UIColor.lightGray, NSAttributedStringKey.font: UIFont.systemFont(ofSize: 14)]))
+//        followersLabel.attributedText = attributedText
+//        followersLabel.numberOfLines = 0
+//        followersLabel.textAlignment = .center
+//        return followersLabel
+//    }()
+//    lazy var followingLabel : UILabel = {
+//        let followingLabel = UILabel()
+//        let attributedText = NSMutableAttributedString(string: "0\n", attributes: [NSAttributedStringKey.font: UIFont.boldSystemFont(ofSize: 14)])
+//        attributedText.append(NSAttributedString(string: "Following", attributes: [NSAttributedStringKey.foregroundColor: UIColor.lightGray, NSAttributedStringKey.font: UIFont.systemFont(ofSize: 14)]))
+//        followingLabel.attributedText = attributedText
+//        followingLabel.numberOfLines = 0
+//        followingLabel.textAlignment = .center
+//        return followingLabel
+//    }()
     // will be the button that the user clicks to edit there profile settings
     lazy var profileeSettings: UIButton = {
         let profileSetup = UIButton(type: .system)
@@ -83,14 +70,12 @@ class UserProfileHeader: UICollectionViewCell {
         profileSetup.setTitleColor(.black, for: .normal)
         return profileSetup
     }()
-    
     lazy var settings: UIButton = {
         let settings = UIButton(type: .system)
         settings.setImage(#imageLiteral(resourceName: "icons8-Settings-50").withRenderingMode(.alwaysOriginal), for: .normal)
         settings.setTitleColor(.black, for: .normal)
         return settings
     }()
-    
     lazy var followButton: UIButton = {
         let button = UIButton(type: .system)
        // button.setTitle("Edit Profile", for: .normal)
@@ -102,18 +87,12 @@ class UserProfileHeader: UICollectionViewCell {
         button.addTarget(self, action: #selector(didTapFollowButton), for: .touchUpInside)
         return button
     }()
-    
     lazy var backButton: UIButton = {
         let backButton = UIButton(type: .system)
         backButton.setImage(UIImage(named: "icons8-Back-64"), for: .normal)
         return backButton
     }()
-    
-    
-    
     fileprivate func setupUserInteraction (){
-        //   followButton.setImage(#imageLiteral(resourceName: "icons8-Unchecked Checkbox-64").withRenderingMode(.alwaysOriginal), for: .normal)
-        
         guard let currentLoggedInUser = Auth.auth().currentUser?.uid else{
             return
         }
@@ -128,6 +107,10 @@ class UserProfileHeader: UICollectionViewCell {
             userStackView.spacing = 10.0
             addSubview(userStackView)
             userStackView.anchor(top: topAnchor, left: leftAnchor, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 15, paddingBottom: 0, paddingRight: 0, width: 0, height: 90)
+            let bottomDividerView = UIView()
+            bottomDividerView.backgroundColor = UIColor.lightGray
+            addSubview(bottomDividerView)
+             bottomDividerView.anchor(top: profileStackView.bottomAnchor, left: leftAnchor, bottom: nil, right: rightAnchor, paddingTop: 15, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0.5)
             
         } else{
             let userStackView = UIStackView(arrangedSubviews: [backButton])
@@ -138,7 +121,10 @@ class UserProfileHeader: UICollectionViewCell {
             userStackView.anchor(top: topAnchor, left: leftAnchor, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 15, paddingBottom: 0, paddingRight: 0, width: 0, height: 40)
             addSubview(followButton)
             followButton.anchor(top: profileStackView.bottomAnchor, left: leftAnchor, bottom: nil, right: rightAnchor, paddingTop: 10, paddingLeft: 50, paddingBottom:0 , paddingRight: 50, width: 0, height: 0)
-            
+            let bottomDividerView = UIView()
+            bottomDividerView.backgroundColor = UIColor.lightGray
+              addSubview(bottomDividerView)
+             bottomDividerView.anchor(top: followButton.bottomAnchor, left: leftAnchor, bottom: nil, right: rightAnchor, paddingTop: 15, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0.5)
             // check if following
             Database.database().reference().child("following").child(currentLoggedInUser).child(uid).observeSingleEvent(of: .value, with: { (snapshot) in
                 
@@ -176,7 +162,6 @@ class UserProfileHeader: UICollectionViewCell {
                 print(followee?.isFollowed)
                 print("Successfully unfollowed user:", self.user?.username ?? "")
                 self.setupFollowStyle()
-                ///self.tableView.reloadRows(at: [indexPath], with: .none)
             }
         }else{
             //will follow the user
@@ -208,25 +193,7 @@ class UserProfileHeader: UICollectionViewCell {
         self.followButton.layer.borderColor = UIColor(white: 0, alpha: 0.2).cgColor
     }
     
-    fileprivate func setupToolBar(){
-        
-        let topDividerView = UIView()
-        topDividerView.backgroundColor = UIColor.lightGray
-        
-        let bottomDividerView = UIView()
-        bottomDividerView.backgroundColor = UIColor.lightGray
-        
-        let stackview = UIStackView(arrangedSubviews: [statsLabel,followersLabel,followingLabel])
-        stackview.distribution = .fillEqually
-        // addSubview(stackview)
-        // addSubview(topDividerView)
-        //  addSubview(bottomDividerView)
-        //  stackview.anchor(top: nil, left: leftAnchor, bottom: self.bottomAnchor, right: rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 10, paddingRight: 0, width: 0, height: 60)
-        
-        //  topDividerView.anchor(top: stackview.topAnchor, left: leftAnchor, bottom: nil, right: rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0.5)
-        
-        //  bottomDividerView.anchor(top: stackview.bottomAnchor, left: leftAnchor, bottom: nil, right: rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0.5)
-    }
+
     
     
     fileprivate func setupProfileImage() {
@@ -268,19 +235,15 @@ class UserProfileHeader: UICollectionViewCell {
         profileStackView.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
         
     }
-    
-    
+
     override init(frame: CGRect) {
         super.init(frame: frame)
         backgroundColor = UIColor.white
         profileImage.layer.cornerRadius = 100/2
-        setupToolBar()
+       // setupToolBar()
         setupProfileStack()
     }
-    
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
-    
 }

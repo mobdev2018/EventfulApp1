@@ -27,7 +27,7 @@ class SignUpViewController: UIViewController, UIImagePickerControllerDelegate, U
     
     let plusPhotoButton: UIButton = {
         let button = UIButton(type: .system)
-        button.setImage(#imageLiteral(resourceName: "camera-white").withRenderingMode(.alwaysOriginal), for: .normal)
+        button.setImage(#imageLiteral(resourceName: "camblack").withRenderingMode(.alwaysOriginal), for: .normal)
         button.addTarget(self, action: #selector(handlePlusPhoto), for: .touchUpInside)
         return button
     }()
@@ -60,63 +60,62 @@ class SignUpViewController: UIViewController, UIImagePickerControllerDelegate, U
     
     let nameTextField : HoshiTextField = {
         let nameText = HoshiTextField()
-        nameText.placeholderColor = .white
+        nameText.placeholderColor = .black
         nameText.placeholder = "Username"
         nameText.layer.borderColor = UIColor.lightGray.cgColor
         nameText.layer.borderWidth = 0
         nameText.borderStyle = .none
-        nameText.borderInactiveColor = .white
-        nameText.borderActiveColor = UIColor.white
-        nameText.textColor = .white
+        nameText.borderInactiveColor = .black
+        nameText.borderActiveColor = .black
+        nameText.textColor = .black
         return nameText
     }()
     
     // creates a email UITextField to hold the email
     let emailTextField : HoshiTextField = {
         let emaiilText = HoshiTextField()
-        emaiilText.placeholderColor = .white
+        emaiilText.placeholderColor = .black
         emaiilText.placeholder = "Email"
         emaiilText.layer.borderColor = UIColor.lightGray.cgColor
         emaiilText.layer.borderWidth = 0
         emaiilText.borderStyle = .none
-        emaiilText.borderInactiveColor = .white
-        emaiilText.borderActiveColor = UIColor.white
-        emaiilText.textColor = .white
+        emaiilText.borderInactiveColor = .black
+        emaiilText.borderActiveColor = .black
+        emaiilText.textColor = .black
         return emaiilText
     }()
     
     //creates a password UItextield
     let passwordTextField : HoshiTextField = {
         let passwordText = HoshiTextField()
-        passwordText.placeholderColor = .white
+        passwordText.placeholderColor = .black
         passwordText.placeholder = "Password"
         passwordText.layer.borderColor = UIColor.lightGray.cgColor
         passwordText.layer.borderWidth = 0
         passwordText.isSecureTextEntry = true
         passwordText.borderStyle = .none
-        passwordText.borderInactiveColor = .white
-        passwordText.borderActiveColor = UIColor.white
-        passwordText.textColor = .white
+        passwordText.borderInactiveColor = .black
+        passwordText.borderActiveColor = .black
+        passwordText.textColor = .black
         return passwordText
     }()
     
     //creates a confirm password UItextfield
     let confirmPasswordTextField : HoshiTextField = {
         let confirmPasswordText = HoshiTextField()
-        confirmPasswordText.placeholderColor = .white
+        confirmPasswordText.placeholderColor = .black
         confirmPasswordText.placeholder = "Confirm Password"
         confirmPasswordText.layer.borderColor = UIColor.lightGray.cgColor
         confirmPasswordText.layer.borderWidth = 0
         confirmPasswordText.isSecureTextEntry = true
         confirmPasswordText.borderStyle = .none
-        confirmPasswordText.borderInactiveColor = .white
-        confirmPasswordText.borderActiveColor = UIColor.white
-        confirmPasswordText.textColor = .white
+        confirmPasswordText.borderInactiveColor = .black
+        confirmPasswordText.borderActiveColor = .black
+        confirmPasswordText.textColor = .black
         return confirmPasswordText
     }()
     
-    // creates a UIButton
-    
+    // creates a UIButton that will sign up the user
     let signupButton: UIButton  = {
         let button = UIButton(type: .system)
         button.setTitle("SIGN UP", for: .normal)
@@ -129,6 +128,7 @@ class SignUpViewController: UIViewController, UIImagePickerControllerDelegate, U
     
     // will handle the  sign up of a user
     @objc func handleSignUp(){
+        print("entered sign up")
         // first we cant to take sure that all of the fields are filled
         var profilePic: String = ""
         // will take the user selected image and load it to firebase
@@ -165,67 +165,87 @@ class SignUpViewController: UIViewController, UIImagePickerControllerDelegate, U
         //notice I also set the value of profilepic oo it can be saved in the updated user instance in the database
                         let alertController = UIAlertController(title: "Enable access to your location \n Discover events near you", message: nil, preferredStyle: UIAlertControllerStyle.alert)
         if let userImage = selectedImageFromPicker,let uploadData = UIImageJPEGRepresentation(userImage, 0.1){
-            AuthService.createUser(controller: self, email: email, password: password) { (authUser) in
-                guard let firUser = authUser else{
-                    return
-                }
-                
-                let ref = Database.database().reference()
-                self.geoFireRef = ref.child("userlocations")
-                self.geoFire = GeoFire(firebaseRef: self.geoFireRef)
-                
-                
-
-                
-                let cancelAction = UIAlertAction(title: "Deny", style: .cancel, handler: nil)
-                
-                alertController.addAction(cancelAction)
-                let locationAction = UIAlertAction(title: "Allow", style: .default){_ in
-                    Location.getLocation(accuracy: .city, frequency: .oneShot, success: { (_, location) -> (Void) in
-                        print("Latitide: \(location.coordinate.latitude)")
-                        print("Longitude: \(location.coordinate.longitude)")
-                        let location = CLLocation(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude)
-                        print(firUser.uid)
-                        self.geoFire.setLocation(location, forKey: firUser.uid)
+            //will ensure that each user has a unique username
+            AuthService.checkUserNameAlreadyExist(newUserName: username, completion: { (isUnique) in
+                if isUnique {
+                    //username exists so user has to try again
+                    print("Login already exist")
+                    self.showAlertThatLoginAlreadyExists()
+                    
+                }else{
+                    
+                    //username does not exist and will authenticate user
+                    AuthService.createUser(controller: self, email: email, password: password) { (authUser) in
+                        guard let firUser = authUser else{
+                            return
+                        }
                         
-                        storageRef.putData(uploadData, metadata: nil, completion: { (metadata, error) in
-                            if error != nil {
-                                print(error ?? "")
-                                return
-                            }
-                            profilePic = (metadata?.downloadURL()!.absoluteString)!
-                            //printing to make sure values are contained in these strings
-                            print(profilePic)
-                            print(username)
-                            
-                            UserService.create(firUser, username: username, profilePic: profilePic, completion: { (user) in
-                                guard let user = user else {
-                                    print("User not loaded into firebase db")
-                                    return
-                                }
-
-                                User.setCurrent(user, writeToUserDefaults: true)
+                        let ref = Database.database().reference()
+                        self.geoFireRef = ref.child("userlocations")
+                        self.geoFire = GeoFire(firebaseRef: self.geoFireRef)
+                        
+                        
+                        let cancelAction = UIAlertAction(title: "Deny", style: .cancel, handler: nil)
+                        
+                        alertController.addAction(cancelAction)
+                        let locationAction = UIAlertAction(title: "Allow", style: .default){_ in
+                            Location.getLocation(accuracy: .city, frequency: .oneShot, success: { (_, location) -> (Void) in
+                                print("Latitide: \(location.coordinate.latitude)")
+                                print("Longitude: \(location.coordinate.longitude)")
+                                let location = CLLocation(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude)
+                                print(firUser.uid)
+                                self.geoFire.setLocation(location, forKey: firUser.uid)
                                 
-                                // will set the current user for userdefaults to work
-                                print(user.profilePic ?? "")
-                                print(user.username ?? "")
-                                // self.delegate?.finishSigningUp()
-                                self.finishSigningUp()
+                                storageRef.putData(uploadData, metadata: nil, completion: { (metadata, error) in
+                                    if error != nil {
+                                        print(error ?? "")
+                                        return
+                                    }
+                                    profilePic = (metadata?.downloadURL()!.absoluteString)!
+                                    //printing to make sure values are contained in these strings
+                                    print(profilePic)
+                                    print(username)
+                                    
+                                    UserService.create(firUser, username: username, profilePic: profilePic, completion: { (user) in
+                                        guard let user = user else {
+                                            print("User not loaded into firebase db")
+                                            return
+                                        }
+                                        
+                                        User.setCurrent(user, writeToUserDefaults: true)
+                                        
+                                        // will set the current user for userdefaults to work
+                                        print(user.profilePic ?? "")
+                                        print(user.username ?? "")
+                                        // self.delegate?.finishSigningUp()
+                                        self.finishSigningUp()
+                                        
+                                    })
+                                })
                                 
+                            }, error: { (request, last, error) -> (Void) in
+                                request.cancel()
+                                print("Location monitoring failed due to an error \(error)")
                             })
-                        })
-                        
-                    }, error: { (request, last, error) -> (Void) in
-                        request.cancel()
-                        print("Location monitoring failed due to an error \(error)")
-                    })
-
+                            
+                        }
+                        alertController.addAction(locationAction)
+                    }
                 }
-                alertController.addAction(locationAction)
-            }
+            })
         }
-        self.present(alertController, animated: true, completion: nil)
+       // self.present(alertController, animated: true, completion: nil)
 
+    }
+    
+    private func showAlertThatLoginAlreadyExists() {
+        let alert = UIAlertController(title: "Registration failed!",
+                                      message: "Username already exists.",
+                                      preferredStyle: .alert)
+        
+        alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: nil))
+        
+        present(alert, animated: true, completion: nil)
     }
     
     func finishSigningUp() {
@@ -334,8 +354,9 @@ class SignUpViewController: UIViewController, UIImagePickerControllerDelegate, U
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.bgGradientLayer.frame = self.view.layer.bounds
-        self.view.layer.addSublayer(self.bgGradientLayer)
+//        self.bgGradientLayer.frame = self.view.layer.bounds
+//        self.view.layer.addSublayer(self.bgGradientLayer)
+        view.backgroundColor = .white
         let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
         tap.cancelsTouchesInView = false
         let ref = Database.database().reference()
@@ -377,7 +398,7 @@ class SignUpViewController: UIViewController, UIImagePickerControllerDelegate, U
     //creatas a UILabel
     let signInLabel: UILabel = {
         let signUp = UILabel()
-        signUp.textColor = .white
+        signUp.textColor = .black
         let myString = "Already have an account?"
         let myAttribute = [NSAttributedStringKey.font:UIFont(name: "Times New Roman", size: 15)!]
         let myAttrString = NSAttributedString(string: myString, attributes: myAttribute)

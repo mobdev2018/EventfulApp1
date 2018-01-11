@@ -30,6 +30,7 @@ struct PostService {
         userRef.updateChildValues(dict)
     }
     
+    //used in my pagination
     static func showEvent(pageSize: UInt, lastPostKey: String? = nil, category: String? = nil,completion: @escaping ([Event],String) -> Void) {
         //getting firebase root directory
         // print(lastPostKey)

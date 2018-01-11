@@ -165,9 +165,6 @@ struct UserService {
         })
     }
     
-    
-    
-    
     static func usersExcludingCurrentUser(completion: @escaping ([User]) -> Void) {
         let currentUser = User.current
         // 1

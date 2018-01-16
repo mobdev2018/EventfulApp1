@@ -24,7 +24,7 @@ class EventSearchController: UICollectionViewController, UISearchBarDelegate, UI
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.collectionView?.contentInset = UIEdgeInsetsMake(20, 0, 0, 0)
+        self.collectionView?.contentInset = UIEdgeInsetsMake(20, 10, 0, 10)
         collectionView?.backgroundColor = .white
         collectionView?.register(SearchHeader.self, forSupplementaryViewOfKind: UICollectionElementKindSectionHeader, withReuseIdentifier: "headerID")
         self.collectionView?.register(EventSearchCell.self, forCellWithReuseIdentifier: cellId)
@@ -114,7 +114,7 @@ class EventSearchController: UICollectionViewController, UISearchBarDelegate, UI
     }
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
-        return CGSize(width: view.frame.width, height: 80)
+        return CGSize(width: view.frame.width, height: 90)
     }
     
     override func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {

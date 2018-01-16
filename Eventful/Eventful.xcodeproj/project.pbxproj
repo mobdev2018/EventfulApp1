@@ -42,6 +42,7 @@
 		07437F461F2911E500CE728B /* AuthService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07437F451F2911E500CE728B /* AuthService.swift */; };
 		07437F491F29167000CE728B /* UserService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07437F481F29167000CE728B /* UserService.swift */; };
 		07437F511F2A63B600CE728B /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07437F501F2A63B600CE728B /* HomeViewController.swift */; };
+		074D75A0200C8E8C0044C3AD /* LocationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 074D759F200C8E8C0044C3AD /* LocationService.swift */; };
 		076428B31F4B9289003D1B43 /* Storage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 076428B21F4B9289003D1B43 /* Storage.swift */; };
 		079F52DA1F5E386C0043F9EF /* DropDownLauncher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 079F52D91F5E386C0043F9EF /* DropDownLauncher.swift */; };
 		079F52DC1F5E47EE0043F9EF /* DropDownCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 079F52DB1F5E47EE0043F9EF /* DropDownCell.swift */; };
@@ -125,6 +126,7 @@
 		07437F451F2911E500CE728B /* AuthService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AuthService.swift; path = Services/AuthService.swift; sourceTree = "<group>"; };
 		07437F481F29167000CE728B /* UserService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UserService.swift; path = Services/UserService.swift; sourceTree = "<group>"; };
 		07437F501F2A63B600CE728B /* HomeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = HomeViewController.swift; path = Controllers/HomeViewController.swift; sourceTree = "<group>"; };
+		074D759F200C8E8C0044C3AD /* LocationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = LocationService.swift; path = Services/LocationService.swift; sourceTree = "<group>"; };
 		076428B21F4B9289003D1B43 /* Storage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Storage.swift; sourceTree = "<group>"; };
 		079F52D91F5E386C0043F9EF /* DropDownLauncher.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DropDownLauncher.swift; path = Controllers/DropDownLauncher.swift; sourceTree = "<group>"; };
 		079F52DB1F5E47EE0043F9EF /* DropDownCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DropDownCell.swift; path = Controllers/DropDownCell.swift; sourceTree = "<group>"; };
@@ -291,6 +293,7 @@
 				07370C831F4A4CC8006DC7A2 /* StorageService.swift */,
 				07F3EC581F4A57C3005296EB /* PostService.swift */,
 				07F3EC5D1F4B7B28005296EB /* StoryService.swift */,
+				074D759F200C8E8C0044C3AD /* LocationService.swift */,
 			);
 			name = Services;
 			sourceTree = "<group>";
@@ -604,6 +607,7 @@
 				07437F1A1F267CA900CE728B /* AppDelegate.swift in Sources */,
 				07F3EC5B1F4B53A6005296EB /* StoriesViewController.swift in Sources */,
 				07E932F91F76D13300A0A479 /* CommentsSectionController.swift in Sources */,
+				074D75A0200C8E8C0044C3AD /* LocationService.swift in Sources */,
 				071C9E071F3F95530021D5A3 /* SearchViewController.swift in Sources */,
 				071C9E101F415E680021D5A3 /* AttendService.swift in Sources */,
 				07D9239F1F2EEE460069613D /* AlterProfileViewController.swift in Sources */,

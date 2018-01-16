@@ -30,7 +30,7 @@ class CommentCell: UICollectionViewCell {
             guard let comment = comment else{
                 return
             }
-            print("apples")
+          //  print("apples")
             // textLabel.text = comment.content
             //shawn was also here
             profileImageView.loadImage(urlString: comment.user.profilePic!)

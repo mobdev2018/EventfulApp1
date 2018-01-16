@@ -9,8 +9,6 @@
 import UIKit
 import Foundation
 import SVProgressHUD
-import SwiftLocation
-import CoreLocation
 import TextFieldEffects
 import Firebase
 import GeoFire
@@ -163,7 +161,6 @@ class SignUpViewController: UIViewController, UIImagePickerControllerDelegate, U
         let storageRef = Storage.storage().reference().child("profile_images").child("\(imageName).PNG")
         //following function does the work of putting it into firebase
         //notice I also set the value of profilepic oo it can be saved in the updated user instance in the database
-                        let alertController = UIAlertController(title: "Enable access to your location \n Discover events near you", message: nil, preferredStyle: UIAlertControllerStyle.alert)
         if let userImage = selectedImageFromPicker,let uploadData = UIImageJPEGRepresentation(userImage, 0.1){
             //will ensure that each user has a unique username
             AuthService.checkUserNameAlreadyExist(newUserName: username, completion: { (isUnique) in
@@ -171,65 +168,35 @@ class SignUpViewController: UIViewController, UIImagePickerControllerDelegate, U
                     //username exists so user has to try again
                     print("Login already exist")
                     self.showAlertThatLoginAlreadyExists()
-                    
                 }else{
-                    
                     //username does not exist and will authenticate user
                     AuthService.createUser(controller: self, email: email, password: password) { (authUser) in
                         guard let firUser = authUser else{
                             return
                         }
-                        
-                        let ref = Database.database().reference()
-                        self.geoFireRef = ref.child("userlocations")
-                        self.geoFire = GeoFire(firebaseRef: self.geoFireRef)
-                        
-                        
-                        let cancelAction = UIAlertAction(title: "Deny", style: .cancel, handler: nil)
-                        
-                        alertController.addAction(cancelAction)
-                        let locationAction = UIAlertAction(title: "Allow", style: .default){_ in
-                            Location.getLocation(accuracy: .city, frequency: .oneShot, success: { (_, location) -> (Void) in
-                                print("Latitide: \(location.coordinate.latitude)")
-                                print("Longitude: \(location.coordinate.longitude)")
-                                let location = CLLocation(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude)
-                                print(firUser.uid)
-                                self.geoFire.setLocation(location, forKey: firUser.uid)
-                                
-                                storageRef.putData(uploadData, metadata: nil, completion: { (metadata, error) in
-                                    if error != nil {
-                                        print(error ?? "")
-                                        return
-                                    }
-                                    profilePic = (metadata?.downloadURL()!.absoluteString)!
-                                    //printing to make sure values are contained in these strings
-                                    print(profilePic)
-                                    print(username)
-                                    
-                                    UserService.create(firUser, username: username, profilePic: profilePic, completion: { (user) in
-                                        guard let user = user else {
-                                            print("User not loaded into firebase db")
-                                            return
-                                        }
-                                        
-                                        User.setCurrent(user, writeToUserDefaults: true)
-                                        
-                                        // will set the current user for userdefaults to work
-                                        print(user.profilePic ?? "")
-                                        print(user.username ?? "")
-                                        // self.delegate?.finishSigningUp()
-                                        self.finishSigningUp()
-                                        
-                                    })
-                                })
-                                
-                            }, error: { (request, last, error) -> (Void) in
-                                request.cancel()
-                                print("Location monitoring failed due to an error \(error)")
-                            })
+                        storageRef.putData(uploadData, metadata: nil, completion: { (metadata, error) in
+                            if error != nil {
+                                print(error ?? "")
+                                return
+                            }
+                            profilePic = (metadata?.downloadURL()!.absoluteString)!
+                            //printing to make sure values are contained in these strings
+                            print(profilePic)
+                            print(username)
                             
-                        }
-                        alertController.addAction(locationAction)
+                            UserService.create(firUser, username: username, profilePic: profilePic, completion: { (user) in
+                                guard let user = user else {
+                                    print("User not loaded into firebase db")
+                                    return
+                                }
+                                User.setCurrent(user, writeToUserDefaults: true)
+                                // will set the current user for userdefaults to work
+                                print(user.profilePic ?? "")
+                                print(user.username ?? "")
+                                // self.delegate?.finishSigningUp()
+                                self.finishSigningUp()
+                            })
+                        })
                     }
                 }
             })
@@ -283,12 +250,7 @@ class SignUpViewController: UIViewController, UIImagePickerControllerDelegate, U
         
         self.dismiss(animated: true, completion: nil)
     }
-    
-    /////////////////////////////////////////////
-    
-    
-    
-    
+
     // Will move the UI Up on login Screen when keyboard appears
     
     fileprivate func observeKeyboardNotifications() {

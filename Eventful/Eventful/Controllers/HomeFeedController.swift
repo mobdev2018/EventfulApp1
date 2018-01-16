@@ -31,6 +31,7 @@ class HomeFeedController: UIViewController, UIGestureRecognizerDelegate {
     // let dropDownLauncher = DropDownLauncher()
     var isFinishedPaging = false
     let detailView = EventDetailViewController()
+    var userLocation: CLLocation?
     let refreshControl = UIRefreshControl()
     var emptyLabel: UILabel?
     var allEvents = [Event]()
@@ -44,7 +45,6 @@ class HomeFeedController: UIViewController, UIGestureRecognizerDelegate {
     //fileprivate var topView:HomeFeedCell!
     fileprivate var topCollectionView:UICollectionView!
     fileprivate var dynamoCollectionView: DynamoCollectionView!
-    let paginationHelper = PaginationHelper<Event>(serviceMethod: PostService.showEvent)
     
     let dropDown: [ImageAndTitleItem] = {
         return [ImageAndTitleItem(name: "Home", imageName: "home"), ImageAndTitleItem(name: "Seize The Night", imageName: "night"), ImageAndTitleItem(name: "Seize The Day", imageName: "summer"), ImageAndTitleItem(name: "Dress To Impress", imageName: "suit"), ImageAndTitleItem(name: "I Love College", imageName: "college"), ImageAndTitleItem(name: "21 & Up", imageName: "21")]
@@ -60,7 +60,29 @@ class HomeFeedController: UIViewController, UIGestureRecognizerDelegate {
         navigationItem.title = "Home"
         SVProgressHUD.dismiss()
         self.configure()
-        reloadHomeFeed()
+        grabUserLoc()
+       // reloadHomeFeed()
+    }
+    
+    @objc func grabUserLoc(){
+        LocationService.getUserLocation { (location) in
+            guard let currentLocation = location else {
+                return
+            }
+            PostService.showEvent(for: currentLocation, completion: { (events) in
+                for event in events {
+                                  if !self.allEvents.contains(where: {$0.key == event.key}) {
+                                       self.allEvents.append(event)
+                                   }
+                }
+                print(self.allEvents.count)
+                
+            })
+           // self.userLocation = currentLocation
+            print("Latitude: \(currentLocation.coordinate.latitude)")
+            print("Longitude: \(currentLocation.coordinate.longitude)")
+        }
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -77,6 +99,7 @@ class HomeFeedController: UIViewController, UIGestureRecognizerDelegate {
     }
     
     private func configure(){
+        print("Enter configure function")
         func configureViews(){
             let topLayout = UICollectionViewFlowLayout()
             topLayout.scrollDirection = .horizontal
@@ -112,6 +135,7 @@ class HomeFeedController: UIViewController, UIGestureRecognizerDelegate {
             //will register a category collectionview cell
             self.topCollectionView.register(DropDownCell.self, forCellWithReuseIdentifier: topCell)
         }
+        //goes here first
         configureViews()
         configureCollectionCell()
     }
@@ -142,39 +166,9 @@ class HomeFeedController: UIViewController, UIGestureRecognizerDelegate {
     //will query by selected category
     func categoryFetch(dropDown: ImageAndTitleItem){
         navigationItem.title = dropDown.name
-        paginationHelper.category = dropDown.name
-        reloadHomeFeed()
     }
     
-    func reloadHomeFeed() {
-        
-        if (navigationItem.title == "Followers are Going"){
-            let user = User.current
-            
-            profileHandle = UserService.observeProfile(for: user) { [unowned self](ref, user, events) in
-                self.profileRef = ref
-                self.allEvents = events
-                DispatchQueue.main.async {
-                    self.reloadCollection()
-                }
-                
-            }
-            return
-        }
-        
-        self.paginationHelper.reloadData(completion: { [unowned self] (events) in
-            self.allEvents = events
-            
-            if self.refreshControl.isRefreshing {
-                self.refreshControl.endRefreshing()
-            }
-            
-            DispatchQueue.main.async {
-//comes here first when it comes to configuring view atleast
-                self.reloadCollection()
-            }
-        })
-    }
+
     
     func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
         return true
@@ -190,7 +184,6 @@ class HomeFeedController: UIViewController, UIGestureRecognizerDelegate {
     
     
     fileprivate func reloadCollection() {
-        //comes here second
         self.dynamoCollectionView.reloadData()
     }
     
@@ -208,12 +201,12 @@ class HomeFeedController: UIViewController, UIGestureRecognizerDelegate {
 }
 
 
+
+
 // MARK: - UICollectionViewDelegateFlowLayout
 extension HomeFeedController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        //if collectionView.tag == 0 {
         self.performActionOnTopItemSelect(at: indexPath.item)
-        //}
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
@@ -223,7 +216,6 @@ extension HomeFeedController: UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
         return UIEdgeInsetsMake(10.0, 15.0, 10.0, 0.0)
-
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
@@ -276,17 +268,7 @@ extension HomeFeedController: DynamoCollectionViewDelegate, DynamoCollectionView
     
     // MARK: DynamoCollectionView Datasource
     func dynamoCollectionView(_ dynamoCollectionView: DynamoCollectionView, willDisplay cell: UICollectionViewCell, indexPath: IndexPath) {
-        //comes here seventh
-        paginationHelper.paginate(completion: { [unowned self] (events) in
-            for event in events {
-                if !self.allEvents.contains(where: {$0.key == event.key}) {
-                    self.allEvents.append(event)
-                }
-            }
-            DispatchQueue.main.async {
-                self.dynamoCollectionView.reloadData()
-            }
-        })
+        print("Attempting to get events")
         
     }
     
@@ -297,12 +279,13 @@ extension HomeFeedController: DynamoCollectionViewDelegate, DynamoCollectionView
     func numberOfItems(_ dynamoCollectionView: DynamoCollectionView) -> Int {
         //this seems to be passing data to numberofitems in DynamicCollectionView file to configure view via that file
         //seems to be doing things one view or cell at a time
-        //comes here fifth
+        print(allEvents.count)
         return allEvents.count
     }
     //controls info related to each cell 
     func dynamoCollectionView(_ dynamoCollectionView: DynamoCollectionView, cellForItemAt indexPath: IndexPath) -> DynamoCollectionViewCell {
         //c2
+        print("entered cell for item at")
         let cell = dynamoCollectionView.dequeueReusableCell(for: indexPath)
         let model = allEvents[indexPath.item]
         let imageURL = URL(string: model.currentEventImage)

@@ -14,8 +14,8 @@ target 'Eventful' do
     pod 'AlamofireNetworkActivityIndicator'
     pod ‘SVProgressHUD’
     pod "SwiftyCam"
-    pod 'SwiftLocation'
     pod ‘TextFieldEffects’
+    pod 'SwiftLocation'
     pod 'EZSwipeController'
     pod 'IGListKit', :git => 'https://github.com/Instagram/IGListKit.git', :branch => 'master'
     pod 'GeoFire', :git => 'https://github.com/firebase/geofire-objc.git'

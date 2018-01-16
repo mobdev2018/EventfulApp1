@@ -20,14 +20,22 @@ class SearchHeader: UICollectionViewCell {
 
     lazy var searchBar: UISearchBar = {
         let sb = UISearchBar()
-        sb.placeholder = "Enter Event"
+        sb.placeholder = "Search"
+        sb.searchBarStyle = .minimal
         sb.showsScopeBar = true
         sb.setScopeBarButtonTitleTextAttributes([ NSAttributedStringKey.foregroundColor.rawValue : UIColor.black], for: .normal)
+        let textFieldInsideUISearchBar = sb.value(forKey: "searchField") as? UITextField
+        textFieldInsideUISearchBar?.font = UIFont.systemFont(ofSize: 14)
         sb.scopeButtonTitles = ["Events", "Users"]
+        sb.layer.borderColor = UIColor.lightGray.cgColor
+        sb.layer.borderWidth = 0.3
+        sb.layer.cornerRadius = 5
+        sb.layer.masksToBounds = true
         sb.barTintColor = UIColor.white
+        sb.tintColor = .gray
         UITextField.appearance(whenContainedInInstancesOf: [UISearchBar.self]).backgroundColor = UIColor.rgb(red: 230, green: 230, blue: 230)
         
-      //  sb.delegate = self
+        //  sb.delegate = self
         return sb
     }()
     

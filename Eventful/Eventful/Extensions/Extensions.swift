@@ -10,8 +10,8 @@ import UIKit
 
 extension UIColor {
     
-    static func rgb(red: CGFloat, green: CGFloat, blue: CGFloat) -> UIColor {
-        return UIColor(red: red/255, green: green/255, blue: blue/255, alpha: 1)
+    static func rgb(red: CGFloat, green: CGFloat, blue: CGFloat, alpha:CGFloat = 1) -> UIColor {
+        return UIColor(red: red/255, green: green/255, blue: blue/255, alpha: alpha)
     }
     
     static var logoColor: UIColor {
@@ -100,6 +100,16 @@ extension UIView {
         }
         
         addConstraints(NSLayoutConstraint.constraints(withVisualFormat: format, options: NSLayoutFormatOptions(), metrics: nil, views: viewsDictionary))
+    }
+    
+    func setHieghtOrWidth(height:CGFloat?,width:CGFloat?){
+        self.translatesAutoresizingMaskIntoConstraints = false
+        if let heightConst = height{
+            self.heightAnchor.constraint(equalToConstant: heightConst).isActive = true
+        }
+        if let widthAnchor = width{
+            self.widthAnchor.constraint(equalToConstant: widthAnchor).isActive = true
+        }
     }
 }
 

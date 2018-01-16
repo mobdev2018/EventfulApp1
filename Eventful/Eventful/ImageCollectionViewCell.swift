@@ -26,7 +26,7 @@ class ImageCollectionViewCell: UICollectionViewCell {
         self.imageView.contentMode = .scaleAspectFit
         self.addSubview(self.imageView)
         //maybe change to nil
-        NSLayoutConstraint.activateViewConstraints(self.imageView, inSuperView: self, withLeading: nil, trailing: nil, top: 0, bottom: nil, width: 36.0, height: 36.0)
+        NSLayoutConstraint.activateViewConstraints(self.imageView, inSuperView: self, withLeading: nil, trailing: nil, top: 0, bottom: nil, width: 30, height: 30)
         _ = NSLayoutConstraint.activateCentreXConstraint(withView: self.imageView, superView: self)
         _ = NSLayoutConstraint.activateVerticalSpacingConstraint(withFirstView: self.imageView, secondView: self.bottomBar, andSeparation: 0.0)
     }

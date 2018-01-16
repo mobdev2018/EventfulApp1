@@ -22,12 +22,14 @@
         
         return [searchNavController,navController,profileViewNavController]
     }()
-    fileprivate var selectedTopIndex:Int!
+    fileprivate var selectedTopIndex:Int!{
+        didSet{
+             self.buttonFilter.isHidden = self.selectedTopIndex != 1
+        }
+    }
 
-    let topImages: [UIImage] = {
-      // #imageLiteral(resourceName: "icons8-User Filled-50")
-        return [#imageLiteral(resourceName: "icons8-Search-48"), #imageLiteral(resourceName: "home"), UIImage()]
-    }()
+    let topImages = [#imageLiteral(resourceName: "icons8-Search-48"), #imageLiteral(resourceName: "home"),UIImage()]
+   
     let topCell = "topCell"
 
     override func viewDidLoad() {
@@ -35,8 +37,17 @@
         self.configureViews()
         registerNotifications()
     }
-
+   
+    //Button to show filter for events
+    lazy var buttonFilter:UIButton={
+        let button = UIButton()
+        button.setImage(#imageLiteral(resourceName: "filter"), for: .normal)
+        button.addTarget(self, action: #selector(self.showFilter), for: .touchUpInside)
+        return button
+    }()
+    
     fileprivate func configureViews() {
+
         self.selectedTopIndex = 1
         self.view.backgroundColor = .white
         self.automaticallyAdjustsScrollViewInsets = false
@@ -61,9 +72,16 @@
         self.view.addSubview(self.pageController.view)
         self.pageController.view.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activateViewConstraints(self.pageController.view, inSuperView: self.view, withLeading: 0.0, trailing: 0.0, top: nil, bottom: nil)
-        _ = NSLayoutConstraint.activateVerticalSpacingConstraint(withFirstView: self.topCollectionView, secondView: self.pageController.view, andSeparation: 0.0)
+       _ = NSLayoutConstraint.activateVerticalSpacingConstraint(withFirstView: self.topCollectionView, secondView: self.pageController.view, andSeparation: 0.0)
         _ = NSLayoutConstraint.activateVerticalSpacingConstraint(withFirstView: self.pageController.view, secondView: self.bottomLayoutGuide, andSeparation: 0.0)
         self.pageController.didMove(toParentViewController: self)
+        
+        
+        //Filter button on slider to show filter menu
+        self.pageController.view.addSubview(buttonFilter)
+        self.pageController.view.addConstraintsWithFormatt("H:[v0(50)]|", views: buttonFilter)
+        self.pageController.view.addConstraintsWithFormatt("V:|[v0(50)]", views: buttonFilter)
+        self.pageController.view.bringSubview(toFront: buttonFilter)
     }
     
     fileprivate func registerNotifications() {
@@ -86,6 +104,12 @@
         self.topCollectionView.performBatchUpdates({
             self.topCollectionView.reloadItems(at: indexPaths)
         }, completion: nil)
+    }
+    
+    
+    
+    @objc func showFilter(){
+        SideMenu.show()
     }
  }
  
@@ -122,6 +146,8 @@
         //going right
         return viewControllerList[nextIndex]
     }
+    
+    
  }
  
  extension HomeViewController: UIPageViewControllerDelegate {
@@ -147,43 +173,35 @@
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: 44.0, height: collectionView.bounds.size.height)
+        return CGSize(width: collectionView.frame.width/CGFloat(topImages.count), height: collectionView.frame.height)
     }
     
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-        return UIEdgeInsetsMake(0.0, 30.0, 0.0, 30.0)
-    }
-    
+
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-        return (collectionView.bounds.size.width - 192.0)/2
+        return 0
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
-        return 15.0
+        return 0
     }
     
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
-        return .zero
-    }
     
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForFooterInSection section: Int) -> CGSize {
-        return .zero
-    }
  }
  
  // MARK: - UICollectionViewDataSource
  extension HomeViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 3
+        return topImages.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: topCell, for: indexPath) as! ImageCollectionViewCell
-        if indexPath.row == 0 || indexPath.row == 1{
-            cell.imageView.image = self.topImages[indexPath.row]
-        }else{
+        
+        if indexPath.item == self.topImages.count-1{
             cell.imageView.loadImage(urlString: User.current.profilePic!)
             cell.imageView.layer.cornerRadius = 50/2
+        }else{
+            cell.imageView.image = self.topImages[indexPath.row]
         }
         
         var selected = false

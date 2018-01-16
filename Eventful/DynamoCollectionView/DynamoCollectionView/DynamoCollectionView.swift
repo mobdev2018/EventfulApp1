@@ -325,6 +325,7 @@ extension DynamoCollectionView: UICollectionViewDelegate, UICollectionViewDataSo
     
     //seems to come here to determine what source data goes to the top or bottom based off the tag
     public func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        print("Attempted to find datasource")
         if collectionView == self.topCollectionView{
             let cell = topCollectionView.dequeueReusableCell(withReuseIdentifier: dynamoCollectionViewCellIdentifier1, for: indexPath) as! DynamoCollectionViewCell
             cell.tag = indexPath.item + 1

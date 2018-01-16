@@ -35,7 +35,6 @@ class DropDownLauncher: NSObject, UICollectionViewDelegate, UICollectionViewData
             }
         }) { (completed: Bool) in
             let dropDown = self.dropDown[indexPath.item]
-           self.homeFeed?.categoryFetch(dropDown: dropDown)
             print("")
         }
         

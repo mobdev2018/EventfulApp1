@@ -46,9 +46,6 @@ class HomeFeedController: UIViewController, UIGestureRecognizerDelegate {
     fileprivate var topCollectionView:UICollectionView!
     fileprivate var dynamoCollectionView: DynamoCollectionView!
     
-    let dropDown: [ImageAndTitleItem] = {
-        return [ImageAndTitleItem(name: "Home", imageName: "home"), ImageAndTitleItem(name: "Seize The Night", imageName: "night"), ImageAndTitleItem(name: "Seize The Day", imageName: "summer"), ImageAndTitleItem(name: "Dress To Impress", imageName: "suit"), ImageAndTitleItem(name: "I Love College", imageName: "college"), ImageAndTitleItem(name: "21 & Up", imageName: "21")]
-    }()
     
     var profileHandle: DatabaseHandle = 0
     var profileRef: DatabaseReference?
@@ -88,9 +85,6 @@ class HomeFeedController: UIViewController, UIGestureRecognizerDelegate {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.navigationController?.setNavigationBarHidden(true, animated: false)
-        if self.selectedTopIndex == nil {
-            self.performActionOnTopItemSelect(at: 0)
-        }
     }
     
     override func viewDidDisappear(_ animated: Bool) {
@@ -101,20 +95,6 @@ class HomeFeedController: UIViewController, UIGestureRecognizerDelegate {
     private func configure(){
         print("Enter configure function")
         func configureViews(){
-            let topLayout = UICollectionViewFlowLayout()
-            topLayout.scrollDirection = .horizontal
-            self.topCollectionView = UICollectionView(frame: .zero, collectionViewLayout: topLayout)
-            //self.topCollectionView.tag = 0
-            //top collection View controls the top categories section
-            //any code here that references it just sets it up or positions it
-            self.topCollectionView.backgroundColor = .white
-            self.topCollectionView.dataSource = self
-            self.topCollectionView.delegate = self
-            self.topCollectionView.translatesAutoresizingMaskIntoConstraints = false
-            self.view.addSubview(self.topCollectionView)
-            NSLayoutConstraint.activateViewConstraints(self.topCollectionView, inSuperView: self.view, withLeading: 0.0, trailing: 0.0, top: nil, bottom: nil, width: nil, height: 50.0)
-            _ = NSLayoutConstraint.activateVerticalSpacingConstraint(withFirstView: self.topLayoutGuide, secondView: self.topCollectionView, andSeparation: 0.0)
-            //this controls the adding of all the views that correspond to the top and bottom collecionView that is contained in the dynamoCollectionView project
             self.dynamoCollectionView = DynamoCollectionView(frame: .zero)
             self.dynamoCollectionView.translatesAutoresizingMaskIntoConstraints = false
             //will allow you to supply uour own data to the collectionView
@@ -124,50 +104,20 @@ class HomeFeedController: UIViewController, UIGestureRecognizerDelegate {
             self.dynamoCollectionView.backgroundColor = .white
             self.view.backgroundColor = .white
             self.view.addSubview(self.dynamoCollectionView)
-            
             NSLayoutConstraint.activateViewConstraints(self.dynamoCollectionView, inSuperView: self.view, withLeading: 0.0, trailing: 0.0, top: nil, bottom: nil, width: nil, height: nil)
-            _ = NSLayoutConstraint.activateVerticalSpacingConstraint(withFirstView: self.topCollectionView, secondView: self.dynamoCollectionView, andSeparation: 0.0)
+            _ = NSLayoutConstraint.activateVerticalSpacingConstraint(withFirstView: self.topLayoutGuide, secondView: self.dynamoCollectionView, andSeparation: 0.0)
             _ = NSLayoutConstraint.activateVerticalSpacingConstraint(withFirstView: self.dynamoCollectionView, secondView: self.bottomLayoutGuide, andSeparation: 0.0)
         }
         
         func configureCollectionCell(){
             //self.collectionView.register(HomeFeedCell.self, forCellWithReuseIdentifier: eventCellIdentifier)
             //will register a category collectionview cell
-            self.topCollectionView.register(DropDownCell.self, forCellWithReuseIdentifier: topCell)
+
         }
         //goes here first
         configureViews()
         configureCollectionCell()
     }
-    
-    fileprivate func performActionOnTopItemSelect(at index:Int) {
-        let current = IndexPath(item: index, section: 0)
-        var indexPaths:[IndexPath] = [current]
-        if self.selectedTopIndex != nil {
-            if self.selectedTopIndex == index {
-                return
-            }
-            else {
-                let old = IndexPath(item: self.selectedTopIndex!, section: 0)
-                indexPaths.append(old)
-                self.selectedTopIndex = index
-            }
-        }
-        else {
-            self.selectedTopIndex = index
-        }
-        self.topCollectionView.performBatchUpdates({
-            self.topCollectionView.reloadItems(at: indexPaths)
-        }, completion: nil)
-        let dropDown = self.dropDown[index]
-        self.categoryFetch(dropDown: dropDown)
-    }
-    
-    //will query by selected category
-    func categoryFetch(dropDown: ImageAndTitleItem){
-        navigationItem.title = dropDown.name
-    }
-    
 
     
     func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
@@ -197,70 +147,6 @@ class HomeFeedController: UIViewController, UIGestureRecognizerDelegate {
         df.dateFormat = "MMM"
         let monthElement = df.string(from: eventDate)
         return (dayElement, monthElement)
-    }
-}
-
-
-
-
-// MARK: - UICollectionViewDelegateFlowLayout
-extension HomeFeedController: UICollectionViewDelegateFlowLayout {
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        self.performActionOnTopItemSelect(at: indexPath.item)
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let cellWith = self.dropDown[indexPath.item].name!.textRect(withFont: UIFont.systemFont(ofSize: 13), andHeight: 20.0).size.width + 44.0
-        return CGSize(width: cellWith, height: collectionView.bounds.size.height - 20)
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-        return UIEdgeInsetsMake(10.0, 15.0, 10.0, 0.0)
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-        return 15.0
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
-        return 15.0
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
-        return .zero
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForFooterInSection section: Int) -> CGSize {
-        return .zero
-    }
-    
-    
-    func scrollViewDidScroll(_ scrollView: UIScrollView) {
-    }
-}
-
-// MARK: - UICollectionViewDataSource
-extension HomeFeedController: UICollectionViewDataSource {
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return dropDown.count
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: topCell, for: indexPath) as! DropDownCell
-        let dropDown = self.dropDown[indexPath.row]
-        cell.dropDown = dropDown
-        var selected = false
-        if self.selectedTopIndex != nil && self.selectedTopIndex == indexPath.item {
-            selected = true
-        }
-        cell.backgroundColor = selected ? UIColor.darkGray : UIColor.white
-        cell.nameLabel.textColor = selected ? UIColor.white : UIColor.black
-        cell.iconImageVIew.tintColor = selected ? UIColor.white : UIColor.darkGray
-        cell.layer.borderWidth = 1.0
-        cell.layer.borderColor = UIColor.black.cgColor
-        cell.layer.cornerRadius = 5.0
-        return cell
-
     }
 }
 

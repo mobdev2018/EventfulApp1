@@ -44,6 +44,9 @@
 		07437F511F2A63B600CE728B /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07437F501F2A63B600CE728B /* HomeViewController.swift */; };
 		074D75A0200C8E8C0044C3AD /* LocationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 074D759F200C8E8C0044C3AD /* LocationService.swift */; };
 		076428B31F4B9289003D1B43 /* Storage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 076428B21F4B9289003D1B43 /* Storage.swift */; };
+		077CB3C7200DF6D1008F3618 /* ImageViewForURL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 077CB3C6200DF6D0008F3618 /* ImageViewForURL.swift */; };
+		077CB3C9200DF6DD008F3618 /* SideMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 077CB3C8200DF6DD008F3618 /* SideMenu.swift */; };
+		077CB3CB200DF6EB008F3618 /* FriendsEventsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 077CB3CA200DF6EA008F3618 /* FriendsEventsView.swift */; };
 		079F52DA1F5E386C0043F9EF /* DropDownLauncher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 079F52D91F5E386C0043F9EF /* DropDownLauncher.swift */; };
 		079F52DC1F5E47EE0043F9EF /* DropDownCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 079F52DB1F5E47EE0043F9EF /* DropDownCell.swift */; };
 		07A15CFD1FFFF3E900CA4309 /* CommentInputAccessoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07A15CFC1FFFF3E900CA4309 /* CommentInputAccessoryView.swift */; };
@@ -128,6 +131,9 @@
 		07437F501F2A63B600CE728B /* HomeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = HomeViewController.swift; path = Controllers/HomeViewController.swift; sourceTree = "<group>"; };
 		074D759F200C8E8C0044C3AD /* LocationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = LocationService.swift; path = Services/LocationService.swift; sourceTree = "<group>"; };
 		076428B21F4B9289003D1B43 /* Storage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Storage.swift; sourceTree = "<group>"; };
+		077CB3C6200DF6D0008F3618 /* ImageViewForURL.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageViewForURL.swift; sourceTree = "<group>"; };
+		077CB3C8200DF6DD008F3618 /* SideMenu.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SideMenu.swift; sourceTree = "<group>"; };
+		077CB3CA200DF6EA008F3618 /* FriendsEventsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FriendsEventsView.swift; sourceTree = "<group>"; };
 		079F52D91F5E386C0043F9EF /* DropDownLauncher.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DropDownLauncher.swift; path = Controllers/DropDownLauncher.swift; sourceTree = "<group>"; };
 		079F52DB1F5E47EE0043F9EF /* DropDownCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DropDownCell.swift; path = Controllers/DropDownCell.swift; sourceTree = "<group>"; };
 		07A15CFC1FFFF3E900CA4309 /* CommentInputAccessoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = CommentInputAccessoryView.swift; path = Controllers/CommentInputAccessoryView.swift; sourceTree = "<group>"; };
@@ -342,6 +348,9 @@
 				07437F501F2A63B600CE728B /* HomeViewController.swift */,
 				0714255C1FBCE3330020A4E7 /* ProfileCollectionViewCell.swift */,
 				5074F1C11F7648D10082E016 /* ImageCollectionViewCell.swift */,
+				077CB3CA200DF6EA008F3618 /* FriendsEventsView.swift */,
+				077CB3C8200DF6DD008F3618 /* SideMenu.swift */,
+				077CB3C6200DF6D0008F3618 /* ImageViewForURL.swift */,
 			);
 			name = "Root View";
 			sourceTree = "<group>";
@@ -602,6 +611,7 @@
 				07CB4B2E1F4B9EBB006E5D51 /* StroyCell.swift in Sources */,
 				07FF92C91F3B898C00FC9716 /* Comment.swift in Sources */,
 				07087C1F1F4946DA0099B91F /* VideoViewController.swift in Sources */,
+				077CB3C9200DF6DD008F3618 /* SideMenu.swift in Sources */,
 				07A15CFD1FFFF3E900CA4309 /* CommentInputAccessoryView.swift in Sources */,
 				0738DD391F3DC1340093F51B /* CustomImageView.swift in Sources */,
 				07437F1A1F267CA900CE728B /* AppDelegate.swift in Sources */,
@@ -610,6 +620,7 @@
 				074D75A0200C8E8C0044C3AD /* LocationService.swift in Sources */,
 				071C9E071F3F95530021D5A3 /* SearchViewController.swift in Sources */,
 				071C9E101F415E680021D5A3 /* AttendService.swift in Sources */,
+				077CB3CB200DF6EB008F3618 /* FriendsEventsView.swift in Sources */,
 				07D9239F1F2EEE460069613D /* AlterProfileViewController.swift in Sources */,
 				07437F491F29167000CE728B /* UserService.swift in Sources */,
 				5074F1C21F7648D10082E016 /* ImageCollectionViewCell.swift in Sources */,
@@ -618,6 +629,7 @@
 				07F3EC5E1F4B7B28005296EB /* StoryService.swift in Sources */,
 				0719CDFB1F5639690076E678 /* MGPaginationHelper.swift in Sources */,
 				073AFDBF1F4309DC009D4773 /* UserHeader.swift in Sources */,
+				077CB3C7200DF6D1008F3618 /* ImageViewForURL.swift in Sources */,
 				071C9E0C1F3FD7DB0021D5A3 /* Event.swift in Sources */,
 				073AFDC11F43F5FF009D4773 /* UserEventAttendingCell.swift in Sources */,
 				07DDE4EB1FCDBAB600B6AAEC /* EventPromoVideoPlayer.swift in Sources */,

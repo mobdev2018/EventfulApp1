@@ -34,7 +34,7 @@ class DropDownLauncher: NSObject, UICollectionViewDelegate, UICollectionViewData
                 self.collectionView.frame = CGRect(x: 0, y: -(window.frame.height), width: self.collectionView.frame.width, height: self.collectionView.frame.height)
             }
         }) { (completed: Bool) in
-            let dropDown = self.dropDown[indexPath.item]
+            _ = self.dropDown[indexPath.item]
             print("")
         }
         

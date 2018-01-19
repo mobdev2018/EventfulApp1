@@ -159,7 +159,7 @@ class UserProfileHeader: UICollectionViewCell {
                 
                 guard success else { return }
                 followee?.isFollowed = !(followee?.isFollowed)!
-                print(followee?.isFollowed)
+                print(followee?.isFollowed ?? "true")
                 print("Successfully unfollowed user:", self.user?.username ?? "")
                 self.setupFollowStyle()
             }
@@ -171,10 +171,10 @@ class UserProfileHeader: UICollectionViewCell {
                 }
                 
                 guard success else { return }
-                print(followee?.isFollowed)
+                print(followee?.isFollowed ?? "true")
                 
                 followee?.isFollowed = !(followee?.isFollowed)!
-                print(followee?.isFollowed)
+                print(followee?.isFollowed ?? "true")
                 print("Successfully followed user: ", self.user?.username ?? "")
                 self.followButton.setTitle("Unfollow", for: .normal)
                 self.followButton.backgroundColor = .white

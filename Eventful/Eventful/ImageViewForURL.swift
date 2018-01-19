@@ -45,7 +45,7 @@ class ImageViewForURL:UIImageView{
         URLSession.shared.dataTask(with:url , completionHandler: { (imageData, response, error) -> Void in
             
             if error != nil {
-                print(error?.localizedDescription)
+                print(error?.localizedDescription ?? "Something wrong")
                 return
             }
            

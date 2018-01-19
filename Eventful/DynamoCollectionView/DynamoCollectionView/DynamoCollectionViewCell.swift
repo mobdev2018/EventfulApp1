@@ -66,10 +66,11 @@ public class DynamoCollectionViewCell: UICollectionViewCell {
     public var topViewRatio: CGFloat = 0.6
     //tags which lets you know if we are the top cell or the normal/bottom cell
     //An integer that you can use to identify view objects in your application.
+    //the get function for this tag also serves the function of letting the app know which cell and ultimately what information will be presented upon clicking of the cell and presentation of the event detail screen
     override public var tag: Int {
         set {
             super.tag = newValue
-            setDisplayMode(newValue == 0 ? .Top : .Normal)
+            setDisplayMode(newValue >= 0 ? .Normal : .Top)
         }
         get {
             return super.tag

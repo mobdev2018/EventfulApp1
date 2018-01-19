@@ -96,7 +96,7 @@
         }
         
         func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
-            return CGSize(width: view.frame.width, height: 200)
+            return CGSize(width: view.frame.width, height: 150)
         }
         
         override func viewWillAppear(_ animated: Bool) {

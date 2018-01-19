@@ -39,7 +39,7 @@ struct PostService {
         var geoFire:GeoFire?
         geoFireRef = Database.database().reference().child("eventsbylocation")
          geoFire = GeoFire(firebaseRef: geoFireRef)
-        var circleQuery = geoFire?.query(at: currentLocation, withRadius: 10.0)
+        let circleQuery = geoFire?.query(at: currentLocation, withRadius: 10.0)
         circleQuery?.observe(.keyEntered, with: { (key: String!, location: CLLocation!) in
             print("Key '\(key)' entered the search area and is at location '\(location)'")
             EventService.show(forEventKey: key, completion: { (event) in

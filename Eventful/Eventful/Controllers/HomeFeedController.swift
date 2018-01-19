@@ -29,21 +29,16 @@ class ImageAndTitleItem: NSObject {
 
 class HomeFeedController: UIViewController, UIGestureRecognizerDelegate {
     // let dropDownLauncher = DropDownLauncher()
+    let dispatchGroup = DispatchGroup()
     var isFinishedPaging = false
     let detailView = EventDetailViewController()
     var userLocation: CLLocation?
     let refreshControl = UIRefreshControl()
     var emptyLabel: UILabel?
     var allEvents = [Event]()
-    //will containt array of event keys
     var eventKeys = [String]()
-    //let eventCellIdentifier = "customCellIdentifier"
-    //look here for topCell identifier
     let topCell = "topCell"
-    
-    //fileprivate var collectionView:UICollectionView!
-    //fileprivate var topView:HomeFeedCell!
-    fileprivate var topCollectionView:UICollectionView!
+    //creates an instance of the dynamoCollectionView
     fileprivate var dynamoCollectionView: DynamoCollectionView!
     
     
@@ -62,20 +57,20 @@ class HomeFeedController: UIViewController, UIGestureRecognizerDelegate {
     }
     
     @objc func grabUserLoc(){
+        
         LocationService.getUserLocation { (location) in
             guard let currentLocation = location else {
                 return
             }
             PostService.showEvent(for: currentLocation, completion: { (events) in
-                for event in events {
-                                  if !self.allEvents.contains(where: {$0.key == event.key}) {
-                                       self.allEvents.append(event)
-                                   }
+                self.allEvents = events
+                print("Event count in PostService Closure:\(self.allEvents.count)")
+                DispatchQueue.main.async {
+                    self.dynamoCollectionView.reloadData()
                 }
-                print(self.allEvents.count)
                 
-            })
-           // self.userLocation = currentLocation
+            }
+            )
             print("Latitude: \(currentLocation.coordinate.latitude)")
             print("Longitude: \(currentLocation.coordinate.longitude)")
         }
@@ -95,9 +90,10 @@ class HomeFeedController: UIViewController, UIGestureRecognizerDelegate {
     private func configure(){
         print("Enter configure function")
         func configureViews(){
+//takes previously created dynamoCollectionView and assigns it to and creates an instance of DynamoCollectionView
             self.dynamoCollectionView = DynamoCollectionView(frame: .zero)
             self.dynamoCollectionView.translatesAutoresizingMaskIntoConstraints = false
-            //will allow you to supply uour own data to the collectionView
+            //will allow you to supply your own data to the collectionView
             self.dynamoCollectionView.dataSource = self
             //will allow you to send messages about interaction with dynamoCollectionView to self
             self.dynamoCollectionView.delegate = self
@@ -108,15 +104,8 @@ class HomeFeedController: UIViewController, UIGestureRecognizerDelegate {
             _ = NSLayoutConstraint.activateVerticalSpacingConstraint(withFirstView: self.topLayoutGuide, secondView: self.dynamoCollectionView, andSeparation: 0.0)
             _ = NSLayoutConstraint.activateVerticalSpacingConstraint(withFirstView: self.dynamoCollectionView, secondView: self.bottomLayoutGuide, andSeparation: 0.0)
         }
-        
-        func configureCollectionCell(){
-            //self.collectionView.register(HomeFeedCell.self, forCellWithReuseIdentifier: eventCellIdentifier)
-            //will register a category collectionview cell
-
-        }
         //goes here first
         configureViews()
-        configureCollectionCell()
     }
 
     
@@ -128,7 +117,6 @@ class HomeFeedController: UIViewController, UIGestureRecognizerDelegate {
     // will most likely lock into portrait mode but still good to have
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
-        //self.collectionView.collectionViewLayout.invalidateLayout()
         self.dynamoCollectionView.invalidateLayout()
     }
     
@@ -155,7 +143,7 @@ extension HomeFeedController: DynamoCollectionViewDelegate, DynamoCollectionView
     // MARK: DynamoCollectionView Datasource
     func dynamoCollectionView(_ dynamoCollectionView: DynamoCollectionView, willDisplay cell: UICollectionViewCell, indexPath: IndexPath) {
         print("Attempting to get events")
-        
+
     }
     
     func topViewRatio(_ dynamoCollectionView: DynamoCollectionView) -> CGFloat {
@@ -165,13 +153,12 @@ extension HomeFeedController: DynamoCollectionViewDelegate, DynamoCollectionView
     func numberOfItems(_ dynamoCollectionView: DynamoCollectionView) -> Int {
         //this seems to be passing data to numberofitems in DynamicCollectionView file to configure view via that file
         //seems to be doing things one view or cell at a time
-        print(allEvents.count)
+       // print(allEvents.count)
         return allEvents.count
     }
     //controls info related to each cell 
     func dynamoCollectionView(_ dynamoCollectionView: DynamoCollectionView, cellForItemAt indexPath: IndexPath) -> DynamoCollectionViewCell {
-        //c2
-        print("entered cell for item at")
+        print("entered cell for item at: \(indexPath.item) ")
         let cell = dynamoCollectionView.dequeueReusableCell(for: indexPath)
         let model = allEvents[indexPath.item]
         let imageURL = URL(string: model.currentEventImage)

@@ -291,7 +291,7 @@ class EventDetailViewController: UIViewController {
         // Customize the line spacing for paragraph.
         mutableParagraphStyle.lineSpacing = CGFloat(lineSpacing)
         mutableParagraphStyle.alignment = .justified
-        if let stringLength = descriptionLabel.text?.characters.count {
+        if let stringLength = descriptionLabel.text?.count {
             attributedString.addAttribute(NSAttributedStringKey.paragraphStyle, value: mutableParagraphStyle, range: NSMakeRange(0, stringLength))
         }
         // textLabel is the UILabel subclass

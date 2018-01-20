@@ -16,6 +16,7 @@ import DynamoCollectionView
 import FirebaseDatabase
 import SVProgressHUD
 
+
 class ImageAndTitleItem: NSObject {
     public var name:String?
     public var imageName:String?
@@ -37,9 +38,13 @@ class HomeFeedController: UIViewController, UIGestureRecognizerDelegate {
     var emptyLabel: UILabel?
     var allEvents = [Event]()
     var eventKeys = [String]()
+    var featuredEvents = [Event]()
     let topCell = "topCell"
     //creates an instance of the dynamoCollectionView
     fileprivate var dynamoCollectionView: DynamoCollectionView!
+    //fileprivate var dynamoCollectionViewTop: DynamoCollectionViewTop!
+    
+
     
     
     var profileHandle: DatabaseHandle = 0
@@ -67,6 +72,7 @@ class HomeFeedController: UIViewController, UIGestureRecognizerDelegate {
                 print("Event count in PostService Closure:\(self.allEvents.count)")
                 DispatchQueue.main.async {
                     self.dynamoCollectionView.reloadData()
+                    //self.dynamoCollectionViewTop.reloadData()
                 }
                 
             }
@@ -92,6 +98,7 @@ class HomeFeedController: UIViewController, UIGestureRecognizerDelegate {
         func configureViews(){
 //takes previously created dynamoCollectionView and assigns it to and creates an instance of DynamoCollectionView
             self.dynamoCollectionView = DynamoCollectionView(frame: .zero)
+           // self.dynamoCollectionViewTop
             self.dynamoCollectionView.translatesAutoresizingMaskIntoConstraints = false
             //will allow you to supply your own data to the collectionView
             self.dynamoCollectionView.dataSource = self
@@ -118,11 +125,6 @@ class HomeFeedController: UIViewController, UIGestureRecognizerDelegate {
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
         self.dynamoCollectionView.invalidateLayout()
-    }
-    
-    
-    fileprivate func reloadCollection() {
-        self.dynamoCollectionView.reloadData()
     }
     
     fileprivate func getDayAndMonthFromEvent(_ event:Event) -> (String, String) {
@@ -186,3 +188,49 @@ extension HomeFeedController: DynamoCollectionViewDelegate, DynamoCollectionView
     }
     
 }
+
+
+extension HomeFeedController: DynamoCollectionViewTopDelegate, DynamoCollectionViewTopDataSource {
+    func dynamoCollectionViewTop(_ dynamoCollectionViewTop: DynamoCollectionViewTop, didSelectItemAt indexPath: IndexPath) {
+        if self.featuredEvents.count <= indexPath.item {
+            return
+        }
+        let model = self.featuredEvents[indexPath.item]
+        detailView.eventKey = model.key!
+        detailView.eventPromo = model.currentEventPromo!
+        detailView.currentEvent = model
+        present(detailView, animated: true, completion: nil)
+    }
+    
+    func dynamoCollectionViewTop(_ dynamoCollectionViewTop: DynamoCollectionViewTop, willDisplay cell: UICollectionViewCell, indexPath: IndexPath) {
+        print("Attempting to get events")
+    }
+    
+    func topViewRatioTop(_ dynamoCollectionViewTop: DynamoCollectionViewTop) -> CGFloat {
+        return 0.6
+    }
+    
+    func numberOfItemsTop(_ dynamoCollectionViewTop: DynamoCollectionViewTop) -> Int {
+        return 3
+    }
+    
+    func dynamoCollectionViewTop(_ dynamoCollectionViewTop: DynamoCollectionViewTop, cellForItemAt indexPath: IndexPath) -> DynamoCollectionViewCell {
+        print("entered cell for item at: \(indexPath.item) ")
+        let cell = dynamoCollectionViewTop.dequeueReusableCell(for: indexPath)
+        let model = allEvents[indexPath.item]
+        let imageURL = URL(string: model.currentEventImage)
+        let dateComponents = self.getDayAndMonthFromEvent(model)
+        cell.day = dateComponents.0
+        cell.month = dateComponents.1
+        cell.title = model.currentEventName.capitalized
+        cell.backgroundImageView.af_setImage(withURL: imageURL!, placeholderImage: nil, filter: nil, progress: nil, progressQueue: DispatchQueue.main, imageTransition: .noTransition, runImageTransitionIfCached: false) { (imageHolder) in
+            cell.refreshView()
+        }
+        return cell
+    }
+    
+    
+
+    
+}
+

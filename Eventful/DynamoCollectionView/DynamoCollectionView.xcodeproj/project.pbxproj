@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		077CB3CD2011D6FC008F3618 /* DynamoCollectionViewTop.swift in Sources */ = {isa = PBXBuildFile; fileRef = 077CB3CC2011D6FC008F3618 /* DynamoCollectionViewTop.swift */; };
 		5229B59E1F84D277001766A6 /* NSLayoutConstraint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5229B59D1F84D276001766A6 /* NSLayoutConstraint.swift */; };
 		52C919F71F8E0C8100FF975E /* Media.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 52C919F61F8E0C8000FF975E /* Media.xcassets */; };
 		52C919F91F8E1A9F00FF975E /* DynamoUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52C919F81F8E1A9F00FF975E /* DynamoUtils.swift */; };
@@ -21,6 +22,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		077CB3CC2011D6FC008F3618 /* DynamoCollectionViewTop.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DynamoCollectionViewTop.swift; sourceTree = "<group>"; };
 		5229B59D1F84D276001766A6 /* NSLayoutConstraint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = NSLayoutConstraint.swift; path = ../../Eventful/NSLayoutConstraint.swift; sourceTree = "<group>"; };
 		52A72DBC1F83D28A0024DCD9 /* DynamoCollectionView.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = DynamoCollectionView.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		52A72DC01F83D28A0024DCD9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -71,6 +73,7 @@
 				52C919F81F8E1A9F00FF975E /* DynamoUtils.swift */,
 				5229B59D1F84D276001766A6 /* NSLayoutConstraint.swift */,
 				52C91A0F1F8E357100FF975E /* DynamoCollectionView.h */,
+				077CB3CC2011D6FC008F3618 /* DynamoCollectionViewTop.swift */,
 				52D92B0E1F93C0730037BC53 /* UIImage+Extensions.swift */,
 				52C91A101F8E357600FF975E /* ColorCube */,
 				52A72DC01F83D28A0024DCD9 /* Info.plist */,
@@ -177,6 +180,7 @@
 			files = (
 				52C91A1D1F8E367300FF975E /* CCColorCube.m in Sources */,
 				52C91A1F1F8E367300FF975E /* CCLocalMaximum.m in Sources */,
+				077CB3CD2011D6FC008F3618 /* DynamoCollectionViewTop.swift in Sources */,
 				52D748C71F84AA5200357DDF /* DynamoCollectionViewCell.swift in Sources */,
 				52D92B0F1F93C0730037BC53 /* UIImage+Extensions.swift in Sources */,
 				52C919F91F8E1A9F00FF975E /* DynamoUtils.swift in Sources */,

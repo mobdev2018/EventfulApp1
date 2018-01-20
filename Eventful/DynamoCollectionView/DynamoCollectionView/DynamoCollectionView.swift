@@ -37,14 +37,8 @@ public class DynamoCollectionView: UIView, DynamoCollectionViewCellDelegate, UIG
     public var delegate: DynamoCollectionViewDelegate?
     //variable to control and make use of the DynamoCollectionViewDatasource
     public var dataSource: DynamoCollectionViewDataSource?
-    //variable to control and make use of the specfic collectionViewCell which happens to be a DynamicCollectionViewCell (See file for implementation)
-    private var topView: DynamoCollectionViewCell!
-    //variable that will instantiate and let you manage the topCollectionView inside this view
-    private var topCollectionView: UICollectionView!
     //variable that will instantiate and let you manage the bottomCollectionView inside this view
     private var bottomCollectionView: UICollectionView!
-    //variable that will instantiate and manage the topUIView that this class will reference
-    private var topContainerView: UIView!
     //variable that will instantiate and manage the bottomUIView that this class will reference
     private var bottomContainerView: UIView!
     //the topViewRatio that will be used in the appropriate delegate method to create some type of spacing beteween views
@@ -53,8 +47,6 @@ public class DynamoCollectionView: UIView, DynamoCollectionViewCellDelegate, UIG
     private var numberOfItems: Int = 0
     //a cell identifier that will let you register a unique instance of a dynamoCollectionViewCell
     private let dynamoCollectionViewCellIdentifier = "DynamoCollectionViewCellIdentifier"
-        //a cell identifier that will let you register a unique instance of a dynamoCollectionViewCell
-        private let dynamoCollectionViewCellIdentifier1 = "DynamoCollectionViewCellIdentifier1"
    //Timer user for call autoscroller of top collection view
     private var timer:Timer?
     
@@ -204,21 +196,12 @@ public class DynamoCollectionView: UIView, DynamoCollectionViewCellDelegate, UIG
     //Ask the delegate if a gesture recognizer should receive an object representing a touch.
     public func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
         let touchPoint  = touch.location(in: bottomContainerView)
-        let topTouchPoint = touch.location(in: topContainerView)
         if touchPoint.y > 0 {
             // Creates a notification with a given name and sender and posts it to the notification center.
             //The Notification center A notification dispatch mechanism that enables the broadcast of information to registered observers.
             NotificationCenter.default.post(name: DynamoCollectionViewEnableScrollingNotification, object: nil)
             return true
         }
-        if topTouchPoint.y > 0 {
-            // Creates a notification with a given name and sender and posts it to the notification center.
-            //The Notification center A notification dispatch mechanism that enables the broadcast of information to registered observers.
-            NotificationCenter.default.post(name: DynamoCollectionViewEnableScrollingNotification, object: nil)
-            return true
-        }
-        
-        
         //Creates a notification with a given name and sender and posts it to the notification center.
         //The Notification center A notification dispatch mechanism that enables the broadcast of information to registered observers.
         NotificationCenter.default.post(name: DynamoCollectionViewDisableScrollingNotification, object: nil)
@@ -247,8 +230,6 @@ public class DynamoCollectionView: UIView, DynamoCollectionViewCellDelegate, UIG
     
     public func invalidateLayout() {
         //Invalidates the current layout and triggers a layout update.
-        topCollectionView.collectionViewLayout.invalidateLayout()
-        //Invalidates the current layout and triggers a layout update.
         bottomCollectionView.collectionViewLayout.invalidateLayout()
     }
     
@@ -269,8 +250,8 @@ public class DynamoCollectionView: UIView, DynamoCollectionViewCellDelegate, UIG
                 print("Entered here for number of items")
                 print("Number of items is: \(numberOfItems)")
                 //may need to change this to seems to set the topView back to a dynamic collectionView with one item or sets the tag to zero as well as setting the section number back to 0 and returns that cell
-                //assigns a cell to that dynamic collectionViewCell that corresponded to the top view
-             //  topView = source.dynamoCollectionView(self, cellForItemAt: IndexPath(item: 0, section: 0))
+
+
                // topCollectionView.reloadData()
 
                 //reloads the collectionView
@@ -297,28 +278,13 @@ extension DynamoCollectionView: UICollectionViewDelegate, UICollectionViewDataSo
     // MARK: CollectionView Datasource
     //error was here this controls the number of items in each section
     public func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        if collectionView == self.topCollectionView{
-            //hard coded item
-            return 5
-        }else{
             return max(0, numberOfItems)
-        }
+        
     }
     
     //seems to come here to determine what source data goes to the top or bottom based off the tag
     public func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         print("Current indexPath.item value in DynamoCollectionView.swift is : \(indexPath.item)")
-        if collectionView == self.topCollectionView{
-            let cell = topCollectionView.dequeueReusableCell(withReuseIdentifier: dynamoCollectionViewCellIdentifier1, for: indexPath) as! DynamoCollectionViewCell
-            cell.tag = indexPath.item + 1
-            if indexPath.item % 2 == 0{
-                cell.backgroundColor = UIColor.yellow
-            }else{
-                cell.backgroundColor = UIColor.green
-            }
-            cell.delegate = self
-            return cell
-        }else{
             //Bottom collection view
             print("Configuring bottom collection view")
             //upon getting the source
@@ -346,14 +312,13 @@ extension DynamoCollectionView: UICollectionViewDelegate, UICollectionViewDataSo
                 return cell
             }
             
-        }
+        
     }
     
     public func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
         //delegate method only call for bottom collection view
-        if collectionView == self.bottomCollectionView{
         delegate?.dynamoCollectionView(self, willDisplay: cell, indexPath: indexPath)
-        }
+        
     }
     
     //Asks the delegate for the size of the header view in the specified section.

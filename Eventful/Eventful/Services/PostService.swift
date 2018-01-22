@@ -50,7 +50,23 @@ struct PostService {
 
     }
     
-    
+    static func showFeaturedEvent(for currentLocation: CLLocation,completion: @escaping ([Event]) -> Void) {
+        //getting firebase root directory
+        var currentEvents = [Event]()
+        var geoFireRef: DatabaseReference?
+        var geoFire:GeoFire?
+        geoFireRef = Database.database().reference().child("featuredeventsbylocation")
+        geoFire = GeoFire(firebaseRef: geoFireRef)
+        let circleQuery = geoFire?.query(at: currentLocation, withRadius: 10.0)
+        circleQuery?.observe(.keyEntered, with: { (key: String!, location: CLLocation!) in
+            print("Key '\(key)' entered the search area and is at location '\(location)'")
+            EventService.show(forEventKey: key, completion: { (event) in
+                currentEvents.append(event!)
+                completion(currentEvents)
+            })
+        })
+        
+    }
     
 }
 

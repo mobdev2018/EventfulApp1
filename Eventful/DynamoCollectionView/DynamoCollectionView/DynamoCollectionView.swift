@@ -42,7 +42,7 @@ public class DynamoCollectionView: UIView, DynamoCollectionViewCellDelegate, UIG
     //variable that will instantiate and manage the bottomUIView that this class will reference
     private var bottomContainerView: UIView!
     //the topViewRatio that will be used in the appropriate delegate method to create some type of spacing beteween views
-    private var topViewRatio: CGFloat = 0.6
+    private var topViewRatio: CGFloat = 0
     // the default numberOfItems that will be used in the appropriate datasource method to managa the number of items in the collectionView
     private var numberOfItems: Int = 0
     //a cell identifier that will let you register a unique instance of a dynamoCollectionViewCell
@@ -63,43 +63,6 @@ public class DynamoCollectionView: UIView, DynamoCollectionViewCellDelegate, UIG
     }
     
     public func initViews() {
-        
-        // init topview
-        //so topview is literally just the first square
-        //will take a variable of type DynamoCollectionViewCell; instantiate it,set it up and set it equal to topView for further referencing and editing
-        //Begin to create auto scroll view here
-        
-//        topContainerView = UIView(frame: .zero)
-//        topContainerView.translatesAutoresizingMaskIntoConstraints = false
-//        topContainerView.backgroundColor = .white
-//        addSubview(topContainerView)
-//
-//
-//        _ = NSLayoutConstraint.activateCentreXConstraint(withView: topContainerView, superView: self)
-//        _ = NSLayoutConstraint.activateCentreYConstraint(withView: topContainerView, superView: self)
-//        _ = NSLayoutConstraint.activateEqualWidthConstraint(withView: topContainerView, referenceView: self)
-//        _ = NSLayoutConstraint.activateEqualHeightConstraint(withView: topContainerView, referenceView: self)
-//
-//        let topLayout = UICollectionViewFlowLayout()
-//        topLayout.scrollDirection = .horizontal
-//        topCollectionView = UICollectionView(frame: .zero, collectionViewLayout: topLayout)
-//        topCollectionView.translatesAutoresizingMaskIntoConstraints = false
-//        //sets the datsource of the topCollectionView to you so you can control where the data gets pulled from
-//        topCollectionView.dataSource = self
-//        //sets the delegate of the topCollectionView to self. By doing this all messages in regards to the  topCollectionView will be sent to the topCollectionView or you.
-//        //"Delegates send messages"
-//        topCollectionView.delegate = self
-//        //sets the background color of the top UIView/CollectionView to white
-//        topCollectionView.backgroundColor = .red
-//
-//        backgroundColor = .white
-//        topContainerView.addSubview(topCollectionView)
-//        _ = NSLayoutConstraint.activateCentreXConstraint(withView: topCollectionView, superView: topContainerView)
-//        _ = NSLayoutConstraint.activateCentreYConstraint(withView: topCollectionView, superView: topContainerView)
-//        _ = NSLayoutConstraint.activateEqualWidthConstraint(withView: topCollectionView, referenceView: topContainerView)
-//        _ = NSLayoutConstraint.activateEqualHeightConstraint(withView: topCollectionView, referenceView: topContainerView)
-//        //registers a DynamoCollectionViewCell inside of the collectionVieww that we previously created
-//        topCollectionView.register(DynamoCollectionViewCell.self, forCellWithReuseIdentifier: dynamoCollectionViewCellIdentifier1)
         // init containerview
         //creates a containerView which will usually serve the function of holding multiple views in it.
         //Most likely the view that will contain the bottom scroll cells that you see in the home feed screen
@@ -148,15 +111,8 @@ public class DynamoCollectionView: UIView, DynamoCollectionViewCellDelegate, UIG
         panGesture.delegate = self
         panGesture.cancelsTouchesInView = false
         self.addGestureRecognizer(panGesture)
-        //set timer
-       // self.setTimer()
+
     }
-    
-//    //set timer or start timer
-//    func setTimer(){
-//        //auto scroll method to call every 2.5 seconds interval
-//        self.timer = Timer.scheduledTimer(timeInterval: 5, target: self, selector: #selector(self.autoScroller), userInfo: nil, repeats: true)
-//    }
     
     func closeTimer(){
         if let time = self.timer{
@@ -164,25 +120,6 @@ public class DynamoCollectionView: UIView, DynamoCollectionViewCellDelegate, UIG
             self.timer = nil
         }
     }
-    
-//    //Auto scroller timer call this method after X = 3 seconds time interval
-//    @objc func autoScroller(){
-//        //retireve last visible cell from top collection view
-//        if let currentIndexPath = self.topCollectionView.indexPathsForVisibleItems.last{
-//            //Check visible cell is last cell of top collection view then set first index as visible
-//            if currentIndexPath.item == 4{
-//                let nextIndexPath = NSIndexPath(item: 0, section: 0)
-//                //top collection view scroller in first item
-//                self.topCollectionView.scrollToItem(at: nextIndexPath as IndexPath, at: .right, animated: false)
-//            }else{
-//                //create next index path from current index path of the top collection view
-//                let nextIndexPath = NSIndexPath(item: currentIndexPath.item + 1, section: 0)
-//                //top collection view scroller to next item
-//                self.topCollectionView.scrollToItem(at: nextIndexPath as IndexPath, at: .left, animated: true)
-//            }
-//        }
-//    }
-    
     
     // MARK: Gesture Recognizers
     
@@ -249,13 +186,6 @@ public class DynamoCollectionView: UIView, DynamoCollectionViewCellDelegate, UIG
             if numberOfItems > 0 {
                 print("Entered here for number of items")
                 print("Number of items is: \(numberOfItems)")
-                //may need to change this to seems to set the topView back to a dynamic collectionView with one item or sets the tag to zero as well as setting the section number back to 0 and returns that cell
-
-
-               // topCollectionView.reloadData()
-
-                //reloads the collectionView
-                //comes here sixth
                 bottomCollectionView.reloadData()
             }
         }
@@ -331,11 +261,8 @@ extension DynamoCollectionView: UICollectionViewDelegate, UICollectionViewDataSo
     }
     //Asks the delegate for the size of the specified item’s cell.
     public func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-          if collectionView == self.bottomCollectionView{
         return CGSize(width: collectionView.bounds.size.width/2.2, height: collectionView.bounds.size.height)
-          }else{
-            return CGSize(width: collectionView.bounds.size.width, height: collectionView.bounds.size.height)
-        }
+          
     }
     //Asks the delegate for the margins to apply to content in the specified section.
     //in short in controls the amount of space between the items above,left,right, and below

@@ -42,7 +42,7 @@ class HomeFeedController: UIViewController, UIGestureRecognizerDelegate {
     let topCell = "topCell"
     //creates an instance of the dynamoCollectionView
     fileprivate var dynamoCollectionView: DynamoCollectionView!
-    //fileprivate var dynamoCollectionViewTop: DynamoCollectionViewTop!
+    fileprivate var dynamoCollectionViewTop: DynamoCollectionViewTop!
     
 
     
@@ -75,8 +75,20 @@ class HomeFeedController: UIViewController, UIGestureRecognizerDelegate {
                     //self.dynamoCollectionViewTop.reloadData()
                 }
                 
+            })
+            
+            PostService.showFeaturedEvent(for: currentLocation, completion: { (events) in
+                
+                self.featuredEvents = events
+                print("Event count in Featured Events Closure is:\(self.featuredEvents.count)")
+                DispatchQueue.main.async {
+                    // self.dynamoCollectionView.reloadData()
+                    self.dynamoCollectionViewTop.reloadData()
+                }
             }
             )
+
+
             print("Latitude: \(currentLocation.coordinate.latitude)")
             print("Longitude: \(currentLocation.coordinate.longitude)")
         }
@@ -97,19 +109,33 @@ class HomeFeedController: UIViewController, UIGestureRecognizerDelegate {
         print("Enter configure function")
         func configureViews(){
 //takes previously created dynamoCollectionView and assigns it to and creates an instance of DynamoCollectionView
+            //init for bottom dynamoCollectionView
             self.dynamoCollectionView = DynamoCollectionView(frame: .zero)
-           // self.dynamoCollectionViewTop
+            //init for top dynamoCollectionView
+            self.dynamoCollectionViewTop = DynamoCollectionViewTop(frame: .zero)
+            //A Boolean value that determines whether the view’s autoresizing mask is translated into Auto Layout constraints.
             self.dynamoCollectionView.translatesAutoresizingMaskIntoConstraints = false
-            //will allow you to supply your own data to the collectionView
+            self.dynamoCollectionViewTop.translatesAutoresizingMaskIntoConstraints = false
+
+            //will allow you to supply your own data to the bottom collectionView
             self.dynamoCollectionView.dataSource = self
-            //will allow you to send messages about interaction with dynamoCollectionView to self
+            //will allow you to send messages about interaction with the bottom dynamoCollectionView to self
             self.dynamoCollectionView.delegate = self
+            
+            //will allow you to supply your own data to the top collectionView
+            self.dynamoCollectionViewTop.dataSourceTop = self
+            //will allow you to send messages about interaction with the top dynamoCollectionView to self
+            self.dynamoCollectionViewTop.delegateTop = self
+            
             self.dynamoCollectionView.backgroundColor = .white
+            self.dynamoCollectionViewTop.backgroundColor = .white
+
             self.view.backgroundColor = .white
             self.view.addSubview(self.dynamoCollectionView)
-            NSLayoutConstraint.activateViewConstraints(self.dynamoCollectionView, inSuperView: self.view, withLeading: 0.0, trailing: 0.0, top: nil, bottom: nil, width: nil, height: nil)
-            _ = NSLayoutConstraint.activateVerticalSpacingConstraint(withFirstView: self.topLayoutGuide, secondView: self.dynamoCollectionView, andSeparation: 0.0)
-            _ = NSLayoutConstraint.activateVerticalSpacingConstraint(withFirstView: self.dynamoCollectionView, secondView: self.bottomLayoutGuide, andSeparation: 0.0)
+            self.view.addSubview(self.dynamoCollectionViewTop)
+            view.addConstraintsWithFormatt("V:|-5-[v0(\(view.frame.height/2))]-2-[v1]|", views: self.dynamoCollectionViewTop,self.dynamoCollectionView)
+            view.addConstraintsWithFormatt("H:|[v0]|", views: self.dynamoCollectionViewTop)
+            view.addConstraintsWithFormatt("H:|[v0]|", views: self.dynamoCollectionView)
         }
         //goes here first
         configureViews()
@@ -207,17 +233,17 @@ extension HomeFeedController: DynamoCollectionViewTopDelegate, DynamoCollectionV
     }
     
     func topViewRatioTop(_ dynamoCollectionViewTop: DynamoCollectionViewTop) -> CGFloat {
-        return 0.6
+        return 0
     }
     
     func numberOfItemsTop(_ dynamoCollectionViewTop: DynamoCollectionViewTop) -> Int {
-        return 3
+        return featuredEvents.count
     }
     
     func dynamoCollectionViewTop(_ dynamoCollectionViewTop: DynamoCollectionViewTop, cellForItemAt indexPath: IndexPath) -> DynamoCollectionViewCell {
         print("entered cell for item at: \(indexPath.item) ")
         let cell = dynamoCollectionViewTop.dequeueReusableCell(for: indexPath)
-        let model = allEvents[indexPath.item]
+        let model = featuredEvents[indexPath.item]
         let imageURL = URL(string: model.currentEventImage)
         let dateComponents = self.getDayAndMonthFromEvent(model)
         cell.day = dateComponents.0

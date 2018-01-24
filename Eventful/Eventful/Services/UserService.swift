@@ -94,7 +94,7 @@ struct UserService {
         })
     }
     
-    
+    //will show the vents that a user is attending
     static func Events(for user: User, completion: @escaping ([Event]) -> Void)
     {
         var currentEvents = [Event]()
@@ -103,51 +103,31 @@ struct UserService {
         let ref = Database.database().reference().child("users").child(user.uid).child("Attending")
         
    
-//        let query = ref.queryOrdered(byChild: "Attending")
         ref.observe(.value, with: { (snapshot) in
-         //   print(snapshot)
-            
-            guard snapshot.children.allObjects is [DataSnapshot] else {
-                return completion([])
-            }
-            
+
             guard let eventDictionary = snapshot.value as? [String: Any] else {
                 return completion([])
             }
             
-          //  print(snapshot)
-            
+            let dispatchGroup = DispatchGroup()
+
             eventDictionary.forEach({ (key,value) in
-             //   print(key)
-             //   print(value)
+                dispatchGroup.enter()
                 EventService.show(forEventKey: key , completion: { (event) in
+                    AttendService.isEventAttended(event, byCurrentUserWithCompletion: { (isAttended) in
+                        event?.isAttending = isAttended
+                        dispatchGroup.leave()
+
+                    })
                      currentEvents.append(.init(currentEventKey: key , dictionary: (event?.eventDictionary)!))
-                  //  print(currentEvents)
-                    completion(currentEvents)
                 })
             })
-//            
-//            let events: [Event] =
-//                snapshot
-//                    .reversed()      // Reverses array
-//                    .flatMap {       // Returns array with non nil values
-//                        guard let event = Event(snapshot: $0)
-//                            else { return nil }
-//                        
-//          
-//                        return event
-//            }
-//            completion(events)
-        
+
+            dispatchGroup.notify(queue: .main, execute: {
+                completion(currentEvents)
+            })
         })
     }
-    
-    
-  
-
-
-
-    
     
     
     //shows the data at the user endpoint

@@ -25,10 +25,8 @@ class UserProfileHeader: UICollectionViewCell {
         let profilePicture = UIImageView()
         profilePicture.layer.borderWidth = 1.0
         profilePicture.layer.borderColor = UIColor.black.cgColor
-        // selectPicture.layer.cornerRadius = selectPicture.frame.size.width / 2;
         profilePicture.clipsToBounds = true
         profilePicture.translatesAutoresizingMaskIntoConstraints = false
-        //selectPicture.layer.cornerRadius = selectPicture.frame.size.width/2
         profilePicture.contentMode = .scaleAspectFill
         profilePicture.isUserInteractionEnabled = true
         profilePicture.layer.shouldRasterize = true

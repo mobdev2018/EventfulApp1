@@ -41,9 +41,15 @@ struct PostService {
          geoFire = GeoFire(firebaseRef: geoFireRef)
         let circleQuery = geoFire?.query(at: currentLocation, withRadius: 10.0)
         circleQuery?.observe(.keyEntered, with: { (key: String!, location: CLLocation!) in
+            let dispatchGroup = DispatchGroup()
+
             print("Key '\(key)' entered the search area and is at location '\(location)'")
+            dispatchGroup.enter()
             EventService.show(forEventKey: key, completion: { (event) in
+                dispatchGroup.leave()
                 currentEvents.append(event!)
+            })
+            dispatchGroup.notify(queue: .main, execute: {
                 completion(currentEvents)
             })
         })
@@ -59,9 +65,14 @@ struct PostService {
         geoFire = GeoFire(firebaseRef: geoFireRef)
         let circleQuery = geoFire?.query(at: currentLocation, withRadius: 10.0)
         circleQuery?.observe(.keyEntered, with: { (key: String!, location: CLLocation!) in
+            let dispatchGroup = DispatchGroup()
             print("Key '\(key)' entered the search area and is at location '\(location)'")
+            dispatchGroup.enter()
             EventService.show(forEventKey: key, completion: { (event) in
+                dispatchGroup.leave()
                 currentEvents.append(event!)
+            })
+            dispatchGroup.notify(queue: .main, execute: {
                 completion(currentEvents)
             })
         })

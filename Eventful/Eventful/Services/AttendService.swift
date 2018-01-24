@@ -28,15 +28,32 @@ struct AttendService {
         ref.updateChildValues(attendData) { (error, _) in
             if let error = error {
                 assertionFailure(error.localizedDescription)
+                return success(false)
             }
             
             // 3
-            success(error == nil)
+            //return success(true)
+            
+            let attendCountRef = Database.database().reference().child("events").child(key).child("attend:count")
+            attendCountRef.runTransactionBlock({ (mutableData) -> TransactionResult in
+                let currentCount = mutableData.value as? Int ?? 0
+                print("Mutable data is :\(mutableData.value)")
+                print(currentCount)
+                
+                mutableData.value = currentCount + 1
+                
+                return TransactionResult.success(withValue: mutableData)
+            }, andCompletionBlock: { (error, _, _) in
+                if let error = error {
+                    assertionFailure(error.localizedDescription)
+                    success(false)
+                } else {
+                    success(true)
+                }
+            })
         }
     }
-    
     // 3 code to like a post
-    
     
     static func fethAttendCount(for event: String?) -> Int {
         print("Fetching Attend Count")
@@ -59,35 +76,38 @@ struct AttendService {
     }
     
     
-    
-    
-    
-    
     static func delete(for event: Event?, success: @escaping (Bool) -> Void) {
         guard let key = event?.key else {
             return success(false)
         }
-        
         guard let uid = Auth.auth().currentUser?.uid else{
             return
         }
-        
         let attendData = ["Attending/\(key)/\(uid)" : NSNull(),
                           "users/\(uid)/\("Attending")/\(key)" : NSNull()]
-        
-
-        
           Database.database().reference().updateChildValues(attendData){ (error, _) in
             if let error = error {
                 assertionFailure(error.localizedDescription)
                 return success(false)
             }
             
-            return success(error == nil)
+            let attendCountRef = Database.database().reference().child("events").child(key).child("attend:count")
+            attendCountRef.runTransactionBlock({ (mutableData) -> TransactionResult in
+                let currentCount = mutableData.value as? Int ?? 0
+                print(currentCount)
+                mutableData.value = currentCount - 1
+                
+                return TransactionResult.success(withValue: mutableData)
+            }, andCompletionBlock: { (error, _, _) in
+                if let error = error {
+                    assertionFailure(error.localizedDescription)
+                    success(false)
+                } else {
+                    success(true)
+                }
+            })
         }
     }
-    
-    
     
     
     
@@ -99,14 +119,14 @@ struct AttendService {
         }
     }
     
-    
+    //Create a new service method for determining whether the current event is attended:
     static func isEventAttended(_ event: Event?, byCurrentUserWithCompletion completion: @escaping (Bool) -> Void) {
-        guard let event = event else {
+        guard let eventkey = event?.key else {
             assertionFailure("Error: event must have key.")
             return completion(false)
         }
         
-        let attendRef = Database.database().reference().child("Attending").child(event.key!)
+        let attendRef = Database.database().reference().child("Attending").child(eventkey)
         attendRef.queryEqual(toValue: nil, childKey: User.current.uid).observeSingleEvent(of: .value, with: { (snapshot) in
             if let _ = snapshot.value as? [String : Bool] {
                 completion(true)

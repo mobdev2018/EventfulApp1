@@ -30,6 +30,7 @@ class EventDetailViewController: UIViewController {
             descriptionLabel.font = UIFont(name: (descriptionLabel.font?.fontName)!, size: 14)
             updateWithSpacing(lineSpacing: 7.0)
             navigationItem.title = currentEvent?.currentEventName.capitalized
+            setupAttendInteraction()
         }
     }
     var stackView: UIStackView?
@@ -60,7 +61,20 @@ class EventDetailViewController: UIViewController {
         return currentEvent
     }()
     
-    
+    fileprivate func setupAttendInteraction(){
+        Database.database().reference().child("Attending").child(eventKey).child(User.current.uid).observeSingleEvent(of: .value, with: { (snapshot) in
+            if let isAttending = snapshot.value as? Int, isAttending == 1 {
+                print("User is attending")
+                self.currentEvent?.isAttending = true
+                self.attendingButton.setImage(#imageLiteral(resourceName: "walking").withRenderingMode(.alwaysOriginal), for: .normal)
+            }else{
+                self.currentEvent?.isAttending = false
+                self.attendingButton.setImage(#imageLiteral(resourceName: "walkingNotFilled").withRenderingMode(.alwaysOriginal), for: .normal)
+            }
+        }) { (err) in
+            print("Failed to check if attending", err)
+        }
+    }
     
     
     fileprivate func extractedFunc(_ url: URL?) -> EventPromoVideoPlayer {
@@ -138,7 +152,6 @@ class EventDetailViewController: UIViewController {
     
     lazy var attendingButton: UIButton = {
         let attendButton = UIButton(type: .system)
-        attendButton.setImage(#imageLiteral(resourceName: "walkingNotFilled").withRenderingMode(.alwaysOriginal), for: .normal)
         attendButton.addTarget(self, action: #selector(handleAttend), for: .touchUpInside)
         return attendButton
     }()
@@ -152,19 +165,45 @@ class EventDetailViewController: UIViewController {
         // 2
         attendingButton.isUserInteractionEnabled = false
         // 3
-        AttendService.setIsAttending(!((currentEvent?.isAttending)!), from: currentEvent) { (success) in
-            // 5
+        print(currentEvent?.isAttending)
+        print(" ")
+        if (currentEvent?.isAttending)! {
             
-            defer {
-                self.attendingButton.isUserInteractionEnabled = true
+            AttendService.setIsAttending(!((currentEvent?.isAttending)!), from: currentEvent) { (success) in
+                // 5
+                
+                defer {
+                    self.attendingButton.isUserInteractionEnabled = true
+                }
+                
+                // 6
+                guard success else { return }
+                
+                // 7
+                self.currentEvent?.isAttending = !((self.currentEvent!.isAttending))
+                
+                self.currentEvent?.currentAttendCount += !((self.currentEvent!.isAttending)) ? 1 : -1
+                 self.attendingButton.setImage(#imageLiteral(resourceName: "walkingNotFilled").withRenderingMode(.alwaysOriginal), for: .normal)
             }
             
-            // 6
-            guard success else { return }
+        }else{
             
-            // 7
-            self.currentEvent?.isAttending = !((self.currentEvent!.isAttending))
-            self.currentEvent?.currentAttendCount += !((self.currentEvent!.isAttending)) ? 1 : -1
+            AttendService.setIsAttending(!((currentEvent?.isAttending)!), from: currentEvent) { (success) in
+                // 5
+                
+                defer {
+                    self.attendingButton.isUserInteractionEnabled = true
+                }
+                
+                // 6
+                guard success else { return }
+                
+                // 7
+                self.currentEvent?.isAttending = !((self.currentEvent!.isAttending))
+                
+                self.currentEvent?.currentAttendCount += !((self.currentEvent!.isAttending)) ? 1 : -1
+                 self.attendingButton.setImage(#imageLiteral(resourceName: "walking").withRenderingMode(.alwaysOriginal), for: .normal)
+            }
             
         }
         
@@ -237,8 +276,6 @@ class EventDetailViewController: UIViewController {
         //Constraints will be added here
         _ = currentEventImage.anchor(top: view.centerYAnchor, left: nil, bottom: nil, right: nil, paddingTop: -305, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: self.view.frame.width, height: 200)
         _ = currentEventDate.anchor(top: currentEventImage.bottomAnchor, left: stackView?.rightAnchor, bottom: nil, right: view.rightAnchor, paddingTop: 5, paddingLeft: 10, paddingBottom: 0, paddingRight: 0, width: 90, height: 50)
-
-        attendingButton.isSelected = (currentEvent?.isAttending)!
         setupEventDisplayScreen()
         userInteractionView()
     }

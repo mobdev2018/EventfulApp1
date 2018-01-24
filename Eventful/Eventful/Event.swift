@@ -10,7 +10,7 @@ import Foundation
 import FirebaseDatabase.FIRDataSnapshot
 
 
-struct Event: Keyed {
+class Event {
     var key: String?
     let currentEventName: String
     let currentEventImage: String

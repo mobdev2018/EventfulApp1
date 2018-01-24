@@ -23,6 +23,7 @@ struct EventService {
             guard let event = Event(snapshot: snapshot) else {
                 return completion(nil)
             }
+            
            completion(event)
         })
     }

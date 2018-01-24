@@ -66,7 +66,7 @@ public class DynamoCollectionViewTop: UIView, DynamoCollectionViewCellDelegate, 
         topContainerView = UIView(frame: .zero)
     topContainerView.translatesAutoresizingMaskIntoConstraints = false
         
-        topContainerView.backgroundColor = .red
+        topContainerView.backgroundColor = .white
         
          addSubview(topContainerView)
         
@@ -84,7 +84,7 @@ public class DynamoCollectionViewTop: UIView, DynamoCollectionViewCellDelegate, 
                 //"Delegates send messages"
         topCollectionView.delegate = self
                 //sets the background color of the top UIView/CollectionView to white
-            topCollectionView.backgroundColor = .red
+            topCollectionView.backgroundColor = .white
                 topContainerView.addSubview(topCollectionView)
                 _ = NSLayoutConstraint.activateCentreXConstraint(withView: topCollectionView, superView: topContainerView)
                 _ = NSLayoutConstraint.activateCentreYConstraint(withView: topCollectionView, superView: topContainerView)

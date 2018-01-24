@@ -186,7 +186,7 @@ class UserProfileHeader: UICollectionViewCell {
     
     fileprivate func setupFollowStyle() {
         self.followButton.setTitle("Follow", for: .normal)
-        self.followButton.backgroundColor = UIColor.rgb(red: 17, green: 154, blue: 237)
+        self.followButton.backgroundColor = UIColor.rgb(red: 231, green: 44, blue: 123)
         self.followButton.setTitleColor(.white, for: .normal)
         self.followButton.layer.borderColor = UIColor(white: 0, alpha: 0.2).cgColor
     }

@@ -14,6 +14,7 @@ import AlamofireImage
 import SVProgressHUD
 import SwiftLocation
 import CoreLocation
+import  FaceAware
 
 //let updateProfileTab : ProfileeViewController = ProfileeViewController()
 
@@ -238,6 +239,7 @@ class AlterProfileViewController: UIViewController, UIImagePickerControllerDeleg
                     //SCLAlertView().showSuccess("Success!", subTitle: "Your changes have been saved.")
                     
                 }
+                self.dismiss(animated: true, completion: nil)
                 print("User defaults reset")
                 
             }
@@ -277,6 +279,7 @@ class AlterProfileViewController: UIViewController, UIImagePickerControllerDeleg
             profileImageTemp = selectedImageFromPicker!
             //added completion handler to grab image once it is seleted
             self.selectProfileImage.image = selectedImageFromPicker
+            self.selectProfileImage.focusOnFaces = true
             picker.dismiss(animated: true, completion: nil)
             
         }else if let originalImage = info[UIImagePickerControllerOriginalImage] as? UIImage{

@@ -179,5 +179,25 @@ extension String {
         return boundingBox
     }
 }
+extension UIImageView
+{
+    func makeBlurImage(targetImageView:UIImageView?)
+    {
+        let blurEffect = UIBlurEffect(style: UIBlurEffectStyle.light)
+        let blurEffectView = UIVisualEffectView(effect: blurEffect)
+        blurEffectView.frame = targetImageView!.bounds
+        
+        blurEffectView.autoresizingMask = [.flexibleWidth, .flexibleHeight] // for supporting device rotation
+        targetImageView?.addSubview(blurEffectView)
+    }
+}
 
-
+extension UIImageView {
+    func renderedImage() -> UIImage {
+        UIGraphicsBeginImageContextWithOptions(self.bounds.size, false, UIScreen.main.scale)
+        self.layer.render(in: UIGraphicsGetCurrentContext()!)
+        let image = UIGraphicsGetImageFromCurrentImageContext()!
+        UIGraphicsEndImageContext()
+        return image
+    }
+}

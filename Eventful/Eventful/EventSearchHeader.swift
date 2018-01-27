@@ -32,7 +32,7 @@ class SearchHeader: UICollectionViewCell {
         sb.layer.cornerRadius = 5
         sb.layer.masksToBounds = true
         sb.barTintColor = UIColor.white
-        sb.tintColor = .gray
+        sb.tintColor = UIColor.rgb(red: 231, green: 44, blue: 123)
         UITextField.appearance(whenContainedInInstancesOf: [UISearchBar.self]).backgroundColor = UIColor.rgb(red: 230, green: 230, blue: 230)
         
         //  sb.delegate = self

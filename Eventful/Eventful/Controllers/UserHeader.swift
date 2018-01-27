@@ -21,6 +21,7 @@ class UserProfileHeader: UICollectionViewCell {
             setupUserInteraction()
         }
     }
+    var profileViewController: ProfileeViewController?
     lazy var profileImage: UIImageView = {
         let profilePicture = UIImageView()
         profilePicture.layer.borderWidth = 1.0
@@ -30,6 +31,7 @@ class UserProfileHeader: UICollectionViewCell {
         profilePicture.contentMode = .scaleAspectFill
         profilePicture.isUserInteractionEnabled = true
         profilePicture.layer.shouldRasterize = true
+        profilePicture.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleZoomTap)))
         // will allow you to add a target to an image click
         profilePicture.layer.masksToBounds = true
         return profilePicture
@@ -43,24 +45,7 @@ class UserProfileHeader: UICollectionViewCell {
         statsLabel.textAlignment = .center
         return statsLabel
     }()
-//    lazy var followersLabel : UILabel = {
-//        let followersLabel = UILabel()
-//        let attributedText = NSMutableAttributedString(string: "0\n", attributes: [NSAttributedStringKey.font: UIFont.boldSystemFont(ofSize: 14)])
-//        attributedText.append(NSAttributedString(string: "Followers", attributes: [NSAttributedStringKey.foregroundColor: UIColor.lightGray, NSAttributedStringKey.font: UIFont.systemFont(ofSize: 14)]))
-//        followersLabel.attributedText = attributedText
-//        followersLabel.numberOfLines = 0
-//        followersLabel.textAlignment = .center
-//        return followersLabel
-//    }()
-//    lazy var followingLabel : UILabel = {
-//        let followingLabel = UILabel()
-//        let attributedText = NSMutableAttributedString(string: "0\n", attributes: [NSAttributedStringKey.font: UIFont.boldSystemFont(ofSize: 14)])
-//        attributedText.append(NSAttributedString(string: "Following", attributes: [NSAttributedStringKey.foregroundColor: UIColor.lightGray, NSAttributedStringKey.font: UIFont.systemFont(ofSize: 14)]))
-//        followingLabel.attributedText = attributedText
-//        followingLabel.numberOfLines = 0
-//        followingLabel.textAlignment = .center
-//        return followingLabel
-//    }()
+
     // will be the button that the user clicks to edit there profile settings
     lazy var profileeSettings: UIButton = {
         let profileSetup = UIButton(type: .system)
@@ -141,6 +126,14 @@ class UserProfileHeader: UICollectionViewCell {
         }
     }
     
+    @objc func handleZoomTap(tapGesture: UITapGestureRecognizer){
+        //Pro Tip: Dont perform a lot of custom logic inside a view class
+        if let imageView = tapGesture.view as? UIImageView {
+            //PRO Tip: don't perform a lot of custom logic inside of a view class
+            self.profileViewController?.performZoomInForStartingImageView(startingImageView: imageView)
+        }
+    }
+    
     @objc func didTapFollowButton(){
         print("function handled")
         followButton.isUserInteractionEnabled = false
@@ -197,7 +190,7 @@ class UserProfileHeader: UICollectionViewCell {
     fileprivate func setupProfileImage() {
         
         
-        print("Did set username\(user?.username ?? "")")
+        print("Did set username \(user?.username ?? "")")
         
         
         guard let profileImageUrl = user?.profilePic else {return }

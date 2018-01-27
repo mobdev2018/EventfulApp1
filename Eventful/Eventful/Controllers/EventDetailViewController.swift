@@ -16,6 +16,7 @@ class EventDetailViewController: UIViewController {
         didSet{
             let imageURL = URL(string: (currentEvent?.currentEventImage)!)
                         currentEventImage.af_setImage(withURL: imageURL!)
+            blurryBackGround.image = currentEventImage.image
 
             currentEventTime.text = currentEvent?.currentEventTime
             currentEventDate.text = currentEvent?.currentEventDate
@@ -46,13 +47,21 @@ class EventDetailViewController: UIViewController {
     var eventKey = ""
     var eventPromo = ""
     
+    lazy var blurryBackGround : UIImageView = {
+        var blurryBackGround = UIImageView()
+       // blurryBackGround.backgroundColor = UIColor.red
+        // blurryBackGround.backgroundColor = UIColor(i)
+        blurryBackGround.isUserInteractionEnabled = true
+        blurryBackGround.makeBlurImage(targetImageView: blurryBackGround)
+        return blurryBackGround
+    }()
     
     //
     lazy var currentEventImage : UIImageView = {
         let currentEvent = UIImageView()
         currentEvent.clipsToBounds = true
         currentEvent.translatesAutoresizingMaskIntoConstraints = false
-        currentEvent.contentMode = .scaleAspectFit
+        currentEvent.contentMode = .scaleAspectFill
         currentEvent.isUserInteractionEnabled = true
         currentEvent.layer.masksToBounds = true
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(handlePromoVid))
@@ -66,10 +75,11 @@ class EventDetailViewController: UIViewController {
             if let isAttending = snapshot.value as? Int, isAttending == 1 {
                 print("User is attending")
                 self.currentEvent?.isAttending = true
-                self.attendingButton.setImage(#imageLiteral(resourceName: "walking").withRenderingMode(.alwaysOriginal), for: .normal)
+                self.attendingButton.setImage(#imageLiteral(resourceName: "walkingFilled").withRenderingMode(.alwaysOriginal), for: .normal)
             }else{
+                print("User is not attending")
                 self.currentEvent?.isAttending = false
-                self.attendingButton.setImage(#imageLiteral(resourceName: "walkingNotFilled").withRenderingMode(.alwaysOriginal), for: .normal)
+                self.attendingButton.setImage(#imageLiteral(resourceName: "walkingNotFiled").withRenderingMode(.alwaysOriginal), for: .normal)
             }
         }) { (err) in
             print("Failed to check if attending", err)
@@ -131,7 +141,7 @@ class EventDetailViewController: UIViewController {
     
     lazy var commentsViewButton : UIButton = {
         let viewComments = UIButton(type: .system)
-        viewComments.setImage(#imageLiteral(resourceName: "commentBubble").withRenderingMode(.alwaysOriginal), for: .normal)
+        viewComments.setImage(#imageLiteral(resourceName: "commentBubble-1").withRenderingMode(.alwaysOriginal), for: .normal)
         viewComments.setTitleColor(.white, for: .normal)
         viewComments.addTarget(self, action: #selector(presentComments), for: .touchUpInside)
         return viewComments
@@ -183,7 +193,7 @@ class EventDetailViewController: UIViewController {
                 self.currentEvent?.isAttending = !((self.currentEvent!.isAttending))
                 
                 self.currentEvent?.currentAttendCount += !((self.currentEvent!.isAttending)) ? 1 : -1
-                 self.attendingButton.setImage(#imageLiteral(resourceName: "walkingNotFilled").withRenderingMode(.alwaysOriginal), for: .normal)
+                 self.attendingButton.setImage(#imageLiteral(resourceName: "walkingNotFiled").withRenderingMode(.alwaysOriginal), for: .normal)
             }
             
         }else{
@@ -202,7 +212,7 @@ class EventDetailViewController: UIViewController {
                 self.currentEvent?.isAttending = !((self.currentEvent!.isAttending))
                 
                 self.currentEvent?.currentAttendCount += !((self.currentEvent!.isAttending)) ? 1 : -1
-                 self.attendingButton.setImage(#imageLiteral(resourceName: "walking").withRenderingMode(.alwaysOriginal), for: .normal)
+                 self.attendingButton.setImage(#imageLiteral(resourceName: "walkingFilled").withRenderingMode(.alwaysOriginal), for: .normal)
             }
             
         }
@@ -212,7 +222,7 @@ class EventDetailViewController: UIViewController {
     //will add the button to add a video or picture to the story
     lazy var addToStoryButton : UIButton =  {
         let addToStory = UIButton(type: .system)
-        addToStory.setImage(#imageLiteral(resourceName: "icons8-Plus-64").withRenderingMode(.alwaysOriginal), for: .normal)
+        addToStory.setImage(#imageLiteral(resourceName: "photo-camera").withRenderingMode(.alwaysOriginal), for: .normal)
         addToStory.addTarget(self, action: #selector(beginAddToStory), for: .touchUpInside)
         return addToStory
     }()
@@ -270,12 +280,18 @@ class EventDetailViewController: UIViewController {
         view.backgroundColor = UIColor.white
 
         //Subviews will be added here
+        view.addSubview(blurryBackGround)
         view.addSubview(currentEventImage)
         view.addSubview(currentEventDate)
 
         //Constraints will be added here
-        _ = currentEventImage.anchor(top: view.centerYAnchor, left: nil, bottom: nil, right: nil, paddingTop: -305, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: self.view.frame.width, height: 200)
-        _ = currentEventDate.anchor(top: currentEventImage.bottomAnchor, left: stackView?.rightAnchor, bottom: nil, right: view.rightAnchor, paddingTop: 5, paddingLeft: 10, paddingBottom: 0, paddingRight: 0, width: 90, height: 50)
+        _ = blurryBackGround.anchor(top: view.topAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, paddingTop: 17, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: self.view.frame.width, height: 330)
+        blurryBackGround.addSubview(currentEventImage)
+        currentEventImage.heightAnchor.constraint(equalToConstant: 330).isActive = true
+        currentEventImage.widthAnchor.constraint(equalToConstant: 280).isActive = true
+        currentEventImage.centerXAnchor.constraint(lessThanOrEqualTo:  currentEventImage.superview!.centerXAnchor).isActive = true
+        currentEventImage.centerYAnchor.constraint(lessThanOrEqualTo: currentEventImage.superview!.centerYAnchor).isActive = true
+        _ = currentEventDate.anchor(top: currentEventImage.bottomAnchor, left: stackView?.rightAnchor, bottom: nil, right: view.rightAnchor, paddingTop: -10, paddingLeft: 10, paddingBottom: 0, paddingRight: 0, width: 90, height: 50)
         setupEventDisplayScreen()
         userInteractionView()
     }
@@ -287,8 +303,8 @@ class EventDetailViewController: UIViewController {
         stackView?.distribution = .fill
         stackView?.axis = .vertical
         stackView?.spacing = 0.0
-        stackView?.anchor(top: currentEventImage.bottomAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, paddingTop: 10, paddingLeft: 15, paddingBottom: 0, paddingRight: 20, width: 0, height: 70)
-        descriptionLabel.anchor(top: stackView?.bottomAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, paddingTop: 10, paddingLeft: 10, paddingBottom: 0, paddingRight: 10, width: 90, height: 200)
+        stackView?.anchor(top: currentEventImage.bottomAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, paddingTop: 0, paddingLeft: 15, paddingBottom: 0, paddingRight: 20, width: 0, height: 70)
+        descriptionLabel.anchor(top: stackView?.bottomAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, paddingTop: 0, paddingLeft: 10, paddingBottom: 0, paddingRight: 10, width: 90, height: 200)
     }
     
     fileprivate func userInteractionView(){
@@ -300,7 +316,7 @@ class EventDetailViewController: UIViewController {
         userInteractStackView?.distribution = .fillEqually
         userInteractStackView?.axis = .horizontal
         userInteractStackView?.spacing = 10.0
-        userInteractStackView?.anchor(top: descriptionLabel.bottomAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, paddingTop: 50, paddingLeft: 20, paddingBottom: 0, paddingRight: 20, width: 0, height: 50)
+        userInteractStackView?.anchor(top: descriptionLabel.bottomAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, paddingTop: -20, paddingLeft: 20, paddingBottom: 0, paddingRight: 20, width: 0, height: 50)
     }
     
     override func viewWillAppear(_ animated: Bool) {

@@ -73,6 +73,7 @@
         override func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
             let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "headerID", for: indexPath) as! UserProfileHeader
             header.profileeSettings.addTarget(self, action: #selector(profileSettingsTapped), for: .touchUpInside)
+            header.profileViewController = self
             header.settings.addTarget(self, action: #selector(settingsButtonTapped), for: .touchUpInside)
 
             header.user = self.user
@@ -152,6 +153,87 @@
             
             return cell
         }
+        //custom zoom logic
+        var blackBackgroundView: UIView?
+        var startingFrame: CGRect?
+        var startingImageView: UIImageView?
+
+        @objc func performZoomInForStartingImageView(startingImageView: UIImageView){
+            self.startingImageView = startingImageView
+            self.startingImageView?.isHidden = true
+            startingFrame = startingImageView.superview?.convert(startingImageView.frame, to: nil)
+            let zoomingImageView = UIImageView(frame: startingFrame!)
+            zoomingImageView.layer.cornerRadius = 100/2
+            zoomingImageView.isUserInteractionEnabled = true
+            zoomingImageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleZoomOut)))
+
+            //zoomingImageView.backgroundColor = UIColor.red
+            guard let profileImageUrl = user?.profilePic else {return }
+            
+            guard let url = URL(string: profileImageUrl) else { return }
+            
+            URLSession.shared.dataTask(with: url) { (data, response, err) in
+                //check for the error, then construct the image using data
+                if let err = err {
+                    print("Failed to fetch profile image:", err)
+                    return
+                }
+                
+                //perhaps check for response status of 200 (HTTP OK)
+                
+                guard let data = data else { return }
+                
+                let image = UIImage(data: data)
+                
+                //need to get back onto the main UI thread
+                DispatchQueue.main.async {
+                    zoomingImageView.image = image
+                }
+                
+                }.resume()
+            if let keyWindow = UIApplication.shared.keyWindow {
+                blackBackgroundView = UIView(frame: keyWindow.frame)
+                blackBackgroundView?.backgroundColor = UIColor.black
+                blackBackgroundView?.alpha = 0
+                keyWindow.addSubview(blackBackgroundView!)
+                keyWindow.addSubview(zoomingImageView)
+
+                UIView.animate(withDuration: 0.6, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
+                    
+                    self.blackBackgroundView?.alpha = 1
+                    // math?
+                    // h2 / w1 = h1 / w1
+                    // h2 = h1 / w1 * w1
+                    let height = self.startingFrame!.height / self.startingFrame!.width * keyWindow.frame.width
+                    
+                    zoomingImageView.frame = CGRect(x: 0, y: 0, width: keyWindow.frame.width, height: height)
+                    
+                    zoomingImageView.center = keyWindow.center
+                    
+                }, completion: { (completed) in
+                    //                    do nothing
+                })
+
+            }
+        }
+        
+        @objc func handleZoomOut(_ tapGesture: UITapGestureRecognizer){
+            if let zoomOutImageView = tapGesture.view {
+                //need to animate back out to controller
+                zoomOutImageView.layer.cornerRadius = 100/2
+                zoomOutImageView.clipsToBounds = true
+                UIView.animate(withDuration: 0.6, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
+                    
+                    zoomOutImageView.frame = self.startingFrame!
+                    self.blackBackgroundView?.alpha = 0
+                }, completion: { (completed) in
+                    zoomOutImageView.removeFromSuperview()
+                    self.startingImageView?.isHidden = false
+                })
+                
+            }
+        }
+        
         
     }
     

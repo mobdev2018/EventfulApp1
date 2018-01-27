@@ -199,7 +199,6 @@
                 keyWindow.addSubview(zoomingImageView)
 
                 UIView.animate(withDuration: 0.6, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
-                    
                     self.blackBackgroundView?.alpha = 1
                     // math?
                     // h2 / w1 = h1 / w1

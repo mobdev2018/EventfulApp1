@@ -16,8 +16,8 @@ import  UIKit
 struct UserService {
     /// will create a user in the database
     static func create(_ firUser: FIRUser, username: String,profilePic: String, completion: @escaping (User?) -> Void) {
-        print(profilePic)
-        print(username)
+      //  print(profilePic)
+     //   print(username)
         
         print("")
         let userAttrs = ["username": username,
@@ -54,7 +54,7 @@ struct UserService {
     }
     // will strictly handle editing the user section in the database
     static func editProfileImage(url: String, completion: @escaping (User?) -> Void) {
-        print(url)
+       // print(url)
         
         let userAttrs = ["profilePic": url]
         let ref = Database.database().reference().child("users").child(User.current.uid)
@@ -79,13 +79,13 @@ struct UserService {
         // 2
         return userRef.observe(.value, with: { snapshot in
             // 3
-            print(snapshot)
+           // print(snapshot)
             guard let user = User(snapshot: snapshot) else {
                 return completion(userRef, nil, [])
             }
             
-            print(user)
-            print(user.uid)
+          //  print(user)
+           // print(user.uid)
             // 4
             Events(for: user, completion: { events in
                 // 5

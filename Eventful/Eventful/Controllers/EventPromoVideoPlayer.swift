@@ -100,18 +100,18 @@ class EventPromoVideoPlayer: UIViewController {
         if let swipeGesture = swipe as? UISwipeGestureRecognizer {
             switch swipeGesture.direction {
             case UISwipeGestureRecognizerDirection.right:
-                print("Swiped right")
+               // print("Swiped right")
                 dismiss(animated: true, completion: nil)
                 break
             case UISwipeGestureRecognizerDirection.down:
-                print("Swiped Down")
+               // print("Swiped Down")
                 dismiss(animated: true, completion: nil)
                 break
             case UISwipeGestureRecognizerDirection.left:
-                print("Swiped left")
+               // print("Swiped left")
                 break
             case UISwipeGestureRecognizerDirection.up:
-                print("Swiped up")
+              //  print("Swiped up")
                 break
             default:
                 break

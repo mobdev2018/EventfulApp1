@@ -170,7 +170,7 @@ extension HomeFeedController: DynamoCollectionViewDelegate, DynamoCollectionView
     
     // MARK: DynamoCollectionView Datasource
     func dynamoCollectionView(_ dynamoCollectionView: DynamoCollectionView, willDisplay cell: UICollectionViewCell, indexPath: IndexPath) {
-        print("Attempting to get events")
+       // print("Attempting to get events")
 
     }
     
@@ -186,7 +186,7 @@ extension HomeFeedController: DynamoCollectionViewDelegate, DynamoCollectionView
     }
     //controls info related to each cell 
     func dynamoCollectionView(_ dynamoCollectionView: DynamoCollectionView, cellForItemAt indexPath: IndexPath) -> DynamoCollectionViewCell {
-        print("entered cell for item at: \(indexPath.item) ")
+       // print("entered cell for item at: \(indexPath.item) ")
         let cell = dynamoCollectionView.dequeueReusableCell(for: indexPath)
         let model = allEvents[indexPath.item]
         let imageURL = URL(string: model.currentEventImage)
@@ -229,7 +229,7 @@ extension HomeFeedController: DynamoCollectionViewTopDelegate, DynamoCollectionV
     }
     
     func dynamoCollectionViewTop(_ dynamoCollectionViewTop: DynamoCollectionViewTop, willDisplay cell: UICollectionViewCell, indexPath: IndexPath) {
-        print("Attempting to get events")
+       //print("Attempting to get events")
     }
     
     func topViewRatioTop(_ dynamoCollectionViewTop: DynamoCollectionViewTop) -> CGFloat {
@@ -241,7 +241,7 @@ extension HomeFeedController: DynamoCollectionViewTopDelegate, DynamoCollectionV
     }
     
     func dynamoCollectionViewTop(_ dynamoCollectionViewTop: DynamoCollectionViewTop, cellForItemAt indexPath: IndexPath) -> DynamoCollectionViewCell {
-        print("entered cell for item at: \(indexPath.item) ")
+      //  print("entered cell for item at: \(indexPath.item) ")
         let cell = dynamoCollectionViewTop.dequeueReusableCell(for: indexPath)
         let model = featuredEvents[indexPath.item]
         let imageURL = URL(string: model.currentEventImage)

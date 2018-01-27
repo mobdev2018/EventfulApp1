@@ -8,13 +8,14 @@
 
 import Foundation
 import UIKit
+import Firebase
 
 protocol CommentCellDelegate: class {
     func optionsButtonTapped(cell: CommentCell)
+    func handleProfileTransition(tapGesture: UITapGestureRecognizer)
 }
 class CommentCell: UICollectionViewCell {
     weak var delegate: CommentCellDelegate? = nil
-    
     override var reuseIdentifier : String {
         get {
             return "cellID"
@@ -53,9 +54,11 @@ class CommentCell: UICollectionViewCell {
     }()
     
     
-    let profileImageView: CustomImageView = {
+    lazy var profileImageView: CustomImageView = {
         let iv = CustomImageView()
         iv.clipsToBounds = true
+        iv.isUserInteractionEnabled = true
+        iv.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleProfileTransition)))
         iv.contentMode = .scaleAspectFill
         return iv
     }()
@@ -73,6 +76,10 @@ class CommentCell: UICollectionViewCell {
     
     @objc func onOptionsTapped() {
         delegate?.optionsButtonTapped(cell: self)
+    }
+    @objc func handleProfileTransition(tapGesture: UITapGestureRecognizer){
+        delegate?.handleProfileTransition(tapGesture: tapGesture)
+      //  print("Tapped image")
     }
     
     

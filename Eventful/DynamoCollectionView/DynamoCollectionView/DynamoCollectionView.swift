@@ -184,8 +184,8 @@ public class DynamoCollectionView: UIView, DynamoCollectionViewCellDelegate, UIG
             //if x is 0 return Y which in this case is 0
             numberOfItems = max(source.numberOfItems(self), 0)
             if numberOfItems > 0 {
-                print("Entered here for number of items")
-                print("Number of items is: \(numberOfItems)")
+               // print("Entered here for number of items")
+                //print("Number of items is: \(numberOfItems)")
                 bottomCollectionView.reloadData()
             }
         }
@@ -196,7 +196,7 @@ public class DynamoCollectionView: UIView, DynamoCollectionViewCellDelegate, UIG
     func dynamoCollectionViewCellDidSelect(sender: UICollectionViewCell) {
         if let viewDelegate = delegate {
             //this passes tghe indexpath into the didSelectItemAt function in the homefeedController so we know which cell is selected
-            print("Tag of sender is: \(sender.tag)")
+           // print("Tag of sender is: \(sender.tag)")
             viewDelegate.dynamoCollectionView(self, didSelectItemAt: IndexPath(item: sender.tag, section: 0))
         }
     }
@@ -214,16 +214,16 @@ extension DynamoCollectionView: UICollectionViewDelegate, UICollectionViewDataSo
     
     //seems to come here to determine what source data goes to the top or bottom based off the tag
     public func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        print("Current indexPath.item value in DynamoCollectionView.swift is : \(indexPath.item)")
+       // print("Current indexPath.item value in DynamoCollectionView.swift is : \(indexPath.item)")
             //Bottom collection view
-            print("Configuring bottom collection view")
+         //   print("Configuring bottom collection view")
             //upon getting the source
             if let source = dataSource {
                 //c1
-                print("Number of items in source is \(source.numberOfItems(self))")
+           //     print("Number of items in source is \(source.numberOfItems(self))")
                // print(source.description)
-                print("Assigning source")
-                print("Current indexPath item is : \(indexPath.item)")
+               // print("Assigning source")
+               // print("Current indexPath item is : \(indexPath.item)")
                 //this creates a cell and uses the source to pass it to the homefeedcontroller
                 //item is An index number identifying an item in a UICollectionView object in a section identified by the section parameter.
                 //section is An index number identifying a section in a UICollectionView object.
@@ -235,7 +235,7 @@ extension DynamoCollectionView: UICollectionViewDelegate, UICollectionViewDataSo
                 cell.delegate = self
                 return cell
             }else {
-                print("Entered else")
+              //  print("Entered else")
                 let cell = DynamoCollectionViewCell()
                 cell.tag = indexPath.item + 1
                 cell.delegate = self

@@ -143,11 +143,11 @@ struct AuthService {
     
     //will ensure that a user has a unique username
     static func checkUserNameAlreadyExist(newUserName: String, completion: @escaping(Bool) -> Void) {
-       print(newUserName)
+      // print(newUserName)
         let ref = Database.database().reference()
         ref.child("users").queryOrdered(byChild: "username").queryEqual(toValue: newUserName)
             .observeSingleEvent(of: .value, with: {(snapshot: DataSnapshot) in
-                print(snapshot)
+               // print(snapshot)
                 if snapshot.exists() {
                     completion(true)
                 }

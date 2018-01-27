@@ -264,7 +264,6 @@ class EventSearchController: UICollectionViewController, UISearchBarDelegate, UI
             let backButton = UIBarButtonItem(image: UIImage(named: "icons8-Back-64"), style: .plain, target: self, action: #selector(GoBack))
             userProfileController.navigationItem.leftBarButtonItem = backButton
             present(userProfileController, animated: true, completion: nil)
-            //            navigationController?.pushViewController(userProfileController, animated: true)
             break
         default:
             break

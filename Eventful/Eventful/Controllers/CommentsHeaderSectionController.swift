@@ -39,7 +39,7 @@ class CommentsHeaderSectionController: ListSectionController, CommentHeaderDeleg
     }
     
     func commentHeaderTapped(cell: CommentHeader){
-        print("like")
+       // print("like")
         viewController?.dismiss(animated: true, completion: nil)
     }
 

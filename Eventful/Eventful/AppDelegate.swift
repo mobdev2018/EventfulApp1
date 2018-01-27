@@ -67,20 +67,20 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 extension AppDelegate {
     func configureInitialRootViewController(for window: UIWindow?) {
-        print("Look for current user here")
-        print(Auth.auth().currentUser ?? "")
+       // print("Look for current user here")
+       // print(Auth.auth().currentUser ?? "")
         let defaults = UserDefaults.standard
         let initialViewController: UIViewController
-        print(Auth.auth().currentUser ?? "")
+       // print(Auth.auth().currentUser ?? "")
         if Auth.auth().currentUser != nil,
             let userData = defaults.object(forKey: "currentUser") as? Data,
             let user = NSKeyedUnarchiver.unarchiveObject(with: userData) as? User {
             
             User.setCurrent(user, writeToUserDefaults: true)
-            print("root view controller set to home view controller")
+           // print("root view controller set to home view controller")
             initialViewController = HomeViewController()
         } else {
-            print("root view controller set to login view controller")
+           // print("root view controller set to login view controller")
             initialViewController = LoginViewController()
         }
         

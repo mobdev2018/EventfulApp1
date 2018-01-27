@@ -49,7 +49,7 @@ class User : NSObject {
         //var dict : [String : Any]
         //print(postDictionary as? [String:])
         let dict = postDictionary
-        print(dict)
+        //print(dict)
         let profilePic = dict["profilePic"] as? String ?? ""
         let username = dict["username"] as? String ?? ""
         self.uid = key
@@ -66,8 +66,8 @@ class User : NSObject {
     }
     
     class func setCurrent(_ user: User, writeToUserDefaults: Bool = true) {
-        print(user)
-        print("")
+        //print(user)
+       // print("")
         if writeToUserDefaults {
             let data = NSKeyedArchiver.archivedData(withRootObject: user)
             
@@ -75,7 +75,7 @@ class User : NSObject {
             UserDefaults.standard.synchronize()
         }
         _current = user
-        print(_current ?? "")
+        //print(_current ?? "")
     }
 }
 

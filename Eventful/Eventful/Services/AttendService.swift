@@ -37,8 +37,8 @@ struct AttendService {
             let attendCountRef = Database.database().reference().child("events").child(key).child("attend:count")
             attendCountRef.runTransactionBlock({ (mutableData) -> TransactionResult in
                 let currentCount = mutableData.value as? Int ?? 0
-                print("Mutable data is :\(mutableData.value)")
-                print(currentCount)
+               // print("Mutable data is :\(mutableData.value)")
+                //print(currentCount)
                 
                 mutableData.value = currentCount + 1
                 
@@ -56,17 +56,17 @@ struct AttendService {
     // 3 code to like a post
     
     static func fethAttendCount(for event: String?) -> Int {
-        print("Fetching Attend Count")
+       // print("Fetching Attend Count")
         var numberAttending: Int = 0
         let attendRef = Database.database().reference().child("Attending").child(event!)
         attendRef.observe(.value, with: { (snapshot) in
             guard let attendCountDictionary = snapshot.value as? [String: Any] else{
                 return
             }
-            print(snapshot.value ?? "")
+           // print(snapshot.value ?? "")
             
             numberAttending = attendCountDictionary.count
-            print(numberAttending)
+           // print(numberAttending)
         }) { (err) in
             print("Failed to fetch attend count")
         }
@@ -94,7 +94,7 @@ struct AttendService {
             let attendCountRef = Database.database().reference().child("events").child(key).child("attend:count")
             attendCountRef.runTransactionBlock({ (mutableData) -> TransactionResult in
                 let currentCount = mutableData.value as? Int ?? 0
-                print(currentCount)
+               // print(currentCount)
                 mutableData.value = currentCount - 1
                 
                 return TransactionResult.success(withValue: mutableData)

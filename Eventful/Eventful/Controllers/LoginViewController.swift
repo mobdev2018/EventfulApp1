@@ -125,7 +125,7 @@ class LoginViewController: UIViewController , LoginViewControllerDelegate {
                     print("error: FiRuser dees not exist")
                     return
                 }
-                print("user is signed in")
+              //  print("user is signed in")
                 UserService.show(forUID: (user?.uid)!) { (user) in
                     if let user = user {
                         User.setCurrent(user, writeToUserDefaults: true)
@@ -142,7 +142,7 @@ class LoginViewController: UIViewController , LoginViewControllerDelegate {
     }
     
     func finishLoggingIn() {
-        print("Finish logging in from LoginController")
+       // print("Finish logging in from LoginController")
         let homeController = HomeViewController()
         self.view.window?.rootViewController = homeController
         self.view.window?.makeKeyAndVisible()
@@ -188,29 +188,7 @@ class LoginViewController: UIViewController , LoginViewControllerDelegate {
         // Every view that I add is from the top down imagine a chandeler that you are just hanging things from
         super.viewDidLoad()
         // will add each of the screen elements to the current view
-        
-//        self.bgGradientLayer.frame = self.view.layer.bounds
-//        self.view.layer.addSublayer(self.bgGradientLayer)
         self.view.backgroundColor = UIColor.white
-        
-       // self.view.addSubview(nameOfAppLabel)
-       // self.view.addSubview(welcomeBackLabel)
-       // self.view.addSubview(goalLabel)
-        //////////////////////////////////////////////////////////////////////
-        
-        // All Constraints for Elements in Screen
-        // constraints for the nameOfAppLabel
-      //  _ = nameOfAppLabel.anchor(top: self.view.centerYAnchor, left: nil, bottom: nil, right: nil, paddingTop: -215.0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 49.7, height: 9.7)
-      //  nameOfAppLabel.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
-        
-        //constrints for the welcome back label
-      //  _ = welcomeBackLabel.anchor(top: nameOfAppLabel.bottomAnchor, left: nil, bottom: nil, right: nil, paddingTop: 15.7, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 12.7)
-        
-      //  welcomeBackLabel.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
-        //constrints for the goal label
-       // _ = goalLabel.anchor(top: welcomeBackLabel.bottomAnchor, left: nil, bottom: nil, right: nil, paddingTop: 10, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 180, height: 14)
-        
-       // goalLabel.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
 
         
         self.view.backgroundColor = UIColor(r: 255, g: 255 , b: 255)

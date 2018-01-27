@@ -21,7 +21,7 @@ class UserProfileHeader: UICollectionViewCell {
             setupUserInteraction()
         }
     }
-    var profileViewController: ProfileeViewController?
+    weak var profileViewController: ProfileeViewController?
     lazy var profileImage: UIImageView = {
         let profilePicture = UIImageView()
         profilePicture.layer.borderWidth = 1.0

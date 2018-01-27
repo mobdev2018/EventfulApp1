@@ -12,7 +12,7 @@ import SwiftLocation
 
 struct LocationService {
     static func getUserLocation(completion: @escaping (CLLocation?) -> Void){
-        print("Atttempting to get user location")
+       // print("Atttempting to get user location")
         //May need location manager function
         //may need to change to always for significant location to work
         Locator.requestAuthorizationIfNeeded(.whenInUse)
@@ -29,7 +29,7 @@ struct LocationService {
 //            print("Failed with err: \(err)")
 //        }
         Locator.currentPosition(accuracy: .city, onSuccess: { (location) -> (Void) in
-            print("Location found: \(location)")
+           // print("Location found: \(location)")
             completion(location)
         }) { (err, last) -> (Void) in
              print("Failed to get location: \(err)")

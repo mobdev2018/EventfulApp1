@@ -41,14 +41,14 @@ class NewCommentsViewController: UIViewController, UITextFieldDelegate,CommentsS
     fileprivate func fetchComments(){
         comments.removeAll()
         messagesRef = Database.database().reference().child("Comments").child(eventKey)
-        print(eventKey)
-         print(comments.count)
+       // print(eventKey)
+        // print(comments.count)
         let query = messagesRef?.queryOrderedByKey()
         query?.observe(.value, with: { (snapshot) in
             guard let allObjects = snapshot.children.allObjects as? [DataSnapshot] else {
                 return
             }
-            print(snapshot)
+           // print(snapshot)
             
             allObjects.forEach({ (snapshot) in
                 guard let commentDictionary = snapshot.value as? [String: Any] else{
@@ -200,7 +200,7 @@ extension NewCommentsViewController: ListAdapterDataSource {
     // 1 objects(for:) returns an array of data objects that should show up in the collection view. loader.entries is provided here as it contains the journal entries.
     func objects(for listAdapter: ListAdapter) -> [ListDiffable] {
         let items:[ListDiffable] = comments
-        print("comments = \(comments)")
+        //print("comments = \(comments)")
         return [addHeader] + items
     }
     

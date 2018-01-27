@@ -9,6 +9,7 @@
 import UIKit
 import IGListKit
 import Foundation
+import Firebase
 
 protocol CommentsSectionDelegate: class {
     func CommentSectionUpdared(sectionController: CommentsSectionController)
@@ -16,6 +17,7 @@ protocol CommentsSectionDelegate: class {
 class CommentsSectionController: ListSectionController,CommentCellDelegate {
     weak var delegate: CommentsSectionDelegate? = nil
     var comment: CommentGrabbed?
+    let userProfileController = ProfileeViewController(collectionViewLayout: UICollectionViewFlowLayout())
     var eventKey: String?
     override init() {
         super.init()
@@ -103,6 +105,20 @@ class CommentsSectionController: ListSectionController,CommentCellDelegate {
     }
     func onItemDeleted() {
         delegate?.CommentSectionUpdared(sectionController: self)
+    }
+    func handleProfileTransition(tapGesture: UITapGestureRecognizer){
+       // print("image taped")
+        userProfileController.user = comment?.user
+       // print("Moving to \(comment?.user.username) profile controller")
+        if Auth.auth().currentUser?.uid != comment?.uid{
+                    self.viewController?.present(userProfileController, animated: true, completion: nil)
+        }else{
+            //do nothing
+          //  print("cant go to own profile from comment")
+            
+        }
+
+        
     }
     
     

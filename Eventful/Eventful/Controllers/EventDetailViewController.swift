@@ -62,7 +62,6 @@ class EventDetailViewController: UIViewController {
         currentEvent.clipsToBounds = true
         currentEvent.translatesAutoresizingMaskIntoConstraints = false
         currentEvent.contentMode = .scaleAspectFill
-        currentEvent.isUserInteractionEnabled = true
         currentEvent.layer.masksToBounds = true
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(handlePromoVid))
         currentEvent.isUserInteractionEnabled = true

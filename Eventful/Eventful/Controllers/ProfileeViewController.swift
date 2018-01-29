@@ -69,7 +69,6 @@
         }
         
         
-        
         override func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
             let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "headerID", for: indexPath) as! UserProfileHeader
             header.profileeSettings.addTarget(self, action: #selector(profileSettingsTapped), for: .touchUpInside)

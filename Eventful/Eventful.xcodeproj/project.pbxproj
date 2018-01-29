@@ -30,6 +30,7 @@
 		073AFDC51F45E4FB009D4773 /* FollowService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 073AFDC41F45E4FB009D4773 /* FollowService.swift */; };
 		073B120A1F2C264000031044 /* HomeFeedController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 073B12091F2C264000031044 /* HomeFeedController.swift */; };
 		073B120C1F2ED42C00031044 /* ProfileeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 073B120B1F2ED42C00031044 /* ProfileeViewController.swift */; };
+		074290A2201ED04500C1D68D /* NotificationsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 074290A1201ED04500C1D68D /* NotificationsViewController.swift */; };
 		07437F1A1F267CA900CE728B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07437F191F267CA900CE728B /* AppDelegate.swift */; };
 		07437F1F1F267CA900CE728B /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 07437F1D1F267CA900CE728B /* Main.storyboard */; };
 		07437F241F267CA900CE728B /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 07437F221F267CA900CE728B /* LaunchScreen.storyboard */; };
@@ -115,6 +116,7 @@
 		073AFDC41F45E4FB009D4773 /* FollowService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FollowService.swift; path = Services/FollowService.swift; sourceTree = "<group>"; };
 		073B12091F2C264000031044 /* HomeFeedController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = HomeFeedController.swift; path = Controllers/HomeFeedController.swift; sourceTree = "<group>"; };
 		073B120B1F2ED42C00031044 /* ProfileeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ProfileeViewController.swift; path = Controllers/ProfileeViewController.swift; sourceTree = "<group>"; };
+		074290A1201ED04500C1D68D /* NotificationsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = NotificationsViewController.swift; path = Controllers/NotificationsViewController.swift; sourceTree = "<group>"; };
 		07437F161F267CA900CE728B /* Eventful.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Eventful.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		07437F191F267CA900CE728B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		07437F1E1F267CA900CE728B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -199,6 +201,14 @@
 			name = Search;
 			sourceTree = "<group>";
 		};
+		074290A0201ECE2000C1D68D /* Notifications */ = {
+			isa = PBXGroup;
+			children = (
+				074290A1201ED04500C1D68D /* NotificationsViewController.swift */,
+			);
+			name = Notifications;
+			sourceTree = "<group>";
+		};
 		07437F0D1F267CA900CE728B = {
 			isa = PBXGroup;
 			children = (
@@ -237,6 +247,7 @@
 		07437F2D1F267E1D00CE728B /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				074290A0201ECE2000C1D68D /* Notifications */,
 				07D923A21F2EEEF90069613D /* Login */,
 				07D923A31F2EEF030069613D /* SignUp */,
 				07D923A41F2EEF1E0069613D /* Root View */,
@@ -605,6 +616,7 @@
 				07B9145F1F3D4DE100A02952 /* CommentGrabbed.swift in Sources */,
 				071F2E181F4CAFDE00FEDDCF /* VideoLauncher.swift in Sources */,
 				07A15CFF20001B9900CA4309 /* CommentInputTextView.swift in Sources */,
+				074290A2201ED04500C1D68D /* NotificationsViewController.swift in Sources */,
 				07D923A81F33C61D0069613D /* Storyboard+Utility.swift in Sources */,
 				07FF92CB1F3B925800FC9716 /* ChatService.swift in Sources */,
 				07437F2C1F267E1300CE728B /* LoginViewController.swift in Sources */,

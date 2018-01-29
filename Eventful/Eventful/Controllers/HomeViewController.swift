@@ -3,6 +3,7 @@
  import Firebase
  import FirebaseAuth
  import DynamoCollectionView
+ import FaceAware
  
  class HomeViewController: UIViewController  {
    
@@ -20,7 +21,10 @@
         let searchController = EventSearchController(collectionViewLayout: UICollectionViewFlowLayout())
         let searchNavController = UINavigationController(rootViewController: searchController)
         
-        return [searchNavController,navController,profileViewNavController]
+        let notificationView = NotificationsViewController(collectionViewLayout: UICollectionViewFlowLayout())
+        let notificationNavController = UINavigationController(rootViewController: notificationView)
+        
+        return [searchNavController,navController,notificationNavController,profileViewNavController]
     }()
     fileprivate var selectedTopIndex:Int!{
         didSet{
@@ -28,7 +32,7 @@
         }
     }
 
-    let topImages = [#imageLiteral(resourceName: "icons8-Search-48"), #imageLiteral(resourceName: "home"),UIImage()]
+    let topImages = [#imageLiteral(resourceName: "icons8-search-40"), #imageLiteral(resourceName: "home"),#imageLiteral(resourceName: "icons8-Notification-50"),UIImage()]
    
     let topCell = "topCell"
 
@@ -60,9 +64,8 @@
         self.topCollectionView.backgroundColor = .white
         self.topCollectionView.register(ImageCollectionViewCell.self, forCellWithReuseIdentifier: topCell)
         self.view.addSubview(self.topCollectionView)
-        NSLayoutConstraint.activateViewConstraints(self.topCollectionView, inSuperView: self.view, withLeading: 0.0, trailing: 0.0, top: nil, bottom: nil, width: nil, height: 50.0)
-        _ = NSLayoutConstraint.activateVerticalSpacingConstraint(withFirstView: self.topLayoutGuide, secondView: self.topCollectionView, andSeparation: 0.0)
-        
+        NSLayoutConstraint.activateViewConstraints(self.topCollectionView, inSuperView: self.view, withLeading: 0.0, trailing: 0.0, top: nil, bottom: nil, width: nil, height: 30.0)
+        _ = NSLayoutConstraint.activateVerticalSpacingConstraint(withFirstView: self.topLayoutGuide, secondView: self.topCollectionView, andSeparation: 0.0)        
         self.pageController = UIPageViewController(transitionStyle: .scroll, navigationOrientation: .horizontal, options: nil)
         self.pageController.dataSource = self
         self.pageController.delegate = self
@@ -199,7 +202,8 @@
         
         if indexPath.item == self.topImages.count-1{
             cell.imageView.loadImage(urlString: User.current.profilePic!)
-            cell.imageView.layer.cornerRadius = 50/2
+            cell.imageView.contentMode = .scaleAspectFill
+            cell.imageView.layer.cornerRadius = cell.frame.height/2
         }else{
             cell.imageView.image = self.topImages[indexPath.row]
         }

@@ -84,6 +84,12 @@ class CommentsSectionController: ListSectionController,CommentCellDelegate {
                 self.viewController?.present(okAlert, animated: true, completion: nil)
             }
             let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+            let replyAction = UIAlertAction(title: "Reply to Comment", style: .default, handler: { (_) in
+                //do something here later to facilitate reply comment functionality
+                print("Attempting to reply to user \(comment?.user.username) comment")
+                
+            })
+            alertController.addAction(replyAction)
             alertController.addAction(cancelAction)
             alertController.addAction(flagAction)
         }else{
@@ -107,14 +113,11 @@ class CommentsSectionController: ListSectionController,CommentCellDelegate {
         delegate?.CommentSectionUpdared(sectionController: self)
     }
     func handleProfileTransition(tapGesture: UITapGestureRecognizer){
-       // print("image taped")
         userProfileController.user = comment?.user
-       // print("Moving to \(comment?.user.username) profile controller")
         if Auth.auth().currentUser?.uid != comment?.uid{
                     self.viewController?.present(userProfileController, animated: true, completion: nil)
         }else{
             //do nothing
-          //  print("cant go to own profile from comment")
             
         }
 

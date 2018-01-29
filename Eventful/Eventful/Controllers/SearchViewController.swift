@@ -255,6 +255,7 @@ class EventSearchController: UICollectionViewController, UISearchBarDelegate, UI
             navigationController?.navigationBar.isHidden = false
             break
         case 1:
+            //change needs to be made here
             navigationController?.navigationBar.isHidden = false
             let user = filteredUsers[indexPath.item]
            // print(user.username ?? "")

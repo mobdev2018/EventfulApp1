@@ -86,6 +86,43 @@ struct AuthService {
         }
     }
     
+    static func resetUserPassword(controller: UIViewController,for email: String?, completion: @escaping (Bool) -> Void){
+        //send email for user to reset password
+        if let userEmail = email {
+            Auth.auth().sendPasswordReset(withEmail: userEmail) { (error) in
+                if let errors = error {
+                    print(errors)
+                    //show some error in regards to password reset
+                    resetErrors(error: error!, controller: controller)
+                    return completion(false)
+                }
+                //success
+                print("Sent password reset to \(String(describing: email))")
+                completion(true)
+                //show completion of password reset action
+                
+            }
+        }
+  
+        
+    }
+    
+    //will ensure that a user has a unique username
+    static func checkUserNameAlreadyExist(newUserName: String, completion: @escaping(Bool) -> Void) {
+        // print(newUserName)
+        let ref = Database.database().reference()
+        ref.child("users").queryOrdered(byChild: "username").queryEqual(toValue: newUserName)
+            .observeSingleEvent(of: .value, with: {(snapshot: DataSnapshot) in
+                // print(snapshot)
+                if snapshot.exists() {
+                    completion(true)
+                }
+                else {
+                    completion(false)
+                }
+            })
+    }
+    
     
     private static func loginErrors(error : Error, controller : UIViewController){
         switch (error.localizedDescription) {
@@ -141,19 +178,27 @@ struct AuthService {
         }
     }
     
-    //will ensure that a user has a unique username
-    static func checkUserNameAlreadyExist(newUserName: String, completion: @escaping(Bool) -> Void) {
-      // print(newUserName)
-        let ref = Database.database().reference()
-        ref.child("users").queryOrdered(byChild: "username").queryEqual(toValue: newUserName)
-            .observeSingleEvent(of: .value, with: {(snapshot: DataSnapshot) in
-               // print(snapshot)
-                if snapshot.exists() {
-                    completion(true)
-                }
-                else {
-                    completion(false)
-                }
-            })
+    private static func resetErrors(error: Error, controller: UIViewController){
+        print(error.localizedDescription)
+ 
+            switch error.localizedDescription{
+            case "There is no user record corresponding to this identifier. The user may have been deleted." :
+                let invalidEmail = UIAlertController(title: "There is no user record corresponding to this email", message:
+                    "Please enter the email connected to your account..", preferredStyle: UIAlertControllerStyle.alert)
+                invalidEmail.addAction(UIAlertAction(title: "Okay", style: UIAlertActionStyle.default,handler: nil))
+                controller.present(invalidEmail, animated: true, completion: nil)
+                
+                break;
+  
+            default :
+                let generalErrorAlert = UIAlertController(title: "We are having trouble processing your password reset request.", message:
+                    "We are having trouble processing your password reset request, please try again soon.", preferredStyle: UIAlertControllerStyle.alert)
+                generalErrorAlert.addAction(UIAlertAction(title: "Okay", style: UIAlertActionStyle.default,handler: nil))
+                controller.present(generalErrorAlert, animated: true, completion: nil)
+                break;
+            }
+        
     }
+    
+
 }

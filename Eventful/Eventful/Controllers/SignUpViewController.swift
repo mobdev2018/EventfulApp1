@@ -22,7 +22,6 @@ class SignUpViewController: UIViewController, UIImagePickerControllerDelegate, U
     var geoFireRef: DatabaseReference!
     // creates a signup UILabel
     var userLocation:String?
-    
     let plusPhotoButton: UIButton = {
         let button = UIButton(type: .system)
         button.setImage(#imageLiteral(resourceName: "camblack").withRenderingMode(.alwaysOriginal), for: .normal)
@@ -60,6 +59,8 @@ class SignUpViewController: UIViewController, UIImagePickerControllerDelegate, U
         let nameText = HoshiTextField()
         nameText.placeholderColor = .black
         nameText.placeholder = "Username"
+        nameText.placeholderFontScale = 0.85
+
         nameText.layer.borderColor = UIColor.lightGray.cgColor
         nameText.layer.borderWidth = 0
         nameText.borderStyle = .none
@@ -73,6 +74,8 @@ class SignUpViewController: UIViewController, UIImagePickerControllerDelegate, U
     let emailTextField : HoshiTextField = {
         let emaiilText = HoshiTextField()
         emaiilText.placeholderColor = .black
+        emaiilText.placeholderFontScale = 0.85
+
         emaiilText.placeholder = "Email"
         emaiilText.layer.borderColor = UIColor.lightGray.cgColor
         emaiilText.layer.borderWidth = 0
@@ -87,6 +90,8 @@ class SignUpViewController: UIViewController, UIImagePickerControllerDelegate, U
     let passwordTextField : HoshiTextField = {
         let passwordText = HoshiTextField()
         passwordText.placeholderColor = .black
+        passwordText.placeholderFontScale = 0.85
+
         passwordText.placeholder = "Password"
         passwordText.layer.borderColor = UIColor.lightGray.cgColor
         passwordText.layer.borderWidth = 0
@@ -101,6 +106,7 @@ class SignUpViewController: UIViewController, UIImagePickerControllerDelegate, U
     //creates a confirm password UItextfield
     let confirmPasswordTextField : HoshiTextField = {
         let confirmPasswordText = HoshiTextField()
+        confirmPasswordText.placeholderFontScale = 0.85
         confirmPasswordText.placeholderColor = .black
         confirmPasswordText.placeholder = "Confirm Password"
         confirmPasswordText.layer.borderColor = UIColor.lightGray.cgColor
@@ -303,17 +309,6 @@ class SignUpViewController: UIViewController, UIImagePickerControllerDelegate, U
         //Causes the view (or one of its embedded text fields) to resign the first responder status.
         view.endEditing(true)
     }
-    
-    let bgGradientLayer : CAGradientLayer = {
-        let layer = CAGradientLayer()
-        layer.colors = [UIColor(hex: "F77832").cgColor, UIColor(hex:"811FC6").cgColor]
-        layer.locations = [0.5]
-        layer.startPoint = CGPoint(x: 0.5, y: 0.0)
-        layer.endPoint = CGPoint(x: 0.5, y: 1.0)
-        return layer
-    }()
-    
-    
     override func viewDidLoad() {
         super.viewDidLoad()
 //        self.bgGradientLayer.frame = self.view.layer.bounds

@@ -22,7 +22,9 @@ class LoginViewController: UIViewController , LoginViewControllerDelegate {
     
    // var loginController: LoginViewController?
     weak var delegate : LoginViewControllerDelegate?
-    
+    let signUpTransition = SignUpViewController()
+    let forgotPasswordTransition = ForgotPasswordViewController()
+
     
     
     // each of these creates a compnenet of the screen
@@ -69,6 +71,7 @@ class LoginViewController: UIViewController , LoginViewControllerDelegate {
 //        textField.placeholderColor = UIColor.logoColor
         textField.placeholderColor = UIColor.black
         textField.placeholder = "Email"
+        textField.placeholderFontScale = 0.85
         textField.layer.borderColor = UIColor.lightGray.cgColor
         textField.layer.borderWidth = 0
         textField.borderStyle = .roundedRect
@@ -86,6 +89,7 @@ class LoginViewController: UIViewController , LoginViewControllerDelegate {
 //        textField.placeholderColor = UIColor.logoColor
         textField.placeholderColor = UIColor.black
         textField.placeholder = "Password"
+        textField.placeholderFontScale = 0.85
         textField.layer.borderColor = UIColor.lightGray.cgColor
         textField.layer.borderWidth = 0
         textField.borderStyle = .roundedRect
@@ -146,10 +150,6 @@ class LoginViewController: UIViewController , LoginViewControllerDelegate {
         let homeController = HomeViewController()
         self.view.window?.rootViewController = homeController
         self.view.window?.makeKeyAndVisible()
-       // SVProgressHUD.dismiss()
-        //let homeVC = HomeViewController()
-        //present(homeVC, animated: true)
-        
     }
     
     //creatas a UILabel
@@ -174,14 +174,14 @@ class LoginViewController: UIViewController , LoginViewControllerDelegate {
         return signUpButton
     }()
     
-    
-    let bgGradientLayer : CAGradientLayer = {
-        let layer = CAGradientLayer()
-        layer.colors = [UIColor(hex: "F77832").cgColor, UIColor(hex:"811FC6").cgColor]
-        layer.locations = [0.5]
-        layer.startPoint = CGPoint(x: 0.5, y: 0.0)
-        layer.endPoint = CGPoint(x: 0.5, y: 1.0)
-        return layer
+
+    lazy var forgotPasswordButton: UIButton = {
+        let forgotPasswordButton = UIButton(type: .system)
+        forgotPasswordButton.setTitle("Forgot Password?", for: .normal)
+        forgotPasswordButton.titleLabel?.font = UIFont.boldSystemFont(ofSize: 13)
+        forgotPasswordButton.setTitleColor(UIColor.black, for: .normal)
+        forgotPasswordButton.addTarget(self, action: #selector(handleForgotPasswordTransition), for: .touchUpInside)
+        return forgotPasswordButton
     }()
     
     override func viewDidLoad() {
@@ -220,9 +220,23 @@ class LoginViewController: UIViewController , LoginViewControllerDelegate {
         stackView?.spacing = 15.0
         stackView?.anchor(top: self.view.topAnchor, left: self.view.leftAnchor, bottom: nil, right: self.view.rightAnchor, paddingTop: 260, paddingLeft: 40, paddingBottom: 0, paddingRight: 40, width: 0, height: 152)
         self.addBottomMostItems()
+        self.addForgotPasswordItem()
+    }
+    fileprivate func addForgotPasswordItem(){
+        let midView = UIView()
+        midView.translatesAutoresizingMaskIntoConstraints = false
+        self.view.addSubview(midView)
+        NSLayoutConstraint.activateViewConstraints(midView, inSuperView: self.view, withLeading: 0.0, trailing: 0.0, top: nil, bottom: nil, width: nil, height: 20.0)
+                _ = NSLayoutConstraint.activateVerticalSpacingConstraint(withFirstView: self.loginButton, secondView:midView , andSeparation: 9.0)
+        midView.addSubview(self.forgotPasswordButton)
+        self.forgotPasswordButton.translatesAutoresizingMaskIntoConstraints = false
+         NSLayoutConstraint.activateViewConstraints(self.forgotPasswordButton, inSuperView: midView, withLeading: 6.0, trailing: 6.0, top: 0.0, bottom: 0.0)
+
+        
     }
     
     fileprivate func addBottomMostItems() {
+        //UIView that explicitly contains the label and button for signing up a user that is placed at the bottom
         let bottomView = UIView()
         bottomView.translatesAutoresizingMaskIntoConstraints = false
         self.view.addSubview(bottomView)
@@ -260,11 +274,15 @@ class LoginViewController: UIViewController , LoginViewControllerDelegate {
         self.view.endEditing(true)
     }
     
+    //will open a new ViewController when forgot password button is pressed
+    @objc func handleForgotPasswordTransition(){
+        print("forgot password tapped")
+        present(self.forgotPasswordTransition, animated: true, completion: nil)
+    }
     
     // will open a new ViewController When login button is selected
     @objc func handleSignUpTransition(){
-        let signUpTransition = SignUpViewController()
-        present(signUpTransition, animated: true, completion: nil)
+        present(self.signUpTransition, animated: true, completion: nil)
     }
     
     // Will move the UI Up on login Screen when keyboard appears

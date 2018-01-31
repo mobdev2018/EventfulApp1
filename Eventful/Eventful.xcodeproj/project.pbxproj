@@ -12,6 +12,7 @@
 		07087C1F1F4946DA0099B91F /* VideoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07087C1E1F4946DA0099B91F /* VideoViewController.swift */; };
 		07087C211F49470A0099B91F /* PhotoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07087C201F49470A0099B91F /* PhotoViewController.swift */; };
 		0714255D1FBCE3330020A4E7 /* ProfileCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0714255C1FBCE3330020A4E7 /* ProfileCollectionViewCell.swift */; };
+		0717022B2021104A0050F2C1 /* ForgotPasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0717022A2021104A0050F2C1 /* ForgotPasswordViewController.swift */; };
 		0719CDF31F54CF580076E678 /* CommentsHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0719CDF21F54CF580076E678 /* CommentsHeader.swift */; };
 		0719CDF51F54DC360076E678 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0719CDF41F54DC360076E678 /* Assets.xcassets */; };
 		0719CDFB1F5639690076E678 /* MGPaginationHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0719CDFA1F5639690076E678 /* MGPaginationHelper.swift */; };
@@ -98,6 +99,7 @@
 		07087C1E1F4946DA0099B91F /* VideoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = VideoViewController.swift; path = Controllers/VideoViewController.swift; sourceTree = "<group>"; };
 		07087C201F49470A0099B91F /* PhotoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoViewController.swift; sourceTree = "<group>"; };
 		0714255C1FBCE3330020A4E7 /* ProfileCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ProfileCollectionViewCell.swift; path = Controllers/ProfileCollectionViewCell.swift; sourceTree = "<group>"; };
+		0717022A2021104A0050F2C1 /* ForgotPasswordViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ForgotPasswordViewController.swift; path = Controllers/ForgotPasswordViewController.swift; sourceTree = "<group>"; };
 		0719CDF21F54CF580076E678 /* CommentsHeader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CommentsHeader.swift; path = Controllers/CommentsHeader.swift; sourceTree = "<group>"; };
 		0719CDF41F54DC360076E678 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		0719CDFA1F5639690076E678 /* MGPaginationHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MGPaginationHelper.swift; path = Services/MGPaginationHelper.swift; sourceTree = "<group>"; };
@@ -349,6 +351,7 @@
 			isa = PBXGroup;
 			children = (
 				07437F301F27D3EB00CE728B /* SignUpViewController.swift */,
+				0717022A2021104A0050F2C1 /* ForgotPasswordViewController.swift */,
 			);
 			name = SignUp;
 			sourceTree = "<group>";
@@ -622,6 +625,7 @@
 				07437F2C1F267E1300CE728B /* LoginViewController.swift in Sources */,
 				079F52DA1F5E386C0043F9EF /* DropDownLauncher.swift in Sources */,
 				079F52DC1F5E47EE0043F9EF /* DropDownCell.swift in Sources */,
+				0717022B2021104A0050F2C1 /* ForgotPasswordViewController.swift in Sources */,
 				07CB4B2E1F4B9EBB006E5D51 /* StroyCell.swift in Sources */,
 				07FF92C91F3B898C00FC9716 /* Comment.swift in Sources */,
 				07087C1F1F4946DA0099B91F /* VideoViewController.swift in Sources */,

@@ -248,8 +248,8 @@ class AlterProfileViewController: UIViewController, UIImagePickerControllerDeleg
         }
         //   SCLAlertView().showNotice("Success!", subTitle: "Your changes have been saved.")
         
-        _ = self.navigationController?.popViewController(animated: true)
-        
+     //   _ = self.navigationController?.popViewController(animated: true)
+        self.dismiss(animated: true, completion: nil)
         print("Image pushed off of stack")
         
     }

@@ -308,6 +308,7 @@ class EventDetailViewController: UIViewController {
     
     fileprivate func userInteractionView(){
         userInteractStackView = UIStackView(arrangedSubviews: [commentsViewButton, attendingButton, addToStoryButton, viewStoryButton])
+        userInteractStackView?.translatesAutoresizingMaskIntoConstraints = false
         viewStoryButton.heightAnchor.constraint(equalToConstant: 50)
         viewStoryButton.widthAnchor.constraint(equalToConstant: 50)
         viewStoryButton.layer.cornerRadius = 150/2
@@ -315,7 +316,8 @@ class EventDetailViewController: UIViewController {
         userInteractStackView?.distribution = .fillEqually
         userInteractStackView?.axis = .horizontal
         userInteractStackView?.spacing = 10.0
-        userInteractStackView?.anchor(top: descriptionLabel.bottomAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, paddingTop: -20, paddingLeft: 20, paddingBottom: 0, paddingRight: 20, width: 0, height: 50)
+        NSLayoutConstraint.activateViewConstraints(userInteractStackView!, inSuperView: self.view, withLeading: 0.0, trailing: 0.0, top: nil, bottom: nil, width: nil, height: 30.0)
+        _ = NSLayoutConstraint.activateVerticalSpacingConstraint(withFirstView: userInteractStackView, secondView: self.bottomLayoutGuide, andSeparation: 10.0)
     }
     
     override func viewWillAppear(_ animated: Bool) {

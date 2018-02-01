@@ -236,7 +236,6 @@ class AlterProfileViewController: UIViewController, UIImagePickerControllerDeleg
                         return
                     }
                     User.setCurrent(user, writeToUserDefaults: true)
-                    //SCLAlertView().showSuccess("Success!", subTitle: "Your changes have been saved.")
                     
                 }
                 self.dismiss(animated: true, completion: nil)

@@ -169,6 +169,13 @@ struct AuthService {
             invalidEmail.addAction(UIAlertAction(title: "Okay", style: UIAlertActionStyle.default,handler: nil))
             controller.present(invalidEmail, animated: true, completion: nil)
             break;
+            
+        case "The password must be 6 characters long or more.":
+            let invalidPasswordLength = UIAlertController(title: "The password must be 6 characters long or more.", message:
+                "Please enter a password that is at least 6 characters long.", preferredStyle: UIAlertControllerStyle.alert)
+            invalidPasswordLength.addAction(UIAlertAction(title: "Okay", style: UIAlertActionStyle.default,handler: nil))
+            controller.present(invalidPasswordLength, animated: true, completion: nil)
+            break;
         default:
             let generalErrorAlert = UIAlertController(title: "We are having trouble signing you up.", message:
                 "We are having trouble signing you up, please try again soon.", preferredStyle: UIAlertControllerStyle.alert)

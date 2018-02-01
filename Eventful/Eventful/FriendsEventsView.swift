@@ -235,13 +235,13 @@ class FriendsEventsView: UIViewController,UICollectionViewDelegate,UICollectionV
        
  }
     
-    
     @objc func goBack(){
         dismiss(animated: true)
     }
     
 }
 
+//class that handles creation of the events detail cells
 class EventCollectionCell:UICollectionViewCell,UICollectionViewDelegate,UICollectionViewDataSource,UICollectionViewDelegateFlowLayout{
     
     var eventArray = [EventDetails](){

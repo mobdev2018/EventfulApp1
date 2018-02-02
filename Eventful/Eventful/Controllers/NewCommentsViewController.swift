@@ -167,8 +167,17 @@ class NewCommentsViewController: UIViewController, UITextFieldDelegate,CommentsS
         NotificationCenter.default.addObserver(self, selector: #selector(handleKeyboardNotification), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(handleKeyboardNotification), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
         collectionView.register(CommentCell.self, forCellWithReuseIdentifier: "CommentCell")
-        collectionView.register(CommentHeader.self, forCellWithReuseIdentifier: "HeaderCell")
+//        collectionView.register(CommentHeader.self, forCellWithReuseIdentifier: "HeaderCell")
         collectionView.keyboardDismissMode = .onDrag
+        navigationItem.title = "Comments"
+        self.navigationItem.hidesBackButton = true
+        let backButton = UIBarButtonItem(image: UIImage(named: "icons8-Back-64"), style: .plain, target: self, action: #selector(GoBack))
+        self.navigationItem.leftBarButtonItem = backButton
+    }
+    
+    @objc func GoBack(){
+        print("BACK TAPPED")
+        self.dismiss(animated: true, completion: nil)
     }
     
     //look here
@@ -201,7 +210,7 @@ extension NewCommentsViewController: ListAdapterDataSource {
     func objects(for listAdapter: ListAdapter) -> [ListDiffable] {
         let items:[ListDiffable] = comments
         //print("comments = \(comments)")
-        return [addHeader] + items
+        return items
     }
     
     
@@ -210,9 +219,9 @@ extension NewCommentsViewController: ListAdapterDataSource {
     // 2 For each data object, listAdapter(_:sectionControllerFor:) must return a new instance of a section controller. For now you’re returning a plain IGListSectionController to appease the compiler — in a moment, you’ll modify this to return a custom journal section controller.
     func listAdapter(_ listAdapter: ListAdapter, sectionControllerFor object: Any) -> ListSectionController {
         //the comment section controller will be placed here but we don't have it yet so this will be a placeholder
-        if let object = object as? ListDiffable, object === addHeader {
-            return CommentsHeaderSectionController()
-        }
+//        if let object = object as? ListDiffable, object === addHeader {
+//            return CommentsHeaderSectionController()
+//        }
         let sectionController = CommentsSectionController()
         sectionController.delegate = self
         

@@ -10,86 +10,65 @@ import UIKit
 import FirebaseAuth
 
 
-class SettingsViewController: UIViewController {
+class SettingsViewController: UITableViewController {
     var authHandle: AuthStateDidChangeListenerHandle?
-
+    let cellID = "cellID"
+    let settingsOptionsTwoDimArray = [
+    ["Logout"]
+    ]
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = UIColor.white
         navigationItem.title = "Settings"
-        view.addSubview(logoutImage)
-        view.addSubview(logoutButton)
-        view.addSubview(backButton)
-//        self.navigationItem.hidesBackButton = true
-//        let backButton = UIBarButtonItem(image: UIImage(named: "icons8-Back-64"), style: .plain, target: self, action: #selector(GoBack))
-//        self.navigationItem.leftBarButtonItem = backButton
-
+        self.navigationItem.hidesBackButton = true
+        let backButton = UIBarButtonItem(image: UIImage(named: "icons8-Back-64"), style: .plain, target: self, action: #selector(GoBack))
+        self.navigationItem.leftBarButtonItem = backButton
+        tableView.register(UITableViewCell.self, forCellReuseIdentifier: cellID)
+        self.tableView.tableFooterView = UIView(frame: CGRect.zero)
         authHandle = AuthService.authListener(viewController: self)
-
-        //Constraints
-        
-        //Constraints for the logout image
-                _ = backButton.anchor(top: view.topAnchor, left: view.leftAnchor, bottom: nil, right: nil, paddingTop: 10, paddingLeft: 4, paddingBottom: 0, paddingRight: 0, width: 40, height: 40)
-        _ = logoutImage.anchor(top: backButton.bottomAnchor, left: view.leftAnchor, bottom: nil, right: nil, paddingTop: 20, paddingLeft: 32, paddingBottom: 0, paddingRight: 0, width: 15, height: 15)
-        //Constraints for the logout button
-        _ = logoutButton.anchor(top: backButton.bottomAnchor, left: logoutImage.rightAnchor, bottom: nil, right: nil, paddingTop: 20, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 70, height: 15)
-
     }
-    
-    
     deinit {
         AuthService.removeAuthListener(authHandle: authHandle)
     }
     
-    let logoutImage: UIImageView = {
-       let currentLogoutImage = UIImageView()
-        currentLogoutImage.image = UIImage(named: "icons8-Logout Rounded Up-50")
-        currentLogoutImage.clipsToBounds = true
-        currentLogoutImage.contentMode = .scaleAspectFill
-        currentLogoutImage.layer.masksToBounds = true
-        return currentLogoutImage
-    }()
-    
-    let logoutButton : UIButton = {
-       let logout = UIButton(type: .system)
-        logout.setTitle("Logout", for: .normal)
-        logout.setTitleColor(.black, for: .normal)
-        logout.addTarget(self, action: #selector(handleLogout), for: .touchUpInside)
-        return logout
-    }()
-    
-    lazy var backButton: UIButton = {
-        let backButton = UIButton(type: .system)
-        backButton.setImage(#imageLiteral(resourceName: "icons8-Expand Arrow-48").withRenderingMode(.alwaysOriginal), for: .normal)
-        backButton.addTarget(self, action: #selector(handleSettingsDismiss), for: .touchUpInside)
-        return backButton
-    }()
-    
-    @objc func handleSettingsDismiss(){
-        print("Button pressed")
-        dismiss(animated: true, completion: nil)
-    }
-
+ 
     //will log the user out
     @objc func handleLogout(){
         print("Logout button pressed")
-     
       AuthService.presentLogOut(viewController: self)
         
     }
-    
-    
-    func GoBack(){
-        _ = self.navigationController?.popViewController(animated: false)
+    //will dismiss the screen
+    @objc func GoBack(){
+        print("BACK TAPPED")
+        self.dismiss(animated: true, completion: nil)
+    }
+    override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        let label = UILabel()
+        label.text = "   Support"
+        label.font = UIFont.boldSystemFont(ofSize: 16.0)
+        return label
+    }
+    override func numberOfSections(in tableView: UITableView) -> Int {
+        return settingsOptionsTwoDimArray.count
     }
     
-    
-    
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return settingsOptionsTwoDimArray[section].count
     }
-    
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: cellID, for: indexPath)
+        let currentSetting = settingsOptionsTwoDimArray[indexPath.section][indexPath.row]
+        cell.textLabel?.text = currentSetting
+        cell.textLabel?.textAlignment = .justified
+        return cell
+    }
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        if [indexPath.section][indexPath.row] == [0][0]{
+            print("Logout Clicked")
+            self.handleLogout()
+        }
+    }
 
 
 }

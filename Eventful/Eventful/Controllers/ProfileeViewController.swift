@@ -85,7 +85,8 @@
         }
         
         @objc func settingsButtonTapped(){
-            present(settingView, animated: true, completion: nil)
+            let navController = UINavigationController(rootViewController: settingView)
+            present(navController, animated: true, completion: nil)
             //        self.navigationController?.pushViewController(settingView, animated: true)
             
         }

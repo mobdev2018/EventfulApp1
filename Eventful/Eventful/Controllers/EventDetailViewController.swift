@@ -154,7 +154,8 @@ class EventDetailViewController: UIViewController {
         newCommentsController.adapter.reloadData { (updated) in
             
         }
-        present(newCommentsController, animated: true, completion: nil)
+                    let navController = UINavigationController(rootViewController: newCommentsController)
+        present(navController, animated: true, completion: nil)
         
     }
     

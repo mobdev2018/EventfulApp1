@@ -29,7 +29,7 @@ public class DynamoCollectionViewCell: UICollectionViewCell {
         let firstImage = UIImageView()
         firstImage.clipsToBounds = true
         firstImage.translatesAutoresizingMaskIntoConstraints = false
-        firstImage.contentMode = .scaleAspectFill
+        firstImage.contentMode = .scaleToFill
         return firstImage
     }()
     

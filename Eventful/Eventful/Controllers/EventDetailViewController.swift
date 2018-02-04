@@ -40,6 +40,7 @@ class EventDetailViewController: UIViewController {
     let camera = CameraViewController()
     let eventStory = StoriesViewController()
     let newCommentsController = NewCommentsViewController()
+    lazy var navController = UINavigationController(rootViewController: newCommentsController)
     
     
     //variables that will hold data sent in through previous event controller
@@ -154,7 +155,7 @@ class EventDetailViewController: UIViewController {
         newCommentsController.adapter.reloadData { (updated) in
             
         }
-                    let navController = UINavigationController(rootViewController: newCommentsController)
+        
         present(navController, animated: true, completion: nil)
         
     }

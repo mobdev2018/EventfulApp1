@@ -26,7 +26,7 @@ class CommentCell: UICollectionViewCell {
     }
     var didTapOptionsButtonForCell: ((CommentCell) -> Void)?
     
-    var comment: CommentGrabbed?{
+    weak var comment: CommentGrabbed?{
         didSet{
             guard let comment = comment else{
                 return
@@ -39,20 +39,26 @@ class CommentCell: UICollectionViewCell {
             let attributedText = NSMutableAttributedString(string: comment.user.username!, attributes: [NSAttributedStringKey.font: UIFont.boldSystemFont(ofSize: 14)])
             
             attributedText.append(NSAttributedString(string: " " + (comment.content), attributes: [NSAttributedStringKey.font: UIFont.systemFont(ofSize: 14)]))
+            
+            attributedText.append(NSAttributedString(string: "\n\n", attributes: [NSAttributedStringKey.font: UIFont.systemFont(ofSize: 4)]))
+            let timeAgoDisplay = comment.creationDate.timeAgoDisplay()
+            attributedText.append(NSAttributedString(string: timeAgoDisplay, attributes: [NSAttributedStringKey.font: UIFont.systemFont(ofSize: 12), NSAttributedStringKey.foregroundColor: UIColor.gray]))
+          
             textView.attributedText = attributedText
             
             
         }
     }
     
-    let textView: UITextView = {
+    lazy var textView: UITextView = {
         let textView = UITextView()
         textView.font = UIFont.systemFont(ofSize: 14)
         textView.isScrollEnabled = false
+        textView.textContainer.maximumNumberOfLines = 0
+        textView.textContainer.lineBreakMode = .byCharWrapping
         textView.isEditable = false
         return textView
     }()
-    
     
     lazy var profileImageView: CustomImageView = {
         let iv = CustomImageView()

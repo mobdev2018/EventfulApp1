@@ -223,6 +223,7 @@ extension NewCommentsViewController: ListAdapterDataSource {
 //            return CommentsHeaderSectionController()
 //        }
         let sectionController = CommentsSectionController()
+        
         sectionController.delegate = self
         
         return sectionController

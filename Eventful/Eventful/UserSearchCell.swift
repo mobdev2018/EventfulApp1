@@ -23,7 +23,7 @@ class UserSearchCell: UICollectionViewCell {
     }
     let userImageView: CustomImageView = {
         let iv = CustomImageView()
-        iv.contentMode = .scaleAspectFill
+        iv.contentMode = .scaleToFill
         iv.clipsToBounds = true
         return iv
     }()

@@ -23,7 +23,7 @@ class ImageCollectionViewCell: UICollectionViewCell {
         self.imageView = CustomImageView()
         self.imageView.clipsToBounds = true
         self.imageView.translatesAutoresizingMaskIntoConstraints = false
-        self.imageView.contentMode = .scaleAspectFit
+        self.imageView.contentMode = .scaleToFill
         self.addSubview(self.imageView)
         //maybe change to nil
         NSLayoutConstraint.activateViewConstraints(self.imageView, inSuperView: self, withLeading: nil, trailing: nil, top: 0, bottom: nil, width: 30, height: 30)

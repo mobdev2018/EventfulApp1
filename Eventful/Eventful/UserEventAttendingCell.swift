@@ -22,9 +22,8 @@ class EventsAttendingCell: UICollectionViewCell {
     
     let eventImageView: CustomImageView = {
         let iv = CustomImageView()
-        iv.contentMode = .scaleAspectFill
+        iv.contentMode = .scaleToFill
         iv.clipsToBounds = true
-        iv.contentMode = .scaleAspectFill
         return iv
     }()
     

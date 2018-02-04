@@ -119,7 +119,7 @@ public class DynamoCollectionViewCell: UICollectionViewCell {
         imageView.image = UIImage(named: "dark_overlay", in: Bundle(for: DynamoCollectionView.self), compatibleWith: nil)
         imageView.clipsToBounds = true
         imageView.translatesAutoresizingMaskIntoConstraints = false
-        imageView.contentMode = .scaleAspectFill
+        imageView.contentMode = .scaleToFill
         return imageView
     }()
     //private var overlayButton:UIButton!

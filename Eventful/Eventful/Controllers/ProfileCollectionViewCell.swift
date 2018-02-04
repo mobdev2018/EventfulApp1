@@ -32,7 +32,7 @@ class ProfileCollectionViewCell: UICollectionViewCell {
         self.imageView = CustomImageView()
         self.imageView.clipsToBounds = true
         self.imageView.translatesAutoresizingMaskIntoConstraints = false
-        self.imageView.contentMode = .scaleAspectFit
+        self.imageView.contentMode = .scaleToFill
         self.addSubview(self.imageView)
         NSLayoutConstraint.activateViewConstraints(self.imageView, inSuperView: self, withLeading: nil, trailing: nil, top: 0, bottom: nil, width: 36.0, height: nil)
         _ = NSLayoutConstraint.activateCentreXConstraint(withView: self.imageView, superView: self)

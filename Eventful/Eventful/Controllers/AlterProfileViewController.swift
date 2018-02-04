@@ -127,7 +127,7 @@ class AlterProfileViewController: UIViewController, UIImagePickerControllerDeleg
         selectPicture.clipsToBounds = true
         selectPicture.translatesAutoresizingMaskIntoConstraints = false
         //selectPicture.layer.cornerRadius = selectPicture.frame.size.width/2
-        selectPicture.contentMode = .scaleAspectFill
+        selectPicture.contentMode = .scaleToFill
         selectPicture.isUserInteractionEnabled = true
         selectPicture.layer.shouldRasterize = true
         // will allow you to add a target to an image click

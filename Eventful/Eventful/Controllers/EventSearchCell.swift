@@ -23,7 +23,7 @@ class EventSearchCell: UICollectionViewCell {
     }
     let eventImageView: CustomImageView = {
        let iv = CustomImageView()
-        iv.contentMode = .scaleAspectFill
+        iv.contentMode = .scaleToFill
         iv.clipsToBounds = true
         return iv
     }()

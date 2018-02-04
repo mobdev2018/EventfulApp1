@@ -15,7 +15,6 @@ class HomeFeedCell: UICollectionViewCell {
         firstImage.clipsToBounds = true
         firstImage.translatesAutoresizingMaskIntoConstraints = false
         firstImage.contentMode = .scaleAspectFill
-        //        firstImage.layer.masksToBounds = true
         return firstImage
     }()
     

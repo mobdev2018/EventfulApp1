@@ -28,7 +28,7 @@ class UserProfileHeader: UICollectionViewCell {
         profilePicture.layer.borderColor = UIColor.black.cgColor
         profilePicture.clipsToBounds = true
         profilePicture.translatesAutoresizingMaskIntoConstraints = false
-        profilePicture.contentMode = .scaleAspectFill
+        profilePicture.contentMode = .scaleToFill
         profilePicture.isUserInteractionEnabled = true
         profilePicture.layer.shouldRasterize = true
         profilePicture.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleZoomTap)))

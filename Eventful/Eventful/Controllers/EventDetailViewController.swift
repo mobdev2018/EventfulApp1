@@ -62,7 +62,7 @@ class EventDetailViewController: UIViewController {
         let currentEvent = UIImageView()
         currentEvent.clipsToBounds = true
         currentEvent.translatesAutoresizingMaskIntoConstraints = false
-        currentEvent.contentMode = .scaleAspectFill
+        currentEvent.contentMode = .scaleToFill
         currentEvent.layer.masksToBounds = true
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(handlePromoVid))
         currentEvent.isUserInteractionEnabled = true

@@ -32,7 +32,7 @@ class PhotoViewController: UIViewController {
         super.viewDidLoad()
         self.view.backgroundColor = UIColor.gray
         let backgroundImageView = UIImageView(frame: view.frame)
-        backgroundImageView.contentMode = UIViewContentMode.scaleAspectFit
+        backgroundImageView.contentMode = UIViewContentMode.scaleToFill
         backgroundImageView.image = backgroundImage
         view.addSubview(backgroundImageView)
         let cancelButton = UIButton(frame: CGRect(x: 10.0, y: 10.0, width: 30.0, height: 30.0))

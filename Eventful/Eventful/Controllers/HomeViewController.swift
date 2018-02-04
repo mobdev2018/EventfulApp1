@@ -202,7 +202,7 @@
         
         if indexPath.item == self.topImages.count-1{
             cell.imageView.loadImage(urlString: User.current.profilePic!)
-            cell.imageView.contentMode = .scaleAspectFill
+            cell.imageView.contentMode = .scaleToFill
             cell.imageView.layer.cornerRadius = cell.frame.height/2
         }else{
             cell.imageView.image = self.topImages[indexPath.row]

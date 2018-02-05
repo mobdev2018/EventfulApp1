@@ -83,7 +83,7 @@ class ForgotPasswordViewController: UIViewController {
         print("reset password tapped")
         if let email = emailTextField.text {
             print("User email is \(email)")
-            AuthService.resetUserPassword(controller: self, for: email, completion: { (completed) in
+            AuthService.resetUserPassword(controller: self, for: email, completion: { [unowned self] (completed) in
                 if completed {
                     let succesAlert = UIAlertController(title: "Password reset processed", message:
                         "Check email for further instructions", preferredStyle: UIAlertControllerStyle.alert)

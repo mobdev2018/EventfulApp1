@@ -21,11 +21,11 @@
         var profileHandle: DatabaseHandle = 0
         var profileRef: DatabaseReference?
         let cellID = "cellID"
-        let profileSetupTransition = AlterProfileViewController()
+         var profileSetupTransition = AlterProfileViewController()
         let settingView = SettingsViewController()
         var userEvents = [Event]()
         var userId: String?
-        var user: User?
+        weak var user: User?
         var emptyLabel: UILabel?
         
         var currentUserName: String = ""

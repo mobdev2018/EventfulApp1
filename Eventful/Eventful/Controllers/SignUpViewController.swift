@@ -169,14 +169,14 @@ class SignUpViewController: UIViewController, UIImagePickerControllerDelegate, U
         //notice I also set the value of profilepic oo it can be saved in the updated user instance in the database
         if let userImage = selectedImageFromPicker,let uploadData = UIImageJPEGRepresentation(userImage, 0.1){
             //will ensure that each user has a unique username
-            AuthService.checkUserNameAlreadyExist(newUserName: username, completion: { (isUnique) in
+            AuthService.checkUserNameAlreadyExist(newUserName: username, completion: { [unowned self] (isUnique) in
                 if isUnique {
                     //username exists so user has to try again
                     print("Login already exist")
                     self.showAlertThatLoginAlreadyExists()
                 }else{
                     //username does not exist and will authenticate user
-                    AuthService.createUser(controller: self, email: email, password: password) { (authUser) in
+                    AuthService.createUser(controller: self, email: email, password: password) {[unowned self] (authUser) in
                         guard let firUser = authUser else{
                             return
                         }
@@ -190,7 +190,7 @@ class SignUpViewController: UIViewController, UIImagePickerControllerDelegate, U
                             print(profilePic)
                             print(username)
                             
-                            UserService.create(firUser, username: username, profilePic: profilePic, completion: { (user) in
+                            UserService.create(firUser, username: username, profilePic: profilePic, completion: { [unowned self](user) in
                                 guard let user = user else {
                                     print("User not loaded into firebase db")
                                     return

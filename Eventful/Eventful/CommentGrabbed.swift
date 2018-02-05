@@ -9,10 +9,10 @@
 import Foundation
 import  IGListKit
 
-class CommentGrabbed {
+class CommentGrabbed: NSObject {
     let content: String
     let uid: String
-    let user: User
+    var user: User?
     let creationDate: Date
     var commentID: String? = ""
     let eventKey:String
@@ -28,8 +28,8 @@ class CommentGrabbed {
     
 }
 
-extension CommentGrabbed: Equatable{
-    static public func  ==(rhs: CommentGrabbed, lhs: CommentGrabbed) ->Bool{
+extension CommentGrabbed {
+    static public func ==(rhs: CommentGrabbed, lhs: CommentGrabbed) ->Bool{
         return rhs.commentID == lhs.commentID
     }
 }

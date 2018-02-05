@@ -226,12 +226,12 @@ class AlterProfileViewController: UIViewController, UIImagePickerControllerDeleg
                 profilePic = (metadata?.downloadURL()!.absoluteString)!
                 //print(profilePic)
                 //need to change this so I edit based off whether a value is actually added or whether a username or bio is actually changed
-                UserService.editProfileImage(url: profilePic, completion: { (user) in
+                UserService.editProfileImage(url: profilePic, completion: {[unowned self] (user) in
                     if let user = user {
                         User.setCurrent(user, writeToUserDefaults: true)
                     }
                 })
-                UserService.edit(username: username) { (user) in
+                UserService.edit(username: username) { [unowned self](user) in
                     guard let user = user else {
                         return
                     }

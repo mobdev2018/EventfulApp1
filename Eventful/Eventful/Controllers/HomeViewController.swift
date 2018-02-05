@@ -91,6 +91,10 @@
         NotificationCenter.default.addObserver(self, selector: #selector(handleDynamoCollectionViewEnableScrolling(notification:)), name: DynamoCollectionViewEnableScrollingNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(handleDynamoCollectionViewDisableScrolling(notification:)), name: DynamoCollectionViewDisableScrollingNotification, object: nil)
     }
+    fileprivate func removeNotifcaitons (){
+        NotificationCenter.default.removeObserver(self)
+    }
+
     
     fileprivate func performActionOnTopItemSelect(at index:Int) {
         let current = IndexPath(item: index, section: 0)

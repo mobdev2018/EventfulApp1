@@ -91,6 +91,10 @@ class EventDetailViewController: UIViewController {
         return EventPromoVideoPlayer(videoURL: url!)
     }
     
+    deinit {
+        print("EventDetailViewController class removed from memory")
+    }
+
     @objc func handlePromoVid(){
         print("Image tappped")
         print(eventPromo)
@@ -157,7 +161,6 @@ class EventDetailViewController: UIViewController {
         }
         
         present(navController, animated: true, completion: nil)
-        
     }
     
     
@@ -180,7 +183,7 @@ class EventDetailViewController: UIViewController {
         print(" ")
         if (currentEvent?.isAttending)! {
             
-            AttendService.setIsAttending(!((currentEvent?.isAttending)!), from: currentEvent) { (success) in
+            AttendService.setIsAttending(!((currentEvent?.isAttending)!), from: currentEvent) { [unowned self] (success) in
                 // 5
                 
                 defer {
@@ -199,7 +202,7 @@ class EventDetailViewController: UIViewController {
             
         }else{
             
-            AttendService.setIsAttending(!((currentEvent?.isAttending)!), from: currentEvent) { (success) in
+            AttendService.setIsAttending(!((currentEvent?.isAttending)!), from: currentEvent) {[unowned self] (success) in
                 // 5
                 
                 defer {
@@ -219,7 +222,12 @@ class EventDetailViewController: UIViewController {
         }
         
     }
-    
+    override func viewWillDisappear(_ animated: Bool) {
+        self.view.removeFromSuperview()
+        NotificationCenter.default.removeObserver(self)
+
+
+    }
     //will add the button to add a video or picture to the story
     lazy var addToStoryButton : UIButton =  {
         let addToStory = UIButton(type: .system)
@@ -355,5 +363,5 @@ class EventDetailViewController: UIViewController {
         descriptionLabel.attributedText = attributedString
 
     }
-    
+ 
 }

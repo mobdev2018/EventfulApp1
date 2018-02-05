@@ -122,7 +122,7 @@ class LoginViewController: UIViewController , LoginViewControllerDelegate {
             
         }else{
             SVProgressHUD.show(withStatus: "Logging in...")
-            AuthService.signIn(controller: self, email: emailTextField.text!, password: passwordTextField.text!) { (user) in
+            AuthService.signIn(controller: self, email: emailTextField.text!, password: passwordTextField.text!) { [unowned self] (user) in
                 guard user != nil else {
                     // look back here
            
@@ -130,7 +130,7 @@ class LoginViewController: UIViewController , LoginViewControllerDelegate {
                     return
                 }
               //  print("user is signed in")
-                UserService.show(forUID: (user?.uid)!) { (user) in
+                UserService.show(forUID: (user?.uid)!) {[unowned self] (user) in
                     if let user = user {
                         User.setCurrent(user, writeToUserDefaults: true)
                         self.finishLoggingIn()

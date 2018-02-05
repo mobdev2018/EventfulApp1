@@ -67,7 +67,7 @@ class HomeFeedController: UIViewController, UIGestureRecognizerDelegate {
             guard let currentLocation = location else {
                 return
             }
-            PostService.showEvent(for: currentLocation, completion: { (events) in
+            PostService.showEvent(for: currentLocation, completion: { [unowned self](events) in
                 self.allEvents = events
                 print("Event count in PostService Closure:\(self.allEvents.count)")
                 DispatchQueue.main.async {
@@ -77,7 +77,7 @@ class HomeFeedController: UIViewController, UIGestureRecognizerDelegate {
                 
             })
             
-            PostService.showFeaturedEvent(for: currentLocation, completion: { (events) in
+            PostService.showFeaturedEvent(for: currentLocation, completion: { [unowned self] (events) in
                 
                 self.featuredEvents = events
                 print("Event count in Featured Events Closure is:\(self.featuredEvents.count)")
@@ -102,8 +102,13 @@ class HomeFeedController: UIViewController, UIGestureRecognizerDelegate {
     
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
-
+        self.view.removeFromSuperview()
+        NotificationCenter.default.removeObserver(self)
     }
+    deinit {
+        print("EventDetailViewController class removed from memory")
+    }
+
     
     private func configure(){
         print("Enter configure function")
@@ -177,6 +182,7 @@ extension HomeFeedController: DynamoCollectionViewDelegate, DynamoCollectionView
     func topViewRatio(_ dynamoCollectionView: DynamoCollectionView) -> CGFloat {
         return 0.6
     }
+    
     
     func numberOfItems(_ dynamoCollectionView: DynamoCollectionView) -> Int {
         //this seems to be passing data to numberofitems in DynamicCollectionView file to configure view via that file

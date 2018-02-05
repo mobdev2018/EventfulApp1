@@ -143,7 +143,7 @@ class UserProfileHeader: UICollectionViewCell {
         //will check if the user if being followed or not
         if (followee?.isFollowed)! {
             //will unfollow the user
-            FollowService.setIsFollowing(!(followee?.isFollowed)!, fromCurrentUserTo: followee!) { (success) in
+            FollowService.setIsFollowing(!(followee?.isFollowed)!, fromCurrentUserTo: followee!) { [unowned self] (success) in
                 defer {
                     self.followButton.isUserInteractionEnabled = true
                 }
@@ -156,7 +156,7 @@ class UserProfileHeader: UICollectionViewCell {
             }
         }else{
             //will follow the user
-            FollowService.setIsFollowing(!(followee?.isFollowed)!, fromCurrentUserTo: followee!) { (success) in
+            FollowService.setIsFollowing(!(followee?.isFollowed)!, fromCurrentUserTo: followee!) { [unowned self] (success) in
                 defer {
                     self.followButton.isUserInteractionEnabled = true
                 }

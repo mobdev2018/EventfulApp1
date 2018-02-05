@@ -16,7 +16,7 @@ protocol CommentsSectionDelegate: class {
 }
 class CommentsSectionController: ListSectionController,CommentCellDelegate {
     weak var delegate: CommentsSectionDelegate? = nil
-    var comment: CommentGrabbed?
+   weak var comment: CommentGrabbed?
     let userProfileController = ProfileeViewController(collectionViewLayout: UICollectionViewFlowLayout())
     var eventKey: String?
     override init() {
@@ -31,12 +31,12 @@ class CommentsSectionController: ListSectionController,CommentCellDelegate {
     }
     override func sizeForItem(at index: Int) -> CGSize {
         let frame = CGRect(x: 0, y: 0, width: collectionContext!.containerSize.width, height: 50)
-        let dummyCell = CommentCell(frame: frame)
+        var dummyCell = CommentCell(frame: frame)
         dummyCell.comment = comment
         dummyCell.layoutIfNeeded()
         let targetSize =  CGSize(width: collectionContext!.containerSize.width, height: 55)
         let estimatedSize = dummyCell.systemLayoutSizeFitting(targetSize)
-        let height = max(40+8+8, estimatedSize.height)
+        let height = max(40+8+8, (estimatedSize.height))
         return  CGSize(width: collectionContext!.containerSize.width, height: height)
         
     }
@@ -76,17 +76,17 @@ class CommentsSectionController: ListSectionController,CommentCellDelegate {
         
         // 4
         if comment?.uid != User.current.uid {
-            let flagAction = UIAlertAction(title: "Report as Inappropriate", style: .default) { _ in
+            let flagAction = UIAlertAction(title: "Report as Inappropriate", style: .default) {[weak self] _ in
                 ChatService.flag(comment!)
                 
                 let okAlert = UIAlertController(title: nil, message: "The post has been flagged.", preferredStyle: .alert)
                 okAlert.addAction(UIAlertAction(title: "Ok", style: .default))
-                self.viewController?.present(okAlert, animated: true, completion: nil)
+                self?.viewController?.present(okAlert, animated: true, completion: nil)
             }
             let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
-            let replyAction = UIAlertAction(title: "Reply to Comment", style: .default, handler: { (_) in
+            let replyAction = UIAlertAction(title: "Reply to Comment", style: .default, handler: { [weak self](_) in
                 //do something here later to facilitate reply comment functionality
-                print("Attempting to reply to user \(comment?.user.username) comment")
+                print("Attempting to reply to user \(comment?.user?.username) comment")
                 
             })
             alertController.addAction(replyAction)
@@ -94,12 +94,12 @@ class CommentsSectionController: ListSectionController,CommentCellDelegate {
             alertController.addAction(flagAction)
         }else{
             let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
-            let deleteAction = UIAlertAction(title: "Delete Comment", style: .default, handler: { _ in
+            let deleteAction = UIAlertAction(title: "Delete Comment", style: .default, handler: {[weak self] _ in
                 ChatService.deleteComment(comment!, (comment?.eventKey)!)
                 let okAlert = UIAlertController(title: nil, message: "Comment Has Been Deleted", preferredStyle: .alert)
                 okAlert.addAction(UIAlertAction(title: "Ok", style: .default))
-                self.viewController?.present(okAlert, animated: true, completion: nil)
-                self.onItemDeleted()
+                self?.viewController?.present(okAlert, animated: true, completion: nil)
+                self?.onItemDeleted()
 
             })
             alertController.addAction(cancelAction)
@@ -122,6 +122,10 @@ class CommentsSectionController: ListSectionController,CommentCellDelegate {
         }
 
         
+    }
+    
+    deinit {
+        print("CommentSectionController class removed from memory")
     }
     
     

@@ -41,7 +41,7 @@ class ChatService {
         let flaggedPostRef = Database.database().reference().child("flaggedComments").child(commentKey)
         
         // 3
-        let flaggedDict = ["image_url": comment.user.profilePic,
+        let flaggedDict = ["image_url": comment.user?.profilePic,
                            "poster_uid": comment.uid,
                            "reporter_uid": User.current.uid]
         

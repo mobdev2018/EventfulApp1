@@ -133,6 +133,7 @@
 		07437F451F2911E500CE728B /* AuthService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AuthService.swift; path = Services/AuthService.swift; sourceTree = "<group>"; };
 		07437F481F29167000CE728B /* UserService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UserService.swift; path = Services/UserService.swift; sourceTree = "<group>"; };
 		07437F501F2A63B600CE728B /* HomeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = HomeViewController.swift; path = Controllers/HomeViewController.swift; sourceTree = "<group>"; };
+		074BE9E72028969C001231B9 /* Eventful.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Eventful.entitlements; sourceTree = "<group>"; };
 		074D759F200C8E8C0044C3AD /* LocationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = LocationService.swift; path = Services/LocationService.swift; sourceTree = "<group>"; };
 		076428B21F4B9289003D1B43 /* Storage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Storage.swift; sourceTree = "<group>"; };
 		077CB3C6200DF6D0008F3618 /* ImageViewForURL.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageViewForURL.swift; sourceTree = "<group>"; };
@@ -233,6 +234,7 @@
 		07437F181F267CA900CE728B /* Eventful */ = {
 			isa = PBXGroup;
 			children = (
+				074BE9E72028969C001231B9 /* Eventful.entitlements */,
 				0719CDF41F54DC360076E678 /* Assets.xcassets */,
 				07437F191F267CA900CE728B /* AppDelegate.swift */,
 				07437F421F290F6800CE728B /* Models */,
@@ -469,6 +471,11 @@
 						DevelopmentTeam = W8XH6RU95C;
 						LastSwiftMigration = 0900;
 						ProvisioningStyle = Automatic;
+						SystemCapabilities = {
+							com.apple.Push = {
+								enabled = 1;
+							};
+						};
 					};
 				};
 			};
@@ -802,6 +809,7 @@
 			baseConfigurationReference = 5A2D82487A88CC695A029DCA /* Pods-Eventful.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = Eventful/Eventful.entitlements;
 				DEVELOPMENT_TEAM = W8XH6RU95C;
 				INFOPLIST_FILE = "$(SRCROOT)/Eventful/Supporting/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
@@ -819,6 +827,7 @@
 			baseConfigurationReference = 4D63B9A855CD185FB49E3D17 /* Pods-Eventful.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = Eventful/Eventful.entitlements;
 				DEVELOPMENT_TEAM = W8XH6RU95C;
 				INFOPLIST_FILE = "$(SRCROOT)/Eventful/Supporting/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 11.2;

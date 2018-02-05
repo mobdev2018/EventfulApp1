@@ -44,7 +44,7 @@ class NewCommentsViewController: UIViewController, UITextFieldDelegate,CommentsS
        // print(eventKey)
         // print(comments.count)
         let query = messagesRef?.queryOrderedByKey()
-        query?.observe(.value, with: { (snapshot) in
+        query?.observe(.value, with: {[weak self] (snapshot) in
             guard let allObjects = snapshot.children.allObjects as? [DataSnapshot] else {
                 return
             }
@@ -57,26 +57,26 @@ class NewCommentsViewController: UIViewController, UITextFieldDelegate,CommentsS
                 guard let uid = commentDictionary["uid"] as? String else{
                     return
                 }
-                UserService.show(forUID: uid, completion: { (user) in
+                UserService.show(forUID: uid, completion: { [weak self](user) in
                     if let user = user {
                         let commentFetched = CommentGrabbed(user: user, dictionary: commentDictionary)
                         commentFetched.commentID = snapshot.key
-                        let filteredArr = self.comments.filter { (comment) -> Bool in
+                        let filteredArr = self?.comments.filter { (comment) -> Bool in
                             return comment.commentID == commentFetched.commentID
                         }
-                        if filteredArr.count == 0 {
-                            self.comments.append(commentFetched)
+                        if filteredArr?.count == 0 {
+                            self?.comments.append(commentFetched)
                             
                         }
-                        self.adapter.performUpdates(animated: true)
+                        self?.adapter.performUpdates(animated: true)
                     }else{
                         print("user is null")
                         
                     }
-                    self.comments.sort(by: { (comment1, comment2) -> Bool in
+                    self?.comments.sort(by: { (comment1, comment2) -> Bool in
                         return comment1.creationDate.compare(comment2.creationDate) == .orderedAscending
                     })
-                    self.comments.forEach({ (comments) in
+                    self?.comments.forEach({ (comments) in
                     })
                 })
                 
@@ -194,6 +194,12 @@ class NewCommentsViewController: UIViewController, UITextFieldDelegate,CommentsS
         //submitButton.isUserInteractionEnabled = true
         
     }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        NotificationCenter.default.removeObserver(self)
+        self.view.removeFromSuperview()
+    }
+
     //viewDidLayoutSubviews() is overridden, setting the collectionView frame to match the view bounds.
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
@@ -203,6 +209,11 @@ class NewCommentsViewController: UIViewController, UITextFieldDelegate,CommentsS
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+    deinit {
+        print("NewCommentsController class removed from memory")
+        
+    }
+    
 }
 
 extension NewCommentsViewController: ListAdapterDataSource {

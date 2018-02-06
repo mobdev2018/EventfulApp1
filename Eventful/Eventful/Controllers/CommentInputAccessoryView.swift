@@ -7,19 +7,12 @@
 //
 
 import UIKit
-protocol CommentInputAccessoryViewDelegate {
+protocol CommentInputAccessoryViewDelegate:NSObjectProtocol {
     func handleSubmit(for comment: String?)
 }
 
 class CommentInputAccessoryView: UIView, UITextViewDelegate {
-    var delegate: CommentInputAccessoryViewDelegate?
-    /*
-    // Only override draw() if you perform custom drawing.
-    // An empty implementation adversely affects performance during animation.
-    override func draw(_ rect: CGRect) {
-        // Drawing code
-    }
-    */
+    weak var delegate: CommentInputAccessoryViewDelegate?
     
    fileprivate let submitButton: UIButton = {
         let submitButton = UIButton(type: .system)
@@ -33,19 +26,16 @@ class CommentInputAccessoryView: UIView, UITextViewDelegate {
     
     lazy var commentTextView: CommentInputTextView = {
         let textView = CommentInputTextView()
-       // textView.placeholder = "Add a comment"
         textView.delegate = self
         textView.isScrollEnabled = false
         textView.backgroundColor = .white
         textView.font = UIFont.boldSystemFont(ofSize: 15)
         textView.textContainer.lineBreakMode = .byWordWrapping
-       // textView.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
         return textView
     }()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-       // backgroundColor = .red
         //1
         autoresizingMask = .flexibleHeight
         addSubview(submitButton)

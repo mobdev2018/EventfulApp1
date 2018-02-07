@@ -14,13 +14,14 @@ class EventDetailViewController: UIViewController {
     
     var currentEvent : Event?{
         didSet{
-            let imageURL = URL(string: (currentEvent?.currentEventImage)!)
-                        currentEventImage.af_setImage(withURL: imageURL!)
-            blurryBackGround.image = currentEventImage.image
-
+              let imageURL = URL(string: (currentEvent?.currentEventImage)!)
+            DispatchQueue.main.async {
+                self.currentEventImage.af_setImage(withURL: imageURL!)
+                self.blurryBackGround.af_setImage(withURL: imageURL!)
+            }
             currentEventTime.text = currentEvent?.currentEventTime
             currentEventDate.text = currentEvent?.currentEventDate
-            eventNameLabel.text = currentEvent?.currentEventName.capitalized
+            eventNameLabel.text = currentEvent?.currentEventName.uppercased()
             guard let currentZip = currentEvent?.currentEventZip else{
                 return
             }
@@ -224,6 +225,8 @@ class EventDetailViewController: UIViewController {
     }
     override func viewWillDisappear(_ animated: Bool) {
         self.view.removeFromSuperview()
+        self.blurryBackGround.image = nil
+        self.currentEventImage.image = nil
         NotificationCenter.default.removeObserver(self)
 
 
@@ -334,12 +337,12 @@ class EventDetailViewController: UIViewController {
         super.viewWillAppear(animated)
         navigationController?.navigationBar.isHidden = true
         tabBarController?.tabBar.isHidden = false
-        let ref = Database.database().reference().child("Comments").child(self.eventKey)
-        
-        ref.observe(.value, with: { (snapshot: DataSnapshot!) in
-            var numberOfComments = 0
-            numberOfComments = numberOfComments + Int(snapshot.childrenCount)
-        })
+//        let ref = Database.database().reference().child("Comments").child(self.eventKey)
+//
+//        ref.observe(.value, with: { (snapshot: DataSnapshot!) in
+//            var numberOfComments = 0
+//            numberOfComments = numberOfComments + Int(snapshot.childrenCount)
+//        })
         
     }
     override func didReceiveMemoryWarning() {

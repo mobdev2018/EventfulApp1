@@ -12,7 +12,7 @@ import UIKit
 class EventSearchCell: UICollectionViewCell {
     var event: Event?{
         didSet{
-            eventNameLabel.text = event?.currentEventName.capitalized
+            eventNameLabel.text = event?.currentEventName.uppercased()
             
             guard let eventImageURL = event?.currentEventImage else{
                 return

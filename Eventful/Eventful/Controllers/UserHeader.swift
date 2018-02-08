@@ -22,6 +22,8 @@ class UserProfileHeader: UICollectionViewCell {
         }
     }
     weak var profileViewController: ProfileeViewController?
+    weak var searchProfileViewController: SearchProfileeViewController?
+
     lazy var profileImage: UIImageView = {
         let profilePicture = UIImageView()
         profilePicture.layer.borderWidth = 1.0
@@ -75,6 +77,10 @@ class UserProfileHeader: UICollectionViewCell {
         backButton.setImage(UIImage(named: "icons8-Back-64"), for: .normal)
         return backButton
     }()
+    var userStackView: UIStackView?
+    var currentUserDividerView: UIView?
+    var notCurrentUserDividerView: UIView?
+
     fileprivate func setupUserInteraction (){
         guard let currentLoggedInUser = Auth.auth().currentUser?.uid else{
             return
@@ -84,30 +90,34 @@ class UserProfileHeader: UICollectionViewCell {
         }
         
         if currentLoggedInUser == uid {
-            let userStackView = UIStackView(arrangedSubviews: [profileeSettings, settings])
-            userStackView.distribution = .fillEqually
-            userStackView.axis = .vertical
-            userStackView.spacing = 10.0
-            addSubview(userStackView)
-            userStackView.anchor(top: topAnchor, left: leftAnchor, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 15, paddingBottom: 0, paddingRight: 0, width: 0, height: 90)
-            let bottomDividerView = UIView()
-            bottomDividerView.backgroundColor = UIColor.lightGray
-            addSubview(bottomDividerView)
-             bottomDividerView.anchor(top: profileStackView.bottomAnchor, left: leftAnchor, bottom: nil, right: rightAnchor, paddingTop: 15, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0.5)
+            //will hide buttons related to user that is not current user
+            followButton.isHidden = true
+            notCurrentUserDividerView?.isHidden = true
+            userStackView?.isHidden = false
+            currentUserDividerView?.isHidden = true
+            
+            userStackView = UIStackView(arrangedSubviews: [profileeSettings, settings])
+            userStackView?.distribution = .fillEqually
+            userStackView?.axis = .vertical
+            userStackView?.spacing = 10.0
+            addSubview(userStackView!)
+            userStackView?.anchor(top: topAnchor, left: leftAnchor, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 15, paddingBottom: 0, paddingRight: 0, width: 0, height: 90)
+             currentUserDividerView = UIView()
+            currentUserDividerView?.backgroundColor = UIColor.lightGray
+            addSubview(currentUserDividerView!)
+            currentUserDividerView?.anchor(top: profileStackView.bottomAnchor, left: leftAnchor, bottom: nil, right: rightAnchor, paddingTop: 15, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0.5)
             
         } else{
-            let userStackView = UIStackView(arrangedSubviews: [backButton])
-            userStackView.distribution = .fillEqually
-            userStackView.spacing = 10.0
-            userStackView.axis = .vertical
-            addSubview(userStackView)
-            userStackView.anchor(top: topAnchor, left: leftAnchor, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 15, paddingBottom: 0, paddingRight: 0, width: 0, height: 40)
+            userStackView?.isHidden = true
+            currentUserDividerView?.isHidden = true
+            followButton.isHidden = false
+            notCurrentUserDividerView?.isHidden = false
             addSubview(followButton)
             followButton.anchor(top: profileStackView.bottomAnchor, left: leftAnchor, bottom: nil, right: rightAnchor, paddingTop: 10, paddingLeft: 50, paddingBottom:0 , paddingRight: 50, width: 0, height: 0)
-            let bottomDividerView = UIView()
-            bottomDividerView.backgroundColor = UIColor.lightGray
-              addSubview(bottomDividerView)
-             bottomDividerView.anchor(top: followButton.bottomAnchor, left: leftAnchor, bottom: nil, right: rightAnchor, paddingTop: 15, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0.5)
+             notCurrentUserDividerView = UIView()
+            notCurrentUserDividerView?.backgroundColor = UIColor.lightGray
+            addSubview(notCurrentUserDividerView!)
+            notCurrentUserDividerView?.anchor(top: followButton.bottomAnchor, left: leftAnchor, bottom: nil, right: rightAnchor, paddingTop: 15, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0.5)
             // check if following
             Database.database().reference().child("following").child(currentLoggedInUser).child(uid).observeSingleEvent(of: .value, with: { (snapshot) in
                 
@@ -130,7 +140,7 @@ class UserProfileHeader: UICollectionViewCell {
         //Pro Tip: Dont perform a lot of custom logic inside a view class
         if let imageView = tapGesture.view as? UIImageView {
             //PRO Tip: don't perform a lot of custom logic inside of a view class
-            self.profileViewController?.performZoomInForStartingImageView(startingImageView: imageView)
+            self.searchProfileViewController?.performZoomInForStartingImageView(startingImageView: imageView)
         }
     }
     
@@ -231,6 +241,7 @@ class UserProfileHeader: UICollectionViewCell {
         super.init(frame: frame)
         backgroundColor = UIColor.white
         profileImage.layer.cornerRadius = 100/2
+        
        // setupToolBar()
         setupProfileStack()
     }

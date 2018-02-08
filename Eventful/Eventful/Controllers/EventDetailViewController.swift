@@ -11,13 +11,19 @@ import Firebase
 import FirebaseDatabase
 
 class EventDetailViewController: UIViewController {
-    
+    var imageURL: URL?
+    var activityIndicator: UIActivityIndicatorView?
     var currentEvent : Event?{
         didSet{
-              let imageURL = URL(string: (currentEvent?.currentEventImage)!)
+            imageURL = URL(string: (currentEvent?.currentEventImage)!)
             DispatchQueue.main.async {
-                self.currentEventImage.af_setImage(withURL: imageURL!)
-                self.blurryBackGround.af_setImage(withURL: imageURL!)
+                self.currentEventImage.af_setImage(withURL: self.imageURL!, placeholderImage: nil, filter: nil, progress: nil, progressQueue: .main, imageTransition: .crossDissolve(0.5), runImageTransitionIfCached: false, completion: { (response) in
+                    let image = response.result.value // UIImage Object
+                })
+                self.blurryBackGround.af_setImage(withURL: self.imageURL!, placeholderImage: nil, filter: nil, progress: nil, progressQueue: .main, imageTransition: .crossDissolve(0.5), runImageTransitionIfCached: false, completion: { (response) in
+                    let image = response.result.value // UIImage Object
+                })
+               // self.currentEventImage.af_setImage(withURL: self.imageURL!)
             }
             currentEventTime.text = currentEvent?.currentEventTime
             currentEventDate.text = currentEvent?.currentEventDate
@@ -36,6 +42,7 @@ class EventDetailViewController: UIViewController {
         }
     }
     var stackView: UIStackView?
+    var eventNameStackView: UIStackView?
     var userInteractStackView: UIStackView?
     //    var users = [User]()
     let camera = CameraViewController()
@@ -152,6 +159,13 @@ class EventDetailViewController: UIViewController {
         return viewComments
     }()
     
+    lazy var LocationMarkerViewButton : UIButton = {
+        let locationMarker = UIButton(type: .system)
+        locationMarker.setImage(#imageLiteral(resourceName: "icons8-marker-80 (1)").withRenderingMode(.alwaysOriginal), for: .normal)
+        return locationMarker
+    }()
+    
+    
     
     @objc func presentComments(){
         print("Comments button pressed")
@@ -223,7 +237,7 @@ class EventDetailViewController: UIViewController {
         }
         
     }
-    override func viewWillDisappear(_ animated: Bool) {
+    override func viewDidDisappear(_ animated: Bool) {
         self.view.removeFromSuperview()
         self.blurryBackGround.image = nil
         self.currentEventImage.image = nil
@@ -309,13 +323,17 @@ class EventDetailViewController: UIViewController {
     }
     
     fileprivate func setupEventDisplayScreen(){
-        stackView = UIStackView(arrangedSubviews: [eventNameLabel,addressLabel])
+        //LocationMarker
+        stackView = UIStackView(arrangedSubviews: [LocationMarkerViewButton,addressLabel])
+        eventNameStackView = UIStackView(arrangedSubviews: [eventNameLabel])
+        view.addSubview(eventNameStackView!)
         view.addSubview(stackView!)
         view.addSubview(descriptionLabel)
-        stackView?.distribution = .fill
-        stackView?.axis = .vertical
+        stackView?.distribution = .fillProportionally
+        stackView?.axis = .horizontal
         stackView?.spacing = 0.0
-        stackView?.anchor(top: currentEventImage.bottomAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, paddingTop: 0, paddingLeft: 15, paddingBottom: 0, paddingRight: 20, width: 0, height: 70)
+        eventNameStackView?.anchor(top: currentEventImage.bottomAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, paddingTop: 0, paddingLeft: 10, paddingBottom: 0, paddingRight: 20, width: 0, height: 30)
+        stackView?.anchor(top: eventNameStackView?.bottomAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, paddingTop: 0, paddingLeft: 5, paddingBottom: 0, paddingRight: 20, width: 0, height: 30)
         descriptionLabel.anchor(top: stackView?.bottomAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, paddingTop: 0, paddingLeft: 10, paddingBottom: 0, paddingRight: 10, width: 90, height: 200)
     }
     
@@ -335,6 +353,10 @@ class EventDetailViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        DispatchQueue.main.async {
+            self.currentEventImage.af_setImage(withURL: self.imageURL!)
+            self.blurryBackGround.af_setImage(withURL: self.imageURL!)
+        }
         navigationController?.navigationBar.isHidden = true
         tabBarController?.tabBar.isHidden = false
 //        let ref = Database.database().reference().child("Comments").child(self.eventKey)

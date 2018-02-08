@@ -82,6 +82,7 @@
         
         @objc func GoBack(){
             dismiss(animated: true, completion: nil)
+            
         }
         
         @objc func settingsButtonTapped(){

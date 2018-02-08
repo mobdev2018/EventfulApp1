@@ -55,6 +55,7 @@
 		07A15CFF20001B9900CA4309 /* CommentInputTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07A15CFE20001B9900CA4309 /* CommentInputTextView.swift */; };
 		07B9145D1F3D416900A02952 /* CommentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07B9145C1F3D416900A02952 /* CommentCell.swift */; };
 		07B9145F1F3D4DE100A02952 /* CommentGrabbed.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07B9145E1F3D4DE100A02952 /* CommentGrabbed.swift */; };
+		07C2816C202BCD220098ACC5 /* SearchProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07C2816B202BCD220098ACC5 /* SearchProfileViewController.swift */; };
 		07CB4B2E1F4B9EBB006E5D51 /* StroyCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07CB4B2D1F4B9EBB006E5D51 /* StroyCell.swift */; };
 		07D9239F1F2EEE460069613D /* AlterProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07D9239E1F2EEE460069613D /* AlterProfileViewController.swift */; };
 		07D923A81F33C61D0069613D /* Storyboard+Utility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07D923A71F33C61D0069613D /* Storyboard+Utility.swift */; };
@@ -145,6 +146,7 @@
 		07A15CFE20001B9900CA4309 /* CommentInputTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = CommentInputTextView.swift; path = Controllers/CommentInputTextView.swift; sourceTree = "<group>"; };
 		07B9145C1F3D416900A02952 /* CommentCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CommentCell.swift; path = Controllers/CommentCell.swift; sourceTree = "<group>"; };
 		07B9145E1F3D4DE100A02952 /* CommentGrabbed.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommentGrabbed.swift; sourceTree = "<group>"; };
+		07C2816B202BCD220098ACC5 /* SearchProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SearchProfileViewController.swift; path = Controllers/SearchProfileViewController.swift; sourceTree = "<group>"; };
 		07CB4B2D1F4B9EBB006E5D51 /* StroyCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = StroyCell.swift; path = Controllers/StroyCell.swift; sourceTree = "<group>"; };
 		07D9239E1F2EEE460069613D /* AlterProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AlterProfileViewController.swift; path = Controllers/AlterProfileViewController.swift; sourceTree = "<group>"; };
 		07D923A71F33C61D0069613D /* Storyboard+Utility.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "Storyboard+Utility.swift"; path = "Extensions/Storyboard+Utility.swift"; sourceTree = "<group>"; };
@@ -200,6 +202,7 @@
 				071F2E1B1F4E2FC500FEDDCF /* UserSearchCell.swift */,
 				071C9E091F3FBBB00021D5A3 /* EventSearchCell.swift */,
 				071F2E191F4E14B500FEDDCF /* EventSearchHeader.swift */,
+				07C2816B202BCD220098ACC5 /* SearchProfileViewController.swift */,
 			);
 			name = Search;
 			sourceTree = "<group>";
@@ -659,6 +662,7 @@
 				073AFDC11F43F5FF009D4773 /* UserEventAttendingCell.swift in Sources */,
 				07DDE4EB1FCDBAB600B6AAEC /* EventPromoVideoPlayer.swift in Sources */,
 				073AFDC31F4478CD009D4773 /* EventService.swift in Sources */,
+				07C2816C202BCD220098ACC5 /* SearchProfileViewController.swift in Sources */,
 				07D923AA1F34B44F0069613D /* SettingsViewController.swift in Sources */,
 				07437F511F2A63B600CE728B /* HomeViewController.swift in Sources */,
 				073AFDC51F45E4FB009D4773 /* FollowService.swift in Sources */,

@@ -18,7 +18,7 @@ class EventSearchController: UICollectionViewController, UISearchBarDelegate, UI
     let cellId = "cellID"
     var scopeIndex: Int = 0
     let cellID2 = "newCellID"
-    let userProfileController = ProfileeViewController(collectionViewLayout: UICollectionViewFlowLayout())
+    let userProfileController = SearchProfileeViewController(collectionViewLayout: UICollectionViewFlowLayout())
     let currentEventDetailController = EventDetailViewController()
     var emptyLabel: UILabel?
 
@@ -264,7 +264,8 @@ class EventSearchController: UICollectionViewController, UISearchBarDelegate, UI
             userProfileController.navigationItem.hidesBackButton = true
             let backButton = UIBarButtonItem(image: UIImage(named: "icons8-Back-64"), style: .plain, target: self, action: #selector(GoBack))
             userProfileController.navigationItem.leftBarButtonItem = backButton
-            present(userProfileController, animated: true, completion: nil)
+            let navController = UINavigationController(rootViewController: userProfileController)
+            present(navController, animated: true, completion: nil)
             break
         default:
             break
@@ -273,7 +274,7 @@ class EventSearchController: UICollectionViewController, UISearchBarDelegate, UI
     }
     
     @objc func GoBack(){
-        _ = self.navigationController?.popViewController(animated: true)
+        self.dismiss(animated: true, completion: nil)
     }
     
     

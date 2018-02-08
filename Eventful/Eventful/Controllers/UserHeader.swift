@@ -88,34 +88,32 @@ class UserProfileHeader: UICollectionViewCell {
         guard let uid = user?.uid else{
             return
         }
+//        self.notCurrentUserDividerView?.isHidden = true
+//        self.currentUserDividerView?.isHidden = true
+//        self.followButton.isHidden = true
+//        self.userStackView?.isHidden = true
+        self.currentUserDividerView?.removeFromSuperview()
+        self.notCurrentUserDividerView?.removeFromSuperview()
+        self.followButton.removeFromSuperview()
+        self.userStackView?.removeFromSuperview()
         
         if currentLoggedInUser == uid {
             //will hide buttons related to user that is not current user
-            followButton.isHidden = true
-            notCurrentUserDividerView?.isHidden = true
-            userStackView?.isHidden = false
-            currentUserDividerView?.isHidden = true
-            
             userStackView = UIStackView(arrangedSubviews: [profileeSettings, settings])
             userStackView?.distribution = .fillEqually
             userStackView?.axis = .vertical
             userStackView?.spacing = 10.0
-            addSubview(userStackView!)
+            addSubview(self.userStackView!)
             userStackView?.anchor(top: topAnchor, left: leftAnchor, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 15, paddingBottom: 0, paddingRight: 0, width: 0, height: 90)
              currentUserDividerView = UIView()
-            currentUserDividerView?.backgroundColor = UIColor.lightGray
+            currentUserDividerView?.backgroundColor = UIColor.red
             addSubview(currentUserDividerView!)
             currentUserDividerView?.anchor(top: profileStackView.bottomAnchor, left: leftAnchor, bottom: nil, right: rightAnchor, paddingTop: 15, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0.5)
-            
         } else{
-            userStackView?.isHidden = true
-            currentUserDividerView?.isHidden = true
-            followButton.isHidden = false
-            notCurrentUserDividerView?.isHidden = false
-            addSubview(followButton)
+            addSubview(self.followButton)
             followButton.anchor(top: profileStackView.bottomAnchor, left: leftAnchor, bottom: nil, right: rightAnchor, paddingTop: 10, paddingLeft: 50, paddingBottom:0 , paddingRight: 50, width: 0, height: 0)
              notCurrentUserDividerView = UIView()
-            notCurrentUserDividerView?.backgroundColor = UIColor.lightGray
+            notCurrentUserDividerView?.backgroundColor = UIColor.blue
             addSubview(notCurrentUserDividerView!)
             notCurrentUserDividerView?.anchor(top: followButton.bottomAnchor, left: leftAnchor, bottom: nil, right: rightAnchor, paddingTop: 15, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0.5)
             // check if following

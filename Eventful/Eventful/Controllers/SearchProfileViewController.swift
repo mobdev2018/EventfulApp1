@@ -108,6 +108,9 @@ class SearchProfileeViewController: UICollectionViewController, UICollectionView
         self.collectionView?.reloadData()
     }
     
+    override func viewDidDisappear(_ animated: Bool) {
+        self.userEvents.removeAll()
+    }
     
     
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {

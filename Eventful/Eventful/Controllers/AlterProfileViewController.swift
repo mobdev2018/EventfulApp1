@@ -300,7 +300,10 @@ class AlterProfileViewController: UIViewController, UIImagePickerControllerDeleg
     }
     
     
-    
+    deinit {
+        // you code
+        print("removed from memory")
+    }
     /////
     
     

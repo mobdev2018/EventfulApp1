@@ -106,14 +106,14 @@ class UserProfileHeader: UICollectionViewCell {
             addSubview(self.userStackView!)
             userStackView?.anchor(top: topAnchor, left: leftAnchor, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 15, paddingBottom: 0, paddingRight: 0, width: 0, height: 90)
              currentUserDividerView = UIView()
-            currentUserDividerView?.backgroundColor = UIColor.red
+            currentUserDividerView?.backgroundColor = UIColor.lightGray
             addSubview(currentUserDividerView!)
             currentUserDividerView?.anchor(top: profileStackView.bottomAnchor, left: leftAnchor, bottom: nil, right: rightAnchor, paddingTop: 15, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0.5)
         } else{
             addSubview(self.followButton)
             followButton.anchor(top: profileStackView.bottomAnchor, left: leftAnchor, bottom: nil, right: rightAnchor, paddingTop: 10, paddingLeft: 50, paddingBottom:0 , paddingRight: 50, width: 0, height: 0)
              notCurrentUserDividerView = UIView()
-            notCurrentUserDividerView?.backgroundColor = UIColor.blue
+            notCurrentUserDividerView?.backgroundColor = UIColor.lightGray
             addSubview(notCurrentUserDividerView!)
             notCurrentUserDividerView?.anchor(top: followButton.bottomAnchor, left: leftAnchor, bottom: nil, right: rightAnchor, paddingTop: 15, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0.5)
             // check if following

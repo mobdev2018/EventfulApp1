@@ -254,6 +254,7 @@ class ViewToShowOnSideMenu:UIView,UICollectionViewDataSource, UICollectionViewDe
             SideMenu.hide(animationTime: indexPath.item != ViewToShowOnSideMenu.titleDataSouce.count-1 ? 0.4 : 0)
             if indexPath.item == 6{
                 
+                //sets the top controller to the current viewController
                 var topController: UIViewController = UIApplication.shared.keyWindow!.rootViewController!
                 while (topController.presentedViewController != nil) {
                     topController = topController.presentedViewController!

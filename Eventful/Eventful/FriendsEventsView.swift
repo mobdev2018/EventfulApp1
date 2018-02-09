@@ -226,9 +226,10 @@ class FriendsEventsView: UIViewController,UICollectionViewDelegate,UICollectionV
                                                             df.timeZone = NSTimeZone(name: "UTC") as TimeZone!
                                                             
                                                             if let eventStartDate = df.date(from: startDate){
-                                                                if (SideMenu.getStartDateEndDate().startDate.compare(eventStartDate) == .orderedAscending || SideMenu.getStartDateEndDate().startDate.compare(eventStartDate) == .orderedSame),(SideMenu.getStartDateEndDate().endDate.compare(eventStartDate) == .orderedDescending || SideMenu.getStartDateEndDate().endDate.compare(eventStartDate) == .orderedSame)  {
-                                                                    detailsArray.append(detail1)
-                                                                }
+                                                                //will onlu populate cells with events that are going to occur within the week of the current date
+                                                                //first checks if the sidemenu date is either earlier or the same as eventstart date
+                                                                //second checks if the sidemenu endDate is either greater than or the same as the eventStartDate
+                                                                detailsArray.append(detail1)
                                                                 
                                                             }
                                                         }
@@ -442,7 +443,7 @@ class EventDetailsCell:UICollectionViewCell{
     
     var details:EventDetails?{
         didSet{
-            if let value = details?.name{
+            if let value = details?.name?.uppercased(){
                 labelDesciption.text = value
             }else{
                 labelDesciption.text = "Uknown"

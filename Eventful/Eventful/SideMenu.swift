@@ -129,7 +129,7 @@ class SideMenu:UIView,UIGestureRecognizerDelegate{
     }
 }
 
-
+//look here
 class ViewToShowOnSideMenu:UIView,UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout{
    
     static var isContainingImage = true
@@ -170,7 +170,8 @@ class ViewToShowOnSideMenu:UIView,UICollectionViewDataSource, UICollectionViewDe
         label.addSubview(sep)
         label.addConstraintsWithFormatt("H:|[v0]|", views: sep)
         label.addConstraintsWithFormatt("V:[v0(0.3)]|", views: sep)
-        
+        //the hide pressed button wll hide the side menu
+        ///it will actually look like an X in the app and not a hide button
         let button = UIButton(type: .system)
         button.setImage(#imageLiteral(resourceName: "close_black").withRenderingMode(.alwaysOriginal), for: .normal)
         button.addTarget(self, action: #selector(self.hidePressed), for: .touchUpInside)
@@ -244,7 +245,7 @@ class ViewToShowOnSideMenu:UIView,UICollectionViewDataSource, UICollectionViewDe
    
     
    
-    
+    //will handle the action to take on selection of one of the cells in the side menu
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
         if indexPath.section == 1{

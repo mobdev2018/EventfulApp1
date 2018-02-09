@@ -13,24 +13,35 @@ class FriendsEventsView: UIViewController,UICollectionViewDelegate,UICollectionV
     
     var friends = [Friend]()
     var followingUsers = [String]()
-    
+    //so this is the main collectonview that encompasses the entire view
     lazy var mainCollectionView:UICollectionView={
+        // the flow layout which is needed when you create any collection view
         let flow = UICollectionViewFlowLayout()
+        //setting the scroll direction
         flow.scrollDirection = .vertical
+        //setting space between elements
         let spacingbw:CGFloat = 5
         flow.minimumLineSpacing = spacingbw
         flow.minimumInteritemSpacing = 0
+        //actually creating collectionview
         let cv = UICollectionView(frame: .zero, collectionViewLayout: flow)
+        //register a cell for that collectionview
         cv.register(EventCollectionCell.self, forCellWithReuseIdentifier: "events")
         cv.translatesAutoresizingMaskIntoConstraints = false
+        //changing background color
         cv.backgroundColor = .white
+        //sets the delegate of the collectionView to self. By doing this all messages in regards to the  collectionView will be sent to the collectionView or you.
+        //"Delegates send messages"
         cv.delegate = self
+        //sets the datsource of the collectionView to you so you can control where the data gets pulled from
         cv.dataSource = self
+        //sets positon of collectionview in regards to the regular view
         cv.contentInset = UIEdgeInsetsMake(spacingbw, 0, spacingbw, 0)
         return cv
         
     }()
     
+    //label that will be displayed if there are no events
     let labelNotEvents:UILabel={
         let label = UILabel()
         label.textColor = .lightGray
@@ -45,35 +56,39 @@ class FriendsEventsView: UIViewController,UICollectionViewDelegate,UICollectionV
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        //will set up all the views in the screen
         self.setUpViews()
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "close_black").withRenderingMode(.alwaysOriginal), style: .done, target: self, action: #selector(self.goBack))
     }
     
     func setUpViews(){
+        //well set the navbar title to Friends Events
         self.title = "Friends Events"
         view.backgroundColor = .white
         
-        
+        //adds the main collection view to the view and adds proper constraints for positioning
         view.addSubview(mainCollectionView)
         mainCollectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 0).isActive = true
         mainCollectionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: 0).isActive = true
         mainCollectionView.rightAnchor.constraint(equalTo: view.rightAnchor, constant: 0).isActive = true
         mainCollectionView.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 0).isActive = true
-        
+        //adds the label to alert someone that there are no events to the collectionview and adds proper constrains for positioning
         mainCollectionView.addSubview(labelNotEvents)
         labelNotEvents.centerYAnchor.constraint(equalTo: mainCollectionView.centerYAnchor, constant: 0).isActive = true
         labelNotEvents.centerXAnchor.constraint(equalTo: mainCollectionView.centerXAnchor, constant: 0).isActive = true
-        
+        //will fetch events from server
         self.fetchEventsFromServer()
         
     }
     
     
     
-  
+    // MARK: CollectionView Datasource
+//woll let us know how many cells are being displayed
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return friends.count
     }
+    //will control the size of the cell that is displayed
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         var height:CGFloat = 50
         let event = friends[indexPath.item]
@@ -82,6 +97,7 @@ class FriendsEventsView: UIViewController,UICollectionViewDelegate,UICollectionV
         }
         return CGSize(width: collectionView.frame.width, height: height)
     }
+    //will do the job of effieicently creating cells
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "events", for: indexPath) as! EventCollectionCell
         cell.enentDetails = friends[indexPath.item]
@@ -89,7 +105,7 @@ class FriendsEventsView: UIViewController,UICollectionViewDelegate,UICollectionV
         return cell
     }
     
-    
+    ///will fetch events from the serever
     func fetchEventsFromServer(){
         
         
@@ -111,6 +127,9 @@ class FriendsEventsView: UIViewController,UICollectionViewDelegate,UICollectionV
                     }
                 }
                 
+                
+                //for some odd reason queries and pulls back all users
+                //this has to change
                 ref.reference(withPath: "users").observeSingleEvent(of: .value, with: { (usersSnapShot) in
                     if let userDetails = usersSnapShot.value as? [String:Any]{
                         ref.reference(withPath: "events").observeSingleEvent(of: .value, with: { snapshot in
@@ -120,27 +139,39 @@ class FriendsEventsView: UIViewController,UICollectionViewDelegate,UICollectionV
                                     if !self.followingUsers.contains(useKey){
                                         continue
                                     }
+                                    //will create the user object to help create the cell it seems
                                     if let userObject = userDetails[useKey] as? [String:Any]{
+                                       //creates friend object which contains the username, profilepic, and array of events that he is going to in addition to his ID
                                         let event = Friend()
+                                        //gets the user name and assigns while also make sure to protect against null value
                                         if let name = userObject["username"] as? String{
                                             event.friendName = name
                                         }
+                                        //gets the image url and assigns while also make sure to protect against null value
                                         if let url = userObject["profilePic"] as? String{
                                             event.imageUrl = url
                                         }
+                                        //will parse the attending node under the specific user name
                                         if let attendingEvents = userObject["Attending"] as? [String:Any]{
-                                            
+                                            //will create a variable that holds an array of event details objects
+                                            //each event detail object contains all information in regards to an  event
                                             var detailsArray = [EventDetails]()
+                                            //will create an array of all the event keys pulled from the attending node
                                             let eventKeys = Array(attendingEvents.keys)
+                                            //will cycle through the eventKeys and perform some operation on each one of them
                                             for eventId in eventKeys{
+                                                //seems to assign a true or false value depending on if a user is going to an event or not
                                                 if let going = attendingEvents[eventId] as? Bool,going{
+                                                    //will grab current event info assuming it is in the user node and database
                                                     if let eventDetails = evenDetailObject[eventId] as? [String:Any]{
+                                                        //will create a specific instance of a detail object
                                                         let detail1 = EventDetails()
                                                         detail1.eventId = eventId
-                                                        
+                                                        //will get the name
                                                         if let value = eventDetails["event:name"] as? String{
                                                             detail1.name = value
                                                         }
+                                                        //will get the category
                                                         if let value = eventDetails["event:category"] as? String{
                                                             let selected_cat = selectedCategory.replacingOccurrences(of: " ", with: "").lowercased()
                                                             if selected_cat != "home",value.replacingOccurrences(of: " ", with: "").lowercased() != selected_cat{
@@ -203,6 +234,9 @@ class FriendsEventsView: UIViewController,UICollectionViewDelegate,UICollectionV
                                                         }
                                                     }
                                                 }
+                                            }
+                                            for detail in detailsArray{
+                                                print(detail)
                                             }
                                             event.events = detailsArray
                                         }

@@ -36,6 +36,25 @@ struct UserService {
             })
         }
     }
+    
+    // Will update device token for the user
+    static func updateDeviceToken(deviceToken: String, userId: String){
+        let userAttrs = ["deviceToken": deviceToken] as [String : Any]
+        
+        let ref = Database.database().reference().child("users").child(userId)
+        ref.updateChildValues(userAttrs){ (error, ref) in
+            if let error = error {
+                assertionFailure(error.localizedDescription)
+                return
+            }
+            ref.observeSingleEvent(of: .value, with: { (snapshot) in
+                let updatedUser = User(snapshot: snapshot)
+                print(updatedUser as Any)
+            })
+        }
+    }
+    
+    
     //Will allow you to edit user data in firebase
     static func edit(username: String, completion: @escaping (User?) -> Void) {
         let userAttrs = ["username": username] as [String : Any]
@@ -142,6 +161,34 @@ struct UserService {
             }
             
             completion(user)
+        })
+    }
+    
+    static func downloadAllUsers(completion: @escaping (NSMutableDictionary) -> Void){
+        // 1
+        let ref = Database.database().reference().child("users")
+        
+        // 2
+        ref.observeSingleEvent(of: .value, with: { (snapshot) in
+            guard let snapshot = snapshot.children.allObjects as? [DataSnapshot]
+                else { return completion([:]) }
+            
+            // 3
+            let users = snapshot.flatMap(User.init)
+            
+            // 4
+            let usersDict = NSMutableDictionary()
+            
+            //5
+            let dispatchGroup = DispatchGroup()
+            users.forEach { (user) in
+                usersDict.setObject(user, forKey: user.uid as NSCopying)
+            }
+            
+            // 6
+            dispatchGroup.notify(queue: .main, execute: {
+                completion(usersDict)
+            })
         })
     }
     

@@ -26,7 +26,6 @@ class CommentsHeaderSectionController: ListSectionController, CommentHeaderDeleg
         let estimatedSize = dummyCell.systemLayoutSizeFitting(targetSize)
         let height = max(40+8+8, estimatedSize.height)
         return  CGSize(width: collectionContext!.containerSize.width, height: height)
-        
     }
     
     override func cellForItem(at index: Int) -> UICollectionViewCell {

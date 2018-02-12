@@ -58,7 +58,16 @@ class HomeFeedController: UIViewController, UIGestureRecognizerDelegate {
         SVProgressHUD.dismiss()
         self.configure()
         grabUserLoc()
+        fetchAllUsers()
        // reloadHomeFeed()
+    }
+    
+    @objc func fetchAllUsers(){
+        SVProgressHUD.show()
+        UserService.downloadAllUsers { (allUsers) in
+            Users.sharedInstance.allUsers = allUsers
+            SVProgressHUD.dismiss()
+        }
     }
     
     @objc func grabUserLoc(){
@@ -68,6 +77,7 @@ class HomeFeedController: UIViewController, UIGestureRecognizerDelegate {
                 return
             }
             PostService.showEvent(for: currentLocation, completion: { [unowned self](events) in
+
                 self.allEvents = events
                 print("Event count in PostService Closure:\(self.allEvents.count)")
                 DispatchQueue.main.async {
@@ -85,8 +95,7 @@ class HomeFeedController: UIViewController, UIGestureRecognizerDelegate {
                     // self.dynamoCollectionView.reloadData()
                     self.dynamoCollectionViewTop.reloadData()
                 }
-            }
-            )
+            })
 
 
             print("Latitude: \(currentLocation.coordinate.latitude)")

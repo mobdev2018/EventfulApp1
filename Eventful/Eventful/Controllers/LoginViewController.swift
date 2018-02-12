@@ -16,7 +16,6 @@ protocol LoginViewControllerDelegate: class {
 }
 
 
-
 class LoginViewController: UIViewController , LoginViewControllerDelegate {
     //Login Controller Instance
     
@@ -53,7 +52,7 @@ class LoginViewController: UIViewController , LoginViewControllerDelegate {
     
     // creates a UILabel
     
-    
+
     let goalLabel : UILabel =  {
         let primaryGoalLabel = UILabel()
         primaryGoalLabel.textColor = UIColor.logoColor

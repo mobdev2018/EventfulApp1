@@ -14,7 +14,13 @@ import Firebase
 protocol CommentsSectionDelegate: class {
     func CommentSectionUpdared(sectionController: CommentsSectionController)
 }
-class CommentsSectionController: ListSectionController,CommentCellDelegate {
+class CommentsSectionController: ListSectionController,ListSupplementaryViewSource, CommentCellDelegate, ReplyToCommentCellDelegate {
+    func optionsButtonTapped(cell: ReplyToCommentCell) {
+        print("Option Button Tapped")
+    }
+    
+    var currentViewController: NewCommentsViewController!
+    
     weak var delegate: CommentsSectionDelegate? = nil
    weak var comment: CommentGrabbed?
     let userProfileController = ProfileeViewController(collectionViewLayout: UICollectionViewFlowLayout())
@@ -24,10 +30,49 @@ class CommentsSectionController: ListSectionController,CommentCellDelegate {
         // supplementaryViewSource = self
         //sets the spacing between items in a specfic section controller
         inset = UIEdgeInsets(top: 5, left: 0, bottom: 0, right: 0)
+        supplementaryViewSource = self
     }
+    
+    // MARK: Suplementary Views
+    
+    func supportedElementKinds() -> [String] {
+        return [UICollectionElementKindSectionHeader]
+    }
+    
+    func viewForSupplementaryElement(ofKind elementKind: String, at index: Int) -> UICollectionReusableView {
+        switch elementKind {
+        case UICollectionElementKindSectionHeader:
+            return userHeaderView(atIndex: index)
+        default:
+            fatalError()
+        }
+    }
+    
+    func sizeForSupplementaryView(ofKind elementKind: String, at index: Int) -> CGSize {
+        let frame = CGRect(x: 0, y: 0, width: collectionContext!.containerSize.width, height: 50)
+        let dummyCell = CommentCell(frame: frame)
+        dummyCell.comment = comment
+        dummyCell.layoutIfNeeded()
+        let targetSize =  CGSize(width: collectionContext!.containerSize.width, height: 55)
+        let estimatedSize = dummyCell.systemLayoutSizeFitting(targetSize)
+        let height = max(40+8+8, estimatedSize.height)
+        return  CGSize(width: collectionContext!.containerSize.width, height: height)
+    }
+    
+    // MARK: Private
+    private func userHeaderView(atIndex index: Int) -> UICollectionReusableView {
+        guard let view = collectionContext?.dequeueReusableSupplementaryView(ofKind: UICollectionElementKindSectionHeader, for: self, class: CommentCell.self, at: index) as? CommentCell else {
+            fatalError()
+        }
+        view.comment = comment
+        view.delegate = self
+        
+        return view
+    }
+    
     // MARK: IGListSectionController Overrides
     override func numberOfItems() -> Int {
-        return 1
+        return (comment?.replies.count)!
     }
     override func sizeForItem(at index: Int) -> CGSize {
         let frame = CGRect(x: 0, y: 0, width: collectionContext!.containerSize.width, height: 50)
@@ -51,11 +96,10 @@ class CommentsSectionController: ListSectionController,CommentCellDelegate {
     }
     
     override func cellForItem(at index: Int) -> UICollectionViewCell {
-        guard let cell = collectionContext?.dequeueReusableCell(of: CommentCell.self, for: self, at: index) as? CommentCell else {
+        guard let cell = collectionContext?.dequeueReusableCell(of: ReplyToCommentCell.self, for: self, at: index) as? ReplyToCommentCell else {
             fatalError()
         }
-        //  print(comment)
-        cell.comment = comment
+        cell.comment = comment?.replies[index]
         cell.delegate = self
         return cell
     }
@@ -86,8 +130,14 @@ class CommentsSectionController: ListSectionController,CommentCellDelegate {
             let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
             let replyAction = UIAlertAction(title: "Reply to Comment", style: .default, handler: { [weak self](_) in
                 //do something here later to facilitate reply comment functionality
-                print("Attempting to reply to user \(comment?.user?.username) comment")
-                
+
+                print("Attempting to reply to user \(String(describing: comment?.user?.username)) comment")
+                self?.currentViewController.containerView.commentTextView.hidePlaceholderLabel()
+                self?.currentViewController.containerView.commentTextView.text = "@" + (comment?.user?.username)! + " "
+                self?.currentViewController.containerView.commentTextView.becomeFirstResponder()
+                self?.currentViewController.isReplying = true
+                self?.currentViewController.commentID = (comment?.commentID)!
+                self?.currentViewController.notificationData = Notifications.init(eventKey: (comment?.eventKey)!, repliedTo: (comment?.uid)!, repliedBy: User.current.uid, content: User.current.username! + " has replied to your comment", commentId: (comment?.commentID)!, profilePic: (User.current.profilePic)!, type: "comment")
             })
             alertController.addAction(replyAction)
             alertController.addAction(cancelAction)
@@ -121,12 +171,9 @@ class CommentsSectionController: ListSectionController,CommentCellDelegate {
             
         }
 
-        
     }
-    
+
     deinit {
         print("CommentSectionController class removed from memory")
     }
-    
-    
 }

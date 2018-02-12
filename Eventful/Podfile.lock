@@ -4,6 +4,7 @@ PODS:
     - Alamofire (~> 4.5)
   - AlamofireNetworkActivityIndicator (2.2.0):
     - Alamofire (~> 4.5)
+  - BPStatusBarAlert (0.1.5)
   - Crashlytics (3.9.3):
     - Fabric (~> 1.7.2)
   - EZSwipeController (0.6.1)
@@ -18,6 +19,9 @@ PODS:
   - Firebase/Database (4.6.0):
     - Firebase/Core
     - FirebaseDatabase (= 4.1.1)
+  - Firebase/Messaging (4.6.0):
+    - Firebase/Core
+    - FirebaseMessaging (= 2.0.6)
   - Firebase/Storage (4.6.0):
     - Firebase/Core
     - FirebaseStorage (= 2.0.2)
@@ -37,15 +41,23 @@ PODS:
     - FirebaseCore (~> 4.0)
     - leveldb-library (~> 1.18)
   - FirebaseInstanceID (2.0.6)
+  - FirebaseMessaging (2.0.6):
+    - FirebaseAnalytics (~> 4.0)
+    - FirebaseCore (~> 4.0)
+    - FirebaseInstanceID (~> 2.0)
+    - GoogleToolboxForMac/Logger (~> 2.1)
+    - Protobuf (~> 3.1)
   - FirebaseStorage (2.0.2):
     - FirebaseAnalytics (~> 4.0)
     - FirebaseCore (~> 4.0)
     - GTMSessionFetcher/Core (~> 1.1)
-  - GeoFire (2.0.0):
+  - GeoFire (2.0.1):
     - Firebase/Database (~> 4.0)
   - GoogleToolboxForMac/DebugUtils (2.1.3):
     - GoogleToolboxForMac/Defines (= 2.1.3)
   - GoogleToolboxForMac/Defines (2.1.3)
+  - GoogleToolboxForMac/Logger (2.1.3):
+    - GoogleToolboxForMac/Defines (= 2.1.3)
   - GoogleToolboxForMac/NSData+zlib (2.1.3):
     - GoogleToolboxForMac/Defines (= 2.1.3)
   - GoogleToolboxForMac/NSDictionary+URLArguments (2.1.3):
@@ -65,6 +77,7 @@ PODS:
     - nanopb/encode (= 0.3.8)
   - nanopb/decode (0.3.8)
   - nanopb/encode (0.3.8)
+  - Protobuf (3.5.0)
   - SVProgressHUD (2.2.2)
   - SwiftLocation (3.1.0):
     - SwiftyJSON (~> 4.0.0-alpha.1)
@@ -76,6 +89,7 @@ DEPENDENCIES:
   - Alamofire
   - AlamofireImage
   - AlamofireNetworkActivityIndicator
+  - BPStatusBarAlert
   - Crashlytics
   - EZSwipeController
   - Fabric
@@ -83,6 +97,7 @@ DEPENDENCIES:
   - Firebase/Auth
   - Firebase/Core
   - Firebase/Database
+  - Firebase/Messaging
   - Firebase/Storage
   - GeoFire (from `https://github.com/firebase/geofire-objc.git`)
   - IGListKit (from `https://github.com/Instagram/IGListKit.git`, branch `master`)
@@ -101,7 +116,7 @@ EXTERNAL SOURCES:
 
 CHECKOUT OPTIONS:
   GeoFire:
-    :commit: 8c4a04b46dbb0959b91a9afd946798b5aeb8e8bf
+    :commit: a9083282fe04e8900553ebed8efb7c4f5b2998c6
     :git: https://github.com/firebase/geofire-objc.git
   IGListKit:
     :commit: 85b1a42ec6a949e1021d84cd7326a6216efa26f0
@@ -111,6 +126,7 @@ SPEC CHECKSUMS:
   Alamofire: 2d95912bf4c34f164fdfc335872e8c312acaea4a
   AlamofireImage: 2e784dc5d00f04903a52c1d169181469c805c3df
   AlamofireNetworkActivityIndicator: 81e1630e7cfed22a4e4e82a174c59e651dc4f8ca
+  BPStatusBarAlert: 0bc567e3a0f740189239f49c6c516bd61cb3c758
   Crashlytics: dbb07d01876c171c5ccbdf7826410380189e452c
   EZSwipeController: 255b0f8aed31963b0236802c926e27dd006a2532
   Fabric: 9cd6a848efcf1b8b07497e0b6a2e7d336353ba15
@@ -121,19 +137,21 @@ SPEC CHECKSUMS:
   FirebaseCore: 2a946ece8fbe3ce1fdeeb55324f273caade22df9
   FirebaseDatabase: 2e6e8e110b93b9a6e7aac71774c769a363035cb1
   FirebaseInstanceID: 24958382a1011bba5aaff37e334e7a650b9118f5
+  FirebaseMessaging: 75d83375b0f7a9911568d7bdd1a1a8261cbcbdef
   FirebaseStorage: 0cca42d9b889a0227c3a50121f45a4469fc9eb27
-  GeoFire: 12dde45333e02aace5a8d921749095b9135cabc1
+  GeoFire: 3e70a24019dc16816190f533c9cac0d1321c4a71
   GoogleToolboxForMac: 2501e2ad72a52eb3dfe7bd9aee7dad11b858bd20
   GTMSessionFetcher: ebaa1f79a5366922c1735f1566901f50beba23b7
   IGListKit: cb97f405ae43e59fe1da74271e19427ec20d3c07
   leveldb-library: 08cba283675b7ed2d99629a4bc5fd052cd2bb6a5
   nanopb: 5601e6bca2dbf1ed831b519092ec110f66982ca3
+  Protobuf: 8a9838fba8dae3389230e1b7f8c104aa32389c03
   SVProgressHUD: 59b2d3dabacbd051576d21d32293ca7228dc18b0
   SwiftLocation: 8f5ef4f510a45e43239de57a3145b3669301e898
   SwiftyCam: 86c114177a1b1f5dc2c82384577d0c20b922a31b
   SwiftyJSON: 070dabdcb1beb81b247c65ffa3a79dbbfb3b48aa
   TextFieldEffects: 4ee41b5216e674d55fb6ac25107bf1af7629176f
 
-PODFILE CHECKSUM: c7504be834c5837b5b049903a2decd9ab2630f91
+PODFILE CHECKSUM: accd4a4e1551d8ca80a2f09ffe17608cf0f1a130
 
 COCOAPODS: 1.3.1

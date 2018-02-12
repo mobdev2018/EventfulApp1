@@ -33,6 +33,45 @@ class ChatService {
         })
     }
     
+    static func sendReplyToMessage(_ message: Comments, eventKey: String, commentId: String, success: ((Bool) -> Void)? = nil) {
+        
+        var multiUpdateValue = [String : Any]()
+        
+        let messagesRef = Database.database().reference().child("comments").child(eventKey).child(commentId).child("replies").childByAutoId()
+        let messageKey = messagesRef.key
+        multiUpdateValue["Comments/\(eventKey)/\(commentId)/replies/\(messageKey)"] = message.dictValue
+        
+        let rootRef = Database.database().reference()
+        rootRef.updateChildValues(multiUpdateValue, withCompletionBlock: { (error, ref) in
+            if let error = error {
+                assertionFailure(error.localizedDescription)
+                success?(false)
+                return
+            }
+            
+            success?(true)
+        })
+    }
+    
+    static func sendNotification(_ notification: Notifications, success: ((Bool) -> Void)? = nil) {
+        
+        var multiUpdateValue = [String : Any]()
+        
+        let messagesRef = Database.database().reference().child("notifcations").child(notification.repliedTo).childByAutoId()
+        let messageKey = messagesRef.key
+        multiUpdateValue["Notifications/\(notification.repliedTo)/\(messageKey)"] = notification.dictValue
+        
+        let rootRef = Database.database().reference()
+        rootRef.updateChildValues(multiUpdateValue, withCompletionBlock: { (error, ref) in
+            if let error = error {
+                assertionFailure(error.localizedDescription)
+                success?(false)
+                return
+            }
+            success?(true)
+        })
+    }
+    
     static func flag(_ comment: CommentGrabbed) {
         // 1
         guard let commentKey = comment.commentID else { return }

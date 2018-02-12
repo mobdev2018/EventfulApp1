@@ -212,7 +212,7 @@ class EventDetailViewController: UIViewController {
                 self.currentEvent?.isAttending = !((self.currentEvent!.isAttending))
                 
                 self.currentEvent?.currentAttendCount += !((self.currentEvent!.isAttending)) ? 1 : -1
-                 self.attendingButton.setImage(#imageLiteral(resourceName: "walkingNotFiled").withRenderingMode(.alwaysOriginal), for: .normal)
+                self.attendingButton.setImage(#imageLiteral(resourceName: "walkingNotFiled").withRenderingMode(.alwaysOriginal), for: .normal)
             }
             
         }else{
@@ -231,7 +231,7 @@ class EventDetailViewController: UIViewController {
                 self.currentEvent?.isAttending = !((self.currentEvent!.isAttending))
                 
                 self.currentEvent?.currentAttendCount += !((self.currentEvent!.isAttending)) ? 1 : -1
-                 self.attendingButton.setImage(#imageLiteral(resourceName: "walkingFilled").withRenderingMode(.alwaysOriginal), for: .normal)
+                self.attendingButton.setImage(#imageLiteral(resourceName: "walkingFilled").withRenderingMode(.alwaysOriginal), for: .normal)
             }
             
         }

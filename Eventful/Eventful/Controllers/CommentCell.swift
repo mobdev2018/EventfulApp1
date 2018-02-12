@@ -45,8 +45,6 @@ class CommentCell: UICollectionViewCell {
             attributedText.append(NSAttributedString(string: timeAgoDisplay, attributes: [NSAttributedStringKey.font: UIFont.systemFont(ofSize: 12), NSAttributedStringKey.foregroundColor: UIColor.gray]))
           
             textView.attributedText = attributedText
-            
-            
         }
     }
     

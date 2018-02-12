@@ -38,7 +38,7 @@ struct PostService {
         var geoFireRef: DatabaseReference?
         var geoFire:GeoFire?
         geoFireRef = Database.database().reference().child("eventsbylocation")
-         geoFire = GeoFire(firebaseRef: geoFireRef)
+        geoFire = GeoFire(firebaseRef: geoFireRef!)
         let circleQuery = geoFire?.query(at: currentLocation, withRadius: 10.0)
         circleQuery?.observe(.keyEntered, with: { (key: String!, location: CLLocation!) in
             let dispatchGroup = DispatchGroup()
@@ -62,7 +62,7 @@ struct PostService {
         var geoFireRef: DatabaseReference?
         var geoFire:GeoFire?
         geoFireRef = Database.database().reference().child("featuredeventsbylocation")
-        geoFire = GeoFire(firebaseRef: geoFireRef)
+        geoFire = GeoFire(firebaseRef: geoFireRef!)
         let circleQuery = geoFire?.query(at: currentLocation, withRadius: 10.0)
         circleQuery?.observe(.keyEntered, with: { (key: String!, location: CLLocation!) in
             let dispatchGroup = DispatchGroup()

@@ -11,6 +11,9 @@ import UIKit
 
 class CommentInputTextView: UITextView {
     
+    fileprivate let tableView = UITableView()
+    public var userNameArray = [String]()
+ 
     fileprivate let placeholderLabel: UILabel = {
         let label = UILabel()
         label.text = "Enter Comment"
@@ -22,6 +25,10 @@ class CommentInputTextView: UITextView {
         placeholderLabel.isHidden = false
     }
     
+    func hidePlaceholderLabel() {
+        placeholderLabel.isHidden = true
+    }
+    
     override init(frame: CGRect, textContainer: NSTextContainer?) {
         super.init(frame: frame, textContainer: textContainer)
         
@@ -31,7 +38,6 @@ class CommentInputTextView: UITextView {
         placeholderLabel.anchor(top: topAnchor, left: leftAnchor, bottom: bottomAnchor, right: rightAnchor, paddingTop: 8, paddingLeft: 8, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
     }
     
-
     @objc func handleTextChange() {
         placeholderLabel.isHidden = !self.text.isEmpty
         NotificationCenter.default.removeObserver(self)
@@ -40,5 +46,4 @@ class CommentInputTextView: UITextView {
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
 }

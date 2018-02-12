@@ -82,6 +82,14 @@
 		5074F1C21F7648D10082E016 /* ImageCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5074F1C11F7648D10082E016 /* ImageCollectionViewCell.swift */; };
 		52D748CA1F84C17A00357DDF /* DynamoCollectionView.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 52D748C91F84C16E00357DDF /* DynamoCollectionView.framework */; };
 		52D748CB1F84C17A00357DDF /* DynamoCollectionView.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 52D748C91F84C16E00357DDF /* DynamoCollectionView.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		767C3B0F20283C6600C1807F /* Users.swift in Sources */ = {isa = PBXBuildFile; fileRef = 767C3B0E20283C6600C1807F /* Users.swift */; };
+		767C3B122028909E00C1807F /* Notifications.swift in Sources */ = {isa = PBXBuildFile; fileRef = 767C3B112028909E00C1807F /* Notifications.swift */; };
+		76D0E779202AD02C00A91374 /* UserSectionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76D0E778202AD02C00A91374 /* UserSectionController.swift */; };
+		76D0E781202ADD0100A91374 /* ABCAutoCompleteTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 76D0E780202ADD0100A91374 /* ABCAutoCompleteTextView.m */; };
+		76D0E785202B150A00A91374 /* SelectUserCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76D0E784202B150A00A91374 /* SelectUserCell.swift */; };
+		76F7B83E202331210053C4C6 /* ReplyToComment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76F7B83D202331210053C4C6 /* ReplyToComment.swift */; };
+		76F7B840202431FE0053C4C6 /* ReplyToCommentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76F7B83F202431FE0053C4C6 /* ReplyToCommentCell.swift */; };
+		76FEFE582029B09F004C3912 /* NotificationCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76FEFE572029B09F004C3912 /* NotificationCell.swift */; };
 		F277E01C2A00DE5C23A3A9DD /* Pods_Eventful.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1746B55EBA2E6BE797E81DA6 /* Pods_Eventful.framework */; };
 /* End PBXBuildFile section */
 
@@ -180,6 +188,17 @@
 		5074F1C11F7648D10082E016 /* ImageCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCollectionViewCell.swift; sourceTree = "<group>"; };
 		52D748C91F84C16E00357DDF /* DynamoCollectionView.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = DynamoCollectionView.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		5A2D82487A88CC695A029DCA /* Pods-Eventful.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Eventful.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Eventful/Pods-Eventful.debug.xcconfig"; sourceTree = "<group>"; };
+		767C3B0E20283C6600C1807F /* Users.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Users.swift; sourceTree = "<group>"; };
+		767C3B10202874FE00C1807F /* Eventful.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Eventful.entitlements; sourceTree = "<group>"; };
+		767C3B112028909E00C1807F /* Notifications.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Notifications.swift; sourceTree = "<group>"; };
+		76D0E778202AD02C00A91374 /* UserSectionController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSectionController.swift; sourceTree = "<group>"; };
+		76D0E77E202ADD0000A91374 /* Eventful-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Eventful-Bridging-Header.h"; sourceTree = "<group>"; };
+		76D0E77F202ADD0100A91374 /* ABCAutoCompleteTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ABCAutoCompleteTextView.h; sourceTree = "<group>"; };
+		76D0E780202ADD0100A91374 /* ABCAutoCompleteTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ABCAutoCompleteTextView.m; sourceTree = "<group>"; };
+		76D0E784202B150A00A91374 /* SelectUserCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectUserCell.swift; sourceTree = "<group>"; };
+		76F7B83D202331210053C4C6 /* ReplyToComment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReplyToComment.swift; sourceTree = "<group>"; };
+		76F7B83F202431FE0053C4C6 /* ReplyToCommentCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReplyToCommentCell.swift; sourceTree = "<group>"; };
+		76FEFE572029B09F004C3912 /* NotificationCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -221,6 +240,7 @@
 			isa = PBXGroup;
 			children = (
 				074290A1201ED04500C1D68D /* NotificationsViewController.swift */,
+				76FEFE572029B09F004C3912 /* NotificationCell.swift */,
 			);
 			name = Notifications;
 			sourceTree = "<group>";
@@ -283,11 +303,14 @@
 		07437F321F28CF2200CE728B /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				76D0E77F202ADD0100A91374 /* ABCAutoCompleteTextView.h */,
+				76D0E780202ADD0100A91374 /* ABCAutoCompleteTextView.m */,
 				50717DD91F6EFE2600AADB66 /* NSLayoutConstraint.swift */,
 				07437F3C1F28D4C500CE728B /* Extensions.swift */,
 				07D923A71F33C61D0069613D /* Storyboard+Utility.swift */,
 				076428B21F4B9289003D1B43 /* Storage.swift */,
 				0719CDFA1F5639690076E678 /* MGPaginationHelper.swift */,
+				76D0E77E202ADD0000A91374 /* Eventful-Bridging-Header.h */,
 			);
 			name = Extensions;
 			sourceTree = "<group>";
@@ -305,8 +328,11 @@
 			isa = PBXGroup;
 			children = (
 				07437F431F290F9F00CE728B /* User.swift */,
+				767C3B0E20283C6600C1807F /* Users.swift */,
+				76F7B83D202331210053C4C6 /* ReplyToComment.swift */,
 				07FF92B81F3627A300FC9716 /* Post.swift */,
 				07FF92C81F3B898C00FC9716 /* Comment.swift */,
+				767C3B112028909E00C1807F /* Notifications.swift */,
 				07B9145E1F3D4DE100A02952 /* CommentGrabbed.swift */,
 				071C9E0B1F3FD7DB0021D5A3 /* Event.swift */,
 				07F3EC5F1F4B7BE9005296EB /* Story.swift */,
@@ -421,12 +447,15 @@
 			isa = PBXGroup;
 			children = (
 				07B9145C1F3D416900A02952 /* CommentCell.swift */,
+				76F7B83F202431FE0053C4C6 /* ReplyToCommentCell.swift */,
 				0719CDF21F54CF580076E678 /* CommentsHeader.swift */,
 				07E932F61F768E8300A0A479 /* NewCommentsViewController.swift */,
 				07E932F81F76D13300A0A479 /* CommentsSectionController.swift */,
 				07E933001F7AF30600A0A479 /* CommentsHeaderSectionController.swift */,
 				07A15CFC1FFFF3E900CA4309 /* CommentInputAccessoryView.swift */,
 				07A15CFE20001B9900CA4309 /* CommentInputTextView.swift */,
+				76D0E778202AD02C00A91374 /* UserSectionController.swift */,
+				76D0E784202B150A00A91374 /* SelectUserCell.swift */,
 			);
 			name = Comments;
 			sourceTree = "<group>";
@@ -487,7 +516,7 @@
 					07437F151F267CA900CE728B = {
 						CreatedOnToolsVersion = 8.2.1;
 						DevelopmentTeam = W8XH6RU95C;
-						LastSwiftMigration = 0900;
+						LastSwiftMigration = 0910;
 						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
 							com.apple.Push = {
@@ -554,12 +583,14 @@
 				"${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework",
 				"${BUILT_PRODUCTS_DIR}/AlamofireImage/AlamofireImage.framework",
 				"${BUILT_PRODUCTS_DIR}/AlamofireNetworkActivityIndicator/AlamofireNetworkActivityIndicator.framework",
+				"${BUILT_PRODUCTS_DIR}/BPStatusBarAlert/BPStatusBarAlert.framework",
 				"${BUILT_PRODUCTS_DIR}/EZSwipeController/EZSwipeController.framework",
 				"${BUILT_PRODUCTS_DIR}/FaceAware/FaceAware.framework",
 				"${BUILT_PRODUCTS_DIR}/GTMSessionFetcher/GTMSessionFetcher.framework",
 				"${BUILT_PRODUCTS_DIR}/GeoFire/GeoFire.framework",
 				"${BUILT_PRODUCTS_DIR}/GoogleToolboxForMac/GoogleToolboxForMac.framework",
 				"${BUILT_PRODUCTS_DIR}/IGListKit/IGListKit.framework",
+				"${BUILT_PRODUCTS_DIR}/Protobuf/Protobuf.framework",
 				"${BUILT_PRODUCTS_DIR}/SVProgressHUD/SVProgressHUD.framework",
 				"${BUILT_PRODUCTS_DIR}/SwiftLocation/SwiftLocation.framework",
 				"${BUILT_PRODUCTS_DIR}/SwiftyCam/SwiftyCam.framework",
@@ -573,12 +604,14 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Alamofire.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AlamofireImage.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AlamofireNetworkActivityIndicator.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/BPStatusBarAlert.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/EZSwipeController.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FaceAware.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GTMSessionFetcher.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GeoFire.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleToolboxForMac.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/IGListKit.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Protobuf.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SVProgressHUD.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftLocation.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftyCam.framework",
@@ -653,17 +686,24 @@
 				079F52DC1F5E47EE0043F9EF /* DropDownCell.swift in Sources */,
 				0717022B2021104A0050F2C1 /* ForgotPasswordViewController.swift in Sources */,
 				07CB4B2E1F4B9EBB006E5D51 /* StroyCell.swift in Sources */,
+				76FEFE582029B09F004C3912 /* NotificationCell.swift in Sources */,
 				07FF92C91F3B898C00FC9716 /* Comment.swift in Sources */,
 				0746792C202F654D008E5CE4 /* Friend.swift in Sources */,
+				76F7B840202431FE0053C4C6 /* ReplyToCommentCell.swift in Sources */,
+				767C3B0F20283C6600C1807F /* Users.swift in Sources */,
+				76D0E785202B150A00A91374 /* SelectUserCell.swift in Sources */,
 				07087C1F1F4946DA0099B91F /* VideoViewController.swift in Sources */,
+				767C3B122028909E00C1807F /* Notifications.swift in Sources */,
 				077CB3C9200DF6DD008F3618 /* SideMenu.swift in Sources */,
 				07A15CFD1FFFF3E900CA4309 /* CommentInputAccessoryView.swift in Sources */,
 				0738DD391F3DC1340093F51B /* CustomImageView.swift in Sources */,
 				07437F1A1F267CA900CE728B /* AppDelegate.swift in Sources */,
 				07F3EC5B1F4B53A6005296EB /* StoriesViewController.swift in Sources */,
+				76D0E781202ADD0100A91374 /* ABCAutoCompleteTextView.m in Sources */,
 				07E932F91F76D13300A0A479 /* CommentsSectionController.swift in Sources */,
 				07467928202EE53A008E5CE4 /* FriendsEventsViewHeader.swift in Sources */,
 				074D75A0200C8E8C0044C3AD /* LocationService.swift in Sources */,
+				76F7B83E202331210053C4C6 /* ReplyToComment.swift in Sources */,
 				071C9E071F3F95530021D5A3 /* SearchViewController.swift in Sources */,
 				071C9E101F415E680021D5A3 /* AttendService.swift in Sources */,
 				077CB3CB200DF6EB008F3618 /* FriendsEventsView.swift in Sources */,
@@ -699,6 +739,7 @@
 				07370C841F4A4CC8006DC7A2 /* StorageService.swift in Sources */,
 				071F2E1C1F4E2FC500FEDDCF /* UserSearchCell.swift in Sources */,
 				070599AC1F6464C0006D1BF9 /* CircularTransition.swift in Sources */,
+				76D0E779202AD02C00A91374 /* UserSectionController.swift in Sources */,
 				07087C211F49470A0099B91F /* PhotoViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -833,13 +874,16 @@
 			baseConfigurationReference = 5A2D82487A88CC695A029DCA /* Pods-Eventful.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = Eventful/Eventful.entitlements;
 				DEVELOPMENT_TEAM = W8XH6RU95C;
 				INFOPLIST_FILE = "$(SRCROOT)/Eventful/Supporting/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.haipe.Haipe;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "Eventful/Eventful-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -851,13 +895,15 @@
 			baseConfigurationReference = 4D63B9A855CD185FB49E3D17 /* Pods-Eventful.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = Eventful/Eventful.entitlements;
 				DEVELOPMENT_TEAM = W8XH6RU95C;
 				INFOPLIST_FILE = "$(SRCROOT)/Eventful/Supporting/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.haipe.Haipe;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "Eventful/Eventful-Bridging-Header.h";
 				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";

@@ -20,24 +20,48 @@ struct FollowService {
         // 2
         //We write our new relationship to Firebase.
         let ref = Database.database().reference()
-        ref.updateChildValues(followData) { (error, _) in
-            if let error = error {
-                assertionFailure(error.localizedDescription)
+        // creating another ref to followers where we check user have followed other user any time
+        let reference = ref.child("followers/\(user.uid)/\(currentUID)")
+        reference.observeSingleEvent(of: .value, with: { (snapshot) in
+            ref.updateChildValues(followData) { (error, _) in
+                if let error = error {
+                    assertionFailure(error.localizedDescription)
+                }
+                // 3
+                // Here we are sending push to user whom we've started following
+                
+                //4
+                // If snapshot is returns null => user have never followed the other user and will push notification to him
+                
+                //5
+                // If User/You have ever followed/unfollowed other user ever and snapshot will return a boolean value and in that app will not send push notification
+                if (!snapshot.exists()){
+                    self.sendFollowNotificationToUser(otherUser: user)
+                }
+                // 6
+                //We return whether the update was successful based on whether there was an error.
+                success(error == nil)
             }
-            
-            // 3
-            //We return whether the update was successful based on whether there was an error.
-            success(error == nil)
-        }
+        })
     }
     
+    private static func sendFollowNotificationToUser(otherUser : User){
+        
+        let notification = Notifications.init(eventKey: "", repliedTo: otherUser.uid, repliedBy: User.current.uid, content: User.current.username! + " has started following you", commentId: "", profilePic: User.current.profilePic!, type: "follow")
+        // sending push notification to user
+        ChatService.sendNotification(notification)
+    }
     
     private static func unfollowUser(_ user: User, forCurrentUserWithSuccess success: @escaping (Bool) -> Void) {
         let currentUID = User.current.uid
         // Use NSNull() object instead of nil because updateChildValues expects type [Hashable : Any]
         // http://stackoverflow.com/questions/38462074/using-updatechildvalues-to-delete-from-firebase
-        let followData = ["followers/\(user.uid)/\(currentUID)" : NSNull(),
-                          "following/\(currentUID)/\(user.uid)" : NSNull()]
+        /*let followData = ["followers/\(user.uid)/\(currentUID)" : NSNull(),
+                          "following/\(currentUID)/\(user.uid)" : NSNull()]*/
+        
+        // Changing to false, to prevent unwanted follow notifications to user
+        let followData = ["followers/\(user.uid)/\(currentUID)" : false,
+                          "following/\(currentUID)/\(user.uid)" : false]
         
         let ref = Database.database().reference()
         ref.updateChildValues(followData) { (error, ref) in

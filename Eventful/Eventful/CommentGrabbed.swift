@@ -17,20 +17,24 @@ class CommentGrabbed: NSObject {
     var commentID: String? = ""
     let eventKey:String
     
-    init(user: User, dictionary: [String:Any]) {
+    var replies = [ReplyToComment]()
+    
+    init(user: User, dictionary: [String:Any], replies : [ReplyToComment]) {
         self.content = dictionary["content"] as? String ?? ""
         self.uid = dictionary["uid"] as? String ?? ""
         self.eventKey = dictionary["eventKey"] as? String ?? ""
         self.user = user
         let secondsFrom1970 = dictionary["timestamp"] as? Double ?? 0
         self.creationDate = Date(timeIntervalSince1970: secondsFrom1970)
+        self.replies = replies
     }
     
 }
 
-extension CommentGrabbed {
-    static public func ==(rhs: CommentGrabbed, lhs: CommentGrabbed) ->Bool{
-        return rhs.commentID == lhs.commentID
+
+extension CommentGrabbed{
+    static public func  ==(rhs: CommentGrabbed, lhs: CommentGrabbed) ->Bool{
+        return (rhs.commentID == lhs.commentID && rhs.replies.count == lhs.replies.count)
     }
 }
 
@@ -42,7 +46,7 @@ extension CommentGrabbed: ListDiffable{
         guard let object = object as? CommentGrabbed else {
             return false
         }
-        return  self.commentID==object.commentID
+        return  (self.commentID==object.commentID && self.replies.count == object.replies.count)
     }
 }
 

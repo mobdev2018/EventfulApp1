@@ -18,6 +18,7 @@ class User : NSObject {
         return ["username" : username as Any,
                 "profilePic" : profilePic as Any]
     }
+    
     //Standard User init()
     init(uid: String, username: String, profilePic: String) {
         self.uid = uid

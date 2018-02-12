@@ -18,15 +18,15 @@ struct AuthService {
         Auth.auth().signIn(withEmail: email, password: password) { (user, error) in
             if error != nil {
                 SVProgressHUD.showError(withStatus: "Errpr Signing In")
-
                 //loginErrors(error: error, controller: controller)
                 return completion(nil)
             }
+            let appDelegate = UIApplication.shared.delegate as! AppDelegate
+            UserService.updateDeviceToken(deviceToken: appDelegate.strDeviceToken, userId: (user?.uid)!)
             return completion(user)
         }
     }
-    
-    
+        
     // Creates an authenticated user on Firebase
     static func createUser(controller : UIViewController, email: String, password: String, completion: @escaping (FIRUser?) -> Void){
         Auth.auth().createUser(withEmail: email, password: password) { (user, error) in
@@ -35,7 +35,8 @@ struct AuthService {
                 return completion(nil)
             }
             SVProgressHUD.show(withStatus: "Creating Account....")
-
+            let appDelegate = UIApplication.shared.delegate as! AppDelegate
+            UserService.updateDeviceToken(deviceToken: appDelegate.strDeviceToken, userId: (Auth.auth().currentUser?.uid)!)
             return completion(Auth.auth().currentUser)
         }
     }

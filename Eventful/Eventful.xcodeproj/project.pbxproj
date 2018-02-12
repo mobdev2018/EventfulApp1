@@ -44,6 +44,11 @@
 		07437F461F2911E500CE728B /* AuthService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07437F451F2911E500CE728B /* AuthService.swift */; };
 		07437F491F29167000CE728B /* UserService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07437F481F29167000CE728B /* UserService.swift */; };
 		07437F511F2A63B600CE728B /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07437F501F2A63B600CE728B /* HomeViewController.swift */; };
+		07467928202EE53A008E5CE4 /* FriendsEventsViewHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07467927202EE53A008E5CE4 /* FriendsEventsViewHeader.swift */; };
+		0746792A202F63ED008E5CE4 /* EventDetailsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07467929202F63ED008E5CE4 /* EventDetailsCell.swift */; };
+		0746792C202F654D008E5CE4 /* Friend.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0746792B202F654D008E5CE4 /* Friend.swift */; };
+		0746792E202F657F008E5CE4 /* EventDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0746792D202F657F008E5CE4 /* EventDetails.swift */; };
+		07467930202F666C008E5CE4 /* EventCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0746792F202F666C008E5CE4 /* EventCollectionCell.swift */; };
 		074D75A0200C8E8C0044C3AD /* LocationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 074D759F200C8E8C0044C3AD /* LocationService.swift */; };
 		076428B31F4B9289003D1B43 /* Storage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 076428B21F4B9289003D1B43 /* Storage.swift */; };
 		077CB3C7200DF6D1008F3618 /* ImageViewForURL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 077CB3C6200DF6D0008F3618 /* ImageViewForURL.swift */; };
@@ -134,6 +139,11 @@
 		07437F451F2911E500CE728B /* AuthService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AuthService.swift; path = Services/AuthService.swift; sourceTree = "<group>"; };
 		07437F481F29167000CE728B /* UserService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UserService.swift; path = Services/UserService.swift; sourceTree = "<group>"; };
 		07437F501F2A63B600CE728B /* HomeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = HomeViewController.swift; path = Controllers/HomeViewController.swift; sourceTree = "<group>"; };
+		07467927202EE53A008E5CE4 /* FriendsEventsViewHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = FriendsEventsViewHeader.swift; path = Controllers/FriendsEventsViewHeader.swift; sourceTree = "<group>"; };
+		07467929202F63ED008E5CE4 /* EventDetailsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = EventDetailsCell.swift; path = Controllers/EventDetailsCell.swift; sourceTree = "<group>"; };
+		0746792B202F654D008E5CE4 /* Friend.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Friend.swift; sourceTree = "<group>"; };
+		0746792D202F657F008E5CE4 /* EventDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = EventDetails.swift; path = Controllers/EventDetails.swift; sourceTree = "<group>"; };
+		0746792F202F666C008E5CE4 /* EventCollectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = EventCollectionCell.swift; path = Controllers/EventCollectionCell.swift; sourceTree = "<group>"; };
 		074BE9E72028969C001231B9 /* Eventful.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Eventful.entitlements; sourceTree = "<group>"; };
 		074D759F200C8E8C0044C3AD /* LocationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = LocationService.swift; path = Services/LocationService.swift; sourceTree = "<group>"; };
 		076428B21F4B9289003D1B43 /* Storage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Storage.swift; sourceTree = "<group>"; };
@@ -300,6 +310,8 @@
 				07B9145E1F3D4DE100A02952 /* CommentGrabbed.swift */,
 				071C9E0B1F3FD7DB0021D5A3 /* Event.swift */,
 				07F3EC5F1F4B7BE9005296EB /* Story.swift */,
+				0746792B202F654D008E5CE4 /* Friend.swift */,
+				0746792D202F657F008E5CE4 /* EventDetails.swift */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -370,6 +382,9 @@
 				077CB3CA200DF6EA008F3618 /* FriendsEventsView.swift */,
 				077CB3C8200DF6DD008F3618 /* SideMenu.swift */,
 				077CB3C6200DF6D0008F3618 /* ImageViewForURL.swift */,
+				07467927202EE53A008E5CE4 /* FriendsEventsViewHeader.swift */,
+				07467929202F63ED008E5CE4 /* EventDetailsCell.swift */,
+				0746792F202F666C008E5CE4 /* EventCollectionCell.swift */,
 			);
 			name = "Root View";
 			sourceTree = "<group>";
@@ -626,6 +641,7 @@
 				07437F3D1F28D4C500CE728B /* Extensions.swift in Sources */,
 				50717DDA1F6EFE2600AADB66 /* NSLayoutConstraint.swift in Sources */,
 				0719CDF31F54CF580076E678 /* CommentsHeader.swift in Sources */,
+				0746792E202F657F008E5CE4 /* EventDetails.swift in Sources */,
 				07B9145F1F3D4DE100A02952 /* CommentGrabbed.swift in Sources */,
 				071F2E181F4CAFDE00FEDDCF /* VideoLauncher.swift in Sources */,
 				07A15CFF20001B9900CA4309 /* CommentInputTextView.swift in Sources */,
@@ -638,6 +654,7 @@
 				0717022B2021104A0050F2C1 /* ForgotPasswordViewController.swift in Sources */,
 				07CB4B2E1F4B9EBB006E5D51 /* StroyCell.swift in Sources */,
 				07FF92C91F3B898C00FC9716 /* Comment.swift in Sources */,
+				0746792C202F654D008E5CE4 /* Friend.swift in Sources */,
 				07087C1F1F4946DA0099B91F /* VideoViewController.swift in Sources */,
 				077CB3C9200DF6DD008F3618 /* SideMenu.swift in Sources */,
 				07A15CFD1FFFF3E900CA4309 /* CommentInputAccessoryView.swift in Sources */,
@@ -645,6 +662,7 @@
 				07437F1A1F267CA900CE728B /* AppDelegate.swift in Sources */,
 				07F3EC5B1F4B53A6005296EB /* StoriesViewController.swift in Sources */,
 				07E932F91F76D13300A0A479 /* CommentsSectionController.swift in Sources */,
+				07467928202EE53A008E5CE4 /* FriendsEventsViewHeader.swift in Sources */,
 				074D75A0200C8E8C0044C3AD /* LocationService.swift in Sources */,
 				071C9E071F3F95530021D5A3 /* SearchViewController.swift in Sources */,
 				071C9E101F415E680021D5A3 /* AttendService.swift in Sources */,
@@ -658,11 +676,13 @@
 				0719CDFB1F5639690076E678 /* MGPaginationHelper.swift in Sources */,
 				073AFDBF1F4309DC009D4773 /* UserHeader.swift in Sources */,
 				077CB3C7200DF6D1008F3618 /* ImageViewForURL.swift in Sources */,
+				0746792A202F63ED008E5CE4 /* EventDetailsCell.swift in Sources */,
 				071C9E0C1F3FD7DB0021D5A3 /* Event.swift in Sources */,
 				073AFDC11F43F5FF009D4773 /* UserEventAttendingCell.swift in Sources */,
 				07DDE4EB1FCDBAB600B6AAEC /* EventPromoVideoPlayer.swift in Sources */,
 				073AFDC31F4478CD009D4773 /* EventService.swift in Sources */,
 				07C2816C202BCD220098ACC5 /* SearchProfileViewController.swift in Sources */,
+				07467930202F666C008E5CE4 /* EventCollectionCell.swift in Sources */,
 				07D923AA1F34B44F0069613D /* SettingsViewController.swift in Sources */,
 				07437F511F2A63B600CE728B /* HomeViewController.swift in Sources */,
 				073AFDC51F45E4FB009D4773 /* FollowService.swift in Sources */,

@@ -46,6 +46,8 @@
     lazy var buttonFilter:UIButton={
         let button = UIButton()
         button.setImage(#imageLiteral(resourceName: "filter"), for: .normal)
+//        button.backgroundColor = .white
+//        button.layer.cornerRadius = button.frame.height/2
         button.addTarget(self, action: #selector(self.showFilter), for: .touchUpInside)
         return button
     }()

@@ -21,6 +21,7 @@ class Event {
     let currentEventCity: String
     let currentEventState: String
     let currentEventDate: String?
+    let currentEventEndDate: String?
     let currentEventTime: String?
     let currentEventEndTime: String?
     let currentEventZip: Int
@@ -31,7 +32,7 @@ class Event {
     var eventDictionary: [String: Any]{
         
         
-        let dateDict = ["start:date":currentEventDate, "start:time": currentEventTime,"end:time":currentEventEndTime]
+        let dateDict = ["start:date":currentEventDate, "start:time": currentEventTime,"end:time":currentEventEndTime, "end:date": currentEventEndDate]
         
         return ["event:name":currentEventName,"event:imageURL" : currentEventImage,
                 "event:description": currentEventDescription, "attend:count": currentAttendCount,
@@ -56,6 +57,8 @@ class Event {
         self.currentEventDate = eventDate?["start:date"] as? String ?? ""
         self.currentEventTime = eventDate?["start:time"] as? String ?? ""
         self.currentEventEndTime = eventDate?["end:time"] as? String ?? ""
+        self.currentEventEndDate = eventDate?["end:date"] as? String ?? ""
+
         
     }
     
@@ -73,6 +76,7 @@ class Event {
             let currentAttendCount = dict["attend:count"] as? Int,
             let eventDate = dict["event:date"] as? [String: Any],
             let currentEventDate = eventDate["start:date"] as? String,
+            let currentEventEndDate = eventDate["end:date"] as? String,
             let currentEventTime = eventDate["start:time"] as? String,
             let currentEventEndTime = eventDate["end:time"] as? String
             else { return nil }
@@ -90,6 +94,7 @@ class Event {
         self.currentEventTime = currentEventTime
         self.currentEventEndTime = currentEventEndTime
         self.category = category
+        self.currentEventEndDate = currentEventEndDate
     }
     
     

@@ -79,5 +79,32 @@ struct PostService {
         
     }
     
+    static func showFollowingEvent(for followerKey: String,completion: @escaping ([Event]) -> Void) {
+        //getting firebase root directory
+        var currentEvents = [Event]()
+        let ref = Database.database().reference()
+        ref.child("users").child(followerKey).child("Attending").observe(.value, with: { (attendingSnapshot) in
+             guard let eventKeys = attendingSnapshot.children.allObjects as? [DataSnapshot] else{return}
+            for event in eventKeys{
+                let dispatchGroup = DispatchGroup()
+                dispatchGroup.enter()
+                EventService.show(forEventKey: event.key, completion: { (event) in
+                    dispatchGroup.leave()
+                    currentEvents.append(event!)
+                })
+                dispatchGroup.notify(queue: .main, execute: {
+                    if currentEvents.count == eventKeys.count{
+                        completion(currentEvents)
+                    }
+                })
+            }
+            
+        }) { (err) in
+            print("couldn't grab event info")
+        }
+    
+        
+    }
+    
 }
 

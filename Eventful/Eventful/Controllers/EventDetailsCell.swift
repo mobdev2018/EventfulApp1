@@ -8,25 +8,24 @@
 
 import UIKit
 
-class EventDetailsCell:UICollectionViewCell{
-    
-    var details:EventDetails?{
+class EventDetailsCell: UITableViewCell {
+    var details:Event?{
         didSet{
-            if let value = details?.name?.uppercased(){
+            if let value = details?.currentEventName.uppercased(){
                 labelDesciption.text = value
             }else{
                 labelDesciption.text = "Uknown"
             }
-            if let value = details?.startDate{
+            if let value = details?.currentEventDate{
                 var dateString = ""
                 dateString = "From "+value
-                if let startTime = details?.startTime{
+                if let startTime = details?.currentEventTime{
                     dateString += ",\(startTime)"
                 }
-                if let end = details?.endDate{
+                if let end = details?.currentEventEndDate{
                     dateString += " to \(end)"
                 }
-                if let endTime = details?.endTime{
+                if let endTime = details?.currentEventEndTime{
                     dateString += ",\(endTime)"
                 }
                 labelDate.text = dateString
@@ -34,12 +33,12 @@ class EventDetailsCell:UICollectionViewCell{
                 labelDate.text = "Uknown"
             }
             
-            guard let url = URL(string: (details?.imageURL)!) else { return }
-            imageView.af_setImage(withURL: url)
+            guard let url = URL(string: (details?.currentEventImage)!) else { return }
+            eventImageView.af_setImage(withURL: url)
         }
     }
     
-    lazy var imageView: CustomImageView = {
+    lazy var eventImageView: CustomImageView = {
         let eventImageView = CustomImageView()
         eventImageView.layer.masksToBounds = true
         eventImageView.layer.borderColor = UIColor.lightGray.cgColor
@@ -50,10 +49,6 @@ class EventDetailsCell:UICollectionViewCell{
         eventImageView.translatesAutoresizingMaskIntoConstraints = false
         return eventImageView
     }()
-    
-    @objc func eventDetailTransition (){
-        print("cell tapped")
-    }
     
     let labelDesciption:UILabel={
         let label = UILabel()
@@ -73,33 +68,29 @@ class EventDetailsCell:UICollectionViewCell{
         label.adjustsFontSizeToFitWidth = true
         return label
     }()
-    
-    let seperator1:UIView={
-        let view = UIView()
-        view.backgroundColor = .lightGray
-        return view
-    }()
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        addSubview(seperator1)
-        addConstraintsWithFormatt("H:|[v0]|", views: seperator1)
-        addConstraintsWithFormatt("V:[v0(0.35)]|", views: seperator1)
-        addSubview(imageView)
+
+    @objc func eventDetailTransition (){
+        print("cell tapped")
+    }
+
+    override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
+        addSubview(eventImageView)
         let sizeOfImage:CGFloat = 33
-        imageView.heightAnchor.constraint(equalToConstant: sizeOfImage).isActive = true
-        imageView.widthAnchor.constraint(equalToConstant: sizeOfImage).isActive = true
-        imageView.layer.cornerRadius = sizeOfImage/2
-        imageView.anchor(top: self.topAnchor, left: self.leftAnchor, bottom: nil, right: nil, paddingTop: 4.5, paddingLeft: 5, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        eventImageView.heightAnchor.constraint(equalToConstant: sizeOfImage).isActive = true
+        eventImageView.widthAnchor.constraint(equalToConstant: sizeOfImage).isActive = true
+        eventImageView.layer.cornerRadius = sizeOfImage/2
+        eventImageView.anchor(top: self.topAnchor, left: self.leftAnchor, bottom: nil, right: nil, paddingTop: 4.5, paddingLeft: 45, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
         addSubview(labelDesciption)
         addSubview(labelDate)
-        labelDesciption.anchor(top: self.topAnchor, left: imageView.rightAnchor, bottom: nil, right: nil, paddingTop: 5, paddingLeft: 5, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        labelDesciption.anchor(top: self.topAnchor, left: eventImageView.rightAnchor, bottom: nil, right: nil, paddingTop: 5, paddingLeft: 5, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
         
-        labelDate.anchor(top: labelDesciption.topAnchor, left: imageView.rightAnchor, bottom: nil, right: nil, paddingTop: 20, paddingLeft: 5, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
-        
+        labelDate.anchor(top: labelDesciption.topAnchor, left: eventImageView.rightAnchor, bottom: nil, right: nil, paddingTop: 20, paddingLeft: 5, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+
+
     }
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
 }

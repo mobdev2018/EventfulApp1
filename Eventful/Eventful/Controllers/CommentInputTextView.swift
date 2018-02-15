@@ -34,7 +34,10 @@ class CommentInputTextView: UITextView {
 
     @objc func handleTextChange() {
         placeholderLabel.isHidden = !self.text.isEmpty
+    }
+    deinit {
         NotificationCenter.default.removeObserver(self)
+
     }
     
     required init?(coder aDecoder: NSCoder) {

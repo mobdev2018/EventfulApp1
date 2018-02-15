@@ -16,8 +16,8 @@ protocol CommentsSectionDelegate: class {
 }
 class CommentsSectionController: ListSectionController,CommentCellDelegate {
     weak var delegate: CommentsSectionDelegate? = nil
-   weak var comment: CommentGrabbed?
-    let userProfileController = ProfileeViewController(collectionViewLayout: UICollectionViewFlowLayout())
+    weak var comment: CommentGrabbed?
+    let userProfileController = SearchProfileeViewController(collectionViewLayout: UICollectionViewFlowLayout())
     var eventKey: String?
     override init() {
         super.init()
@@ -114,14 +114,21 @@ class CommentsSectionController: ListSectionController,CommentCellDelegate {
     }
     func handleProfileTransition(tapGesture: UITapGestureRecognizer){
         userProfileController.user = comment?.user
+        userProfileController.navigationItem.title = comment?.user?.username
+        userProfileController.navigationItem.hidesBackButton = true
+        let backButton = UIBarButtonItem(image: UIImage(named: "icons8-Back-64"), style: .plain, target: self, action: #selector(GoBack))
+        userProfileController.navigationItem.leftBarButtonItem = backButton
+        let navController = UINavigationController(rootViewController: userProfileController)
         if Auth.auth().currentUser?.uid != comment?.uid{
-                    self.viewController?.present(userProfileController, animated: true, completion: nil)
+                    self.viewController?.present(navController, animated: true, completion: nil)
         }else{
             //do nothing
             
         }
-
-        
+    }
+    
+    @objc func GoBack(){
+        self.viewController?.dismiss(animated: true, completion: nil)
     }
     
     deinit {

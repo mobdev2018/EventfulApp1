@@ -7,8 +7,11 @@
 //
 
 import UIKit
-
+protocol TransitionDelegate:NSObjectProtocol{
+    func eventDetailTransition(currentEvent: Event)
+}
 class EventDetailsCell: UITableViewCell {
+    weak var transitionDelegate:TransitionDelegate?
     var details:Event?{
         didSet{
             if let value = details?.currentEventName.uppercased(){
@@ -69,8 +72,11 @@ class EventDetailsCell: UITableViewCell {
         return label
     }()
 
-    @objc func eventDetailTransition (){
-        print("cell tapped")
+    @objc func eventDetailTransition(currentEvent: Event){
+        print("View events button touched")
+        if let delegate = self.transitionDelegate{
+            delegate.eventDetailTransition(currentEvent: details!)
+        }
     }
 
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {

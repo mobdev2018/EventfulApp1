@@ -9,8 +9,8 @@
 import Foundation
 import FirebaseDatabase.FIRDataSnapshot
 
-
-class Event {
+@objc(Event)
+class Event:NSObject{
     var key: String?
     let currentEventName: String
     let currentEventImage: String

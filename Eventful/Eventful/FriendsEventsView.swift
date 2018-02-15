@@ -9,7 +9,7 @@
 import UIKit
 import Firebase
 
-class FriendsEventsView: UITableViewController{
+class FriendsEventsView: UITableViewController,TransitionDelegate{
     var cellID = "cellID"
     var friends = [Friend]()
     var attendingEvents = [Event]()
@@ -17,6 +17,7 @@ class FriendsEventsView: UITableViewController{
     var currentUserName: String?
     var currentUserPic: String?
     var currentEventKey: String?
+    let currentEventDetailTransition = EventDetailViewController()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -62,7 +63,7 @@ class FriendsEventsView: UITableViewController{
         return friends.count
     }
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        print(friends[section].events.count)
+       // print(friends[section].events.count)
         return friends[section].collapsed ? 0 : friends[section].events.count
     }
     func tableView(_ tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
@@ -71,6 +72,7 @@ class FriendsEventsView: UITableViewController{
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: cellID) as! EventDetailsCell? ?? EventDetailsCell(style: .default, reuseIdentifier: cellID)
        // print(indexPath.row)
+        cell.transitionDelegate = self
         cell.details = friends[indexPath.section].events[indexPath.row]
         return cell
     }
@@ -79,6 +81,7 @@ class FriendsEventsView: UITableViewController{
         let header = tableView.dequeueReusableHeaderFooterView(withIdentifier: "header") as? CollapsibleTableViewHeader ?? CollapsibleTableViewHeader(reuseIdentifier: "header")
        // print(section)
         header.arrowLabel.text = ">"
+        header.arrowLabel.textColor = UIColor.black
         header.setCollapsed(friends[section].collapsed)
         print(friends[section].collapsed)
         header.section = section
@@ -88,6 +91,11 @@ class FriendsEventsView: UITableViewController{
     }
     override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return 50
+    }
+    func eventDetailTransition(currentEvent: Event) {
+        print("Entered Table View")
+//        currentEventDetailTransition.currentEvent = currentEvent
+//        present(currentEventDetailTransition, animated: true, completion: nil)
     }
     
    func fetchEventsFromServer(_ completion: @escaping (_ error: Error?) -> Void ){

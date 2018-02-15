@@ -12,7 +12,7 @@ import FirebaseDatabase
 
 class EventDetailViewController: UIViewController {
     var imageURL: URL?
-    var activityIndicator: UIActivityIndicatorView?
+    //var activityIndicator: UIActivityIndicatorView?
     var currentEvent : Event?{
         didSet{
             imageURL = URL(string: (currentEvent?.currentEventImage)!)

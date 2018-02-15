@@ -14,9 +14,8 @@ protocol CollapsibleTableViewHeaderDelegate {
 class CollapsibleTableViewHeader:UITableViewHeaderFooterView {
     var delegate: CollapsibleTableViewHeaderDelegate?
     var section: Int = 0
-    let arrowLabel: UILabel = {
+    lazy var arrowLabel: UILabel = {
         let arrowLabel = UILabel()
-        arrowLabel.textColor = .black
         return arrowLabel
     }()
     var friendDetails: Friend?{

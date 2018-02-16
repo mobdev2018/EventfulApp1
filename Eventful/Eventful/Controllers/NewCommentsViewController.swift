@@ -174,6 +174,10 @@ class NewCommentsViewController: UIViewController, UITextFieldDelegate,CommentsS
         let backButton = UIBarButtonItem(image: UIImage(named: "icons8-Back-64"), style: .plain, target: self, action: #selector(GoBack))
         self.navigationItem.leftBarButtonItem = backButton
     }
+    deinit {
+        print("NewCommentsController class removed from memory")
+        NotificationCenter.default.removeObserver(self)
+    }
     
     @objc func GoBack(){
         print("BACK TAPPED")
@@ -196,7 +200,6 @@ class NewCommentsViewController: UIViewController, UITextFieldDelegate,CommentsS
     }
     
     override func viewWillDisappear(_ animated: Bool) {
-        NotificationCenter.default.removeObserver(self)
         self.view.removeFromSuperview()
     }
 
@@ -209,10 +212,7 @@ class NewCommentsViewController: UIViewController, UITextFieldDelegate,CommentsS
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    deinit {
-        print("NewCommentsController class removed from memory")
-        
-    }
+
     
 }
 

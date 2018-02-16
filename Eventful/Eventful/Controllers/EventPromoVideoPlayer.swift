@@ -60,7 +60,7 @@ class EventPromoVideoPlayer: UIViewController {
         NotificationCenter.default.addObserver(self, selector: #selector(playerItemDidReachEnd), name: NSNotification.Name.AVPlayerItemDidPlayToEndTime, object: self.player!.currentItem)
         //TODO: Need to fix frame of x and y
     }
-    override func viewWillDisappear(_ animated: Bool) {
+    deinit {
         NotificationCenter.default.removeObserver(self)
     }
     

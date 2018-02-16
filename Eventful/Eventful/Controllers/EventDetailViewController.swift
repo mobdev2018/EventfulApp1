@@ -100,9 +100,9 @@ class EventDetailViewController: UIViewController {
     }
     
     deinit {
-        print("EventDetailViewController class removed from memory")
+        NotificationCenter.default.removeObserver(self)
     }
-
+    
     @objc func handlePromoVid(){
         print("Image tappped")
         print(eventPromo)
@@ -241,10 +241,10 @@ class EventDetailViewController: UIViewController {
         self.view.removeFromSuperview()
         self.blurryBackGround.image = nil
         self.currentEventImage.image = nil
-        NotificationCenter.default.removeObserver(self)
-
 
     }
+    
+
     //will add the button to add a video or picture to the story
     lazy var addToStoryButton : UIButton =  {
         let addToStory = UIButton(type: .system)

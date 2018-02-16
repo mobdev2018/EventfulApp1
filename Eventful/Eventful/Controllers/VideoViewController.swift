@@ -100,7 +100,7 @@ class VideoViewController: UIViewController {
         //        nextButton.bottomAnchor.constraint(equalTo: margins.bottomAnchor, constant: -20).isActive = true
         
     }
-    override func viewWillDisappear(_ animated: Bool) {
+    deinit {
         NotificationCenter.default.removeObserver(self)
     }
     

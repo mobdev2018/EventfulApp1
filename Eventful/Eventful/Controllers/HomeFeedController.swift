@@ -103,9 +103,9 @@ class HomeFeedController: UIViewController, UIGestureRecognizerDelegate {
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
         self.view.removeFromSuperview()
-        NotificationCenter.default.removeObserver(self)
     }
     deinit {
+        NotificationCenter.default.removeObserver(self)
         print("EventDetailViewController class removed from memory")
     }
 

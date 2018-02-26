@@ -71,7 +71,7 @@ class CommentCell: UICollectionViewCell {
     
     lazy var flagButton: UIButton = {
         let flagButton = UIButton(type: .system)
-        flagButton.setImage(#imageLiteral(resourceName: "icons8-Info-64"), for: .normal)
+        flagButton.setImage(#imageLiteral(resourceName: "icons8-reply-arrow-50").withRenderingMode(.alwaysOriginal), for: .normal)
         flagButton.addTarget(self, action: #selector(optionsButtonTapped), for: .touchUpInside)
         return flagButton
     }()

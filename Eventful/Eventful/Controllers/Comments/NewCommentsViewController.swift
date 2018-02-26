@@ -18,6 +18,8 @@ class NewCommentsViewController: UIViewController, UITextFieldDelegate,CommentsS
     var bottomConstraint: NSLayoutConstraint?
     public let addHeader = "addHeader" as ListDiffable
     public var eventKey = ""
+    var isReplying = false
+    var notificationData : Notifications!
     //This creates a lazily-initialized variable for the IGListAdapter. The initializer requires three parameters:
     //1 updater is an object conforming to IGListUpdatingDelegate, which handles row and section updates. IGListAdapterUpdater is a default implementation that is suitable for your usage.
     //2 viewController is a UIViewController that houses the adapter. This view controller is later used for navigating to other view controllers.
@@ -234,7 +236,7 @@ extension NewCommentsViewController: ListAdapterDataSource {
 //            return CommentsHeaderSectionController()
 //        }
         let sectionController = CommentsSectionController()
-        
+        sectionController.currentViewController = self
         sectionController.delegate = self
         
         return sectionController
@@ -250,7 +252,22 @@ extension NewCommentsViewController: ListAdapterDataSource {
 
 extension NewCommentsViewController {
     func sendMessage(_ message: Comments) {
-        ChatService.sendMessage(message, eventKey: eventKey)
+        //two cases that need to be handled
+        //if it is a reply we need to also send a notificaiton
+        //if it is a regular comment we just post it
+        if isReplying {
+            //First send message
+            ChatService.sendMessage(message, eventKey: eventKey)
+            //send notification
+            ChatService.sendNotification(notificationData)
+            //set back to false when done
+            isReplying = false
+            return
+        }
+        else{
+            ChatService.sendMessage(message, eventKey: eventKey)
+
+        }
         
     }
 }

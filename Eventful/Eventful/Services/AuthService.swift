@@ -22,6 +22,8 @@ struct AuthService {
                 //loginErrors(error: error, controller: controller)
                 return completion(nil)
             }
+            let appDelegate = UIApplication.shared.delegate as! AppDelegate
+            UserService.updateDeviceToken(deviceToken: appDelegate.strDeviceToken, userId: (user?.uid)!)
             return completion(user)
         }
     }
@@ -35,7 +37,6 @@ struct AuthService {
                 return completion(nil)
             }
             SVProgressHUD.show(withStatus: "Creating Account....")
-
             return completion(Auth.auth().currentUser)
         }
     }

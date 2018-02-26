@@ -7,8 +7,7 @@
 //
 
 import Foundation
-import FirebaseDatabase
-import FirebaseStorage
+import Firebase
 import  UIKit
 
 
@@ -18,10 +17,13 @@ struct UserService {
     static func create(_ firUser: FIRUser, username: String,profilePic: String, completion: @escaping (User?) -> Void) {
       //  print(profilePic)
      //   print(username)
+        guard let fcmToken = Messaging.messaging().fcmToken else {
+            return
+        }
         
         print("")
         let userAttrs = ["username": username,
-                         "profilePic": profilePic] as [String : Any]
+                         "profilePic": profilePic,"fcmToken":fcmToken] as [String : Any]
         //creats the path in the database where we want our user attributes to be created
         //Also sets the value at that point in the tree to the user Attributes array
         let ref = Database.database().reference().child("users").child(firUser.uid)
@@ -33,6 +35,22 @@ struct UserService {
             ref.observeSingleEvent(of: .value, with: { (snapshot) in
                 let user = User(snapshot: snapshot)
                 completion(user)
+            })
+        }
+    }
+    // Will update device token for the user
+    static func updateDeviceToken(deviceToken: String, userId: String){
+        let userAttrs = ["fcmToken": deviceToken] as [String : Any]
+        
+        let ref = Database.database().reference().child("users").child(userId)
+        ref.updateChildValues(userAttrs){ (error, ref) in
+            if let error = error {
+                assertionFailure(error.localizedDescription)
+                return
+            }
+            ref.observeSingleEvent(of: .value, with: { (snapshot) in
+                let updatedUser = User(snapshot: snapshot)
+                print(updatedUser as Any)
             })
         }
     }

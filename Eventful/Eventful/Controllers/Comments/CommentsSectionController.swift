@@ -17,6 +17,7 @@ protocol CommentsSectionDelegate: class {
 class CommentsSectionController: ListSectionController,CommentCellDelegate {
     weak var delegate: CommentsSectionDelegate? = nil
     weak var comment: CommentGrabbed?
+    var currentViewController: NewCommentsViewController!
     let userProfileController = SearchProfileeViewController(collectionViewLayout: UICollectionViewFlowLayout())
     var eventKey: String?
     override init() {
@@ -87,7 +88,8 @@ class CommentsSectionController: ListSectionController,CommentCellDelegate {
             let replyAction = UIAlertAction(title: "Reply to Comment", style: .default, handler: { [weak self](_) in
                 //do something here later to facilitate reply comment functionality
                 print("Attempting to reply to user \(comment?.user?.username) comment")
-                
+                //begin comment reply functionality
+                self?.handleReply()
             })
             alertController.addAction(replyAction)
             alertController.addAction(cancelAction)
@@ -125,6 +127,20 @@ class CommentsSectionController: ListSectionController,CommentCellDelegate {
             //do nothing
             
         }
+    }
+    
+    private func handleReply(){
+       //will eliminate the placeholderText in the textView
+        self.currentViewController.containerView.commentTextView.hidePlaceholderLabel()
+        //will add the user's username and @symbol into the textView to get ready for reply
+        self.currentViewController.containerView.commentTextView.text = "@" + (comment?.user?.username)! + " "
+        //assures that the textView becomes the first respnder so the keyboard pops up and props you to tyoe
+        self.currentViewController.containerView.commentTextView.becomeFirstResponder()
+        //sets the isReplyingVariable to know if I am replying to someones comment or not
+        self.currentViewController.isReplying = true
+        
+        self.currentViewController.notificationData = Notifications.init(eventKey: (comment?.eventKey)!, repliedTo: (comment?.uid)!, repliedBy: User.current.uid, content: User.current.username! + " has replied to your comment", commentId: (comment?.commentID)!, profilePic: (User.current.profilePic)!, type: "comment")
+        
     }
     
     @objc func GoBack(){

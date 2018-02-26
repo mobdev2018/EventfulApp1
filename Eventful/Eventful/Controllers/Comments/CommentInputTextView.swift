@@ -21,7 +21,9 @@ class CommentInputTextView: UITextView {
     func showPlaceholderLabel() {
         placeholderLabel.isHidden = false
     }
-    
+    func hidePlaceholderLabel() {
+        placeholderLabel.isHidden = true
+    }
     override init(frame: CGRect, textContainer: NSTextContainer?) {
         super.init(frame: frame, textContainer: textContainer)
         

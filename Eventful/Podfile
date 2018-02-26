@@ -8,6 +8,8 @@ target 'Eventful' do
     pod 'Firebase/Auth’
     pod 'Firebase/Database’
     pod 'Firebase/Storage’
+    pod 'Firebase/Messaging’
+    pod 'BPStatusBarAlert'
     pod ’SwiftyJSON’
     pod 'Alamofire'
     pod 'AlamofireImage'

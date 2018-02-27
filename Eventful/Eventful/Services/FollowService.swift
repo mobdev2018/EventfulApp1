@@ -36,8 +36,13 @@ struct FollowService {
         let currentUID = User.current.uid
         // Use NSNull() object instead of nil because updateChildValues expects type [Hashable : Any]
         // http://stackoverflow.com/questions/38462074/using-updatechildvalues-to-delete-from-firebase
+        
+        let messagesRef = Database.database().reference().child("notifcations").child(user.uid).child(currentUID)
+        let messageKey = messagesRef.key
+
         let followData = ["followers/\(user.uid)/\(currentUID)" : NSNull(),
-                          "following/\(currentUID)/\(user.uid)" : NSNull()]
+                          "following/\(currentUID)/\(user.uid)" : NSNull(),
+                          "Notifications/\(user.uid)/\(currentUID)" : NSNull()]
         
         let ref = Database.database().reference()
         ref.updateChildValues(followData) { (error, ref) in
@@ -47,6 +52,26 @@ struct FollowService {
             
             success(error == nil)
         }
+    }
+    
+    static func sendFollowNotification(_ notification: FollowNotification, success: ((Bool) -> Void)? = nil) {
+        
+        var multiUpdateValue = [String : Any]()
+        
+        let messagesRef = Database.database().reference().child("notifcations").child(notification.followee).child(notification.follower)
+        let messageKey = messagesRef.key
+        
+        multiUpdateValue["Notifications/\(notification.followee)/\(messageKey)"] = notification.dictValue
+        
+        let rootRef = Database.database().reference()
+        rootRef.updateChildValues(multiUpdateValue, withCompletionBlock: { (error, ref) in
+            if let error = error {
+                assertionFailure(error.localizedDescription)
+                success?(false)
+                return
+            }
+            success?(true)
+        })
     }
     
     

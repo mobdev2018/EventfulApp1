@@ -21,6 +21,7 @@ class UserProfileHeader: UICollectionViewCell {
             setupUserInteraction()
         }
     }
+    var followNotificationData : FollowNotification!
     weak var profileViewController: ProfileeViewController?
     weak var searchProfileViewController: SearchProfileeViewController?
 
@@ -174,6 +175,8 @@ class UserProfileHeader: UICollectionViewCell {
                 
                 followee?.isFollowed = !(followee?.isFollowed)!
                 print(followee?.isFollowed ?? "true")
+                self.followNotificationData = FollowNotification.init(followee: (self.user?.uid)!, follower: User.current.uid, content: User.current.username! + " has followed you", profilePic: User.current.profilePic!, type: "follow")
+                FollowService.sendFollowNotification(self.followNotificationData)
                 print("Successfully followed user: ", self.user?.username ?? "")
                 self.followButton.setTitle("Unfollow", for: .normal)
                 self.followButton.backgroundColor = .white

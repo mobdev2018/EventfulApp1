@@ -71,6 +71,7 @@
 		0747AA3D20377A2900F725C7 /* NSLayoutConstraint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0747AA3C20377A2900F725C7 /* NSLayoutConstraint.swift */; };
 		074D75A0200C8E8C0044C3AD /* LocationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 074D759F200C8E8C0044C3AD /* LocationService.swift */; };
 		0753E7D72041E2AF00B882E4 /* Notification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0753E7D62041E2AF00B882E4 /* Notification.swift */; };
+		0753E7D92043CF9E00B882E4 /* FollowNotification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0753E7D82043CF9E00B882E4 /* FollowNotification.swift */; };
 		07D923A81F33C61D0069613D /* Storyboard+Utility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07D923A71F33C61D0069613D /* Storyboard+Utility.swift */; };
 		07F3EC591F4A57C3005296EB /* PostService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07F3EC581F4A57C3005296EB /* PostService.swift */; };
 		07F3EC5E1F4B7B28005296EB /* StoryService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07F3EC5D1F4B7B28005296EB /* StoryService.swift */; };
@@ -165,6 +166,7 @@
 		074BE9E72028969C001231B9 /* Eventful.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Eventful.entitlements; sourceTree = "<group>"; };
 		074D759F200C8E8C0044C3AD /* LocationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = LocationService.swift; path = Services/LocationService.swift; sourceTree = "<group>"; };
 		0753E7D62041E2AF00B882E4 /* Notification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Notification.swift; path = Models/Notification.swift; sourceTree = "<group>"; };
+		0753E7D82043CF9E00B882E4 /* FollowNotification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = FollowNotification.swift; path = Models/FollowNotification.swift; sourceTree = "<group>"; };
 		07D923A71F33C61D0069613D /* Storyboard+Utility.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "Storyboard+Utility.swift"; path = "Extensions/Storyboard+Utility.swift"; sourceTree = "<group>"; };
 		07F3EC581F4A57C3005296EB /* PostService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PostService.swift; path = Services/PostService.swift; sourceTree = "<group>"; };
 		07F3EC5D1F4B7B28005296EB /* StoryService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = StoryService.swift; path = Services/StoryService.swift; sourceTree = "<group>"; };
@@ -308,6 +310,7 @@
 				07FF92C81F3B898C00FC9716 /* Comment.swift */,
 				07F3EC5F1F4B7BE9005296EB /* Story.swift */,
 				0753E7D62041E2AF00B882E4 /* Notification.swift */,
+				0753E7D82043CF9E00B882E4 /* FollowNotification.swift */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -633,6 +636,7 @@
 				0747AA2A20375E2A00F725C7 /* StoriesViewController.swift in Sources */,
 				0747A9EE20375CF300F725C7 /* CollapsibleTableViewHeader.swift in Sources */,
 				0747A9F020375CF300F725C7 /* SideMenu.swift in Sources */,
+				0753E7D92043CF9E00B882E4 /* FollowNotification.swift in Sources */,
 				0747A9FF20375D3B00F725C7 /* ProfileeViewController.swift in Sources */,
 				0747AA0820375D6E00F725C7 /* CircularTransition.swift in Sources */,
 				07437F3D1F28D4C500CE728B /* Extensions.swift in Sources */,

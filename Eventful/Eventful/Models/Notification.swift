@@ -121,7 +121,7 @@ extension Notifications{
 }
 extension Notifications: ListDiffable{
     public func diffIdentifier() -> NSObjectProtocol {
-        if let currentCommentID = commentId {
+        if let currentCommentID = key {
             return currentCommentID as NSObjectProtocol
         }else {
             guard let currentFollowee = followee else {
@@ -134,7 +134,7 @@ extension Notifications: ListDiffable{
         guard let object = object as? Notifications else {
             return false
         }
-        return  self.commentId==object.commentId || self.followee == object.followee
+        return  self.key==object.key || self.followee == object.followee
     }
 }
 

@@ -17,7 +17,11 @@ class NotificationsViewController: UIViewController,NotificationsSectionDelegate
     var emptyLabel: UILabel?
     //array of notifications which will be loaded by a service function
     var notifs = [Notifications]()
-    var notifRef: DatabaseReference?
+    var noti: Notifications!
+    var notiHandle: DatabaseHandle = 0
+    var notiRef: DatabaseReference?
+    var observeNotiHandle: DatabaseHandle = 0
+    var observeNotiRef: DatabaseReference?
     
     //This creates a lazily-initialized variable for the IGListAdapter. The initializer requires three parameters:
     //1 updater is an object conforming to IGListUpdatingDelegate, which handles row and section updates. IGListAdapterUpdater is a default implementation that is suitable for your usage.
@@ -38,36 +42,52 @@ class NotificationsViewController: UIViewController,NotificationsSectionDelegate
         return view
     }()
     
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         //add line seperator to distance collectionView from top tab bar
         let lineSeparatorView = UIView()
         lineSeparatorView.backgroundColor = UIColor.black
         view.addSubview(lineSeparatorView)
-         lineSeparatorView.anchor(top:view.topAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, paddingTop: 2.5, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0.5)
-        //will add the collectionView for the iglistkit 
+        lineSeparatorView.anchor(top:view.topAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, paddingTop: 2.5, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0.5)
+        //will add the collectionView for the iglistkit
         collectionView.frame = CGRect.init(x: 0, y: 5, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height-40)
         view.addSubview(collectionView)
         collectionView.alwaysBounceVertical = true
         adapter.collectionView = collectionView
         adapter.dataSource = self
         collectionView.register(NotificationCell.self, forCellWithReuseIdentifier: "NotificaationCell")
+        self.fetchNotifs()
+      self.tryObserveNoti()
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        self.fetchNotifs()
+//        self.fetchNotifs()
     }
     
-
+    deinit {
+        notiRef?.removeObserver(withHandle: notiHandle)
+        observeNotiRef?.removeObserver(withHandle: observeNotiHandle)
+    }
+    
     
     fileprivate func fetchNotifs(){
-        NotificationService.fetchUserNotif { (currentUserNotifs) in
-            print("user has \(currentUserNotifs.count) notifications")
-            self.notifs = currentUserNotifs
-            self.notifs = self.sortNotifs(notifArray: self.notifs)
+        notiHandle = NotificationService.fetchUserNotif(withCompletion: { (ref, noti) in
+            print("user has \(noti.count) notifications")
+            self.notiRef = ref
+            self.notifs = self.sortNotifs(notifArray: noti)
             self.adapter.performUpdates(animated: true)
-        }
+        })
+    }
+    
+    fileprivate func tryObserveNoti(){
+        observeNotiHandle = NotificationService.observeNotifs(completion: { (ref, noti) in
+            self.observeNotiRef = ref
+            if let currentNoti = noti {
+                self.notifs.insert(noti!, at: 0)
+                self.adapter.performUpdates(animated: true, completion: nil)
+            }
+        })
     }
     
     //will sort the notifications based off of timeStamp
@@ -81,9 +101,9 @@ class NotificationsViewController: UIViewController,NotificationsSectionDelegate
     
     func NotificationsSectionUpdared(sectionController: NotificationsSectionController) {
         self.adapter.performUpdates(animated: true)
-
+        
     }
-
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -98,15 +118,11 @@ extension NotificationsViewController: ListAdapterDataSource {
         return items
     }
     
-    
-    
-    
     // 2 For each data object, listAdapter(_:sectionControllerFor:) must return a new instance of a section controller. For now you’re returning a plain IGListSectionController to appease the compiler — in a moment, you’ll modify this to return a custom journal section controller.
     func listAdapter(_ listAdapter: ListAdapter, sectionControllerFor object: Any) -> ListSectionController {
         //the comment section controller will be placed here but we don't have it yet so this will be a placeholder
         let sectionController = NotificationsSectionController()
         sectionController.delegate = self
-        
         return sectionController
     }
     
@@ -127,3 +143,4 @@ extension NotificationsViewController: ListAdapterDataSource {
         return view
     }
 }
+

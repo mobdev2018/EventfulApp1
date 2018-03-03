@@ -5,7 +5,6 @@
 //  Created by Shawn Miller on 2/28/18.
 //  Copyright © 2018 Make School. All rights reserved.
 //
-
 import Foundation
 import IGListKit
 import Firebase
@@ -15,7 +14,7 @@ protocol NotificationsSectionDelegate: class {
 class NotificationsSectionController: ListSectionController {
     weak var delegate: NotificationsSectionDelegate? = nil
     weak var notif: Notifications?
-
+    
     override init() {
         super.init()
         // supplementaryViewSource = self
@@ -45,7 +44,7 @@ class NotificationsSectionController: ListSectionController {
         }
         //  print(comment)
         cell.notification = notif
-      //cell.delegate = self
+        //cell.delegate = self
         return cell
     }
     
@@ -54,7 +53,7 @@ class NotificationsSectionController: ListSectionController {
     }
     
     func NotificationsSectionUpdared(sectionController: NotificationsSectionController){
-       print("Tried to update")
+        print("Tried to update")
         delegate?.NotificationsSectionUpdared(sectionController: self)
     }
     

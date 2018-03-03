@@ -10,21 +10,18 @@ import Foundation
 import Firebase
 
 class NotificationService {
-    static func fetchUserNotif(completion: @escaping ([Notifications]) -> Void){
+    static func fetchUserNotif(for user: User = User.current, withCompletion completion: @escaping (DatabaseReference, [Notifications]) -> Void) -> DatabaseHandle {
         //array of user notifications
         var currentNotifsArray = [Notifications]()
         var currentNotif:Notifications!
 
-        //1
-        guard let currentUserUID = Auth.auth().currentUser?.uid else{
-            return
-        }
+
         //2
-        let notifRef = Database.database().reference().child("Notifications").child(currentUserUID)
-        notifRef.observe(.value, with: { (notifSnapshot) in
+        let notifRef = Database.database().reference().child("Notifications").child(user.uid)
+        return notifRef.observe(.value, with: { (notifSnapshot) in
             print(notifSnapshot.value as Any)
             guard let allUserNotifs = notifSnapshot.children.allObjects as? [DataSnapshot] else {
-                return
+                 return completion(notifRef, [])
             }
             
             for userNotifs in allUserNotifs{
@@ -42,13 +39,32 @@ class NotificationService {
                 print(userNotifs.childrenCount)
             }
             if currentNotifsArray.count == allUserNotifs.count{
-                completion(currentNotifsArray)
+                completion(notifRef,currentNotifsArray)
             }
-            
             
         }) { (err) in
             print("Couldn't find notification info on user", err)
         }
+    }
+    
+    static func observeNotifs(for user: User = User.current, completion: @escaping (DatabaseReference, Notifications?) -> Void) -> DatabaseHandle {
+        let messagesRef = Database.database().reference().child("Notifications").child(user.uid)
+        
+        return messagesRef.queryOrdered(byChild: "creationDate").queryStarting(atValue: Date().timeIntervalSince1970).observe(.childAdded, with: { snapshot in
+            if snapshot.childrenCount == 8{
+                guard let notif = Notifications(snapshot: snapshot) else {
+                    return completion(messagesRef, nil)
+                }
+                completion(messagesRef, notif)
+            }
+            if snapshot.childrenCount == 6{
+                guard let notif = Notifications(followSnapshot: snapshot) else {
+                    return completion(messagesRef, nil)
+                }
+                completion(messagesRef, notif)
+            }
+            
+        })
         
     }
 }

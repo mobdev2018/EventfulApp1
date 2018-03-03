@@ -12,7 +12,7 @@ import Foundation
 import Firebase
 
 protocol CommentsSectionDelegate: class {
-    func CommentSectionUpdared(sectionController: CommentsSectionController)
+    func CommentSectionUpdared(sectionController: CommentsSectionController, comment: CommentGrabbed)
 }
 class CommentsSectionController: ListSectionController,CommentCellDelegate {
     weak var delegate: CommentsSectionDelegate? = nil
@@ -112,7 +112,8 @@ class CommentsSectionController: ListSectionController,CommentCellDelegate {
         
     }
     func onItemDeleted() {
-        delegate?.CommentSectionUpdared(sectionController: self)
+        print(comment?.content as Any)
+        delegate?.CommentSectionUpdared(sectionController: self, comment: comment!)
     }
     func handleProfileTransition(tapGesture: UITapGestureRecognizer){
         userProfileController.user = comment?.user

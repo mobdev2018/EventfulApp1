@@ -21,10 +21,9 @@
         let searchController = EventSearchController(collectionViewLayout: UICollectionViewFlowLayout())
         let searchNavController = UINavigationController(rootViewController: searchController)
         
-        let notificationView = NotificationsViewController(collectionViewLayout: UICollectionViewFlowLayout())
-        let notificationNavController = UINavigationController(rootViewController: notificationView)
+        let notificationView = NotificationsViewController()
         
-        return [searchNavController,navController,notificationNavController,profileViewNavController]
+        return [searchNavController,navController,notificationView,profileViewNavController]
     }()
     fileprivate var selectedTopIndex:Int!{
         didSet{

@@ -9,6 +9,7 @@
 import UIKit
 import IGListKit
 import Firebase
+import Foundation
 
 
 class NewCommentsViewController: UIViewController, UITextFieldDelegate,CommentsSectionDelegate,CommentInputAccessoryViewDelegate {
@@ -75,9 +76,7 @@ class NewCommentsViewController: UIViewController, UITextFieldDelegate,CommentsS
                         print("user is null")
                         
                     }
-                    self?.comments.sort(by: { (comment1, comment2) -> Bool in
-                        return comment1.creationDate.compare(comment2.creationDate) == .orderedAscending
-                    })
+                    self?.comments = (self?.sortComments(comments: (self?.comments)!))!
                     self?.comments.forEach({ (comments) in
                     })
                 })
@@ -89,6 +88,14 @@ class NewCommentsViewController: UIViewController, UITextFieldDelegate,CommentsS
         })
         
         //first lets fetch comments for current event
+    }
+    
+    fileprivate func sortComments(comments: [CommentGrabbed]) -> [CommentGrabbed]{
+        var tempCommentArray = comments
+        tempCommentArray.sort(by: { (reply1, reply2) -> Bool in
+            return reply1.creationDate.compare(reply2.creationDate) == .orderedAscending
+        })
+        return tempCommentArray
     }
     
     //allows you to gain access to the input accessory view that each view controller has for inputting text
@@ -187,9 +194,11 @@ class NewCommentsViewController: UIViewController, UITextFieldDelegate,CommentsS
     }
     
     //look here
-    func CommentSectionUpdared(sectionController: CommentsSectionController){
+    func CommentSectionUpdared(sectionController: CommentsSectionController,comment: CommentGrabbed){
         print("like")
-        self.fetchComments()
+        self.comments = comments.filter({ (someComment: CommentGrabbed) -> Bool in
+            return someComment.content != comment.content
+        })
         self.adapter.performUpdates(animated: true)
     }
     override func viewWillAppear(_ animated: Bool) {
@@ -245,6 +254,16 @@ extension NewCommentsViewController: ListAdapterDataSource {
     // 3 emptyView(for:) returns a view that should be displayed when the list is empty. NASA is in a bit of a time crunch, so they didn’t budget for this feature.
     func emptyView(for listAdapter: ListAdapter) -> UIView? {
         let view = UIView()
+        let emptyLabel = UILabel(frame: CGRect(x: 0, y: 0, width: self.view.bounds.size.width, height: self.view.bounds.size.height))
+        let paragraph = NSMutableParagraphStyle()
+        paragraph.lineBreakMode = .byWordWrapping
+        paragraph.alignment = .center
+        
+        let attributes: [NSAttributedStringKey: Any] = [NSAttributedStringKey(rawValue: NSAttributedStringKey.font.rawValue): UIFont.systemFont(ofSize: 14.0), NSAttributedStringKey(rawValue: NSAttributedStringKey.foregroundColor.rawValue): UIColor.lightGray, NSAttributedStringKey(rawValue: NSAttributedStringKey.paragraphStyle.rawValue): paragraph]
+        let myAttrString = NSAttributedString(string:  "Leave a Comment", attributes: attributes)
+        emptyLabel.attributedText = myAttrString
+        emptyLabel.textAlignment = .center
+        view.addSubview(emptyLabel)
         view.backgroundColor = UIColor.white
         return view
     }

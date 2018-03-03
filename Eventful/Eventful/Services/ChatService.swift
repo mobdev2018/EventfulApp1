@@ -7,7 +7,7 @@
 //
 
 import Foundation
-import  FirebaseDatabase
+import FirebaseDatabase
 import Firebase
 import FirebaseAuth
 
@@ -37,9 +37,9 @@ class ChatService {
         
         var multiUpdateValue = [String : Any]()
         
-        let messagesRef = Database.database().reference().child("notifcations").child(notification.repliedTo).childByAutoId()
+        let messagesRef = Database.database().reference().child("notifcations").child(notification.repliedTo!).childByAutoId()
         let messageKey = messagesRef.key
-        multiUpdateValue["Notifications/\(notification.repliedTo)/\(messageKey)"] = notification.dictValue
+        multiUpdateValue["Notifications/\(notification.repliedTo!)/\(messageKey)"] = notification.dictValue
         
         let rootRef = Database.database().reference()
         rootRef.updateChildValues(multiUpdateValue, withCompletionBlock: { (error, ref) in

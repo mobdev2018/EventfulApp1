@@ -79,6 +79,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, MessagingDelegate {
 
     func applicationDidBecomeActive(_ application: UIApplication) {
         // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
+        application.applicationIconBadgeNumber = 0
     }
 
     func applicationWillTerminate(_ application: UIApplication) {
@@ -165,20 +166,20 @@ extension AppDelegate{
         completionHandler(.alert)
     }
     
-//    func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable : Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
-//        print(userInfo)
-//        let msg = userInfo["content"] as! String
-//        if application.applicationState == .active{
-//            BPStatusBarAlert(duration: 0.3, delay: 2, position: .statusBar)
-//                .message(message: msg)
-//                .messageColor(color: UIColor.white)
-//                .bgColor(color: UIColor.black)
-//                .completion { print("completion closure will called") }
-//                .show()
-//            self.hasNotification = true
-//            NotificationCenter.default.post(name: NSNotification.Name(rawValue: "didReceivePush"), object: nil, userInfo: nil)
-//        }
-//    }
+    func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable : Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
+        print(userInfo)
+        let msg = userInfo["content"] as! String
+        if application.applicationState == .active{
+            BPStatusBarAlert(duration: 0.3, delay: 2, position: .statusBar)
+                .message(message: msg)
+                .messageColor(color: UIColor.white)
+                .bgColor(color: UIColor.black)
+                .completion { print("completion closure will called") }
+                .show()
+            self.hasNotification = true
+            NotificationCenter.default.post(name: NSNotification.Name(rawValue: "didReceivePush"), object: nil, userInfo: nil)
+        }
+    }
     
     func messaging(_ messaging: Messaging, didReceiveRegistrationToken fcmToken: String) {
         print("Firebase registration token: \(fcmToken)")
@@ -188,6 +189,7 @@ extension AppDelegate{
     func messaging(_ messaging: Messaging, didReceive remoteMessage: MessagingRemoteMessage) {
         print(messaging)
     }
+    
 }
 
 

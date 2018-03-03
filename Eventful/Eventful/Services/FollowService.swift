@@ -54,14 +54,14 @@ struct FollowService {
         }
     }
     
-    static func sendFollowNotification(_ notification: FollowNotification, success: ((Bool) -> Void)? = nil) {
+    static func sendFollowNotification(_ notification: Notifications, success: ((Bool) -> Void)? = nil) {
         
         var multiUpdateValue = [String : Any]()
         
-        let messagesRef = Database.database().reference().child("notifcations").child(notification.followee).child(notification.follower)
+        let messagesRef = Database.database().reference().child("notifcations").child(notification.followee!).child(notification.follower!)
         let messageKey = messagesRef.key
         
-        multiUpdateValue["Notifications/\(notification.followee)/\(messageKey)"] = notification.dictValue
+        multiUpdateValue["Notifications/\(notification.followee!)/\(messageKey)"] = notification.dictValue
         
         let rootRef = Database.database().reference()
         rootRef.updateChildValues(multiUpdateValue, withCompletionBlock: { (error, ref) in

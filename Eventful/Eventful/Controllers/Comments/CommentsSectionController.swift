@@ -10,6 +10,7 @@ import UIKit
 import IGListKit
 import Foundation
 import Firebase
+import XLActionController
 
 protocol CommentsSectionDelegate: class {
     func CommentSectionUpdared(sectionController: CommentsSectionController, comment: CommentGrabbed)
@@ -70,13 +71,13 @@ class CommentsSectionController: ListSectionController,CommentCellDelegate {
         print("like")
    
         let comment = self.comment
-        _ = comment?.uid
+        _ = comment?.sender.uid
         
         // 3
         let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
         
         // 4
-        if comment?.uid != User.current.uid {
+        if comment?.sender.uid != User.current.uid {
             let flagAction = UIAlertAction(title: "Report as Inappropriate", style: .default) {[weak self] _ in
                 ChatService.flag(comment!)
                 
@@ -87,7 +88,7 @@ class CommentsSectionController: ListSectionController,CommentCellDelegate {
             let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
             let replyAction = UIAlertAction(title: "Reply to Comment", style: .default, handler: { [weak self](_) in
                 //do something here later to facilitate reply comment functionality
-                print("Attempting to reply to user \(comment?.user?.username) comment")
+                print("Attempting to reply to user \(comment?.sender.username) comment")
                 //begin comment reply functionality
                 self?.handleReply()
             })
@@ -116,13 +117,13 @@ class CommentsSectionController: ListSectionController,CommentCellDelegate {
         delegate?.CommentSectionUpdared(sectionController: self, comment: comment!)
     }
     func handleProfileTransition(tapGesture: UITapGestureRecognizer){
-        userProfileController.user = comment?.user
-        userProfileController.navigationItem.title = comment?.user?.username
+        userProfileController.user = comment?.sender
+        userProfileController.navigationItem.title = comment?.sender.username
         userProfileController.navigationItem.hidesBackButton = true
         let backButton = UIBarButtonItem(image: UIImage(named: "icons8-Back-64"), style: .plain, target: self, action: #selector(GoBack))
         userProfileController.navigationItem.leftBarButtonItem = backButton
         let navController = UINavigationController(rootViewController: userProfileController)
-        if Auth.auth().currentUser?.uid != comment?.uid{
+        if Auth.auth().currentUser?.uid != comment?.sender.uid{
                     self.viewController?.present(navController, animated: true, completion: nil)
         }else{
             //do nothing
@@ -134,13 +135,13 @@ class CommentsSectionController: ListSectionController,CommentCellDelegate {
        //will eliminate the placeholderText in the textView
         self.currentViewController.containerView.commentTextView.hidePlaceholderLabel()
         //will add the user's username and @symbol into the textView to get ready for reply
-        self.currentViewController.containerView.commentTextView.text = "@" + (comment?.user?.username)! + " "
+        self.currentViewController.containerView.commentTextView.text = "@" + (comment?.sender.username)! + " "
         //assures that the textView becomes the first respnder so the keyboard pops up and props you to tyoe
         self.currentViewController.containerView.commentTextView.becomeFirstResponder()
         //sets the isReplyingVariable to know if I am replying to someones comment or not
         self.currentViewController.isReplying = true
         
-        self.currentViewController.notificationData = Notifications.init(eventKey: (comment?.eventKey)!, repliedTo: (comment?.uid)!, repliedBy: User.current.uid, content: User.current.username! + " has replied to your comment", commentId: (comment?.commentID)!, profilePic: (User.current.profilePic)!, type: "comment")
+        self.currentViewController.notificationData = Notifications.init(eventKey: (comment?.eventKey)!, repliedTo: (comment?.sender.uid)!, repliedBy: User.current.uid, content: User.current.username! + " has replied to your comment", commentId: (comment?.commentID)!, profilePic: (User.current.profilePic)!, type: "comment")
         
     }
     

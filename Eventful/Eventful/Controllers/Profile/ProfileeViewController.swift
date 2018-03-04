@@ -33,6 +33,11 @@
         
         override func viewDidLoad() {
             super.viewDidLoad()
+            
+            let lineSeparatorView = UIView()
+            lineSeparatorView.backgroundColor = UIColor.black
+            view.addSubview(lineSeparatorView)
+            lineSeparatorView.anchor(top:view.topAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, paddingTop: 2.5, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0.5)
             collectionView?.backgroundColor = UIColor.white
             let user = self.user ?? User.current
             

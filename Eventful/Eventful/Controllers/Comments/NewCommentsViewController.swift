@@ -16,6 +16,9 @@ class NewCommentsViewController: UIViewController, UITextFieldDelegate,CommentsS
     //array of comments which will be loaded by a service function
     var comments = [CommentGrabbed]()
     var messagesRef: DatabaseReference?
+    var messageHandle: DatabaseHandle = 0
+    var commentRer: DatabaseReference?
+    var commentHandle: DatabaseHandle = 0
     var bottomConstraint: NSLayoutConstraint?
     public let addHeader = "addHeader" as ListDiffable
     public var eventKey = ""
@@ -42,53 +45,25 @@ class NewCommentsViewController: UIViewController, UITextFieldDelegate,CommentsS
     
     //will fetch the comments from the database and append them to an array
     fileprivate func fetchComments(){
-        comments.removeAll()
-        messagesRef = Database.database().reference().child("Comments").child(eventKey)
-       // print(eventKey)
-        // print(comments.count)
-        let query = messagesRef?.queryOrderedByKey()
-        query?.observe(.value, with: {[weak self] (snapshot) in
-            guard let allObjects = snapshot.children.allObjects as? [DataSnapshot] else {
-                return
-            }
-           // print(snapshot)
-            
-            allObjects.forEach({ (snapshot) in
-                guard let commentDictionary = snapshot.value as? [String: Any] else{
-                    return
-                }
-                guard let uid = commentDictionary["uid"] as? String else{
-                    return
-                }
-                UserService.show(forUID: uid, completion: { [weak self](user) in
-                    if let user = user {
-                        let commentFetched = CommentGrabbed(user: user, dictionary: commentDictionary)
-                        commentFetched.commentID = snapshot.key
-                        let filteredArr = self?.comments.filter { (comment) -> Bool in
-                            return comment.commentID == commentFetched.commentID
-                        }
-                        if filteredArr?.count == 0 {
-                            self?.comments.append(commentFetched)
-                            
-                        }
-                        self?.adapter.performUpdates(animated: true)
-                    }else{
-                        print("user is null")
-                        
-                    }
-                    self?.comments = (self?.sortComments(comments: (self?.comments)!))!
-                    self?.comments.forEach({ (comments) in
-                    })
-                })
-                
-            })
-            
-        }, withCancel: { (error) in
-            print("Failed to observe comments")
-        })
-        
         //first lets fetch comments for current event
+        //comments.removeAll()
+        print(eventKey)
+        ChatService.fetchComments(forChatKey: eventKey) { (ref, currentComments) in
+            self.messagesRef = ref
+            self.comments = self.sortComments(comments: currentComments)
+            self.adapter.performUpdates(animated: true)
+        }
     }
+    
+    fileprivate func tryObserveComments(){
+        print(eventKey)
+        ChatService.observeMessages(forChatKey: eventKey) { (ref, newComments) in
+            self.commentRer = ref
+            self.comments.append(newComments!)
+            self.adapter.performUpdates(animated: true)
+        }
+    }
+    
     
     fileprivate func sortComments(comments: [CommentGrabbed]) -> [CommentGrabbed]{
         var tempCommentArray = comments
@@ -112,7 +87,7 @@ class NewCommentsViewController: UIViewController, UITextFieldDelegate,CommentsS
             return
         }
         
-        let userText = Comments(content: comment, uid: User.current.uid, profilePic: User.current.profilePic!,eventKey: eventKey)
+        let userText = CommentGrabbed(content: comment,eventKey: eventKey)
         sendMessage(userText)
         // will clear the comment text field
         self.containerView.clearCommentTextField()
@@ -182,9 +157,13 @@ class NewCommentsViewController: UIViewController, UITextFieldDelegate,CommentsS
         self.navigationItem.hidesBackButton = true
         let backButton = UIBarButtonItem(image: UIImage(named: "icons8-Back-64"), style: .plain, target: self, action: #selector(GoBack))
         self.navigationItem.leftBarButtonItem = backButton
+        self.fetchComments()
+        self.tryObserveComments()
     }
     deinit {
         print("NewCommentsController class removed from memory")
+        messagesRef?.removeObserver(withHandle: messageHandle)
+        commentRer?.removeObserver(withHandle: commentHandle)
         NotificationCenter.default.removeObserver(self)
     }
     
@@ -204,7 +183,7 @@ class NewCommentsViewController: UIViewController, UITextFieldDelegate,CommentsS
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        fetchComments()
+       // fetchComments()
         tabBarController?.tabBar.isHidden = true
         //submitButton.isUserInteractionEnabled = true
         
@@ -270,7 +249,7 @@ extension NewCommentsViewController: ListAdapterDataSource {
 }
 
 extension NewCommentsViewController {
-    func sendMessage(_ message: Comments) {
+    func sendMessage(_ message: CommentGrabbed) {
         //two cases that need to be handled
         //if it is a reply we need to also send a notificaiton
         //if it is a regular comment we just post it

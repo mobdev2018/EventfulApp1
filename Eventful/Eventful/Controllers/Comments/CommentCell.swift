@@ -34,9 +34,9 @@ class CommentCell: UICollectionViewCell {
           //  print("apples")
             // textLabel.text = comment.content
             //shawn was also here
-            profileImageView.loadImage(urlString: (comment.user?.profilePic!)!)
+            profileImageView.loadImage(urlString: (comment.sender.profilePic!))
             //  print(comment.user.username)
-            let attributedText = NSMutableAttributedString(string: (comment.user?.username!)!, attributes: [NSAttributedStringKey.font: UIFont.boldSystemFont(ofSize: 14)])
+            let attributedText = NSMutableAttributedString(string: (comment.sender.username!), attributes: [NSAttributedStringKey.font: UIFont.boldSystemFont(ofSize: 14)])
             
             attributedText.append(NSAttributedString(string: " " + (comment.content), attributes: [NSAttributedStringKey.font: UIFont.systemFont(ofSize: 14)]))
             

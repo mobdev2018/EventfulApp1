@@ -13,10 +13,35 @@ import FirebaseAuth
 
 
 class ChatService {
-    static func sendMessage(_ message: Comments, eventKey: String,success: ((Bool) -> Void)? = nil) {
+    static func fetchComments(forChatKey eventKey: String, completion: @escaping (DatabaseReference, [CommentGrabbed]) -> Void) -> DatabaseHandle {
+        var currentCommentsArray = [CommentGrabbed]()
+        var currentComment: CommentGrabbed!
         
+        let commentRef = Database.database().reference().child("Comments").child(eventKey)
+        return commentRef.observe(.value, with: { (commentSnapshot) in
+            guard let allComments = commentSnapshot.children.allObjects as? [DataSnapshot] else {
+                return completion(commentRef, [])
+            }
+            
+            for comments in allComments {
+                currentComment = CommentGrabbed(snapshot: comments)
+                currentCommentsArray.append(currentComment)
+                print(currentComment)
+            }
+            
+            if currentCommentsArray.count == allComments.count {
+                completion(commentRef,currentCommentsArray)
+            }
+            
+        }, withCancel: { (err) in
+                        print("Couldn't find comments in DB", err)
+        })
+        
+    }
+    
+    
+    static func sendMessage(_ message: CommentGrabbed, eventKey: String,success: ((Bool) -> Void)? = nil) {
         var multiUpdateValue = [String : Any]()
-
         let messagesRef = Database.database().reference().child("comments").child(eventKey).childByAutoId()
         let messageKey = messagesRef.key
         multiUpdateValue["Comments/\(eventKey)/\(messageKey)"] = message.dictValue
@@ -60,8 +85,8 @@ class ChatService {
         let flaggedPostRef = Database.database().reference().child("flaggedComments").child(commentKey)
         
         // 3
-        let flaggedDict = ["image_url": comment.user?.profilePic,
-                           "poster_uid": comment.uid,
+        let flaggedDict = ["image_url": comment.sender.profilePic,
+                           "poster_uid": comment.sender.uid,
                            "reporter_uid": User.current.uid]
         
         // 4
@@ -80,12 +105,12 @@ class ChatService {
     
     static func deleteComment(_ comment: CommentGrabbed, _ eventKey: String){
         //1
-        guard let commentkey = comment.commentID else {
+        guard let commentkey = comment.key else {
             return
         }
         
-      //  print(commentkey)
-       // print(eventKey)
+        print(commentkey)
+        print(eventKey)
         
         let commentData = ["Comments/\(eventKey)/\(commentkey)": NSNull()]
         
@@ -97,13 +122,12 @@ class ChatService {
         
     }
     
-    static func observeMessages(forChatKey eventKey: String, completion: @escaping (DatabaseReference, Comments?) -> Void) -> DatabaseHandle {
-        let messagesRef = Database.database().reference().child(eventKey)
-        return messagesRef.observe(.childAdded, with: { snapshot in
-            guard let message = Comments(snapshot: snapshot) else {
+    static func observeMessages(forChatKey eventKey: String, completion: @escaping (DatabaseReference, CommentGrabbed?) -> Void) -> DatabaseHandle {
+        let messagesRef = Database.database().reference().child("Comments").child(eventKey)
+        return messagesRef.queryOrdered(byChild: "timestamp").queryStarting(atValue: Date().timeIntervalSince1970).observe(.childAdded, with: { snapshot in
+            guard let message = CommentGrabbed(snapshot: snapshot) else {
                 return completion(messagesRef, nil)
             }
-            
             completion(messagesRef, message)
         })
     }

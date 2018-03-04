@@ -15,28 +15,27 @@ class NotificationService {
         var currentNotifsArray = [Notifications]()
         var currentNotif:Notifications!
 
-
         //2
         let notifRef = Database.database().reference().child("Notifications").child(user.uid)
         return notifRef.observe(.value, with: { (notifSnapshot) in
-            print(notifSnapshot.value as Any)
+          //  print(notifSnapshot.value as Any)
             guard let allUserNotifs = notifSnapshot.children.allObjects as? [DataSnapshot] else {
                  return completion(notifRef, [])
             }
             
             for userNotifs in allUserNotifs{
                 if userNotifs.childrenCount == 8 {
-                    print("comment notification")
+                  //  print("comment notification")
                     currentNotif = Notifications(snapshot:userNotifs)
                     currentNotifsArray.append(currentNotif)
                 }
                 if userNotifs.childrenCount == 6 {
-                    print("follow notification")
+                //    print("follow notification")
                     print(userNotifs.children.allObjects)
                     currentNotif = Notifications(followSnapshot: userNotifs)
                     currentNotifsArray.append(currentNotif)
                 }
-                print(userNotifs.childrenCount)
+               // print(userNotifs.childrenCount)
             }
             if currentNotifsArray.count == allUserNotifs.count{
                 completion(notifRef,currentNotifsArray)

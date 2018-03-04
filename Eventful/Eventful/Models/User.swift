@@ -25,6 +25,18 @@ class User : NSObject {
         self.profilePic = profilePic
         super.init()
     }
+    
+    init?(key: String, postDictionary: [String : Any]) {
+        //var dict : [String : Any]
+        //print(postDictionary as? [String:])
+        let dict = postDictionary
+        print(dict)
+        let profilePic = dict["profilePic"] as? String ?? ""
+        let username = dict["username"] as? String ?? ""
+        self.uid = key
+        self.profilePic = profilePic
+        self.username = username
+    }
     //User init using Firebase snapshots
     init?(snapshot: DataSnapshot) {
         guard let dict = snapshot.value as? [String : Any],
@@ -45,17 +57,7 @@ class User : NSObject {
         self.profilePic = profilePic
         super.init()
     }
-    init?(key: String, postDictionary: [String : Any]) {
-        //var dict : [String : Any]
-        //print(postDictionary as? [String:])
-        let dict = postDictionary
-        //print(dict)
-        let profilePic = dict["profilePic"] as? String ?? ""
-        let username = dict["username"] as? String ?? ""
-        self.uid = key
-        self.profilePic = profilePic
-        self.username = username
-    }
+
     //User singleton for currently logged user
     private static var _current: User?
     static var current: User {

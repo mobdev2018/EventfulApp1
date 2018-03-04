@@ -44,10 +44,10 @@ class UserSearchCell: UICollectionViewCell {
         userImageView.layer.cornerRadius = 50/2
         userNameLabel.anchor(top: topAnchor, left: userImageView.rightAnchor, bottom: bottomAnchor, right: rightAnchor, paddingTop: 0, paddingLeft: 8, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
         
-        let separatorView = UIView()
-        separatorView.backgroundColor = UIColor(white: 0, alpha: 0.5)
-        addSubview(separatorView)
-        separatorView.anchor(top: nil, left: userNameLabel.leftAnchor, bottom: bottomAnchor, right: rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0.5)
+//        let separatorView = UIView()
+//        separatorView.backgroundColor = UIColor(white: 0, alpha: 0.5)
+//        addSubview(separatorView)
+//        separatorView.anchor(top: nil, left: userNameLabel.leftAnchor, bottom: bottomAnchor, right: rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0.5)
         
     }
     

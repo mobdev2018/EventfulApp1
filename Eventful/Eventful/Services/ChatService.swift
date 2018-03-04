@@ -109,8 +109,8 @@ class ChatService {
             return
         }
         
-        print(commentkey)
-        print(eventKey)
+        //print(commentkey)
+        //print(eventKey)
         
         let commentData = ["Comments/\(eventKey)/\(commentkey)": NSNull()]
         
@@ -121,7 +121,7 @@ class ChatService {
         }
         
     }
-    
+    //will support real time data syncing of comments
     static func observeMessages(forChatKey eventKey: String, completion: @escaping (DatabaseReference, CommentGrabbed?) -> Void) -> DatabaseHandle {
         let messagesRef = Database.database().reference().child("Comments").child(eventKey)
         return messagesRef.queryOrdered(byChild: "timestamp").queryStarting(atValue: Date().timeIntervalSince1970).observe(.childAdded, with: { snapshot in

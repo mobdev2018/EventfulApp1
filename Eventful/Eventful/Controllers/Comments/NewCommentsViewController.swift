@@ -157,8 +157,8 @@ class NewCommentsViewController: UIViewController, UITextFieldDelegate,CommentsS
         self.navigationItem.hidesBackButton = true
         let backButton = UIBarButtonItem(image: UIImage(named: "icons8-Back-64"), style: .plain, target: self, action: #selector(GoBack))
         self.navigationItem.leftBarButtonItem = backButton
-        self.fetchComments()
-        self.tryObserveComments()
+//        self.fetchComments()
+//        self.tryObserveComments()
     }
     deinit {
         print("NewCommentsController class removed from memory")
@@ -183,7 +183,8 @@ class NewCommentsViewController: UIViewController, UITextFieldDelegate,CommentsS
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-       // fetchComments()
+        self.fetchComments()
+        self.tryObserveComments()
         tabBarController?.tabBar.isHidden = true
         //submitButton.isUserInteractionEnabled = true
         

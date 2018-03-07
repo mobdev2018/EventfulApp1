@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Hero
 
 enum DynamoDisplayMode {
     case Top

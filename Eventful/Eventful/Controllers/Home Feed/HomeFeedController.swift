@@ -15,7 +15,7 @@ import CoreLocation
 import DynamoCollectionView
 import FirebaseDatabase
 import SVProgressHUD
-
+import Hero
 
 class ImageAndTitleItem: NSObject {
     public var name:String?
@@ -55,6 +55,7 @@ class HomeFeedController: UIViewController, UIGestureRecognizerDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationItem.title = "Home"
+        hero.isEnabled = true
         SVProgressHUD.dismiss()
         self.configure()
         grabUserLoc()

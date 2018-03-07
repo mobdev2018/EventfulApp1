@@ -1,8 +1,10 @@
 # Uncomment the next line to define a global platform for your project
 # platform :ios, '9.0'
-
+workspace 'Eventful'
 target 'Eventful' do
+    project '/Users/BandManFabo/Desktop/EventfulApp/EventfulApp1/Eventful/Eventful.xcodeproj'
     # Comment the next line if you're not using Swift and don't want to use dynamic frameworks
+    workspace 'Eventful'
     use_frameworks!
     pod 'Firebase/Core'
     pod 'Firebase/Auth’
@@ -24,8 +26,19 @@ target 'Eventful' do
     pod 'Fabric'
     pod 'Crashlytics'
     pod 'FaceAware'
-    pod 'XLActionController'
+    pod "Hero"    
     # Pods for Eventful
     
 end
 
+
+workspace 'Eventful'
+
+target 'DynamoCollectionView' do
+     project '/Users/BandManFabo/Desktop/EventfulApp/EventfulApp1/Eventful/DynamoCollectionView/DynamoCollectionView.xcodeproj'
+    # Comment the next line if you're not using Swift and don't want to use dynamic frameworks
+    use_frameworks!
+    pod "Hero"
+    # Pods for Eventful
+    
+end

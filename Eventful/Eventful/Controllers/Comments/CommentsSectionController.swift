@@ -10,7 +10,6 @@ import UIKit
 import IGListKit
 import Foundation
 import Firebase
-import XLActionController
 
 protocol CommentsSectionDelegate: class {
     func CommentSectionUpdared(sectionController: CommentsSectionController, comment: CommentGrabbed)

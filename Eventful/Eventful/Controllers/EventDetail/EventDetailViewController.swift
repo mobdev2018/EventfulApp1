@@ -9,6 +9,7 @@
 import UIKit
 import Firebase
 import FirebaseDatabase
+import Hero
 
 class EventDetailViewController: UIViewController {
     var imageURL: URL?
@@ -299,6 +300,7 @@ class EventDetailViewController: UIViewController {
     }
     override func viewDidLoad() {
         super.viewDidLoad()
+        hero.isEnabled = true
 
         let downSwipe = UISwipeGestureRecognizer(target: self, action: #selector(swipeAction(_:)))
         downSwipe.direction = .down

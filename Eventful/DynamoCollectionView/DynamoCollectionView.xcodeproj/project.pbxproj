@@ -19,6 +19,7 @@
 		52D748C51F84A47F00357DDF /* DynamoCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52D748C41F84A47F00357DDF /* DynamoCollectionView.swift */; };
 		52D748C71F84AA5200357DDF /* DynamoCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52D748C61F84AA5200357DDF /* DynamoCollectionViewCell.swift */; };
 		52D92B0F1F93C0730037BC53 /* UIImage+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52D92B0E1F93C0730037BC53 /* UIImage+Extensions.swift */; };
+		B731EA4C208789C970C308AC /* Pods_DynamoCollectionView.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F5A53625DBB452BC5F43D773 /* Pods_DynamoCollectionView.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -36,6 +37,9 @@
 		52D748C41F84A47F00357DDF /* DynamoCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DynamoCollectionView.swift; sourceTree = "<group>"; };
 		52D748C61F84AA5200357DDF /* DynamoCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DynamoCollectionViewCell.swift; sourceTree = "<group>"; };
 		52D92B0E1F93C0730037BC53 /* UIImage+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+Extensions.swift"; sourceTree = "<group>"; };
+		AA089E60A24EA0E4F8528742 /* Pods-DynamoCollectionView.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DynamoCollectionView.debug.xcconfig"; path = "../Pods/Target Support Files/Pods-DynamoCollectionView/Pods-DynamoCollectionView.debug.xcconfig"; sourceTree = "<group>"; };
+		D67ECD966E577F64FE4D7B88 /* Pods-DynamoCollectionView.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DynamoCollectionView.release.xcconfig"; path = "../Pods/Target Support Files/Pods-DynamoCollectionView/Pods-DynamoCollectionView.release.xcconfig"; sourceTree = "<group>"; };
+		F5A53625DBB452BC5F43D773 /* Pods_DynamoCollectionView.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_DynamoCollectionView.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -43,6 +47,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B731EA4C208789C970C308AC /* Pods_DynamoCollectionView.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -54,6 +59,8 @@
 			children = (
 				52A72DBE1F83D28A0024DCD9 /* DynamoCollectionView */,
 				52A72DBD1F83D28A0024DCD9 /* Products */,
+				F7CC2B3450C17FCA4884643E /* Pods */,
+				B4144779CC9C1C0BD1709F54 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -93,6 +100,23 @@
 			path = ColorCube;
 			sourceTree = "<group>";
 		};
+		B4144779CC9C1C0BD1709F54 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				F5A53625DBB452BC5F43D773 /* Pods_DynamoCollectionView.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		F7CC2B3450C17FCA4884643E /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				AA089E60A24EA0E4F8528742 /* Pods-DynamoCollectionView.debug.xcconfig */,
+				D67ECD966E577F64FE4D7B88 /* Pods-DynamoCollectionView.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
@@ -113,10 +137,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 52A72DC41F83D28A0024DCD9 /* Build configuration list for PBXNativeTarget "DynamoCollectionView" */;
 			buildPhases = (
+				41FAA496819A446F9685BFBA /* [CP] Check Pods Manifest.lock */,
 				52A72DB71F83D28A0024DCD9 /* Sources */,
 				52A72DB81F83D28A0024DCD9 /* Frameworks */,
 				52A72DB91F83D28A0024DCD9 /* Headers */,
 				52A72DBA1F83D28A0024DCD9 /* Resources */,
+				28F61D693F6C7CF41AAACB81 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -172,6 +198,42 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		28F61D693F6C7CF41AAACB81 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/../Pods/Target Support Files/Pods-DynamoCollectionView/Pods-DynamoCollectionView-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		41FAA496819A446F9685BFBA /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-DynamoCollectionView-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		52A72DB71F83D28A0024DCD9 /* Sources */ = {
@@ -307,6 +369,7 @@
 		};
 		52A72DC51F83D28A0024DCD9 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = AA089E60A24EA0E4F8528742 /* Pods-DynamoCollectionView.debug.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "";
@@ -330,6 +393,7 @@
 		};
 		52A72DC61F83D28A0024DCD9 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = D67ECD966E577F64FE4D7B88 /* Pods-DynamoCollectionView.release.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "";

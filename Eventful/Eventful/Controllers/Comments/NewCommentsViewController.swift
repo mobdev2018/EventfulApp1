@@ -12,18 +12,21 @@ import Firebase
 import Foundation
 
 
-class NewCommentsViewController: UIViewController, UITextFieldDelegate,CommentsSectionDelegate,CommentInputAccessoryViewDelegate {
+class NewCommentsViewController: UIViewController, UITextFieldDelegate,CommentsSectionDelegate,CommentInputAccessoryViewDelegate, UIScrollViewDelegate {
     //array of comments which will be loaded by a service function
     var comments = [CommentGrabbed]()
     var messagesRef: DatabaseReference?
     var messageHandle: DatabaseHandle = 0
     var commentRer: DatabaseReference?
     var commentHandle: DatabaseHandle = 0
+    var items = [ListDiffable]()
     var bottomConstraint: NSLayoutConstraint?
-    public let addHeader = "addHeader" as ListDiffable
+    var loading = false
+    public let spinToken = "spinner" as ListDiffable
     public var eventKey = ""
     var isReplying = false
     var notificationData : Notifications!
+    var isFinishedPaging = false
     //This creates a lazily-initialized variable for the IGListAdapter. The initializer requires three parameters:
     //1 updater is an object conforming to IGListUpdatingDelegate, which handles row and section updates. IGListAdapterUpdater is a default implementation that is suitable for your usage.
     //2 viewController is a UIViewController that houses the adapter. This view controller is later used for navigating to other view controllers.
@@ -48,7 +51,7 @@ class NewCommentsViewController: UIViewController, UITextFieldDelegate,CommentsS
         //first lets fetch comments for current event
         //comments.removeAll()
         print(eventKey)
-        ChatService.fetchComments(forChatKey: eventKey) { (ref, currentComments) in
+        ChatService.fetchComments(forChatKey: eventKey, currentPostCount: self.comments.count, lastKey: "", isFinishedPaging: false) { (ref, currentComments,boolValue) in
             self.messagesRef = ref
             self.comments = self.sortComments(comments: currentComments)
             self.adapter.performUpdates(animated: true)
@@ -148,10 +151,11 @@ class NewCommentsViewController: UIViewController, UITextFieldDelegate,CommentsS
         collectionView.alwaysBounceVertical = true
         adapter.collectionView = collectionView
         adapter.dataSource = self
+        adapter.scrollViewDelegate = self
         NotificationCenter.default.addObserver(self, selector: #selector(handleKeyboardNotification), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(handleKeyboardNotification), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
         collectionView.register(CommentCell.self, forCellWithReuseIdentifier: "CommentCell")
-//        collectionView.register(CommentHeader.self, forCellWithReuseIdentifier: "HeaderCell")
+        collectionView.register(SpinnerCell.self, forCellWithReuseIdentifier: "SpinnerrCell")
         collectionView.keyboardDismissMode = .onDrag
         navigationItem.title = "Comments"
         self.navigationItem.hidesBackButton = true
@@ -180,9 +184,54 @@ class NewCommentsViewController: UIViewController, UITextFieldDelegate,CommentsS
         })
         self.adapter.performUpdates(animated: true)
     }
+    
+//    //will use this perform pagination
+    func scrollViewWillEndDragging(_ scrollView: UIScrollView,
+                                   withVelocity velocity: CGPoint,
+                                   targetContentOffset: UnsafeMutablePointer<CGPoint>) {
+        
+        let distance = scrollView.contentSize.height - (targetContentOffset.pointee.y + scrollView.bounds.height)
+        //distance from bottom of screen
+        print(distance)
+        if !loading && distance < 200 {
+            //will begin to add spinning indicatior
+            loading = true
+            adapter.performUpdates(animated: true, completion: nil)
+            DispatchQueue.global(qos: .default).async {
+                // fake background loading task
+                sleep(2)
+                DispatchQueue.main.async {
+                    self.loading = false
+                    let itemCount = self.comments.count
+                    //will append new objects here
+//                    self.comments.append(Array(comments..<itemCount + 5))
+                    print("attempting pagiantion")
+                    //put true or false condition to stop pagination
+                    if !self.isFinishedPaging{
+                        ChatService.fetchComments(forChatKey: self.eventKey, currentPostCount: self.comments.count, lastKey: (self.comments.last?.key!)!, isFinishedPaging: self.isFinishedPaging, completion: { (ref, pagComments,boolValue) in
+                            self.messagesRef = ref
+                            self.isFinishedPaging = boolValue
+                            self.comments.append(contentsOf: pagComments)
+                            self.adapter.performUpdates(animated: true, completion: nil)
+                        })
+                    }else{
+                        print("did not page")
+                    }
+
+                }
+            }
+        }
+    }
+
+    
+    
+    
+    
+    
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
+        self.isFinishedPaging = false
         self.fetchComments()
         self.tryObserveComments()
         tabBarController?.tabBar.isHidden = true
@@ -210,7 +259,10 @@ class NewCommentsViewController: UIViewController, UITextFieldDelegate,CommentsS
 extension NewCommentsViewController: ListAdapterDataSource {
     // 1 objects(for:) returns an array of data objects that should show up in the collection view. loader.entries is provided here as it contains the journal entries.
     func objects(for listAdapter: ListAdapter) -> [ListDiffable] {
-        let items:[ListDiffable] = comments
+        items = comments
+        if loading {
+            items.append(spinToken as ListDiffable)
+        }
         //print("comments = \(comments)")
         return items
     }
@@ -221,14 +273,14 @@ extension NewCommentsViewController: ListAdapterDataSource {
     // 2 For each data object, listAdapter(_:sectionControllerFor:) must return a new instance of a section controller. For now you’re returning a plain IGListSectionController to appease the compiler — in a moment, you’ll modify this to return a custom journal section controller.
     func listAdapter(_ listAdapter: ListAdapter, sectionControllerFor object: Any) -> ListSectionController {
         //the comment section controller will be placed here but we don't have it yet so this will be a placeholder
-//        if let object = object as? ListDiffable, object === addHeader {
-//            return CommentsHeaderSectionController()
-//        }
+        if let object = object as? ListDiffable, object === spinToken {
+            return spinnerSectionController()
+        }else{
         let sectionController = CommentsSectionController()
         sectionController.currentViewController = self
         sectionController.delegate = self
-        
         return sectionController
+        }
     }
     
     // 3 emptyView(for:) returns a view that should be displayed when the list is empty. NASA is in a bit of a time crunch, so they didn’t budget for this feature.
@@ -270,6 +322,7 @@ extension NewCommentsViewController {
         
     }
 }
+
 
 
 

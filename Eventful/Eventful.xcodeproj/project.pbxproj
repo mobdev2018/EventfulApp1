@@ -55,7 +55,7 @@
 		0747AA1620375D8500F725C7 /* NewCommentsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0747AA0F20375D8400F725C7 /* NewCommentsViewController.swift */; };
 		0747AA1720375D8500F725C7 /* CommentInputAccessoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0747AA1020375D8500F725C7 /* CommentInputAccessoryView.swift */; };
 		0747AA1820375D8500F725C7 /* CommentInputTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0747AA1120375D8500F725C7 /* CommentInputTextView.swift */; };
-		0747AA1920375D8500F725C7 /* CommentsHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0747AA1220375D8500F725C7 /* CommentsHeader.swift */; };
+		0747AA1920375D8500F725C7 /* CommentsSpinner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0747AA1220375D8500F725C7 /* CommentsSpinner.swift */; };
 		0747AA1F20375E0E00F725C7 /* EventSearchHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0747AA1A20375E0D00F725C7 /* EventSearchHeader.swift */; };
 		0747AA2020375E0E00F725C7 /* UserSearchCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0747AA1B20375E0D00F725C7 /* UserSearchCell.swift */; };
 		0747AA2120375E0E00F725C7 /* EventSearchCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0747AA1C20375E0E00F725C7 /* EventSearchCell.swift */; };
@@ -152,7 +152,7 @@
 		0747AA0F20375D8400F725C7 /* NewCommentsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = NewCommentsViewController.swift; path = Controllers/Comments/NewCommentsViewController.swift; sourceTree = "<group>"; };
 		0747AA1020375D8500F725C7 /* CommentInputAccessoryView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CommentInputAccessoryView.swift; path = Controllers/Comments/CommentInputAccessoryView.swift; sourceTree = "<group>"; };
 		0747AA1120375D8500F725C7 /* CommentInputTextView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CommentInputTextView.swift; path = Controllers/Comments/CommentInputTextView.swift; sourceTree = "<group>"; };
-		0747AA1220375D8500F725C7 /* CommentsHeader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CommentsHeader.swift; path = Controllers/Comments/CommentsHeader.swift; sourceTree = "<group>"; };
+		0747AA1220375D8500F725C7 /* CommentsSpinner.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CommentsSpinner.swift; path = Controllers/Comments/CommentsSpinner.swift; sourceTree = "<group>"; };
 		0747AA1A20375E0D00F725C7 /* EventSearchHeader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = EventSearchHeader.swift; path = Controllers/Search/EventSearchHeader.swift; sourceTree = "<group>"; };
 		0747AA1B20375E0D00F725C7 /* UserSearchCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UserSearchCell.swift; path = Controllers/Search/UserSearchCell.swift; sourceTree = "<group>"; };
 		0747AA1C20375E0E00F725C7 /* EventSearchCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = EventSearchCell.swift; path = Controllers/Search/EventSearchCell.swift; sourceTree = "<group>"; };
@@ -429,7 +429,7 @@
 				0747AA0C20375D8400F725C7 /* CommentCell.swift */,
 				0747AA1020375D8500F725C7 /* CommentInputAccessoryView.swift */,
 				0747AA1120375D8500F725C7 /* CommentInputTextView.swift */,
-				0747AA1220375D8500F725C7 /* CommentsHeader.swift */,
+				0747AA1220375D8500F725C7 /* CommentsSpinner.swift */,
 				0747AA0E20375D8400F725C7 /* CommentsHeaderSectionController.swift */,
 				0747AA0D20375D8400F725C7 /* CommentsSectionController.swift */,
 				0747AA0F20375D8400F725C7 /* NewCommentsViewController.swift */,
@@ -670,7 +670,7 @@
 				0747AA2820375E2A00F725C7 /* CameraController.swift in Sources */,
 				0747AA2D20375E4400F725C7 /* StroyCell.swift in Sources */,
 				0738DD391F3DC1340093F51B /* CustomImageView.swift in Sources */,
-				0747AA1920375D8500F725C7 /* CommentsHeader.swift in Sources */,
+				0747AA1920375D8500F725C7 /* CommentsSpinner.swift in Sources */,
 				0747AA1520375D8500F725C7 /* CommentsHeaderSectionController.swift in Sources */,
 				0747A9F720375D2400F725C7 /* DropDownLauncher.swift in Sources */,
 				07437F1A1F267CA900CE728B /* AppDelegate.swift in Sources */,

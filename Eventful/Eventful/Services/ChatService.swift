@@ -13,24 +13,44 @@ import FirebaseAuth
 
 
 class ChatService {
-    static func fetchComments(forChatKey eventKey: String, completion: @escaping (DatabaseReference, [CommentGrabbed]) -> Void) -> DatabaseHandle {
+    static func fetchComments(forChatKey eventKey: String,currentPostCount: Int,lastKey: String,isFinishedPaging:Bool, completion: @escaping (DatabaseReference, [CommentGrabbed],Bool) -> Void) -> DatabaseHandle {
+        print(currentPostCount)
+        var isFinishedPagingTemp = isFinishedPaging
         var currentCommentsArray = [CommentGrabbed]()
         var currentComment: CommentGrabbed!
         
         let commentRef = Database.database().reference().child("Comments").child(eventKey)
-        return commentRef.observe(.value, with: { (commentSnapshot) in
-            guard let allComments = commentSnapshot.children.allObjects as? [DataSnapshot] else {
-                return completion(commentRef, [])
+        var query = commentRef.queryOrderedByKey()
+        if currentPostCount > 0 {
+            print(lastKey)
+            query = query.queryStarting(atValue: lastKey)
+        }
+       
+        return  query.queryLimited(toFirst: 10).observe(.value, with: { (commentSnapshot) in
+            guard var allComments = commentSnapshot.children.allObjects as? [DataSnapshot] else {
+                return completion(commentRef, [],true)
+            }
+
+            if currentPostCount > 0 {
+                allComments.removeFirst()
+            }
+            
+            if allComments.count < 1 {
+                isFinishedPagingTemp = true
+                return completion(commentRef,[],true)
             }
             
             for comments in allComments {
                 currentComment = CommentGrabbed(snapshot: comments)
+                print(currentComment.key)
                 currentCommentsArray.append(currentComment)
                 print(currentComment)
             }
             
-            if currentCommentsArray.count == allComments.count {
-                completion(commentRef,currentCommentsArray)
+            if currentCommentsArray.count == allComments.count && !isFinishedPagingTemp {
+                completion(commentRef,currentCommentsArray,false)
+            }else{
+                return completion(commentRef,[],true)
             }
             
         }, withCancel: { (err) in

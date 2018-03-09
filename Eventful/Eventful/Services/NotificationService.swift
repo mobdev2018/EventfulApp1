@@ -10,17 +10,34 @@ import Foundation
 import Firebase
 
 class NotificationService {
-    static func fetchUserNotif(for user: User = User.current, withCompletion completion: @escaping (DatabaseReference, [Notifications]) -> Void) -> DatabaseHandle {
+    static func fetchUserNotif(for user: User = User.current,currentNotifCount: Int,lastKey: String, isFinishedPaging: Bool,withCompletion completion: @escaping (DatabaseReference, [Notifications],Bool) -> Void) -> DatabaseHandle {
         //array of user notifications
         var currentNotifsArray = [Notifications]()
         var currentNotif:Notifications!
-
+       var isFinishedPagingTemp = isFinishedPaging
         //2
         let notifRef = Database.database().reference().child("Notifications").child(user.uid)
-        return notifRef.observe(.value, with: { (notifSnapshot) in
+        var query = notifRef.queryOrderedByKey()
+        if currentNotifCount > 0 {
+            print(lastKey)
+            query = query.queryStarting(atValue: lastKey)
+            
+        }
+
+        return query.queryLimited(toFirst: 7).observe(.value, with: { (notifSnapshot) in
           //  print(notifSnapshot.value as Any)
-            guard let allUserNotifs = notifSnapshot.children.allObjects as? [DataSnapshot] else {
-                 return completion(notifRef, [])
+            guard var allUserNotifs = notifSnapshot.children.allObjects as? [DataSnapshot] else {
+                 return completion(notifRef, [],true)
+            }
+            
+            if currentNotifCount > 0 {
+                allUserNotifs.removeFirst()
+                
+            }
+            
+            if allUserNotifs.count < 1 {
+                isFinishedPagingTemp = true
+                return completion(notifRef,[],true)
             }
             
             for userNotifs in allUserNotifs{
@@ -37,8 +54,10 @@ class NotificationService {
                 }
                // print(userNotifs.childrenCount)
             }
-            if currentNotifsArray.count == allUserNotifs.count{
-                completion(notifRef,currentNotifsArray)
+            if currentNotifsArray.count == allUserNotifs.count && !isFinishedPagingTemp{
+                completion(notifRef,currentNotifsArray,false)
+            }else{
+                return completion(notifRef,[],true)
             }
             
         }) { (err) in

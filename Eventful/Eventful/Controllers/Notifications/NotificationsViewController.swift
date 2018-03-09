@@ -12,7 +12,7 @@ import Firebase
 
 private let reuseIdentifier = "Cell"
 
-class NotificationsViewController: UIViewController,NotificationsSectionDelegate {
+class NotificationsViewController: UIViewController,NotificationsSectionDelegate,UIScrollViewDelegate {
     
     var emptyLabel: UILabel?
     //array of notifications which will be loaded by a service function
@@ -22,7 +22,10 @@ class NotificationsViewController: UIViewController,NotificationsSectionDelegate
     var notiRef: DatabaseReference?
     var observeNotiHandle: DatabaseHandle = 0
     var observeNotiRef: DatabaseReference?
-    
+    public let spinToken = "spinner" as ListDiffable
+    var isFinishedPaging = false
+    var loading = false
+    var items = [ListDiffable]()
     //This creates a lazily-initialized variable for the IGListAdapter. The initializer requires three parameters:
     //1 updater is an object conforming to IGListUpdatingDelegate, which handles row and section updates. IGListAdapterUpdater is a default implementation that is suitable for your usage.
     //2 viewController is a UIViewController that houses the adapter. This view controller is later used for navigating to other view controllers.
@@ -55,6 +58,7 @@ class NotificationsViewController: UIViewController,NotificationsSectionDelegate
         view.addSubview(collectionView)
         collectionView.alwaysBounceVertical = true
         adapter.collectionView = collectionView
+        adapter.scrollViewDelegate = self
         adapter.dataSource = self
         collectionView.register(NotificationCell.self, forCellWithReuseIdentifier: "NotificaationCell")
         self.fetchNotifs()
@@ -62,6 +66,7 @@ class NotificationsViewController: UIViewController,NotificationsSectionDelegate
     }
     
     override func viewWillAppear(_ animated: Bool) {
+        //may have to do something here to make pag work properly
 //        self.fetchNotifs()
     }
     
@@ -72,10 +77,10 @@ class NotificationsViewController: UIViewController,NotificationsSectionDelegate
     
     
     fileprivate func fetchNotifs(){
-        notiHandle = NotificationService.fetchUserNotif(withCompletion: { (ref, noti) in
+        notiHandle = NotificationService.fetchUserNotif(currentNotifCount: self.notifs.count, lastKey: "", isFinishedPaging: false, withCompletion: { (ref, noti,boolValue) in
             print("user has \(noti.count) notifications")
             self.notiRef = ref
-            self.notifs = self.sortNotifs(notifArray: noti)
+            self.notifs = noti
             self.adapter.performUpdates(animated: true)
         })
     }
@@ -84,7 +89,7 @@ class NotificationsViewController: UIViewController,NotificationsSectionDelegate
         observeNotiHandle = NotificationService.observeNotifs(completion: { (ref, noti) in
             self.observeNotiRef = ref
             if let currentNoti = noti {
-                self.notifs.insert(noti!, at: 0)
+                self.notifs.insert(currentNoti, at: 0)
                 self.adapter.performUpdates(animated: true, completion: nil)
             }
         })
@@ -104,6 +109,54 @@ class NotificationsViewController: UIViewController,NotificationsSectionDelegate
         
     }
     
+    //    //will use this perform pagination
+    func scrollViewWillEndDragging(_ scrollView: UIScrollView,
+                                   withVelocity velocity: CGPoint,
+                                   targetContentOffset: UnsafeMutablePointer<CGPoint>) {
+        
+        let distance = scrollView.contentSize.height - (targetContentOffset.pointee.y + scrollView.bounds.height)
+        //distance from bottom of screen
+        print(distance)
+        if !loading && distance < 200 {
+            //will begin to add spinning indicatior
+            loading = true
+            adapter.performUpdates(animated: true, completion: nil)
+            DispatchQueue.global(qos: .default).async {
+                // fake background loading task
+                sleep(2)
+                DispatchQueue.main.async {
+                    self.loading = false
+                    let itemCount = self.notifs.count
+                    //will append new objects here
+                    //                    self.comments.append(Array(comments..<itemCount + 5))
+                    print("attempting pagiantion")
+                    //put true or false condition to stop pagination
+                    print("Last key is: \(self.notifs.first?.key)")
+                    if !self.isFinishedPaging{
+                        self.notiHandle = NotificationService.fetchUserNotif(currentNotifCount: self.notifs.count, lastKey: (self.notifs.last?.key)!, isFinishedPaging: self.isFinishedPaging, withCompletion: { (ref, noti,boolValue) in
+                            print("user has \(noti.count) notifications")
+                            for notif in noti {
+                                print(notif.key)
+                            }
+                            self.notiRef = ref
+                           self.isFinishedPaging = boolValue
+                            self.notifs.append(contentsOf: noti)
+                            self.adapter.performUpdates(animated: true)
+                        })
+  
+                    }else{
+                        print("did not page")
+                    }
+                    
+                }
+            }
+        }
+    }
+
+    
+    
+    
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -113,7 +166,10 @@ class NotificationsViewController: UIViewController,NotificationsSectionDelegate
 extension NotificationsViewController: ListAdapterDataSource {
     // 1 objects(for:) returns an array of data objects that should show up in the collection view. loader.entries is provided here as it contains the journal entries.
     func objects(for listAdapter: ListAdapter) -> [ListDiffable] {
-        let items:[ListDiffable] = notifs
+        items = notifs
+        if loading {
+            items.append(spinToken as ListDiffable)
+        }
         //print("comments = \(comments)")
         return items
     }
@@ -121,9 +177,13 @@ extension NotificationsViewController: ListAdapterDataSource {
     // 2 For each data object, listAdapter(_:sectionControllerFor:) must return a new instance of a section controller. For now you’re returning a plain IGListSectionController to appease the compiler — in a moment, you’ll modify this to return a custom journal section controller.
     func listAdapter(_ listAdapter: ListAdapter, sectionControllerFor object: Any) -> ListSectionController {
         //the comment section controller will be placed here but we don't have it yet so this will be a placeholder
+        if let object = object as? ListDiffable, object === spinToken {
+            return spinnerSectionController()
+        }else{
         let sectionController = NotificationsSectionController()
         sectionController.delegate = self
         return sectionController
+        }
     }
     
     // 3 emptyView(for:) returns a view that should be displayed when the list is empty. NASA is in a bit of a time crunch, so they didn’t budget for this feature.

@@ -9,6 +9,7 @@
 import Foundation
 import UIKit
 import Firebase
+import Hero
 
 protocol CommentCellDelegate: class {
     func optionsButtonTapped(cell: CommentCell)

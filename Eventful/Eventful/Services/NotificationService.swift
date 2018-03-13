@@ -10,59 +10,62 @@ import Foundation
 import Firebase
 
 class NotificationService {
-    static func fetchUserNotif(for user: User = User.current,currentNotifCount: Int,lastKey: String, isFinishedPaging: Bool,withCompletion completion: @escaping (DatabaseReference, [Notifications],Bool) -> Void) -> DatabaseHandle {
+    static func fetchUserNotif(for user: User = User.current,currentNotifCount: Int,lastKey: TimeInterval? = nil, isFinishedPaging: Bool,withCompletion completion: @escaping ( [Notifications],Bool) -> Void){
         //array of user notifications
         var currentNotifsArray = [Notifications]()
         var currentNotif:Notifications!
        var isFinishedPagingTemp = isFinishedPaging
         //2
-        let notifRef = Database.database().reference().child("Notifications").child(user.uid)
-        var query = notifRef.queryOrderedByKey()
+        let key = "creationDate"
+        let notifRef = Database.database().reference().child("notifications").child(user.uid)
+        var query = notifRef.queryOrdered(byChild: key)
         if currentNotifCount > 0 {
             print(lastKey)
-            query = query.queryStarting(atValue: lastKey)
-            
+            query = query.queryEnding(atValue: lastKey, childKey: key)
         }
-
-        return query.queryLimited(toFirst: 7).observe(.value, with: { (notifSnapshot) in
-          //  print(notifSnapshot.value as Any)
+        
+        print(query)
+        
+        query.queryLimited(toLast: 10).observeSingleEvent(of: .value, with: { (notifSnapshot) in
             guard var allUserNotifs = notifSnapshot.children.allObjects as? [DataSnapshot] else {
-                 return completion(notifRef, [],true)
+                return completion( [],true)
             }
+            allUserNotifs.reverse()
             
-            if currentNotifCount > 0 {
+            
+            if currentNotifCount > 0 && allUserNotifs.count > 0{
                 allUserNotifs.removeFirst()
                 
             }
             
             if allUserNotifs.count < 1 {
                 isFinishedPagingTemp = true
-                return completion(notifRef,[],true)
+                return completion([],true)
             }
             
             for userNotifs in allUserNotifs{
                 if userNotifs.childrenCount == 8 {
-                  //  print("comment notification")
+                    //  print("comment notification")
                     currentNotif = Notifications(snapshot:userNotifs)
                     currentNotifsArray.append(currentNotif)
                 }
                 if userNotifs.childrenCount == 6 {
-                //    print("follow notification")
+                    //    print("follow notification")
                     print(userNotifs.children.allObjects)
                     currentNotif = Notifications(followSnapshot: userNotifs)
                     currentNotifsArray.append(currentNotif)
                 }
-               // print(userNotifs.childrenCount)
+                // print(userNotifs.childrenCount)
             }
             if currentNotifsArray.count == allUserNotifs.count && !isFinishedPagingTemp{
-                completion(notifRef,currentNotifsArray,false)
+                completion(currentNotifsArray,false)
             }else{
-                return completion(notifRef,[],true)
+                return completion([],true)
             }
-            
         }) { (err) in
-            print("Couldn't find notification info on user", err)
+            print("Couldn't find comments in DB", err)
         }
+        
     }
     
     static func observeNotifs(for user: User = User.current, completion: @escaping (DatabaseReference, Notifications?) -> Void) -> DatabaseHandle {

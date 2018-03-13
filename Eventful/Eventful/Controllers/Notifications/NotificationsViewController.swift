@@ -77,10 +77,11 @@ class NotificationsViewController: UIViewController,NotificationsSectionDelegate
     
     
     fileprivate func fetchNotifs(){
-        notiHandle = NotificationService.fetchUserNotif(currentNotifCount: self.notifs.count, lastKey: "", isFinishedPaging: false, withCompletion: { (ref, noti,boolValue) in
+ 
+        NotificationService.fetchUserNotif(currentNotifCount: self.notifs.count, isFinishedPaging: false, withCompletion: { ( noti,boolValue) in
             print("user has \(noti.count) notifications")
-            self.notiRef = ref
             self.notifs = noti
+            self.isFinishedPaging = boolValue
             self.adapter.performUpdates(animated: true)
         })
     }
@@ -127,27 +128,18 @@ class NotificationsViewController: UIViewController,NotificationsSectionDelegate
                 DispatchQueue.main.async {
                     self.loading = false
                     let itemCount = self.notifs.count
-                    //will append new objects here
-                    //                    self.comments.append(Array(comments..<itemCount + 5))
                     print("attempting pagiantion")
                     //put true or false condition to stop pagination
-                    print("Last key is: \(self.notifs.first?.key)")
-                    if !self.isFinishedPaging{
-                        self.notiHandle = NotificationService.fetchUserNotif(currentNotifCount: self.notifs.count, lastKey: (self.notifs.last?.key)!, isFinishedPaging: self.isFinishedPaging, withCompletion: { (ref, noti,boolValue) in
+                   // print("Last key is: \(self.notifs.last?.key)")
+                    guard let value = self.notifs.last?.timeStamp?.timeIntervalSince1970 else {
+                        return
+                    }
+                          NotificationService.fetchUserNotif(currentNotifCount: self.notifs.count, lastKey: value, isFinishedPaging: self.isFinishedPaging, withCompletion: { ( noti,boolValue) in
                             print("user has \(noti.count) notifications")
-                            for notif in noti {
-                                print(notif.key)
-                            }
-                            self.notiRef = ref
                            self.isFinishedPaging = boolValue
                             self.notifs.append(contentsOf: noti)
                             self.adapter.performUpdates(animated: true)
                         })
-  
-                    }else{
-                        print("did not page")
-                    }
-                    
                 }
             }
         }

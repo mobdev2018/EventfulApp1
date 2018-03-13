@@ -30,6 +30,7 @@
              self.buttonFilter.isHidden = self.selectedTopIndex != 1
         }
     }
+    let appDelegate = UIApplication.shared.delegate as! AppDelegate
 
     let topImages = [#imageLiteral(resourceName: "icons8-search-40"), #imageLiteral(resourceName: "home"),#imageLiteral(resourceName: "icons8-Notification-50"),UIImage()]
    
@@ -91,6 +92,7 @@
     fileprivate func registerNotifications() {
         NotificationCenter.default.addObserver(self, selector: #selector(handleDynamoCollectionViewEnableScrolling(notification:)), name: DynamoCollectionViewEnableScrollingNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(handleDynamoCollectionViewDisableScrolling(notification:)), name: DynamoCollectionViewDisableScrollingNotification, object: nil)
+         NotificationCenter.default.addObserver(self, selector: #selector(refreshData), name: NSNotification.Name(rawValue: "didReceivePush"), object: nil)
     }
     fileprivate func removeNotifcaitons (){
         NotificationCenter.default.removeObserver(self)
@@ -114,6 +116,12 @@
         }, completion: nil)
     }
     
+    
+    @objc func refreshData(){
+        self.topCollectionView.performBatchUpdates({
+            self.topCollectionView.reloadItems(at: [IndexPath.init(row: 2, section: 0)])
+        }, completion: nil)
+    }
     
     
     @objc func showFilter(){
@@ -175,6 +183,11 @@
             if self.selectedTopIndex < indexPath.item {
                 direction = .forward
             }
+            if indexPath.item == 2{
+                appDelegate.appRef.applicationIconBadgeNumber = 0
+                appDelegate.hasNotification = false
+                collectionView.reloadItems(at: [indexPath])
+            }
             self.pageController.setViewControllers([viewController], direction: direction, animated: true, completion: nil)
             self.performActionOnTopItemSelect(at: indexPath.item)
         }
@@ -209,6 +222,9 @@
             cell.imageView.loadImage(urlString: User.current.profilePic!)
             cell.imageView.contentMode = .scaleToFill
             cell.imageView.layer.cornerRadius = cell.frame.height/2
+        }else if (indexPath.item == 2){
+            cell.notificaitonView.isHidden = appDelegate.hasNotification ? false : true
+            cell.imageView.image = self.topImages[indexPath.row]
         }else{
             cell.imageView.image = self.topImages[indexPath.row]
         }

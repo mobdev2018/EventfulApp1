@@ -42,7 +42,7 @@ struct FollowService {
 
         let followData = ["followers/\(user.uid)/\(currentUID)" : NSNull(),
                           "following/\(currentUID)/\(user.uid)" : NSNull(),
-                          "Notifications/\(user.uid)/\(currentUID)" : NSNull()]
+                          "notifications/\(user.uid)/\(currentUID)" : NSNull()]
         
         let ref = Database.database().reference()
         ref.updateChildValues(followData) { (error, ref) in
@@ -61,7 +61,7 @@ struct FollowService {
         let messagesRef = Database.database().reference().child("notifcations").child(notification.followee!).child(notification.follower!)
         let messageKey = messagesRef.key
         
-        multiUpdateValue["Notifications/\(notification.followee!)/\(messageKey)"] = notification.followDictValue
+        multiUpdateValue["notifications/\(notification.followee!)/\(messageKey)"] = notification.followDictValue
         
         let rootRef = Database.database().reference()
         rootRef.updateChildValues(multiUpdateValue, withCompletionBlock: { (error, ref) in

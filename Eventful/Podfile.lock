@@ -74,12 +74,17 @@ PODS:
     - IGListKit/Diffing
   - IGListKit/Diffing (3.2.0)
   - leveldb-library (1.20)
+  - MarqueeLabel/Swift (3.1.4)
   - nanopb (0.3.8):
     - nanopb/decode (= 0.3.8)
     - nanopb/encode (= 0.3.8)
   - nanopb/decode (0.3.8)
   - nanopb/encode (0.3.8)
+  - NotificationBannerSwift (1.6.2):
+    - MarqueeLabel/Swift
+    - SnapKit (~> 4.0)
   - Protobuf (3.5.0)
+  - SnapKit (4.0.0)
   - SVProgressHUD (2.2.5)
   - SwiftLocation (3.1.0):
     - SwiftyJSON (~> 4.0.0-alpha.1)
@@ -104,6 +109,7 @@ DEPENDENCIES:
   - GeoFire (from `https://github.com/firebase/geofire-objc.git`)
   - Hero
   - IGListKit (from `https://github.com/Instagram/IGListKit.git`, branch `master`)
+  - NotificationBannerSwift
   - SVProgressHUD
   - SwiftLocation
   - SwiftyCam
@@ -148,14 +154,17 @@ SPEC CHECKSUMS:
   Hero: ce59e81c79390613d97b43da7179e2c5e1017e04
   IGListKit: ffe6f98a728ab0250aceea22e7957aa5477c5048
   leveldb-library: 08cba283675b7ed2d99629a4bc5fd052cd2bb6a5
+  MarqueeLabel: bf768455fe88d427f71476ebb23f9092b660f40b
   nanopb: 5601e6bca2dbf1ed831b519092ec110f66982ca3
+  NotificationBannerSwift: 4eceb2add9d5eaa0596c63d49690b4d6476e74ec
   Protobuf: 8a9838fba8dae3389230e1b7f8c104aa32389c03
+  SnapKit: a42d492c16e80209130a3379f73596c3454b7694
   SVProgressHUD: 1428aafac632c1f86f62aa4243ec12008d7a51d6
   SwiftLocation: 8f5ef4f510a45e43239de57a3145b3669301e898
   SwiftyCam: 86c114177a1b1f5dc2c82384577d0c20b922a31b
   SwiftyJSON: 070dabdcb1beb81b247c65ffa3a79dbbfb3b48aa
   TextFieldEffects: 4ee41b5216e674d55fb6ac25107bf1af7629176f
 
-PODFILE CHECKSUM: 3416fa0192e60a5c36dd5a85de28d557c94fa75f
+PODFILE CHECKSUM: dc000e8622df8ac47509286908a487d94901a40a
 
 COCOAPODS: 1.4.0

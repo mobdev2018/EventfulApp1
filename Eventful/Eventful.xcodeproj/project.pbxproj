@@ -76,6 +76,7 @@
 		0753E7D72041E2AF00B882E4 /* Notification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0753E7D62041E2AF00B882E4 /* Notification.swift */; };
 		0753E7D92043CF9E00B882E4 /* FollowNotification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0753E7D82043CF9E00B882E4 /* FollowNotification.swift */; };
 		07D923A81F33C61D0069613D /* Storyboard+Utility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07D923A71F33C61D0069613D /* Storyboard+Utility.swift */; };
+		07E271B62056354F007F0592 /* NotifBannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07E271B52056354F007F0592 /* NotifBannerView.swift */; };
 		07F3EC591F4A57C3005296EB /* PostService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07F3EC581F4A57C3005296EB /* PostService.swift */; };
 		07F3EC5E1F4B7B28005296EB /* StoryService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07F3EC5D1F4B7B28005296EB /* StoryService.swift */; };
 		07F3EC601F4B7BE9005296EB /* Story.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07F3EC5F1F4B7BE9005296EB /* Story.swift */; };
@@ -174,6 +175,7 @@
 		0753E7D62041E2AF00B882E4 /* Notification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Notification.swift; path = Models/Notification.swift; sourceTree = "<group>"; };
 		0753E7D82043CF9E00B882E4 /* FollowNotification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = FollowNotification.swift; path = Models/FollowNotification.swift; sourceTree = "<group>"; };
 		07D923A71F33C61D0069613D /* Storyboard+Utility.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "Storyboard+Utility.swift"; path = "Extensions/Storyboard+Utility.swift"; sourceTree = "<group>"; };
+		07E271B52056354F007F0592 /* NotifBannerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = NotifBannerView.swift; path = Controllers/Notifications/NotifBannerView.swift; sourceTree = "<group>"; };
 		07F3EC581F4A57C3005296EB /* PostService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PostService.swift; path = Services/PostService.swift; sourceTree = "<group>"; };
 		07F3EC5D1F4B7B28005296EB /* StoryService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = StoryService.swift; path = Services/StoryService.swift; sourceTree = "<group>"; };
 		07F3EC5F1F4B7BE9005296EB /* Story.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Story.swift; path = Models/Story.swift; sourceTree = "<group>"; };
@@ -228,6 +230,7 @@
 				0747A9DA20375C6600F725C7 /* NotificationsViewController.swift */,
 				0741702B20468A1F006B236B /* NotificationCell.swift */,
 				0741702D20474D12006B236B /* NotificationSectionController.swift */,
+				07E271B52056354F007F0592 /* NotifBannerView.swift */,
 			);
 			name = Notifications;
 			sourceTree = "<group>";
@@ -568,8 +571,11 @@
 				"${BUILT_PRODUCTS_DIR}/GoogleToolboxForMac/GoogleToolboxForMac.framework",
 				"${BUILT_PRODUCTS_DIR}/Hero-iOS11.2/Hero.framework",
 				"${BUILT_PRODUCTS_DIR}/IGListKit/IGListKit.framework",
+				"${BUILT_PRODUCTS_DIR}/MarqueeLabel/MarqueeLabel.framework",
+				"${BUILT_PRODUCTS_DIR}/NotificationBannerSwift/NotificationBannerSwift.framework",
 				"${BUILT_PRODUCTS_DIR}/Protobuf/Protobuf.framework",
 				"${BUILT_PRODUCTS_DIR}/SVProgressHUD/SVProgressHUD.framework",
+				"${BUILT_PRODUCTS_DIR}/SnapKit/SnapKit.framework",
 				"${BUILT_PRODUCTS_DIR}/SwiftLocation/SwiftLocation.framework",
 				"${BUILT_PRODUCTS_DIR}/SwiftyCam/SwiftyCam.framework",
 				"${BUILT_PRODUCTS_DIR}/SwiftyJSON/SwiftyJSON.framework",
@@ -590,8 +596,11 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleToolboxForMac.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Hero.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/IGListKit.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MarqueeLabel.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/NotificationBannerSwift.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Protobuf.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SVProgressHUD.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SnapKit.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftLocation.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftyCam.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftyJSON.framework",
@@ -695,6 +704,7 @@
 				0747AA2020375E0E00F725C7 /* UserSearchCell.swift in Sources */,
 				0747A9EF20375CF300F725C7 /* ImageCollectionViewCell.swift in Sources */,
 				0747AA2220375E0E00F725C7 /* SearchViewController.swift in Sources */,
+				07E271B62056354F007F0592 /* NotifBannerView.swift in Sources */,
 				0747AA1620375D8500F725C7 /* NewCommentsViewController.swift in Sources */,
 				0747A9DB20375C6600F725C7 /* NotificationsViewController.swift in Sources */,
 				073AFDC51F45E4FB009D4773 /* FollowService.swift in Sources */,

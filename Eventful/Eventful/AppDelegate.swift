@@ -11,7 +11,8 @@ import Firebase
 import Fabric
 import Crashlytics
 import UserNotifications
-import BPStatusBarAlert
+import NotificationBannerSwift
+
 
 typealias FIRUser = FirebaseAuth.User
 
@@ -23,10 +24,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate, MessagingDelegate {
     var strDeviceToken = ""
     var hasNotification = false
     var appRef : UIApplication!
-
+    var notifBanner = NotifBannerView()
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         Fabric.with([Crashlytics.self])
+        self.appRef = application
         //1 Configure app for firebase
         FirebaseApp.configure()
         //2
@@ -169,13 +171,12 @@ extension AppDelegate{
     func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable : Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
         print(userInfo)
         let msg = userInfo["content"] as! String
+        notifBanner.userInfoForNotif = userInfo
+
         if application.applicationState == .active{
-            BPStatusBarAlert(duration: 0.3, delay: 2, position: .statusBar)
-                .message(message: msg)
-                .messageColor(color: UIColor.white)
-                .bgColor(color: UIColor.black)
-                .completion { print("completion closure will called") }
-                .show()
+            let banner = NotificationBanner(customView: notifBanner)
+            banner.bannerHeight = 40
+            banner.show()
             self.hasNotification = true
             NotificationCenter.default.post(name: NSNotification.Name(rawValue: "didReceivePush"), object: nil, userInfo: nil)
         }

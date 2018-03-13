@@ -51,16 +51,16 @@ class NewCommentsViewController: UIViewController, UITextFieldDelegate,CommentsS
         //first lets fetch comments for current event
         //comments.removeAll()
         print(eventKey)
-        ChatService.fetchComments(forChatKey: eventKey, currentPostCount: self.comments.count, lastKey: "", isFinishedPaging: false) { (ref, currentComments,boolValue) in
-            self.messagesRef = ref
-            self.comments = self.sortComments(comments: currentComments)
+        ChatService.fetchComments(forChatKey: eventKey, currentPostCount: self.comments.count, lastKey: "", isFinishedPaging: false) { ( currentComments,boolValue) in
+            self.comments = currentComments
+            self.isFinishedPaging = boolValue
             self.adapter.performUpdates(animated: true)
         }
     }
     
     fileprivate func tryObserveComments(){
         print(eventKey)
-        ChatService.observeMessages(forChatKey: eventKey) { (ref, newComments) in
+        commentHandle = ChatService.observeMessages(forChatKey: eventKey) { (ref, newComments) in
             self.commentRer = ref
             self.comments.append(newComments!)
             self.adapter.performUpdates(animated: true)
@@ -207,16 +207,12 @@ class NewCommentsViewController: UIViewController, UITextFieldDelegate,CommentsS
 //                    self.comments.append(Array(comments..<itemCount + 5))
                     print("attempting pagiantion")
                     //put true or false condition to stop pagination
-                    if !self.isFinishedPaging{
-                        ChatService.fetchComments(forChatKey: self.eventKey, currentPostCount: self.comments.count, lastKey: (self.comments.last?.key!)!, isFinishedPaging: self.isFinishedPaging, completion: { (ref, pagComments,boolValue) in
-                            self.messagesRef = ref
+                  
+                        ChatService.fetchComments(forChatKey: self.eventKey, currentPostCount: self.comments.count, lastKey: (self.comments.last?.key!)!, isFinishedPaging: self.isFinishedPaging, completion: { ( pagComments,boolValue) in
                             self.isFinishedPaging = boolValue
                             self.comments.append(contentsOf: pagComments)
                             self.adapter.performUpdates(animated: true, completion: nil)
                         })
-                    }else{
-                        print("did not page")
-                    }
 
                 }
             }

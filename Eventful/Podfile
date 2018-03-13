@@ -26,7 +26,8 @@ target 'Eventful' do
     pod 'Fabric'
     pod 'Crashlytics'
     pod 'FaceAware'
-    pod "Hero"    
+    pod "Hero"
+    pod 'NotificationBannerSwift'
     # Pods for Eventful
     
 end

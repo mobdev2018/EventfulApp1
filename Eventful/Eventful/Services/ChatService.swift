@@ -18,7 +18,8 @@ class ChatService {
         var isFinishedPagingTemp = isFinishedPaging
         var currentCommentsArray = [CommentGrabbed]()
         var currentComment: CommentGrabbed!
-        let key = "creationDate"
+        //change this back if I want to sort by creationD
+        _ = "creationDate"
         let commentRef = Database.database().reference().child("Comments").child(eventKey)
         var query = commentRef.queryOrderedByKey()
         if currentPostCount > 0 {

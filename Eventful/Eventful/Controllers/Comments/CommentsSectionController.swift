@@ -87,7 +87,7 @@ class CommentsSectionController: ListSectionController,CommentCellDelegate {
             let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
             let replyAction = UIAlertAction(title: "Reply to Comment", style: .default, handler: { [weak self](_) in
                 //do something here later to facilitate reply comment functionality
-                print("Attempting to reply to user \(comment?.sender.username) comment")
+                // print("Attempting to reply to user \(comment?.sender.userna ?? <#default value#>me) comment")
                 //begin comment reply functionality
                 self?.handleReply()
             })

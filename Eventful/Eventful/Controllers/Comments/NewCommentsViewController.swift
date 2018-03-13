@@ -51,7 +51,7 @@ class NewCommentsViewController: UIViewController, UITextFieldDelegate,CommentsS
         //first lets fetch comments for current event
         //comments.removeAll()
         print(eventKey)
-        ChatService.fetchComments(forChatKey: eventKey, currentPostCount: self.comments.count, lastKey: "", isFinishedPaging: false) { ( currentComments,boolValue) in
+        ChatService.fetchComments(forChatKey: eventKey, currentPostCount: 0, lastKey: "", isFinishedPaging: false) { ( currentComments,boolValue) in
             self.comments = currentComments
             self.isFinishedPaging = boolValue
             self.adapter.performUpdates(animated: true)
@@ -202,7 +202,7 @@ class NewCommentsViewController: UIViewController, UITextFieldDelegate,CommentsS
                 sleep(2)
                 DispatchQueue.main.async {
                     self.loading = false
-                    let itemCount = self.comments.count
+//                    let itemCount = self.comments.count
                     //will append new objects here
 //                    self.comments.append(Array(comments..<itemCount + 5))
                     print("attempting pagiantion")
@@ -224,9 +224,12 @@ class NewCommentsViewController: UIViewController, UITextFieldDelegate,CommentsS
     
     
     
-    
+    override func viewDidAppear(_ animated: Bool) {
+        //self.becomeFirstResponder()
+    }
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+       self.becomeFirstResponder()
         self.isFinishedPaging = false
         self.fetchComments()
         self.tryObserveComments()

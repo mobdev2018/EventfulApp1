@@ -178,7 +178,7 @@ class ForgotPasswordViewController: UIViewController {
         bottomView.translatesAutoresizingMaskIntoConstraints = false
         self.view.addSubview(bottomView)
         NSLayoutConstraint.activateViewConstraints(bottomView, inSuperView: self.view, withLeading: 0.0, trailing: 0.0, top: nil, bottom: nil, width: nil, height: 20.0)
-        _ = NSLayoutConstraint.activateVerticalSpacingConstraint(withFirstView: bottomView, secondView: self.bottomLayoutGuide, andSeparation: 10.0)
+        _ = NSLayoutConstraint.activateVerticalSpacingConstraint(withFirstView: bottomView, secondView: view.safeAreaLayoutGuide.bottomAnchor, andSeparation: 10.0)
         
         bottomView.addSubview(self.signInButton)
         self.signInButton.translatesAutoresizingMaskIntoConstraints = false

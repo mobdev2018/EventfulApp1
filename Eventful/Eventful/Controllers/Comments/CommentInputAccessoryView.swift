@@ -70,7 +70,7 @@ class CommentInputAccessoryView: UIView, UITextViewDelegate {
         delegate?.handleSubmit(for: commentText)
     }
     
-    @objc func textFieldDidChange(_ textField: UITextView) {
+    @objc private func textFieldDidChange(_ textField: UITextView) {
         let isCommentValid = commentTextView.text?.count ?? 0 > 0
         if isCommentValid {
             submitButton.isEnabled = true

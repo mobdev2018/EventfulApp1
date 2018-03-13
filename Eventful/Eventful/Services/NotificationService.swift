@@ -20,7 +20,7 @@ class NotificationService {
         let notifRef = Database.database().reference().child("notifications").child(user.uid)
         var query = notifRef.queryOrdered(byChild: key)
         if currentNotifCount > 0 {
-            print(lastKey)
+            print(lastKey as Any)
             query = query.queryEnding(atValue: lastKey, childKey: key)
         }
         
@@ -69,7 +69,7 @@ class NotificationService {
     }
     
     static func observeNotifs(for user: User = User.current, completion: @escaping (DatabaseReference, Notifications?) -> Void) -> DatabaseHandle {
-        let messagesRef = Database.database().reference().child("Notifications").child(user.uid)
+        let messagesRef = Database.database().reference().child("notifications").child(user.uid)
         
         return messagesRef.queryOrdered(byChild: "creationDate").queryStarting(atValue: Date().timeIntervalSince1970).observe(.childAdded, with: { snapshot in
             if snapshot.childrenCount == 8{

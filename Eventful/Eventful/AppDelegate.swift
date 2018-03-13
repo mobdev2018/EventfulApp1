@@ -170,7 +170,7 @@ extension AppDelegate{
     
     func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable : Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
         print(userInfo)
-        let msg = userInfo["content"] as! String
+//        _ = userInfo["content"] as! String
         notifBanner.userInfoForNotif = userInfo
 
         if application.applicationState == .active{

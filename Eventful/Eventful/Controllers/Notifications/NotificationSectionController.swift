@@ -29,7 +29,7 @@ class NotificationsSectionController: ListSectionController {
     
     override func sizeForItem(at index: Int) -> CGSize {
         let frame = CGRect(x: 0, y: 0, width: collectionContext!.containerSize.width, height: 50)
-        var dummyCell = NotificationCell(frame: frame)
+        let dummyCell = NotificationCell(frame: frame)
         dummyCell.notification = notif
         dummyCell.layoutIfNeeded()
         let targetSize =  CGSize(width: collectionContext!.containerSize.width, height: 55)

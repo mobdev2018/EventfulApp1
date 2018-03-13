@@ -39,7 +39,7 @@ class FriendsEventsView: UITableViewController,TransitionDelegate{
             print("This is run on the background queue")
             self.fetchEventsFromServer { (error) in
                 if error != nil {
-                    print(error)
+                    print(error as Any)
                     return
                 } else {
                     DispatchQueue.main.async {
@@ -119,7 +119,7 @@ class FriendsEventsView: UITableViewController,TransitionDelegate{
                 UserService.show(forUID: followingId.key, completion: { (user) in
                     PostService.showFollowingEvent(for: followingId.key, completion: { (event) in
                         self.attendingEvents = event
-                        var friend = Friend(friendName: (user?.username)!, events: self.attendingEvents, imageUrl: (user?.profilePic)!)
+                        let friend = Friend(friendName: (user?.username)!, events: self.attendingEvents, imageUrl: (user?.profilePic)!)
                         self.friends.append(friend)
                         // leave here
                         group.leave()

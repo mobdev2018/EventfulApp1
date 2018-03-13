@@ -28,7 +28,7 @@ class CommentGrabbed: NSObject {
     init?(snapshot: DataSnapshot) {
         guard let dict = snapshot.value as? [String : Any],
             let content = dict["content"] as? String,
-            let timestamp = dict["timestamp"] as? TimeInterval,
+            let _ = dict["timestamp"] as? TimeInterval,
             let eventKey = dict["eventKey"] as? String,
             let secondsFrom1970 = dict["timestamp"] as? Double,
         let userDict = dict["sender"] as? [String : Any],

@@ -20,7 +20,7 @@ class ChatService {
         var currentComment: CommentGrabbed!
         //change this back if I want to sort by creationD
         _ = "creationDate"
-        let commentRef = Database.database().reference().child("Comments").child(eventKey)
+        let commentRef = Database.database().reference().child("comments").child(eventKey)
         var query = commentRef.queryOrderedByKey()
         if currentPostCount > 0 {
             print(lastKey)
@@ -61,7 +61,7 @@ class ChatService {
         var multiUpdateValue = [String : Any]()
         let messagesRef = Database.database().reference().child("comments").child(eventKey).childByAutoId()
         let messageKey = messagesRef.key
-        multiUpdateValue["Comments/\(eventKey)/\(messageKey)"] = message.dictValue
+        multiUpdateValue["comments/\(eventKey)/\(messageKey)"] = message.dictValue
         
         let rootRef = Database.database().reference()
         rootRef.updateChildValues(multiUpdateValue, withCompletionBlock: { (error, ref) in
@@ -79,9 +79,9 @@ class ChatService {
         
         var multiUpdateValue = [String : Any]()
         
-        let messagesRef = Database.database().reference().child("notifcations").child(notification.repliedTo!).childByAutoId()
+        let messagesRef = Database.database().reference().child("notifcations").child((notification.receiver?.uid)!).childByAutoId()
         let messageKey = messagesRef.key
-        multiUpdateValue["notifications/\(notification.repliedTo!)/\(messageKey)"] = notification.dictValue
+        multiUpdateValue["notifications/\((notification.receiver?.uid)!)/\(messageKey)"] = notification.dictValue
         
         let rootRef = Database.database().reference()
         rootRef.updateChildValues(multiUpdateValue, withCompletionBlock: { (error, ref) in
@@ -130,7 +130,7 @@ class ChatService {
         //print(commentkey)
         //print(eventKey)
         
-        let commentData = ["Comments/\(eventKey)/\(commentkey)": NSNull()]
+        let commentData = ["comments/\(eventKey)/\(commentkey)": NSNull()]
         
         Database.database().reference().updateChildValues(commentData) { (error, _) in
             if let error = error {
@@ -141,7 +141,7 @@ class ChatService {
     }
     //will support real time data syncing of comments
     static func observeMessages(forChatKey eventKey: String, completion: @escaping (DatabaseReference, CommentGrabbed?) -> Void) -> DatabaseHandle {
-        let messagesRef = Database.database().reference().child("Comments").child(eventKey)
+        let messagesRef = Database.database().reference().child("comments").child(eventKey)
         return messagesRef.queryOrdered(byChild: "timestamp").queryStarting(atValue: Date().timeIntervalSince1970).observe(.childAdded, with: { snapshot in
             guard let message = CommentGrabbed(snapshot: snapshot) else {
                 return completion(messagesRef, nil)

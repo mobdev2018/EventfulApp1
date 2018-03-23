@@ -44,12 +44,12 @@ class NotificationService {
             }
             
             for userNotifs in allUserNotifs{
-                if userNotifs.childrenCount == 8 {
+                if userNotifs.childrenCount == 7 {
                     //  print("comment notification")
                     currentNotif = Notifications(snapshot:userNotifs)
                     currentNotifsArray.append(currentNotif)
                 }
-                if userNotifs.childrenCount == 6 {
+                if userNotifs.childrenCount == 5 {
                     //    print("follow notification")
                     print(userNotifs.children.allObjects)
                     currentNotif = Notifications(followSnapshot: userNotifs)

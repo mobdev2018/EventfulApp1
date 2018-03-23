@@ -17,7 +17,6 @@ class FriendsEventsView: UITableViewController,TransitionDelegate{
     var currentUserName: String?
     var currentUserPic: String?
     var currentEventKey: String?
-    let currentEventDetailTransition = EventDetailViewController()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -94,8 +93,9 @@ class FriendsEventsView: UITableViewController,TransitionDelegate{
     }
     func eventDetailTransition(currentEvent: Event) {
         print("Entered Table View")
-//        currentEventDetailTransition.currentEvent = currentEvent
-//        present(currentEventDetailTransition, animated: true, completion: nil)
+        let currentEventDetailTransition = EventDetailViewController()
+        currentEventDetailTransition.currentEvent = currentEvent
+        present(currentEventDetailTransition, animated: true, completion: nil)
     }
     
    func fetchEventsFromServer(_ completion: @escaping (_ error: Error?) -> Void ){

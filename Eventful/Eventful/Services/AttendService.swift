@@ -20,7 +20,7 @@ struct AttendService {
         guard let uid = Auth.auth().currentUser?.uid else{
             return
         }
-        let attendData = ["Attending/\(key)/\(uid)" : true,
+        let attendData = ["attending/\(key)/\(uid)" : true,
                           "users/\(uid)/\("Attending")/\(key)" : true]
         
         // 2
@@ -58,7 +58,7 @@ struct AttendService {
     static func fethAttendCount(for event: String?) -> Int {
        // print("Fetching Attend Count")
         var numberAttending: Int = 0
-        let attendRef = Database.database().reference().child("Attending").child(event!)
+        let attendRef = Database.database().reference().child("attending").child(event!)
         attendRef.observe(.value, with: { (snapshot) in
             guard let attendCountDictionary = snapshot.value as? [String: Any] else{
                 return
@@ -84,7 +84,7 @@ struct AttendService {
             return
         }
         let attendData = ["Attending/\(key)/\(uid)" : NSNull(),
-                          "users/\(uid)/\("Attending")/\(key)" : NSNull()]
+                          "users/\(uid)/\("attending")/\(key)" : NSNull()]
           Database.database().reference().updateChildValues(attendData){ (error, _) in
             if let error = error {
                 assertionFailure(error.localizedDescription)
@@ -126,7 +126,7 @@ struct AttendService {
             return completion(false)
         }
         
-        let attendRef = Database.database().reference().child("Attending").child(eventkey)
+        let attendRef = Database.database().reference().child("attending").child(eventkey)
         attendRef.queryEqual(toValue: nil, childKey: User.current.uid).observeSingleEvent(of: .value, with: { (snapshot) in
             if let _ = snapshot.value as? [String : Bool] {
                 completion(true)

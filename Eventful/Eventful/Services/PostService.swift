@@ -13,7 +13,7 @@ import GeoFire
 import CoreLocation
 
 
-struct PostService {
+class PostService {
     static func create(for event: String?,for vidURL: String) {
         // 1
         guard let key = event else {
@@ -83,8 +83,10 @@ struct PostService {
         //getting firebase root directory
         var currentEvents = [Event]()
         let ref = Database.database().reference()
-        ref.child("users").child(followerKey).child("Attending").observe(.value, with: { (attendingSnapshot) in
-             guard let eventKeys = attendingSnapshot.children.allObjects as? [DataSnapshot] else{return}
+
+        ref.child("users").child(followerKey).child("Attending").observeSingleEvent(of: .value, with: { (attendingSnapshot) in
+            print(attendingSnapshot)
+            guard var eventKeys = attendingSnapshot.children.allObjects as? [DataSnapshot] else{return}
             for event in eventKeys{
                 let dispatchGroup = DispatchGroup()
                 dispatchGroup.enter()
@@ -95,15 +97,14 @@ struct PostService {
                 dispatchGroup.notify(queue: .main, execute: {
                     if currentEvents.count == eventKeys.count{
                         completion(currentEvents)
+                        eventKeys.removeAll()
                     }
                 })
             }
-            
         }) { (err) in
-            print("couldn't grab event info")
+            print("couldn't grab event info",err)
+
         }
-    
-        
     }
     
 }

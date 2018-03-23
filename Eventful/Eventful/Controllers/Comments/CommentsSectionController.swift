@@ -139,9 +139,10 @@ class CommentsSectionController: ListSectionController,CommentCellDelegate {
         self.currentViewController.containerView.commentTextView.becomeFirstResponder()
         //sets the isReplyingVariable to know if I am replying to someones comment or not
         self.currentViewController.isReplying = true
-        
-        self.currentViewController.notificationData = Notifications.init(eventKey: (comment?.eventKey)!, repliedTo: (comment?.sender.uid)!, repliedBy: User.current.uid, content: User.current.username! + " has replied to your comment", commentId: (comment?.commentID)!, profilePic: (User.current.profilePic)!, type: "comment")
-        
+        print(self.comment?.commentID)
+        UserService.show(forUID: (comment?.sender.uid)!) { (reciever) in
+            self.currentViewController.notificationData = Notifications.init(eventKey: (self.comment?.eventKey)!, reciever: reciever!, content: User.current.username! + " has replied to your comment", type: "comment", commentId: (self.comment?.commentID)!)
+        }
     }
     
     @objc func GoBack(){

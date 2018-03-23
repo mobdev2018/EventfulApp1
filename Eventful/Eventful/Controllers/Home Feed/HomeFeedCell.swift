@@ -8,118 +8,79 @@
 
 import UIKit
 
-class HomeFeedCell: UICollectionViewCell {
+class HomeFeedCell: UICollectionViewCell, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
     
-    let backgroundImageView: UIImageView = {
-        let firstImage = UIImageView()
-        firstImage.clipsToBounds = true
-        firstImage.translatesAutoresizingMaskIntoConstraints = false
-        firstImage.contentMode = .scaleAspectFill
-        return firstImage
-    }()
-    
-    public var nameLabel:UILabel!
-    public var nameLabelLeading:NSLayoutConstraint!
-    public var nameLabelWidth:NSLayoutConstraint!
-    public var nameLabelHeight:NSLayoutConstraint!
-    
-    public var calenderToNameLabel:NSLayoutConstraint!
-    
-    public var calenderUnit:UIView!
-    public var calenderUnitBottom:NSLayoutConstraint!
-    
-    public var dayLabel:UILabel!
-    public var monthLabel:UILabel!
-    
-    public var overlayButton:UIButton!
-    
-    func setupViews() {
-        self.addSubview(self.backgroundImageView)
-        self.backgroundColor = UIColor.white
-        
-        NSLayoutConstraint.activateViewConstraints(self.backgroundImageView, inSuperView: self, withLeading: 0.0, trailing: 0.0, top: 0.0, bottom: 0.0)
-        
-        self.calenderUnit = UIView()
-        self.calenderUnit.layer.cornerRadius = 5.0
-        self.calenderUnit.translatesAutoresizingMaskIntoConstraints = false
-        self.addSubview(self.calenderUnit)
-        NSLayoutConstraint.activateViewConstraints(self.calenderUnit, inSuperView: self, withLeading: 15.0, trailing: nil, top: nil, bottom: nil, width: 45.0, height: 45.0)
-        self.calenderUnitBottom = NSLayoutConstraint.activateBottomConstraint(withView: self.calenderUnit, superView: self, andSeparation: 15.0)
-        
-        self.dayLabel = UILabel()
-        self.dayLabel.translatesAutoresizingMaskIntoConstraints = false
-        self.dayLabel.font = UIFont.systemFont(ofSize: 17.0, weight: UIFont.Weight.semibold)
-        self.dayLabel.textColor = .white
-        self.dayLabel.textAlignment = .center
-        self.calenderUnit.addSubview(self.dayLabel)
-        NSLayoutConstraint.activateViewConstraints(self.dayLabel, inSuperView: self.calenderUnit, withLeading: 0.0, trailing: 0.0, top: 5.0, bottom: nil, width: nil, height: 25.0)
-        
-        self.monthLabel = UILabel()
-        self.monthLabel.translatesAutoresizingMaskIntoConstraints = false
-        self.monthLabel.font = UIFont.systemFont(ofSize: 15.0)
-        self.monthLabel.textColor = .white
-        self.monthLabel.textAlignment = .center
-        self.calenderUnit.addSubview(self.monthLabel)
-        NSLayoutConstraint.activateViewConstraints(self.monthLabel, inSuperView: self.calenderUnit, withLeading: 0.0, trailing: 0.0, top: nil, bottom: nil, width: nil, height: nil)
-        _ = NSLayoutConstraint.activateVerticalSpacingConstraint(withFirstView: self.dayLabel, secondView: self.monthLabel, andSeparation: -5.0)
-        _ = NSLayoutConstraint.activateHeightConstraint(view: self.dayLabel, withHeight: 1.0, andRelation: .greaterThanOrEqual)
-        
-        
-        
-        self.nameLabel = UILabel()
-        self.nameLabel.numberOfLines = 2
-        self.nameLabel.translatesAutoresizingMaskIntoConstraints = false
-        self.nameLabel.font = UIFont.systemFont(ofSize: 17.0, weight: UIFont.Weight.semibold)
-        self.nameLabel.textColor = .white
-        self.nameLabel.shadowColor = UIColor.gray
-        self.nameLabel.shadowOffset = CGSize(width: 1, height: -2)
-        self.addSubview(self.nameLabel)
-        //variable leading
-        self.nameLabelLeading = NSLayoutConstraint.activateLeadingConstraint(withView: self.nameLabel, superView: self, andSeparation: 15.0)
-        //variable width
-        self.nameLabelWidth = NSLayoutConstraint.activateWidthConstraint(view: self.nameLabel, withWidth: min(UIScreen.main.bounds.size.width, UIScreen.main.bounds.size.height)/3)
-        //variable bottom
-        self.calenderToNameLabel = NSLayoutConstraint.activateVerticalSpacingConstraint(withFirstView: self.calenderUnit, secondView: self.nameLabel, andSeparation: 15.0)
-        //variable height
-        self.nameLabelHeight = NSLayoutConstraint.activateHeightConstraint(view: self.nameLabel, withHeight: 1.0, andRelation: .greaterThanOrEqual)
-        
-        self.overlayButton = UIButton(type: .custom)
-        self.overlayButton.translatesAutoresizingMaskIntoConstraints = false
-        self.addSubview(self.overlayButton)
-        NSLayoutConstraint.activateViewConstraints(self.overlayButton, inSuperView: self, withLeading: 0.0, trailing: 0.0, top: 0.0, bottom: 0.0)
-    }
-    
-    public func flipToFullWidth(labelWidth width:CGFloat) {
-        self.flipToFullWidthState(true, withLabelWidth: width)
-    }
-    
-    public func flipToSmallWidth(labelWidth width:CGFloat) {
-        self.flipToFullWidthState(false, withLabelWidth: width)
-    }
-    
-    private func flipToFullWidthState(_ flag:Bool, withLabelWidth width:CGFloat) {
-        self.nameLabelWidth.constant = width
-        if flag {
-            self.calenderUnitBottom.constant = -15.0
-            self.nameLabelLeading.constant = 80.0
-            self.calenderToNameLabel.constant = -50.0
-            self.nameLabelHeight.constant = 50.0
-        }
-        else {
-            self.calenderUnitBottom.constant = -70.0
-            self.nameLabelLeading.constant = 15.0
-            self.calenderToNameLabel.constant = 10.0
-            self.nameLabelHeight.constant = 1.0
+    private let cellId = "cellId"
+    var featuredEvents: [Event]?{
+        didSet {
+            homeFeedCollectionView.reloadData()
+
         }
     }
     
+    var titles: String? {
+        didSet {
+            guard let titles = titles else {
+            return
+            }
+//            let attributedText = NSMutableAttributedString(string: titles, attributes: [NSAttributedStringKey.font: UIFont.boldSystemFont(ofSize: 100)])
+            sectionNameLabel.text = titles
+//            sectionNameLabel.attributedText = attributedText
+        }
+    }
     override init(frame: CGRect) {
         super.init(frame: frame)
-        self.setupViews()
+        setupViews()
     }
     
     required init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
-        self.setupViews()
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    let sectionNameLabel : UILabel =  {
+        let sectionNameLabel = UILabel()
+        sectionNameLabel.font = UIFont(name:"HelveticaNeue-CondensedBlack", size: 36.0)
+        return sectionNameLabel
+    }()
+    
+    let homeFeedCollectionView: UICollectionView = {
+        let layout = UICollectionViewFlowLayout()
+        layout.scrollDirection = .horizontal
+        let cv = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        cv.backgroundColor = .clear
+        return cv
+    }()
+    
+    @objc func setupViews(){
+        backgroundColor = .clear
+        addSubview(homeFeedCollectionView)
+        addSubview(sectionNameLabel)
+        sectionNameLabel.anchor(top: topAnchor, left: leftAnchor, bottom: nil, right: nil, paddingTop: 2, paddingLeft: 4, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        homeFeedCollectionView.anchor(top: sectionNameLabel.bottomAnchor, left: leftAnchor, bottom: bottomAnchor, right: rightAnchor, paddingTop: 4, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        homeFeedCollectionView.delegate = self
+        homeFeedCollectionView.dataSource = self
+        homeFeedCollectionView.showsHorizontalScrollIndicator = false
+        homeFeedCollectionView.register(HomeFeedEventCell.self, forCellWithReuseIdentifier: cellId)
+    }
+
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        guard let currentEventCount = featuredEvents?.count else{
+            return 0
+        }
+        return currentEventCount
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
+        return UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+    }
+
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+         return CGSize(width: frame.width, height: frame.height - 40)
+    }
+
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath) as! HomeFeedEventCell
+        cell.event = featuredEvents?[indexPath.item]
+        return cell
     }
 }

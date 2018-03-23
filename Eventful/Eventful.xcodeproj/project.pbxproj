@@ -7,7 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		0719CDF51F54DC360076E678 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0719CDF41F54DC360076E678 /* Assets.xcassets */; };
+		0704C76C2061D11F00C9E35A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0704C76B2061C75800C9E35A /* Assets.xcassets */; };
+		0704C76E2062AFAC00C9E35A /* CategoryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0704C76D2062AFAC00C9E35A /* CategoryCell.swift */; };
+		0704C7702062BB7C00C9E35A /* CategoryEventCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0704C76F2062BB7C00C9E35A /* CategoryEventCell.swift */; };
+		0704C7722062CE1D00C9E35A /* HomeFeedEventCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0704C7712062CE1D00C9E35A /* HomeFeedEventCell.swift */; };
+		0704C7742062DC4300C9E35A /* EventSectionHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0704C7732062DC4300C9E35A /* EventSectionHeader.swift */; };
 		071C9E101F415E680021D5A3 /* AttendService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 071C9E0F1F415E680021D5A3 /* AttendService.swift */; };
 		07370C841F4A4CC8006DC7A2 /* StorageService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07370C831F4A4CC8006DC7A2 /* StorageService.swift */; };
 		0738DD391F3DC1340093F51B /* CustomImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0738DD381F3DC1340093F51B /* CustomImageView.swift */; };
@@ -37,8 +41,7 @@
 		0747A9F020375CF300F725C7 /* SideMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0747A9E920375CF300F725C7 /* SideMenu.swift */; };
 		0747A9F120375CF300F725C7 /* ImageViewForURL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0747A9EA20375CF300F725C7 /* ImageViewForURL.swift */; };
 		0747A9F620375D2400F725C7 /* HomeFeedCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0747A9F220375D2400F725C7 /* HomeFeedCell.swift */; };
-		0747A9F720375D2400F725C7 /* DropDownLauncher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0747A9F320375D2400F725C7 /* DropDownLauncher.swift */; };
-		0747A9F820375D2400F725C7 /* DropDownCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0747A9F420375D2400F725C7 /* DropDownCell.swift */; };
+		0747A9F820375D2400F725C7 /* BaseRoundedCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0747A9F420375D2400F725C7 /* BaseRoundedCell.swift */; };
 		0747A9F920375D2400F725C7 /* HomeFeedController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0747A9F520375D2400F725C7 /* HomeFeedController.swift */; };
 		0747A9FE20375D3B00F725C7 /* AlterProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0747A9FA20375D3B00F725C7 /* AlterProfileViewController.swift */; };
 		0747A9FF20375D3B00F725C7 /* ProfileeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0747A9FB20375D3B00F725C7 /* ProfileeViewController.swift */; };
@@ -103,7 +106,11 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		0719CDF41F54DC360076E678 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		0704C76B2061C75800C9E35A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Assets.xcassets; path = /Users/BandManFabo/Desktop/EventfulApp/EventfulApp1/Eventful/Assets.xcassets; sourceTree = "<absolute>"; };
+		0704C76D2062AFAC00C9E35A /* CategoryCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = CategoryCell.swift; path = "Controllers/Home Feed/CategoryCell.swift"; sourceTree = "<group>"; };
+		0704C76F2062BB7C00C9E35A /* CategoryEventCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = CategoryEventCell.swift; path = "Controllers/Home Feed/CategoryEventCell.swift"; sourceTree = "<group>"; };
+		0704C7712062CE1D00C9E35A /* HomeFeedEventCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = HomeFeedEventCell.swift; path = "Controllers/Home Feed/HomeFeedEventCell.swift"; sourceTree = "<group>"; };
+		0704C7732062DC4300C9E35A /* EventSectionHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = EventSectionHeader.swift; path = "Controllers/Home Feed/EventSectionHeader.swift"; sourceTree = "<group>"; };
 		071C9E0F1F415E680021D5A3 /* AttendService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AttendService.swift; path = Services/AttendService.swift; sourceTree = "<group>"; };
 		07370C831F4A4CC8006DC7A2 /* StorageService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = StorageService.swift; path = Services/StorageService.swift; sourceTree = "<group>"; };
 		0738DD381F3DC1340093F51B /* CustomImageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CustomImageView.swift; path = Models/CustomImageView.swift; sourceTree = "<group>"; };
@@ -135,8 +142,7 @@
 		0747A9E920375CF300F725C7 /* SideMenu.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SideMenu.swift; path = Controllers/RootView/SideMenu.swift; sourceTree = "<group>"; };
 		0747A9EA20375CF300F725C7 /* ImageViewForURL.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ImageViewForURL.swift; path = Controllers/RootView/ImageViewForURL.swift; sourceTree = "<group>"; };
 		0747A9F220375D2400F725C7 /* HomeFeedCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = HomeFeedCell.swift; path = "Controllers/Home Feed/HomeFeedCell.swift"; sourceTree = "<group>"; };
-		0747A9F320375D2400F725C7 /* DropDownLauncher.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DropDownLauncher.swift; path = "Controllers/Home Feed/DropDownLauncher.swift"; sourceTree = "<group>"; };
-		0747A9F420375D2400F725C7 /* DropDownCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DropDownCell.swift; path = "Controllers/Home Feed/DropDownCell.swift"; sourceTree = "<group>"; };
+		0747A9F420375D2400F725C7 /* BaseRoundedCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BaseRoundedCell.swift; path = "Controllers/Home Feed/BaseRoundedCell.swift"; sourceTree = "<group>"; };
 		0747A9F520375D2400F725C7 /* HomeFeedController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = HomeFeedController.swift; path = "Controllers/Home Feed/HomeFeedController.swift"; sourceTree = "<group>"; };
 		0747A9FA20375D3B00F725C7 /* AlterProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AlterProfileViewController.swift; path = Controllers/Profile/AlterProfileViewController.swift; sourceTree = "<group>"; };
 		0747A9FB20375D3B00F725C7 /* ProfileeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ProfileeViewController.swift; path = Controllers/Profile/ProfileeViewController.swift; sourceTree = "<group>"; };
@@ -238,6 +244,7 @@
 		07437F0D1F267CA900CE728B = {
 			isa = PBXGroup;
 			children = (
+				0704C76B2061C75800C9E35A /* Assets.xcassets */,
 				07437F181F267CA900CE728B /* Eventful */,
 				07437F3E1F28D52200CE728B /* Default-568h@2x.png */,
 				07437F171F267CA900CE728B /* Products */,
@@ -258,7 +265,6 @@
 			isa = PBXGroup;
 			children = (
 				074BE9E72028969C001231B9 /* Eventful.entitlements */,
-				0719CDF41F54DC360076E678 /* Assets.xcassets */,
 				07437F191F267CA900CE728B /* AppDelegate.swift */,
 				07437F421F290F6800CE728B /* Models */,
 				07437F1D1F267CA900CE728B /* Main.storyboard */,
@@ -359,10 +365,13 @@
 		07D923A11F2EEE5D0069613D /* Home Feed */ = {
 			isa = PBXGroup;
 			children = (
-				0747A9F420375D2400F725C7 /* DropDownCell.swift */,
-				0747A9F320375D2400F725C7 /* DropDownLauncher.swift */,
+				0747A9F420375D2400F725C7 /* BaseRoundedCell.swift */,
+				0704C7712062CE1D00C9E35A /* HomeFeedEventCell.swift */,
 				0747A9F220375D2400F725C7 /* HomeFeedCell.swift */,
 				0747A9F520375D2400F725C7 /* HomeFeedController.swift */,
+				0704C76D2062AFAC00C9E35A /* CategoryCell.swift */,
+				0704C76F2062BB7C00C9E35A /* CategoryEventCell.swift */,
+				0704C7732062DC4300C9E35A /* EventSectionHeader.swift */,
 			);
 			name = "Home Feed";
 			sourceTree = "<group>";
@@ -533,7 +542,7 @@
 				07437F3B1F28D4B900CE728B /* GoogleService-Info.plist in Resources */,
 				07437F1F1F267CA900CE728B /* Main.storyboard in Resources */,
 				07437F3F1F28D52200CE728B /* Default-568h@2x.png in Resources */,
-				0719CDF51F54DC360076E678 /* Assets.xcassets in Resources */,
+				0704C76C2061D11F00C9E35A /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -575,6 +584,7 @@
 				"${BUILT_PRODUCTS_DIR}/NotificationBannerSwift/NotificationBannerSwift.framework",
 				"${BUILT_PRODUCTS_DIR}/Protobuf/Protobuf.framework",
 				"${BUILT_PRODUCTS_DIR}/SVProgressHUD/SVProgressHUD.framework",
+				"${BUILT_PRODUCTS_DIR}/SkeletonView/SkeletonView.framework",
 				"${BUILT_PRODUCTS_DIR}/SnapKit/SnapKit.framework",
 				"${BUILT_PRODUCTS_DIR}/SwiftLocation/SwiftLocation.framework",
 				"${BUILT_PRODUCTS_DIR}/SwiftyCam/SwiftyCam.framework",
@@ -600,6 +610,7 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/NotificationBannerSwift.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Protobuf.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SVProgressHUD.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SkeletonView.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SnapKit.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftLocation.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftyCam.framework",
@@ -661,12 +672,13 @@
 				0747AA0820375D6E00F725C7 /* CircularTransition.swift in Sources */,
 				07437F3D1F28D4C500CE728B /* Extensions.swift in Sources */,
 				0747AA3320375E7F00F725C7 /* EventService.swift in Sources */,
+				0704C7702062BB7C00C9E35A /* CategoryEventCell.swift in Sources */,
 				0747A9E020375C9500F725C7 /* SignUpViewController.swift in Sources */,
 				0753E7D72041E2AF00B882E4 /* Notification.swift in Sources */,
 				0747A9F620375D2400F725C7 /* HomeFeedCell.swift in Sources */,
 				0747AA0020375D3B00F725C7 /* UserEventAttendingCell.swift in Sources */,
 				0747AA0B20375D6E00F725C7 /* VideoLauncher.swift in Sources */,
-				0747A9F820375D2400F725C7 /* DropDownCell.swift in Sources */,
+				0747A9F820375D2400F725C7 /* BaseRoundedCell.swift in Sources */,
 				0747A9EC20375CF300F725C7 /* EventDetailsCell.swift in Sources */,
 				07D923A81F33C61D0069613D /* Storyboard+Utility.swift in Sources */,
 				0741702C20468A1F006B236B /* NotificationCell.swift in Sources */,
@@ -681,10 +693,11 @@
 				0738DD391F3DC1340093F51B /* CustomImageView.swift in Sources */,
 				0747AA1920375D8500F725C7 /* CommentsSpinner.swift in Sources */,
 				0747AA1520375D8500F725C7 /* CommentsHeaderSectionController.swift in Sources */,
-				0747A9F720375D2400F725C7 /* DropDownLauncher.swift in Sources */,
 				07437F1A1F267CA900CE728B /* AppDelegate.swift in Sources */,
+				0704C7742062DC4300C9E35A /* EventSectionHeader.swift in Sources */,
 				0747A9E120375C9500F725C7 /* ForgotPasswordViewController.swift in Sources */,
 				074D75A0200C8E8C0044C3AD /* LocationService.swift in Sources */,
+				0704C7722062CE1D00C9E35A /* HomeFeedEventCell.swift in Sources */,
 				0747AA1F20375E0E00F725C7 /* EventSearchHeader.swift in Sources */,
 				0747AA3D20377A2900F725C7 /* NSLayoutConstraint.swift in Sources */,
 				0747AA0A20375D6E00F725C7 /* EventDetailViewController.swift in Sources */,
@@ -712,6 +725,7 @@
 				0747A9FE20375D3B00F725C7 /* AlterProfileViewController.swift in Sources */,
 				07437F441F290F9F00CE728B /* User.swift in Sources */,
 				0747AA3020375E6500F725C7 /* Storage.swift in Sources */,
+				0704C76E2062AFAC00C9E35A /* CategoryCell.swift in Sources */,
 				07417030204751DB006B236B /* NotificationService.swift in Sources */,
 				07437F461F2911E500CE728B /* AuthService.swift in Sources */,
 				0747AA1720375D8500F725C7 /* CommentInputAccessoryView.swift in Sources */,
@@ -856,7 +870,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 5A2D82487A88CC695A029DCA /* Pods-Eventful.debug.xcconfig */;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon-1";
 				CODE_SIGN_ENTITLEMENTS = Eventful/Eventful.entitlements;
 				DEVELOPMENT_TEAM = W8XH6RU95C;
 				INFOPLIST_FILE = "$(SRCROOT)/Eventful/Supporting/Info.plist";
@@ -874,7 +888,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 4D63B9A855CD185FB49E3D17 /* Pods-Eventful.release.xcconfig */;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon-1";
 				CODE_SIGN_ENTITLEMENTS = Eventful/Eventful.entitlements;
 				DEVELOPMENT_TEAM = W8XH6RU95C;
 				INFOPLIST_FILE = "$(SRCROOT)/Eventful/Supporting/Info.plist";

@@ -11,7 +11,9 @@ import Firebase
 protocol NotificationsSectionDelegate: class {
     func NotificationsSectionUpdared(sectionController: NotificationsSectionController)
 }
-class NotificationsSectionController: ListSectionController {
+class NotificationsSectionController: ListSectionController,NotificationCellDelegate {
+    
+     let userProfileController = SearchProfileeViewController(collectionViewLayout: UICollectionViewFlowLayout())
     weak var delegate: NotificationsSectionDelegate? = nil
     weak var notif: Notifications?
     
@@ -44,7 +46,7 @@ class NotificationsSectionController: ListSectionController {
         }
         //  print(comment)
         cell.notification = notif
-        //cell.delegate = self
+        cell.delegate = self
         return cell
     }
     
@@ -55,6 +57,27 @@ class NotificationsSectionController: ListSectionController {
     func NotificationsSectionUpdared(sectionController: NotificationsSectionController){
         print("Tried to update")
         delegate?.NotificationsSectionUpdared(sectionController: self)
+    }
+    
+    func handleProfileTransition(tapGesture: UITapGestureRecognizer) {
+        userProfileController.user = notif?.sender
+        userProfileController.navigationItem.title = notif?.sender.username
+        userProfileController.navigationItem.hidesBackButton = true
+        let backButton = UIBarButtonItem(image: UIImage(named: "icons8-Back-64"), style: .plain, target: self, action: #selector(GoBack))
+        userProfileController.navigationItem.leftBarButtonItem = backButton
+        let navController = UINavigationController(rootViewController: userProfileController)
+        if Auth.auth().currentUser?.uid != notif?.sender.uid{
+            self.viewController?.present(navController, animated: true, completion: nil)
+        }else{
+            //do nothing
+            
+        }
+    }
+    
+    
+
+    @objc func GoBack(){
+        self.viewController?.dismiss(animated: true, completion: nil)
     }
     
     override var minimumLineSpacing: CGFloat {

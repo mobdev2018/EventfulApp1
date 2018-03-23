@@ -84,6 +84,7 @@ PODS:
     - MarqueeLabel/Swift
     - SnapKit (~> 4.0)
   - Protobuf (3.5.0)
+  - SkeletonView (1.1.1)
   - SnapKit (4.0.0)
   - SVProgressHUD (2.2.5)
   - SwiftLocation (3.1.0):
@@ -110,6 +111,7 @@ DEPENDENCIES:
   - Hero
   - IGListKit (from `https://github.com/Instagram/IGListKit.git`, branch `master`)
   - NotificationBannerSwift
+  - SkeletonView
   - SVProgressHUD
   - SwiftLocation
   - SwiftyCam
@@ -158,6 +160,7 @@ SPEC CHECKSUMS:
   nanopb: 5601e6bca2dbf1ed831b519092ec110f66982ca3
   NotificationBannerSwift: 4eceb2add9d5eaa0596c63d49690b4d6476e74ec
   Protobuf: 8a9838fba8dae3389230e1b7f8c104aa32389c03
+  SkeletonView: 041053e904504e7d8db83df166e599be75659fe1
   SnapKit: a42d492c16e80209130a3379f73596c3454b7694
   SVProgressHUD: 1428aafac632c1f86f62aa4243ec12008d7a51d6
   SwiftLocation: 8f5ef4f510a45e43239de57a3145b3669301e898
@@ -165,6 +168,6 @@ SPEC CHECKSUMS:
   SwiftyJSON: 070dabdcb1beb81b247c65ffa3a79dbbfb3b48aa
   TextFieldEffects: 4ee41b5216e674d55fb6ac25107bf1af7629176f
 
-PODFILE CHECKSUM: dc000e8622df8ac47509286908a487d94901a40a
+PODFILE CHECKSUM: f7cbcddd4baeb73b9a40ac1e5be42624183d276f
 
 COCOAPODS: 1.4.0

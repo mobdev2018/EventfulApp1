@@ -48,11 +48,7 @@ class NotificationsViewController: UIViewController,NotificationsSectionDelegate
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        //add line seperator to distance collectionView from top tab bar
-        let lineSeparatorView = UIView()
-        lineSeparatorView.backgroundColor = UIColor.black
-        view.addSubview(lineSeparatorView)
-        lineSeparatorView.anchor(top:view.topAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, paddingTop: 2.5, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0.5)
+        navigationItem.title = "Notificaitons"
         //will add the collectionView for the iglistkit
         collectionView.frame = CGRect.init(x: 0, y: 5, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height-40)
         view.addSubview(collectionView)

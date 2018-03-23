@@ -28,6 +28,7 @@ target 'Eventful' do
     pod 'FaceAware'
     pod "Hero"
     pod 'NotificationBannerSwift'
+    pod "SkeletonView"
     # Pods for Eventful
     
 end

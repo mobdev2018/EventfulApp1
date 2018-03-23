@@ -19,7 +19,6 @@ class EventSearchController: UICollectionViewController, UISearchBarDelegate, UI
     var scopeIndex: Int = 0
     let cellID2 = "newCellID"
     let userProfileController = SearchProfileeViewController(collectionViewLayout: UICollectionViewFlowLayout())
-    let currentEventDetailController = EventDetailViewController()
     var emptyLabel: UILabel?
 
     override func viewDidLoad() {
@@ -244,8 +243,7 @@ class EventSearchController: UICollectionViewController, UISearchBarDelegate, UI
         switch scopeIndex {
         case 0:
             let event = filteredEvents[indexPath.item]
-            currentEventDetailController.eventKey = event.key!
-            currentEventDetailController.eventPromo = event.currentEventPromo!
+            let currentEventDetailController = EventDetailViewController()
             currentEventDetailController.currentEvent = event
             self.filteredEvents.removeAll()
             self.eventsArray.removeAll()

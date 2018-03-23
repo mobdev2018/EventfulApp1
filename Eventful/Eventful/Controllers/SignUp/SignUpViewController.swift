@@ -16,7 +16,7 @@ import GeoFire
 
 
 class SignUpViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
-    var selectedImageFromPicker: UIImage? = UIImage()
+    var selectedImageFromPicker: UIImage?
     //creating a variable of type geofire
     var geoFire: GeoFire!
     var geoFireRef: DatabaseReference!
@@ -159,6 +159,13 @@ class SignUpViewController: UIViewController, UIImagePickerControllerDelegate, U
         // will make sure the password and confirm password textfields have the same value if so it will print an error
         if self.passwordTextField.text != self.confirmPasswordTextField.text {
             let alertController = UIAlertController(title: "Error", message: "Passwords Don't Match", preferredStyle: .alert)
+            let defaultAction = UIAlertAction(title: "Ok", style: .cancel, handler: nil)
+            alertController.addAction(defaultAction)
+            self.present(alertController, animated: true, completion: nil)
+        }
+        
+        if selectedImageFromPicker == nil {
+            let alertController = UIAlertController(title: "Error", message: "Select a Profile Picrue", preferredStyle: .alert)
             let defaultAction = UIAlertAction(title: "Ok", style: .cancel, handler: nil)
             alertController.addAction(defaultAction)
             self.present(alertController, animated: true, completion: nil)

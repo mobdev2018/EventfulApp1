@@ -9,7 +9,6 @@
 import UIKit
 import Firebase
 import FirebaseDatabase
-import Hero
 
 class EventDetailViewController: UIViewController {
     var imageURL: URL?
@@ -39,7 +38,10 @@ class EventDetailViewController: UIViewController {
             descriptionLabel.font = UIFont(name: (descriptionLabel.font?.fontName)!, size: 14)
             updateWithSpacing(lineSpacing: 7.0)
             navigationItem.title = currentEvent?.currentEventName.capitalized
+            eventKey = (currentEvent?.key)!
             setupAttendInteraction()
+            eventPromo = (currentEvent?.currentEventPromo)!
+            
         }
     }
     var stackView: UIStackView?
@@ -80,6 +82,8 @@ class EventDetailViewController: UIViewController {
     }()
     
     fileprivate func setupAttendInteraction(){
+       print(eventKey)
+        print(User.current.uid)
         Database.database().reference().child("Attending").child(eventKey).child(User.current.uid).observeSingleEvent(of: .value, with: { (snapshot) in
             if let isAttending = snapshot.value as? Int, isAttending == 1 {
                 print("User is attending")
@@ -301,7 +305,6 @@ class EventDetailViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         hero.isEnabled = true
-
         let downSwipe = UISwipeGestureRecognizer(target: self, action: #selector(swipeAction(_:)))
         downSwipe.direction = .down
         view.addGestureRecognizer(downSwipe)

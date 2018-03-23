@@ -18,34 +18,33 @@ class Notifications: NSObject {
     var timeStamp : Date?
     var eventKey : String?
     var key : String?
-    var followee : String?
-    var follower : String?
-    var repliedTo : String?
-    var repliedBy : String?
     var commentId : String?
     var profilePic : String?
     var notiType: String?
-    
+    let sender: User
+    let receiver: User?
+
     //init for comment notif
-    init(eventKey: String, repliedTo: String, repliedBy: String, content: String, commentId: String, profilePic : String, type: String) {
+    init(eventKey: String,reciever: User, content: String, type: String,commentId:String){
         self.content = content
         self.creationDate = Date().timeIntervalSince1970
-        self.repliedTo = repliedTo
-        self.repliedBy = repliedBy
         self.eventKey = eventKey
         self.commentId = commentId
-        self.profilePic = profilePic
+        self.sender = User.current
         self.notiType = type
+        self.receiver = reciever
+
     }
+    
     //init for follow notif
-    init( followee: String, follower: String, content: String,profilePic : String, type: String) {
+    init(reciever: User, content: String, type: String){
         self.content = content
-        self.creationDate = Date().timeIntervalSince1970
-        self.followee = followee
-        self.follower = follower
-        self.profilePic = profilePic
         self.notiType = type
+        self.receiver = reciever
+        self.sender = User.current
+        self.creationDate = Date().timeIntervalSince1970
     }
+
     
     //snapshot for comment notif
     init?(snapshot: DataSnapshot) {
@@ -53,22 +52,28 @@ class Notifications: NSObject {
             let content = dict["content"] as? String,
             let timestamp = dict["creationDate"] as? TimeInterval,
             let eventKey = dict["eventKey"] as? String,
-            let repliedBy = dict["repliedBy"] as? String,
-            let repliedTo = dict["repliedTo"] as? String,
             let commentId = dict["commentId"] as? String,
-            let profilePic = dict["profilePic"] as? String,
+            let senderDict = dict["sender"] as? [String : Any],
+            let uid = senderDict["uid"] as? String,
+            let username = senderDict["username"] as? String,
+            let profilePic = senderDict["profilePic"] as? String,
+            let receiverDict = dict["receiver"] as? [String : Any],
+            let receiverUid = receiverDict["uid"] as? String,
+            let receiverUsername = receiverDict["username"] as? String,
+            let receiverProfilePic = receiverDict["profilePic"] as? String,
             let notiType = dict["notiType"] as? String
+            
             else { return nil }
         
         self.key = snapshot.key
         self.content = content
         self.timeStamp = Date(timeIntervalSince1970: timestamp)
-        self.repliedBy = repliedBy
-        self.repliedTo = repliedTo
         self.eventKey = eventKey
         self.commentId = commentId
         self.profilePic = profilePic
         self.notiType = notiType
+        self.sender = User(uid: uid, username: username,profilePic: profilePic)
+        self.receiver = User(uid: receiverUid, username: receiverUsername,profilePic: receiverProfilePic)
     }
     
     //snapshot for follow notif
@@ -76,47 +81,66 @@ class Notifications: NSObject {
         guard let dict = followSnapshot.value as? [String : Any],
             let content = dict["content"] as? String,
             let timestamp = dict["creationDate"] as? TimeInterval,
-            let follower = dict["follower"] as? String,
-            let followee = dict["followee"] as? String,
-            let profilePic = dict["profilePic"] as? String,
+        let senderDict = dict["sender"] as? [String : Any],
+        let uid = senderDict["uid"] as? String,
+        let username = senderDict["username"] as? String,
+        let profilePic = senderDict["profilePic"] as? String,
+            let receiverDict = dict["receiver"] as? [String : Any],
+            let receiverUid = receiverDict["uid"] as? String,
+            let receiverUsername = receiverDict["username"] as? String,
+            let receiverProfilePic = receiverDict["profilePic"] as? String,
             let notiType = dict["notiType"] as? String
             else { return nil }
         
         self.key = followSnapshot.key
         self.content = content
         self.timeStamp = Date(timeIntervalSince1970: timestamp)
-        self.followee = followee
-        self.follower = follower
         self.profilePic = profilePic
         self.notiType = notiType
+        self.sender = User(uid: uid, username: username,profilePic: profilePic)
+        self.receiver = User(uid: receiverUid, username: receiverUsername,profilePic: receiverProfilePic)
     }
     
     var dictValue: [String : Any] {
+        let userDict = ["username" : sender.username,
+                        "uid" : sender.uid,
+                        "profilePic": sender.profilePic]
+        
+        let receiverDict = ["username" : receiver?.username,
+                            "uid" : receiver?.uid,
+                            "profilePic": receiver?.profilePic]
+        
         
         return ["eventKey" : eventKey  as Any,
                 "content": content,
-                "repliedTo" : repliedTo  as Any,
-                "repliedBy" : repliedBy as Any,
                 "creationDate": creationDate,
                 "commentId" : commentId as Any,
-                "profilePic" : profilePic as Any,
+                "sender" : userDict,
+                "receiver" : receiverDict,
                 "notiType" : notiType as Any]
     }
     
     var followDictValue: [String : Any] {
+        let userDict = ["username" : sender.username,
+                        "uid" : sender.uid,
+                        "profilePic": sender.profilePic]
+        
+        let receiverDict = ["username" : receiver?.username,
+                            "uid" : receiver?.uid,
+                            "profilePic": receiver?.profilePic]
         
         return [
             "content": content,
-            "followee" : followee as Any,
-            "follower" : follower as Any,
             "creationDate": creationDate,
             "profilePic" : profilePic as Any,
+            "sender" : userDict,
+            "receiver" : receiverDict,
             "notiType" : notiType as Any]
     }
 }
 extension Notifications{
     static public func  ==(rhs: Notifications, lhs: Notifications) ->Bool{
-        return (rhs.commentId == lhs.commentId || rhs.followee == lhs.followee)
+        return (rhs.commentId == lhs.commentId || rhs.receiver == lhs.receiver)
     }
 }
 extension Notifications: ListDiffable{
@@ -124,8 +148,8 @@ extension Notifications: ListDiffable{
         if let currentCommentID = key {
             return currentCommentID as NSObjectProtocol
         }else {
-            guard let currentFollowee = followee else {
-                return followee! as NSObjectProtocol
+            guard let currentFollowee = receiver else {
+                return receiver as! NSObjectProtocol
             }
             return currentFollowee as NSObjectProtocol
         }
@@ -134,7 +158,7 @@ extension Notifications: ListDiffable{
         guard let object = object as? Notifications else {
             return false
         }
-        return  self.key==object.key || self.followee == object.followee
+        return  self.key==object.key || self.receiver == object.receiver
     }
 }
 

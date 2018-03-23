@@ -175,7 +175,9 @@ class UserProfileHeader: UICollectionViewCell {
                 
                 followee?.isFollowed = !(followee?.isFollowed)!
                 print(followee?.isFollowed ?? "true")
-                self.followNotificationData = Notifications.init(followee: (self.user?.uid)!, follower: User.current.uid, content: User.current.username! + " has followed you", profilePic: User.current.profilePic!, type: "follow")
+                
+                self.followNotificationData = Notifications.init(reciever: self.user!, content: User.current.username! + " has followed", type: "follow")
+                
                 FollowService.sendFollowNotification(self.followNotificationData)
                 print("Successfully followed user: ", self.user?.username ?? "")
                 self.followButton.setTitle("Unfollow", for: .normal)

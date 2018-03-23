@@ -98,7 +98,7 @@ extension AppDelegate {
        // print("Look for current user here")
        // print(Auth.auth().currentUser ?? "")
         let defaults = UserDefaults.standard
-        let initialViewController: UIViewController
+        var initialViewController: UIViewController
        // print(Auth.auth().currentUser ?? "")
         if Auth.auth().currentUser != nil,
             let userData = defaults.object(forKey: "currentUser") as? Data,
@@ -107,11 +107,11 @@ extension AppDelegate {
             User.setCurrent(user, writeToUserDefaults: true)
            // print("root view controller set to home view controller")
             initialViewController = HomeViewController()
+            
         } else {
            // print("root view controller set to login view controller")
             initialViewController = LoginViewController()
         }
-        
         window?.rootViewController = initialViewController
         window?.makeKeyAndVisible()
     }

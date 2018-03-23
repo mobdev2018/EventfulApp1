@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0704C7682061914A00C9E35A /* DynamoCollectionViewCellBottom.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0704C7672061914A00C9E35A /* DynamoCollectionViewCellBottom.swift */; };
+		0704C76A2061A47B00C9E35A /* DynamoCollectionVIewSectionHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0704C7692061A47B00C9E35A /* DynamoCollectionVIewSectionHeader.swift */; };
 		0747AA352037787F00F725C7 /* NSLayoutConstraint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0747AA342037787E00F725C7 /* NSLayoutConstraint.swift */; };
 		077CB3CD2011D6FC008F3618 /* DynamoCollectionViewTop.swift in Sources */ = {isa = PBXBuildFile; fileRef = 077CB3CC2011D6FC008F3618 /* DynamoCollectionViewTop.swift */; };
 		52C919F71F8E0C8100FF975E /* Media.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 52C919F61F8E0C8000FF975E /* Media.xcassets */; };
@@ -23,6 +25,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		0704C7672061914A00C9E35A /* DynamoCollectionViewCellBottom.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DynamoCollectionViewCellBottom.swift; sourceTree = "<group>"; };
+		0704C7692061A47B00C9E35A /* DynamoCollectionVIewSectionHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DynamoCollectionVIewSectionHeader.swift; sourceTree = "<group>"; };
 		0747AA342037787E00F725C7 /* NSLayoutConstraint.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSLayoutConstraint.swift; sourceTree = "<group>"; };
 		077CB3CC2011D6FC008F3618 /* DynamoCollectionViewTop.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DynamoCollectionViewTop.swift; sourceTree = "<group>"; };
 		52A72DBC1F83D28A0024DCD9 /* DynamoCollectionView.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = DynamoCollectionView.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -78,6 +82,8 @@
 				0747AA342037787E00F725C7 /* NSLayoutConstraint.swift */,
 				52D748C41F84A47F00357DDF /* DynamoCollectionView.swift */,
 				52D748C61F84AA5200357DDF /* DynamoCollectionViewCell.swift */,
+				0704C7672061914A00C9E35A /* DynamoCollectionViewCellBottom.swift */,
+				0704C7692061A47B00C9E35A /* DynamoCollectionVIewSectionHeader.swift */,
 				52C919F81F8E1A9F00FF975E /* DynamoUtils.swift */,
 				52C91A0F1F8E357100FF975E /* DynamoCollectionView.h */,
 				077CB3CC2011D6FC008F3618 /* DynamoCollectionViewTop.swift */,
@@ -240,6 +246,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0704C7682061914A00C9E35A /* DynamoCollectionViewCellBottom.swift in Sources */,
+				0704C76A2061A47B00C9E35A /* DynamoCollectionVIewSectionHeader.swift in Sources */,
 				52C91A1D1F8E367300FF975E /* CCColorCube.m in Sources */,
 				52C91A1F1F8E367300FF975E /* CCLocalMaximum.m in Sources */,
 				077CB3CD2011D6FC008F3618 /* DynamoCollectionViewTop.swift in Sources */,

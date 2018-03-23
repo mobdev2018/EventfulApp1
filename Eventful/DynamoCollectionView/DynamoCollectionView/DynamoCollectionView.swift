@@ -11,10 +11,13 @@ import UIKit
 //protocol methods which serve as the blueprint for a function(s) that will inheir this protocol
 public protocol DynamoCollectionViewDataSource: NSObjectProtocol {
     func topViewRatio(_ dynamoCollectionView: DynamoCollectionView) -> CGFloat // ratio in range [0,1]
-    func numberOfItems(_ dynamoCollectionView: DynamoCollectionView) -> Int
+//    func numberOfItems(_ dynamoCollectionView: DynamoCollectionView) -> Int
     //Aaks datasource object for the number of items in the specified section
-    func dynamoCollectionView(_ dynamoCollectionView: DynamoCollectionView, cellForItemAt indexPath: IndexPath) -> DynamoCollectionViewCell
+    func dynamoCollectionView(_ dynamoCollectionView: DynamoCollectionView, cellForItemAt indexPath: IndexPath) -> DynamoCollectionViewCellBottom
     //Asks datasource object for the cell that corresponds to the specified item in the collectionView
+       func numberOfSections(_ dynamoCollectionView: DynamoCollectionView) -> Int
+    //Asks the datasource object for the numberofItems that will be present in each section
+    func numberOfItemsInSection(_ dynamoCollectionView: DynamoCollectionView) -> Int
 }
 
 public protocol DynamoCollectionViewDelegate: NSObjectProtocol {
@@ -30,7 +33,7 @@ public let DynamoCollectionViewEnableScrollingNotification = NSNotification.Name
 //A public immutable variable that contains the name of some notification that will be broadcast to some registered observer
 public let DynamoCollectionViewDisableScrollingNotification = NSNotification.Name("DynamoCollectionViewDisableScrollingNotification")
 
-public class DynamoCollectionView: UIView, DynamoCollectionViewCellDelegate, UIGestureRecognizerDelegate {
+public class DynamoCollectionView: UIView, UIGestureRecognizerDelegate {
     
     // MARK: - Variables
     //variable to control and make use of the DynamoCollectionViewDelegate
@@ -44,9 +47,13 @@ public class DynamoCollectionView: UIView, DynamoCollectionViewCellDelegate, UIG
     //the topViewRatio that will be used in the appropriate delegate method to create some type of spacing beteween views
     private var topViewRatio: CGFloat = 0
     // the default numberOfItems that will be used in the appropriate datasource method to managa the number of items in the collectionView
-    private var numberOfItems: Int = 0
+   // private var numberOfItems: Int = 0
+    //wll set the number of sections
+    private var numberOfSections: Int = 0
+    //willset the number of items in the section
+    private var numberOfItemsInSection: Int = 0
     //a cell identifier that will let you register a unique instance of a dynamoCollectionViewCell
-    private let dynamoCollectionViewCellIdentifier = "DynamoCollectionViewCellIdentifier"
+    private let dynamoCollectionViewCellBottomIdentifier = "DynamoCollectionViewCellIdentifier"
    //Timer user for call autoscroller of top collection view
     private var timer:Timer?
     
@@ -101,7 +108,7 @@ public class DynamoCollectionView: UIView, DynamoCollectionViewCellDelegate, UIG
         _ = NSLayoutConstraint.activateEqualWidthConstraint(withView: bottomCollectionView, referenceView: bottomContainerView)
         _ = NSLayoutConstraint.activateEqualHeightConstraint(withView: bottomCollectionView, referenceView: bottomContainerView)
         //registers a DynamoCollectionViewCell inside of the collectionVieww that we previously created
-        bottomCollectionView.register(DynamoCollectionViewCell.self, forCellWithReuseIdentifier: dynamoCollectionViewCellIdentifier)
+        bottomCollectionView.register(DynamoCollectionViewCellBottom.self, forCellWithReuseIdentifier: dynamoCollectionViewCellBottomIdentifier)
         // init view's gestures
         //will create a pan gesture inside the collection/ContainerView
         let panGesture = UIPanGestureRecognizer(target: self, action: #selector(handlePan(recognizer:)))
@@ -154,14 +161,14 @@ public class DynamoCollectionView: UIView, DynamoCollectionViewCellDelegate, UIG
     //dequeReusable cell comes here when called in main
     //Returns a reusable collection-view cell object located by its identifier.
     //Returns a DynamaoCollectionViewCell specifically
-    public func dequeueReusableCell(for indexPath: IndexPath) -> DynamoCollectionViewCell {
+    public func dequeueReusableCell(for indexPath: IndexPath) -> DynamoCollectionViewCellBottom {
         //if the indexpath.item is 0 or in other words you are the top big cell it will return the topView
         //please come back here on wednesday
         //the error seems to be stemming from here
    
         //do the proper dequeueReusable cell functionality because we will need multiple of them unlike the top one which seemingly only needs one at the momnent
             return
-                bottomCollectionView.dequeueReusableCell(withReuseIdentifier: dynamoCollectionViewCellIdentifier, for: IndexPath(item: indexPath.item, section: 0)) as! DynamoCollectionViewCell
+                bottomCollectionView.dequeueReusableCell(withReuseIdentifier: dynamoCollectionViewCellBottomIdentifier, for: IndexPath(item: indexPath.item, section: 0)) as! DynamoCollectionViewCellBottom
         
     }
     
@@ -182,8 +189,10 @@ public class DynamoCollectionView: UIView, DynamoCollectionViewCellDelegate, UIG
             topViewRatio = min(max(0, source.topViewRatio(self)), 1.0)
             //returns the greater of source.numberOfItems and 0
             //if x is 0 return Y which in this case is 0
-            numberOfItems = max(source.numberOfItems(self), 0)
-            if numberOfItems > 0 {
+            numberOfItemsInSection = max(source.numberOfItemsInSection(self), 0)
+            //pulls the number of sections from the datasource
+            numberOfSections = max(source.numberOfSections(self),0)
+            if numberOfItemsInSection > 0 {
                // print("Entered here for number of items")
                 //print("Number of items is: \(numberOfItems)")
                 bottomCollectionView.reloadData()
@@ -208,22 +217,20 @@ extension DynamoCollectionView: UICollectionViewDelegate, UICollectionViewDataSo
     // MARK: CollectionView Datasource
     //error was here this controls the number of items in each section
     public func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-            return max(0, numberOfItems)
-        
+        if section == 0{
+            return max(0, numberOfItemsInSection)
+        }
+        return max(0, numberOfItemsInSection)
+    }
+
+    public func numberOfSections(in collectionView: UICollectionView) -> Int {
+        return max(0,numberOfSections)
     }
     
     //seems to come here to determine what source data goes to the top or bottom based off the tag
     public func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-       // print("Current indexPath.item value in DynamoCollectionView.swift is : \(indexPath.item)")
-            //Bottom collection view
-         //   print("Configuring bottom collection view")
             //upon getting the source
             if let source = dataSource {
-                //c1
-           //     print("Number of items in source is \(source.numberOfItems(self))")
-               // print(source.description)
-               // print("Assigning source")
-               // print("Current indexPath item is : \(indexPath.item)")
                 //this creates a cell and uses the source to pass it to the homefeedcontroller
                 //item is An index number identifying an item in a UICollectionView object in a section identified by the section parameter.
                 //section is An index number identifying a section in a UICollectionView object.
@@ -232,13 +239,13 @@ extension DynamoCollectionView: UICollectionViewDelegate, UICollectionViewDataSo
                 let cell = source.dynamoCollectionView(self, cellForItemAt: IndexPath(item: indexPath.item, section: 0))
                 //okay so this makes sure that it goes to the normal cell for the proper confiuration of cell elements
                 cell.tag = indexPath.item
-                cell.delegate = self
+               // cell.delegate = self
                 return cell
             }else {
               //  print("Entered else")
-                let cell = DynamoCollectionViewCell()
+                let cell = DynamoCollectionViewCellBottom()
                 cell.tag = indexPath.item + 1
-                cell.delegate = self
+               // cell.delegate = self
                 return cell
             }
             
@@ -261,8 +268,9 @@ extension DynamoCollectionView: UICollectionViewDelegate, UICollectionViewDataSo
     }
     //Asks the delegate for the size of the specified item’s cell.
     public func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: collectionView.bounds.size.width/2.2, height: collectionView.bounds.size.height)
-          
+//        return CGSize(width: (collectionView.bounds.size.width - CGFloat(numberOfItemsInSection))/2.2, height: collectionView.bounds.size.height - 50)
+         return CGSize(width: (collectionView.bounds.size.width - 2)/3.3, height: (collectionView.bounds.size.height - 100))
+        
     }
     //Asks the delegate for the margins to apply to content in the specified section.
     //in short in controls the amount of space between the items above,left,right, and below
@@ -272,12 +280,12 @@ extension DynamoCollectionView: UICollectionViewDelegate, UICollectionViewDataSo
     //Asks the delegate for the spacing between successive rows or columns of a section.
     //controls the space in between rows and columns
     public func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-        return 2.0
+        return 1.0
     }
     //Asks the delegate for the spacing between successive items of a single row or column.
     //controls the space between each cell
     public func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
-        return 0.0
+        return 1.0
     }
     
     // MARK: CollectionView Delegate

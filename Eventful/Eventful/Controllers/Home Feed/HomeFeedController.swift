@@ -36,6 +36,9 @@ class HomeFeedController: UICollectionViewController, UICollectionViewDelegateFl
     var allEvents = [Event]()
     var eventKeys = [String]()
     var featuredEvents = [Event]()
+    var allEvents2 = [String:[Event]]()
+    var seizeTheNight = [Event]()
+    var seizeTheDay = [Event]()
     private let cellID = "cellID"
     private let catergoryCellID = "catergoryCellID"
     var images: [String] = ["gear1","gear4","snakeman","gear4","gear1"]
@@ -56,8 +59,7 @@ class HomeFeedController: UICollectionViewController, UICollectionViewDelegateFl
     }
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-
-        self.navigationController?.setNavigationBarHidden(true, animated: false)
+//        self.navigationController?.setNavigationBarHidden(true, animated: false)
     }
     
     override func viewDidDisappear(_ animated: Bool) {
@@ -79,8 +81,38 @@ class HomeFeedController: UICollectionViewController, UICollectionViewDelegateFl
             guard let currentLocation = location else {
                 return
             }
+            
+            CLGeocoder().reverseGeocodeLocation(currentLocation, completionHandler: {(placemarks, error) -> Void in
+                print(currentLocation)
+                
+                if error != nil {
+                    print("Reverse geocoder failed with error" + (error?.localizedDescription)!)
+                    return
+                }
+                
+                if placemarks!.count > 0 {
+                    let pm = placemarks![0]
+                    print(pm.locality as Any)
+                    print(pm.administrativeArea as Any)
+                    self.navigationItem.title = "\(pm.locality ?? ""), \(pm.administrativeArea ?? "")"
+                }
+                else {
+                    print("Problem with the data received from geocoder")
+                }
+            })
+
+            
             PostService.showEvent(for: currentLocation, completion: { [unowned self](events) in
-                self.allEvents = events
+                
+                    if events.category == "Seize The Night" {
+                        self.seizeTheNight.append(events)
+                    }
+                    if events.category == "Seize The Day"{
+                        self.seizeTheDay.append(events)
+                    }
+                
+                self.allEvents2["Seize The Night"] = self.seizeTheNight
+                self.allEvents2["Seize The Day"] = self.seizeTheDay
                 print("Event count in PostService Closure:\(self.allEvents.count)")
                 DispatchQueue.main.async {
                    // self.dynamoCollectionView.reloadData()
@@ -91,14 +123,14 @@ class HomeFeedController: UICollectionViewController, UICollectionViewDelegateFl
                 
             })
             
-            PostService.showFeaturedEvent(for: currentLocation, completion: { [unowned self] (events) in
+            PostService.showFeaturedEvent(for: currentLocation, completion: { [weak self] (events) in
                 
-                self.featuredEvents = events
-                print("Event count in Featured Events Closure is:\(self.featuredEvents.count)")
+                self?.featuredEvents = events
+                print("Event count in Featured Events Closure is:\(self?.featuredEvents.count)")
                 DispatchQueue.main.async {
                     // self.dynamoCollectionView.reloadData()
                    // self.dynamoCollectionViewTop.reloadData()
-                    self.collectionView?.reloadData()
+                    //self?.collectionView?.reloadData()
                 }
             }
             )
@@ -121,7 +153,15 @@ class HomeFeedController: UICollectionViewController, UICollectionViewDelegateFl
         cell.sectionNameLabel.text = categories[indexPath.item]
         print(categories[indexPath.item])
         print(indexPath.item)
-        cell.categoryEvents = allEvents
+//        print(allEvents2[categories[indexPath.item]]?.count)
+        if allEvents2[categories[indexPath.item]]?.count != nil {
+            print(allEvents2[categories[indexPath.item]])
+            cell.categoryEvents = allEvents2[categories[indexPath.item]]
+
+        } else{
+            cell.categoryEvents = allEvents
+
+        }
         return cell
         
     }

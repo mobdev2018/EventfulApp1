@@ -9,6 +9,10 @@
 import UIKit
 import CoreMotion
 
+protocol BaseRoundedCardCellDelegate:NSObjectProtocol {
+    
+}
+
 internal class BaseRoundedCardCell: UICollectionViewCell {
     
     
@@ -90,7 +94,7 @@ internal class BaseRoundedCardCell: UICollectionViewCell {
         if gestureRecognizer.state == .began {
             handleLongPressBegan()
         } else if gestureRecognizer.state == .ended || gestureRecognizer.state == .cancelled {
-            handleLongPressEnded()
+            handleLongPressEnded(gestureRecognizer: gestureRecognizer)
         }
     }
     
@@ -110,7 +114,7 @@ internal class BaseRoundedCardCell: UICollectionViewCell {
         }, completion: nil)
     }
     
-    private func handleLongPressEnded() {
+    private func handleLongPressEnded(gestureRecognizer: UILongPressGestureRecognizer) {
         guard isPressed else {
             return
         }
@@ -123,6 +127,7 @@ internal class BaseRoundedCardCell: UICollectionViewCell {
                        animations: {
                         self.transform = CGAffineTransform.identity
         }) { (finished) in
+            
             self.isPressed = false
         }
     }

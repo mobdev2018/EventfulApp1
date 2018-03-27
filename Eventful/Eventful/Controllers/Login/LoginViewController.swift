@@ -106,7 +106,7 @@ class LoginViewController: UIViewController , LoginViewControllerDelegate {
         let button = UIButton(type: .system)
         button.setTitle("LOGIN", for: .normal)
         button.setTitleColor(.white, for: .normal)
-        button.layer.cornerRadius = 23.5
+        button.layer.cornerRadius = 5
         button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 14)
         button.addTarget(self, action: #selector(handleLogin), for: .touchUpInside)
         button.backgroundColor = UIColor.logoColor
@@ -191,7 +191,7 @@ class LoginViewController: UIViewController , LoginViewControllerDelegate {
         self.view.backgroundColor = UIColor.white
 
         
-        self.view.backgroundColor = UIColor(r: 255, g: 255 , b: 255)
+       // self.view.backgroundColor = UIColor(r: 255, g: 255 , b: 255)
         let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(LoginViewController.dismissKeyboard))
         //Uncomment the line below if you want the tap not not interfere and cancel other interactions.
         tap.cancelsTouchesInView = false
@@ -203,12 +203,12 @@ class LoginViewController: UIViewController , LoginViewControllerDelegate {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        //self.observeKeyboardNotifications()
+      //  self.observeKeyboardNotifications()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        //self.removeObserveKeyboardNotifications()
+     //   self.removeObserveKeyboardNotifications()
     }
     
     var stackView: UIStackView?

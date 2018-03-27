@@ -32,14 +32,14 @@ class PostService {
         userRef.updateChildValues(dict)
     }
     
-    static func showEvent(for currentLocation: CLLocation,completion: @escaping ([Event]) -> Void) {
+    static func showEvent(for currentLocation: CLLocation,completion: @escaping (Event) -> Void) {
         //getting firebase root directory
-        var currentEvents = [Event]()
+        var currentEvents: Event
         var geoFireRef: DatabaseReference?
         var geoFire:GeoFire?
         geoFireRef = Database.database().reference().child("eventsbylocation")
         geoFire = GeoFire(firebaseRef: geoFireRef!)
-        let circleQuery = geoFire?.query(at: currentLocation, withRadius: 10.0)
+        let circleQuery = geoFire?.query(at: currentLocation, withRadius: 17.0)
         circleQuery?.observe(.keyEntered, with: { (key: String!, location: CLLocation!) in
             let dispatchGroup = DispatchGroup()
 
@@ -47,11 +47,12 @@ class PostService {
             dispatchGroup.enter()
             EventService.show(forEventKey: key, completion: { (event) in
                 dispatchGroup.leave()
-                currentEvents.append(event!)
+                dispatchGroup.notify(queue: .main, execute: {
+                    completion(event!)
+                })
+                
             })
-            dispatchGroup.notify(queue: .main, execute: {
-                completion(currentEvents)
-            })
+
         })
 
     }
@@ -63,7 +64,7 @@ class PostService {
         var geoFire:GeoFire?
         geoFireRef = Database.database().reference().child("featuredeventsbylocation")
         geoFire = GeoFire(firebaseRef: geoFireRef!)
-        let circleQuery = geoFire?.query(at: currentLocation, withRadius: 10.0)
+        let circleQuery = geoFire?.query(at: currentLocation, withRadius: 17.0)
         circleQuery?.observe(.keyEntered, with: { (key: String!, location: CLLocation!) in
             let dispatchGroup = DispatchGroup()
             print("Key '\(key)' entered the search area and is at location '\(location)'")

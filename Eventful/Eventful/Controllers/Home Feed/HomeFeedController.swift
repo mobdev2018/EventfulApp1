@@ -16,7 +16,6 @@ import FirebaseDatabase
 import SVProgressHUD
 import SkeletonView
 
-
 class ImageAndTitleItem: NSObject {
     public var name:String?
     public var imageName:String?
@@ -29,8 +28,9 @@ class ImageAndTitleItem: NSObject {
 }
 
 class HomeFeedController: UICollectionViewController, UICollectionViewDelegateFlowLayout {
-    // let dropDownLauncher = DropDownLauncher()
+    
     let dispatchGroup = DispatchGroup()
+    var savedLocation: CLLocation?
     var isFinishedPaging = false
     var userLocation: CLLocation?
     var allEvents = [Event]()
@@ -42,20 +42,23 @@ class HomeFeedController: UICollectionViewController, UICollectionViewDelegateFl
     private let cellID = "cellID"
     private let catergoryCellID = "catergoryCellID"
     var images: [String] = ["gear1","gear4","snakeman","gear4","gear1"]
-        var images1: [String] = ["sage","sagemode","kyubi","Naruto_Part_III","team7"]
+    var images1: [String] = ["sage","sagemode","kyubi","Naruto_Part_III","team7"]
     var featuredEventsHeaderString = "Featured Events"
     var categories : [String] = ["Seize The Night","Seize The Day","21 & Up", "Friends Events"]
-    
+    lazy var sideMenuLauncher: SideMenuLauncher = {
+       let launcher = SideMenuLauncher()
+        launcher.homeFeedController = self
+        return launcher
+    }()
     override func viewDidLoad() {
         super.viewDidLoad()
-//        navigationItem.title = "Featured Events"
         collectionView?.backgroundColor = .white
         collectionView?.showsVerticalScrollIndicator = false
         SVProgressHUD.dismiss()
         grabUserLoc()
+        setupBarButtonItems()
         collectionView?.register(HomeFeedCell.self, forCellWithReuseIdentifier: cellID)
                 collectionView?.register(CategoryCell.self, forCellWithReuseIdentifier: catergoryCellID)
-       // reloadHomeFeed()
     }
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -64,7 +67,6 @@ class HomeFeedController: UICollectionViewController, UICollectionViewDelegateFl
     
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
-//        self.view.removeFromSuperview()
     }
     
     deinit {
@@ -72,35 +74,27 @@ class HomeFeedController: UICollectionViewController, UICollectionViewDelegateFl
         print("EventDetailViewController class removed from memory")
     }
     
+    @objc func setupBarButtonItems(){
+    let sideMenuButton = UIBarButtonItem(image: UIImage(named: "icons8-Menu-48"), style: .plain, target: self, action: #selector(presentSideMenu))
+    navigationItem.leftBarButtonItem = sideMenuButton
+    }
     
-
+    @objc func presentSideMenu(){
+        sideMenuLauncher.presentSideMenu()
+    }
+    
+    @objc func showControllerForCategory(sideMenu: SideMenu){
+        let categoryVC = CategoryViewController(collectionViewLayout: UICollectionViewFlowLayout())
+        categoryVC.navigationItem.title = sideMenu.name
+        navigationController?.pushViewController(categoryVC, animated: true)
+    }
     
     @objc func grabUserLoc(){
-        
         LocationService.getUserLocation { (location) in
             guard let currentLocation = location else {
                 return
             }
-            
-            CLGeocoder().reverseGeocodeLocation(currentLocation, completionHandler: {(placemarks, error) -> Void in
-                print(currentLocation)
-                
-                if error != nil {
-                    print("Reverse geocoder failed with error" + (error?.localizedDescription)!)
-                    return
-                }
-                
-                if placemarks!.count > 0 {
-                    let pm = placemarks![0]
-                    print(pm.locality as Any)
-                    print(pm.administrativeArea as Any)
-                    self.navigationItem.title = "\(pm.locality ?? ""), \(pm.administrativeArea ?? "")"
-                }
-                else {
-                    print("Problem with the data received from geocoder")
-                }
-            })
-
+            self.savedLocation = currentLocation
             
             PostService.showEvent(for: currentLocation, completion: { [unowned self](events) in
                 
@@ -128,9 +122,6 @@ class HomeFeedController: UICollectionViewController, UICollectionViewDelegateFl
                 self?.featuredEvents = events
                 print("Event count in Featured Events Closure is:\(self?.featuredEvents.count)")
                 DispatchQueue.main.async {
-                    // self.dynamoCollectionView.reloadData()
-                   // self.dynamoCollectionViewTop.reloadData()
-                    //self?.collectionView?.reloadData()
                 }
             }
             )
@@ -139,77 +130,89 @@ class HomeFeedController: UICollectionViewController, UICollectionViewDelegateFl
         }
         
     }
-    
-    override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+    override func didMove(toParentViewController parent: UIViewController?) {
+        super.didMove(toParentViewController: parent)
         
+        if parent != nil && self.navigationItem.titleView == nil {
+            initNavigationItemTitleView()
+        }
+    }
+    private func initNavigationItemTitleView() {
+        LocationService.getUserLocation { (currentLocation) in
+            guard let savedLocation = currentLocation else {
+                return
+            }
+            CLGeocoder().reverseGeocodeLocation(savedLocation, completionHandler: {(placemarks, error) -> Void in
+                print(savedLocation)
+                if error != nil {
+                    print("Reverse geocoder failed with error" + (error?.localizedDescription)!)
+                    return
+                }
+                if placemarks!.count > 0 {
+                    let pm = placemarks![0]
+                    print(pm.locality as Any)
+                    print(pm.administrativeArea as Any)
+                    let titleView = UILabel()
+                    titleView.text = "\(pm.locality ?? ""), \(pm.administrativeArea ?? "") ▼"
+                    titleView.font = UIFont(name: "Avenir", size: 18)
+                    let width = titleView.sizeThatFits(CGSize(width: CGFloat.greatestFiniteMagnitude, height: CGFloat.greatestFiniteMagnitude)).width
+                    titleView.frame = CGRect(origin:CGPoint.zero, size:CGSize(width: width, height: 500))
+                    self.navigationItem.titleView = titleView
+                    let recognizer = UITapGestureRecognizer(target: self, action: #selector(self.titleWasTapped))
+                    titleView.isUserInteractionEnabled = true
+                    titleView.addGestureRecognizer(recognizer)
+                }
+                else {
+                    print("Problem with the data received from geocoder")
+                }
+            })
+        }
+    }
+    @objc private func titleWasTapped() {
+        print("Hello, titleWasTapped!")
+    }
+    override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         if indexPath.section == 0 {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellID, for: indexPath) as! HomeFeedCell
+            cell.homeFeedController = self
             cell.sectionNameLabel.text = "Featured Events"
             cell.featuredEvents = featuredEvents
             return cell
         }
-        
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: catergoryCellID, for: indexPath) as! CategoryCell
         cell.sectionNameLabel.text = categories[indexPath.item]
+        cell.homeFeedController = self
         print(categories[indexPath.item])
         print(indexPath.item)
-//        print(allEvents2[categories[indexPath.item]]?.count)
         if allEvents2[categories[indexPath.item]]?.count != nil {
             print(allEvents2[categories[indexPath.item]])
             cell.categoryEvents = allEvents2[categories[indexPath.item]]
-
         } else{
             cell.categoryEvents = allEvents
-
         }
         return cell
-        
     }
-    
     override func numberOfSections(in collectionView: UICollectionView) -> Int {
         return 2
     }
-    
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         if section == 1{
-            return 4
+            return categories.count
         }
         return 1
     }
-    
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         
         if indexPath.section == 0 {
-             return CGSize(width: view.frame.width, height: 300)
+             return CGSize(width: view.frame.width, height: 450)
         }
         return CGSize(width: view.frame.width, height: 300)
         
     }
-    
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
         if section == 0 {
-            return UIEdgeInsets(top: 5, left: 0, bottom: 10, right: 0)
+            return UIEdgeInsets(top: 5, left: 5, bottom: 10, right: 5)
         }
         return UIEdgeInsets(top: 0, left: 8, bottom: 0, right: 8)
     }
-    
-
-
-    fileprivate func getDayAndMonthFromEvent(_ event:Event) -> (String, String) {
-        let apiDateFormat = "MM/dd/yyyy"
-        let df = DateFormatter()
-        df.dateFormat = apiDateFormat
-        let eventDate = df.date(from: event.currentEventDate!)!
-        df.dateFormat = "dd"
-        let dayElement = df.string(from: eventDate)
-        df.dateFormat = "MMM"
-        let monthElement = df.string(from: eventDate)
-        return (dayElement, monthElement)
-    }
 }
-
-
-
-
-
-

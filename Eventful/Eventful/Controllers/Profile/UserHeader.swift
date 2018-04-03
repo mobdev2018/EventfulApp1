@@ -12,6 +12,7 @@ import Firebase
 import FirebaseAuth
 import FirebaseDatabase
 import FirebaseStorage
+import SnapKit
 
 class UserProfileHeader: UICollectionViewCell {
     var user: User?{
@@ -22,8 +23,7 @@ class UserProfileHeader: UICollectionViewCell {
         }
     }
     var followNotificationData : Notifications!
-    weak var profileViewController: ProfileeViewController?
-    weak var searchProfileViewController: SearchProfileeViewController?
+    weak var profileViewController: ProfileeViewController!
 
     lazy var profileImage: UIImageView = {
         let profilePicture = UIImageView()
@@ -93,6 +93,8 @@ class UserProfileHeader: UICollectionViewCell {
 //        self.currentUserDividerView?.isHidden = true
 //        self.followButton.isHidden = true
 //        self.userStackView?.isHidden = true
+        self.settings.removeFromSuperview()
+        self.profileeSettings.removeFromSuperview()
         self.currentUserDividerView?.removeFromSuperview()
         self.notCurrentUserDividerView?.removeFromSuperview()
         self.followButton.removeFromSuperview()
@@ -100,23 +102,15 @@ class UserProfileHeader: UICollectionViewCell {
         
         if currentLoggedInUser == uid {
             //will hide buttons related to user that is not current user
-            userStackView = UIStackView(arrangedSubviews: [profileeSettings, settings])
-            userStackView?.distribution = .fillEqually
-            userStackView?.axis = .vertical
-            userStackView?.spacing = 10.0
-            addSubview(self.userStackView!)
-            userStackView?.anchor(top: topAnchor, left: leftAnchor, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 15, paddingBottom: 0, paddingRight: 0, width: 0, height: 90)
-             currentUserDividerView = UIView()
-            currentUserDividerView?.backgroundColor = UIColor.lightGray
-            addSubview(currentUserDividerView!)
-            currentUserDividerView?.anchor(top: profileStackView.bottomAnchor, left: leftAnchor, bottom: nil, right: rightAnchor, paddingTop: 15, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0.5)
+            setupCurrentLoggedInUserView()
+
         } else{
             addSubview(self.followButton)
             followButton.anchor(top: profileStackView.bottomAnchor, left: leftAnchor, bottom: nil, right: rightAnchor, paddingTop: 10, paddingLeft: 50, paddingBottom:0 , paddingRight: 50, width: 0, height: 0)
              notCurrentUserDividerView = UIView()
             notCurrentUserDividerView?.backgroundColor = UIColor.lightGray
             addSubview(notCurrentUserDividerView!)
-            notCurrentUserDividerView?.anchor(top: followButton.bottomAnchor, left: leftAnchor, bottom: nil, right: rightAnchor, paddingTop: 15, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0.5)
+            notCurrentUserDividerView?.anchor(top: nil, left: leftAnchor, bottom: bottomAnchor, right: rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0.5)
             // check if following
             Database.database().reference().child("following").child(currentLoggedInUser).child(uid).observeSingleEvent(of: .value, with: { (snapshot) in
                 
@@ -135,11 +129,31 @@ class UserProfileHeader: UICollectionViewCell {
         }
     }
     
+    
+    @objc func setupCurrentLoggedInUserView() {
+        addSubview(profileeSettings)
+        profileeSettings.snp.makeConstraints { (make) in
+            make.top.equalTo(self.snp.top)
+            make.left.equalTo(self.snp.left).offset(4)
+        }
+        
+        addSubview(settings)
+        settings.snp.makeConstraints { (make) in
+            make.top.equalTo(self.snp.top)
+            make.right.equalTo(self.snp.right).inset(4)
+        }
+        
+        currentUserDividerView = UIView()
+        currentUserDividerView?.backgroundColor = UIColor.lightGray
+        addSubview(currentUserDividerView!)
+        currentUserDividerView?.anchor(top: nil, left: leftAnchor, bottom: bottomAnchor, right: rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0.5)
+    }
+    
     @objc func handleZoomTap(tapGesture: UITapGestureRecognizer){
         //Pro Tip: Dont perform a lot of custom logic inside a view class
         if let imageView = tapGesture.view as? UIImageView {
             //PRO Tip: don't perform a lot of custom logic inside of a view class
-            self.searchProfileViewController?.performZoomInForStartingImageView(startingImageView: imageView)
+            self.profileViewController?.performZoomInForStartingImageView(startingImageView: imageView)
         }
     }
     
@@ -235,7 +249,7 @@ class UserProfileHeader: UICollectionViewCell {
     
     fileprivate func setupProfileStack(){
         addSubview(profileStackView)
-        profileStackView.anchor(top: topAnchor, left: nil, bottom: nil, right: nil, paddingTop: 10, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 100, height: 100)
+        profileStackView.anchor(top: topAnchor, left: nil, bottom: nil, right: nil, paddingTop: 5, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 125, height: 125)
         profileStackView.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
         
     }
@@ -243,7 +257,7 @@ class UserProfileHeader: UICollectionViewCell {
     override init(frame: CGRect) {
         super.init(frame: frame)
         backgroundColor = UIColor.white
-        profileImage.layer.cornerRadius = 100/2
+        profileImage.layer.cornerRadius = 125/2
         
        // setupToolBar()
         setupProfileStack()

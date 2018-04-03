@@ -13,7 +13,7 @@ protocol NotificationsSectionDelegate: class {
 }
 class NotificationsSectionController: ListSectionController,NotificationCellDelegate {
     
-     let userProfileController = SearchProfileeViewController(collectionViewLayout: UICollectionViewFlowLayout())
+     let userProfileController = ProfileeViewController(collectionViewLayout: UICollectionViewFlowLayout())
     weak var delegate: NotificationsSectionDelegate? = nil
     weak var notif: Notifications?
     
@@ -73,8 +73,6 @@ class NotificationsSectionController: ListSectionController,NotificationCellDele
             
         }
     }
-    
-    
 
     @objc func GoBack(){
         self.viewController?.dismiss(animated: true, completion: nil)

@@ -10,6 +10,7 @@ import UIKit
 
 class CategoryCell: UICollectionViewCell, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
     private let cellID = "cellID"
+    var homeFeedController: HomeFeedController?
     var categoryEvents: [Event]?{
         didSet{
             categoryCollectionView.reloadData()
@@ -54,6 +55,12 @@ class CategoryCell: UICollectionViewCell, UICollectionViewDataSource, UICollecti
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return CGSize(width: 200, height: frame.height - 40)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let eventDetails = EventDetailViewController()
+        eventDetails.currentEvent = categoryEvents?[indexPath.item]
+        homeFeedController?.present(eventDetails, animated: false, completion: nil)
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {

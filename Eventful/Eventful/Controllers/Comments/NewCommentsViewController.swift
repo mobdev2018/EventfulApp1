@@ -126,8 +126,6 @@ class NewCommentsViewController: UIViewController, UITextFieldDelegate,CommentsS
                         let item = self.collectionView.numberOfItems(inSection: self.collectionView.numberOfSections - 1)-1
                         let lastItemIndex = IndexPath(item: item, section: self.collectionView.numberOfSections - 1)
                         self.collectionView.scrollToItem(at: lastItemIndex, at: UICollectionViewScrollPosition.top, animated: true)
-                        
-                        
                     }
                 })
             }
@@ -218,12 +216,6 @@ class NewCommentsViewController: UIViewController, UITextFieldDelegate,CommentsS
             }
         }
     }
-
-    
-    
-    
-    
-    
     override func viewDidAppear(_ animated: Bool) {
         //self.becomeFirstResponder()
     }
@@ -265,10 +257,6 @@ extension NewCommentsViewController: ListAdapterDataSource {
         //print("comments = \(comments)")
         return items
     }
-    
-    
-    
-    
     // 2 For each data object, listAdapter(_:sectionControllerFor:) must return a new instance of a section controller. For now you’re returning a plain IGListSectionController to appease the compiler — in a moment, you’ll modify this to return a custom journal section controller.
     func listAdapter(_ listAdapter: ListAdapter, sectionControllerFor object: Any) -> ListSectionController {
         //the comment section controller will be placed here but we don't have it yet so this will be a placeholder
@@ -321,7 +309,3 @@ extension NewCommentsViewController {
         
     }
 }
-
-
-
-

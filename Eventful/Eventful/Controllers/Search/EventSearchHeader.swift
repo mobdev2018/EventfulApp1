@@ -23,6 +23,7 @@ class SearchHeader: UICollectionViewCell {
         sb.placeholder = "Search"
         sb.searchBarStyle = .minimal
         sb.showsScopeBar = true
+        sb.sizeToFit()
         sb.setScopeBarButtonTitleTextAttributes([ NSAttributedStringKey.foregroundColor.rawValue : UIColor.black], for: .normal)
         let textFieldInsideUISearchBar = sb.value(forKey: "searchField") as? UITextField
         textFieldInsideUISearchBar?.font = UIFont.systemFont(ofSize: 14)
@@ -32,9 +33,8 @@ class SearchHeader: UICollectionViewCell {
         sb.layer.cornerRadius = 5
         sb.layer.masksToBounds = true
         sb.barTintColor = UIColor.white
-        sb.tintColor = UIColor.rgb(red: 231, green: 44, blue: 123)
+        sb.tintColor = UIColor.rgb(red: 24, green: 136, blue: 211)
         UITextField.appearance(whenContainedInInstancesOf: [UISearchBar.self]).backgroundColor = UIColor.rgb(red: 230, green: 230, blue: 230)
-        
         //  sb.delegate = self
         return sb
     }()

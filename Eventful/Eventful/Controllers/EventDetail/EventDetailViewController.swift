@@ -9,66 +9,64 @@
 import UIKit
 import Firebase
 import FirebaseDatabase
+import SnapKit
 
-class EventDetailViewController: UIViewController {
+class EventDetailViewController: UIViewController,UIScrollViewDelegate {
     var imageURL: URL?
-    //var activityIndicator: UIActivityIndicatorView?
     var currentEvent : Event?{
         didSet{
             imageURL = URL(string: (currentEvent?.currentEventImage)!)
+
             DispatchQueue.main.async {
                 self.currentEventImage.af_setImage(withURL: self.imageURL!, placeholderImage: nil, filter: nil, progress: nil, progressQueue: .main, imageTransition: .crossDissolve(0.5), runImageTransitionIfCached: false, completion: { (response) in
                     let image = response.result.value // UIImage Object
                 })
-                self.blurryBackGround.af_setImage(withURL: self.imageURL!, placeholderImage: nil, filter: nil, progress: nil, progressQueue: .main, imageTransition: .crossDissolve(0.5), runImageTransitionIfCached: false, completion: { (response) in
-                    let image = response.result.value // UIImage Object
-                })
-               // self.currentEventImage.af_setImage(withURL: self.imageURL!)
             }
-            currentEventTime.text = currentEvent?.currentEventTime
-            currentEventDate.text = currentEvent?.currentEventDate
+            //will set pass the event name to the eventLabel via the event object passed to the vc
             eventNameLabel.text = currentEvent?.currentEventName.uppercased()
+            //will pass the event description to the corresponding label
+            infoText.text = currentEvent?.currentEventDescription
+            updateWithSpacing(lineSpacing: 5.0)
             guard let currentZip = currentEvent?.currentEventZip else{
                 return
             }
             let firstPartOfAddress = (currentEvent?.currentEventStreetAddress)!  + "\n" + (currentEvent?.currentEventCity)! + ", " + (currentEvent?.currentEventState)!
             let secondPartOfAddress = firstPartOfAddress + " " + String(describing: currentZip)
             addressLabel.text = secondPartOfAddress
-            descriptionLabel.text = currentEvent?.currentEventDescription
-            descriptionLabel.font = UIFont(name: (descriptionLabel.font?.fontName)!, size: 14)
-            updateWithSpacing(lineSpacing: 7.0)
-            navigationItem.title = currentEvent?.currentEventName.capitalized
-            eventKey = (currentEvent?.key)!
-            setupAttendInteraction()
-            eventPromo = (currentEvent?.currentEventPromo)!
             
+            let dateComponets = getDayAndMonthFromEvent(currentEvent!)
+            currentEventDate.text = dateComponets.1 + ", \(dateComponets.0)\n\(currentEvent?.currentEventTime?.lowercased() ?? "")"
+            eventKey = (currentEvent?.key)!
+            eventPromo = (currentEvent?.currentEventPromo)!
+
         }
     }
-    var stackView: UIStackView?
-    var eventNameStackView: UIStackView?
-    var userInteractStackView: UIStackView?
-    //    var users = [User]()
-    let camera = CameraViewController()
-    let eventStory = StoriesViewController()
-    let newCommentsController = NewCommentsViewController()
-    lazy var navController = UINavigationController(rootViewController: newCommentsController)
+    private let scrollView = UIScrollView()
+    private let imageView = UIImageView()
+    private let textContainer = UIView()
+    private var userInteractStackView: UIStackView?
+    private var eventKey = ""
+    private var eventPromo = ""
+
     
-    
-    //variables that will hold data sent in through previous event controller
-    
-    var eventKey = ""
-    var eventPromo = ""
-    
-    lazy var blurryBackGround : UIImageView = {
-        var blurryBackGround = UIImageView()
-       // blurryBackGround.backgroundColor = UIColor.red
-        // blurryBackGround.backgroundColor = UIColor(i)
-        blurryBackGround.isUserInteractionEnabled = true
-        blurryBackGround.makeBlurImage(targetImageView: blurryBackGround)
-        return blurryBackGround
+    private let infoText: UILabel = {
+        let infoText = UILabel()
+        infoText.textColor = .black
+        infoText.textAlignment = .natural
+        infoText.font = UIFont(name: "GillSans", size: 16.5)
+        infoText.numberOfLines = 0
+        return infoText
     }()
     
-    //
+    
+    lazy var currentEventDate: UILabel = {
+        let currentEventDate = UILabel()
+        currentEventDate.numberOfLines = 0
+        currentEventDate.textAlignment = .center
+        currentEventDate.font = UIFont(name: "Futura-CondensedMedium", size: 15)
+        return currentEventDate
+    }()
+    
     lazy var currentEventImage : UIImageView = {
         let currentEvent = UIImageView()
         currentEvent.clipsToBounds = true
@@ -80,60 +78,20 @@ class EventDetailViewController: UIViewController {
         currentEvent.addGestureRecognizer(tapGestureRecognizer)
         return currentEvent
     }()
-    
-    fileprivate func setupAttendInteraction(){
-       print(eventKey)
-        print(User.current.uid)
-        Database.database().reference().child("Attending").child(eventKey).child(User.current.uid).observeSingleEvent(of: .value, with: { (snapshot) in
-            if let isAttending = snapshot.value as? Int, isAttending == 1 {
-                print("User is attending")
-                self.currentEvent?.isAttending = true
-                self.attendingButton.setImage(#imageLiteral(resourceName: "walkingFilled").withRenderingMode(.alwaysOriginal), for: .normal)
-            }else{
-                print("User is not attending")
-                self.currentEvent?.isAttending = false
-                self.attendingButton.setImage(#imageLiteral(resourceName: "walkingNotFiled").withRenderingMode(.alwaysOriginal), for: .normal)
-            }
-        }) { (err) in
-            print("Failed to check if attending", err)
-        }
-    }
-    
-    
     fileprivate func extractedFunc(_ url: URL?) -> EventPromoVideoPlayer {
         return EventPromoVideoPlayer(videoURL: url!)
     }
     
-    deinit {
-        NotificationCenter.default.removeObserver(self)
-    }
-    
     @objc func handlePromoVid(){
-        print("Image tappped")
-        print(eventPromo)
         let url = URL(string: eventPromo)
         let videoLauncher = extractedFunc(url)
         present(videoLauncher, animated: true, completion: nil)
-        
     }
-    
-    lazy var currentEventTime: UILabel = {
-        let currentEventTime = UILabel()
-        currentEventTime.font = UIFont(name: currentEventTime.font.fontName, size: 12)
-        return currentEventTime
-    }()
-    
-    
-    lazy var currentEventDate: UILabel = {
-        let currentEventDate = UILabel()
-        currentEventDate.font = UIFont(name: currentEventDate.font.fontName, size: 12)
-        return currentEventDate
-    }()
-    
     
     //will show the event name
     lazy var eventNameLabel: UILabel = {
         let currentEventName = UILabel()
+        currentEventName.font = UIFont(name:"Futura-CondensedMedium", size: 24.0)
         currentEventName.translatesAutoresizingMaskIntoConstraints = false
         return currentEventName
     }()
@@ -142,18 +100,14 @@ class EventDetailViewController: UIViewController {
         let currentAddressLabel = UILabel()
         currentAddressLabel.numberOfLines = 0
         currentAddressLabel.textColor = UIColor.lightGray
-        currentAddressLabel.font = UIFont(name: currentAddressLabel.font.fontName, size: 12)
+        currentAddressLabel.font = UIFont(name:"GillSans", size: 14.0)
         return currentAddressLabel
     }()
-    //wil be responsible for creating the description label
-    lazy var descriptionLabel : UITextView = {
-        let currentDescriptionLabel = UITextView()
-        currentDescriptionLabel.isEditable = false
-        currentDescriptionLabel.textContainer.maximumNumberOfLines = 0
-        currentDescriptionLabel.textColor = UIColor.black
-        currentDescriptionLabel.textAlignment = .justified
-        currentDescriptionLabel.isUserInteractionEnabled = false
-        return currentDescriptionLabel
+    //will ad the location marker to potentially bring up google maps
+    lazy var LocationMarkerViewButton : UIButton = {
+        let locationMarker = UIButton(type: .system)
+        locationMarker.setImage(#imageLiteral(resourceName: "icons8-marker-80 (1)").withRenderingMode(.alwaysOriginal), for: .normal)
+        return locationMarker
     }()
     
     lazy var commentsViewButton : UIButton = {
@@ -164,93 +118,23 @@ class EventDetailViewController: UIViewController {
         return viewComments
     }()
     
-    lazy var LocationMarkerViewButton : UIButton = {
-        let locationMarker = UIButton(type: .system)
-        locationMarker.setImage(#imageLiteral(resourceName: "icons8-marker-80 (1)").withRenderingMode(.alwaysOriginal), for: .normal)
-        return locationMarker
-    }()
-    
-    
-    
     @objc func presentComments(){
-        print("Comments button pressed")
+        let newCommentsController = NewCommentsViewController()
+        var navController = UINavigationController(rootViewController: newCommentsController)
         newCommentsController.eventKey = eventKey
         newCommentsController.comments.removeAll()
         newCommentsController.adapter.reloadData { (updated) in
-            
         }
-        
         present(navController, animated: true, completion: nil)
     }
     
-    
     lazy var attendingButton: UIButton = {
         let attendButton = UIButton(type: .system)
-        attendButton.addTarget(self, action: #selector(handleAttend), for: .touchUpInside)
+        attendButton.setImage(#imageLiteral(resourceName: "walkingNotFiled").withRenderingMode(.alwaysOriginal), for: .normal)
+        //attendButton.addTarget(self, action: #selector(handleAttend), for: .touchUpInside)
         return attendButton
     }()
-    
- 
 
-    
-    
-    @objc func handleAttend(){
-        print("Handling attend from within cell")
-        // 2
-        attendingButton.isUserInteractionEnabled = false
-        // 3
-        print(currentEvent?.isAttending)
-        print(" ")
-        if (currentEvent?.isAttending)! {
-            
-            AttendService.setIsAttending(!((currentEvent?.isAttending)!), from: currentEvent) { [unowned self] (success) in
-                // 5
-                
-                defer {
-                    self.attendingButton.isUserInteractionEnabled = true
-                }
-                
-                // 6
-                guard success else { return }
-                
-                // 7
-                self.currentEvent?.isAttending = !((self.currentEvent!.isAttending))
-                
-                self.currentEvent?.currentAttendCount += !((self.currentEvent!.isAttending)) ? 1 : -1
-                 self.attendingButton.setImage(#imageLiteral(resourceName: "walkingNotFiled").withRenderingMode(.alwaysOriginal), for: .normal)
-            }
-            
-        }else{
-            
-            AttendService.setIsAttending(!((currentEvent?.isAttending)!), from: currentEvent) {[unowned self] (success) in
-                // 5
-                
-                defer {
-                    self.attendingButton.isUserInteractionEnabled = true
-                }
-                
-                // 6
-                guard success else { return }
-                
-                // 7
-                self.currentEvent?.isAttending = !((self.currentEvent!.isAttending))
-                
-                self.currentEvent?.currentAttendCount += !((self.currentEvent!.isAttending)) ? 1 : -1
-                 self.attendingButton.setImage(#imageLiteral(resourceName: "walkingFilled").withRenderingMode(.alwaysOriginal), for: .normal)
-            }
-            
-        }
-        
-    }
-    override func viewDidDisappear(_ animated: Bool) {
-        self.view.removeFromSuperview()
-        self.blurryBackGround.image = nil
-        self.currentEventImage.image = nil
-
-    }
-    
-
-    //will add the button to add a video or picture to the story
     lazy var addToStoryButton : UIButton =  {
         let addToStory = UIButton(type: .system)
         addToStory.setImage(#imageLiteral(resourceName: "photo-camera").withRenderingMode(.alwaysOriginal), for: .normal)
@@ -259,139 +143,209 @@ class EventDetailViewController: UIViewController {
     }()
     
     @objc func beginAddToStory(){
-        print("Attempting to load camera")
+        let camera = CameraViewController()
         camera.eventKey = self.eventKey
         present(camera, animated: true, completion: nil)
-        
-        //        self.navigationController?.pushViewController(camera, animated: true)
     }
     
-    lazy var viewStoryButton : UIView = {
-        let viewStoryButton = UIView()
-        viewStoryButton.backgroundColor = UIColor.red
-        viewStoryButton.isUserInteractionEnabled = true
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleViewStory))
-        viewStoryButton.addGestureRecognizer(tapGesture)
+    lazy var viewStoryButton : UIButton = {
+        let viewStoryButton = UIButton(type: .system)
+        viewStoryButton.setImage(#imageLiteral(resourceName: "icons8-Logout Rounded Up-50").withRenderingMode(.alwaysOriginal), for: .normal)
+//        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleViewStory))
+//        viewStoryButton.addGestureRecognizer(tapGesture)
         return viewStoryButton
     }()
     
-    @objc func handleViewStory(){
-        print("Attempting to view story")
-        eventStory.eventKey = self.eventKey
-        present(eventStory, animated: true, completion: nil)
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return .lightContent
     }
     
-    
-    @objc func swipeAction(_ swipe: UIGestureRecognizer){
-        if let swipeGesture = swipe as? UISwipeGestureRecognizer {
-            switch swipeGesture.direction {
-            case UISwipeGestureRecognizerDirection.right:
-                print("Swiped right")
-                break
-            case UISwipeGestureRecognizerDirection.down:
-                dismiss(animated: true, completion: nil)
-                break
-            case UISwipeGestureRecognizerDirection.left:
-                print("Swiped left")
-                break
-            case UISwipeGestureRecognizerDirection.up:
-                print("Swiped up")
-                break
-            default:
-                break
-            }
-        }
-    }
     override func viewDidLoad() {
         super.viewDidLoad()
-        hero.isEnabled = true
-        let downSwipe = UISwipeGestureRecognizer(target: self, action: #selector(swipeAction(_:)))
-        downSwipe.direction = .down
-        view.addGestureRecognizer(downSwipe)
-        view.backgroundColor = UIColor.white
-
-        //Subviews will be added here
-        view.addSubview(blurryBackGround)
-        view.addSubview(currentEventImage)
-        view.addSubview(currentEventDate)
-
-        //Constraints will be added here
-        _ = blurryBackGround.anchor(top: view.topAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, paddingTop: 17, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: self.view.frame.width, height: 330)
-        blurryBackGround.addSubview(currentEventImage)
-        currentEventImage.heightAnchor.constraint(equalToConstant: 330).isActive = true
-        currentEventImage.widthAnchor.constraint(equalToConstant: 280).isActive = true
-        currentEventImage.centerXAnchor.constraint(lessThanOrEqualTo:  currentEventImage.superview!.centerXAnchor).isActive = true
-        currentEventImage.centerYAnchor.constraint(lessThanOrEqualTo: currentEventImage.superview!.centerYAnchor).isActive = true
-        _ = currentEventDate.anchor(top: currentEventImage.bottomAnchor, left: stackView?.rightAnchor, bottom: nil, right: view.rightAnchor, paddingTop: -10, paddingLeft: 10, paddingBottom: 0, paddingRight: 0, width: 90, height: 50)
-        setupEventDisplayScreen()
-        userInteractionView()
+       setupVc()
     }
     
-    fileprivate func setupEventDisplayScreen(){
-        //LocationMarker
-        stackView = UIStackView(arrangedSubviews: [LocationMarkerViewButton,addressLabel])
-        eventNameStackView = UIStackView(arrangedSubviews: [eventNameLabel])
-        view.addSubview(eventNameStackView!)
-        view.addSubview(stackView!)
-        view.addSubview(descriptionLabel)
-        stackView?.distribution = .fillProportionally
-        stackView?.axis = .horizontal
-        stackView?.spacing = 0.0
-        eventNameStackView?.anchor(top: currentEventImage.bottomAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, paddingTop: 0, paddingLeft: 10, paddingBottom: 0, paddingRight: 20, width: 0, height: 30)
-        stackView?.anchor(top: eventNameStackView?.bottomAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, paddingTop: 0, paddingLeft: 5, paddingBottom: 0, paddingRight: 20, width: 0, height: 30)
-        descriptionLabel.anchor(top: stackView?.bottomAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, paddingTop: 0, paddingLeft: 10, paddingBottom: 0, paddingRight: 10, width: 90, height: 200)
-    }
+    @objc func setupVc(){
     
-    fileprivate func userInteractionView(){
-        userInteractStackView = UIStackView(arrangedSubviews: [commentsViewButton, attendingButton, addToStoryButton, viewStoryButton])
-        userInteractStackView?.translatesAutoresizingMaskIntoConstraints = false
-        viewStoryButton.heightAnchor.constraint(equalToConstant: 50)
-        viewStoryButton.widthAnchor.constraint(equalToConstant: 50)
-        viewStoryButton.layer.cornerRadius = 150/2
-        view.addSubview(userInteractStackView!)
-        userInteractStackView?.distribution = .fillEqually
-        userInteractStackView?.axis = .horizontal
-        userInteractStackView?.spacing = 10.0
-        NSLayoutConstraint.activateViewConstraints(userInteractStackView!, inSuperView: self.view, withLeading: 0.0, trailing: 0.0, top: nil, bottom: nil, width: nil, height: 30.0)
-        _ = NSLayoutConstraint.activateVerticalSpacingConstraint(withFirstView: userInteractStackView, secondView: self.bottomLayoutGuide, andSeparation: 10.0)
-    }
+    view.backgroundColor = .gray
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        DispatchQueue.main.async {
-            self.currentEventImage.af_setImage(withURL: self.imageURL!)
-            self.blurryBackGround.af_setImage(withURL: self.imageURL!)
-        }
-        navigationController?.navigationBar.isHidden = true
-        tabBarController?.tabBar.isHidden = false
-//        let ref = Database.database().reference().child("Comments").child(self.eventKey)
-//
-//        ref.observe(.value, with: { (snapshot: DataSnapshot!) in
-//            var numberOfComments = 0
-//            numberOfComments = numberOfComments + Int(snapshot.childrenCount)
-//        })
+    scrollView.contentInsetAdjustmentBehavior = .never
+    scrollView.delegate = self
+    scrollView.showsVerticalScrollIndicator = false
+    
+    
+//    infoText.text = text + text + text
+    
+    let imageContainer = UIView()
+    imageContainer.backgroundColor = .darkGray
+    
+    textContainer.backgroundColor = .clear
+    
+    let textBacking = UIView()
+    textBacking.backgroundColor = .white
+    
         
-    }
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+    userInteractStackView = UIStackView(arrangedSubviews: [commentsViewButton, attendingButton,addToStoryButton, viewStoryButton])
+    userInteractStackView?.translatesAutoresizingMaskIntoConstraints = false
+    userInteractStackView?.distribution = .fillEqually
+    userInteractStackView?.axis = .horizontal
+    userInteractStackView?.spacing = 10.0
+        
+    view.addSubview(scrollView)
+    
+    scrollView.addSubview(imageContainer)
+    scrollView.addSubview(textBacking)
+    scrollView.addSubview(textContainer)
+    scrollView.addSubview(currentEventImage)
+    
+    textContainer.addSubview(eventNameLabel)
+    textContainer.addSubview(addressLabel)
+    textContainer.addSubview(currentEventDate)
+    textContainer.addSubview(LocationMarkerViewButton)
+    textContainer.addSubview(infoText)
+    textContainer.addSubview(userInteractStackView!)
+    scrollView.snp.makeConstraints {
+    make in
+    
+    make.edges.equalTo(view)
     }
     
+    imageContainer.snp.makeConstraints {
+    make in
+    
+    make.top.equalTo(scrollView)
+    make.left.right.equalTo(view)
+    make.height.equalTo(imageContainer.snp.width).multipliedBy(1.3)
+    }
+    
+    currentEventImage.snp.makeConstraints {
+    make in
+    
+    make.left.right.equalTo(imageContainer)
+    
+    //** Note the priorities
+    make.top.equalTo(view).priority(.high)
+    
+    //** We add a height constraint too
+    make.height.greaterThanOrEqualTo(imageContainer.snp.height).priority(.required)
+    
+    //** And keep the bottom constraint
+    make.bottom.equalTo(imageContainer.snp.bottom)
+    }
+    
+    textContainer.snp.makeConstraints {
+    make in
+    make.top.equalTo(imageContainer.snp.bottom)
+    make.left.right.equalTo(view)
+    make.bottom.equalTo(scrollView)
+    }
+    
+    textBacking.snp.makeConstraints {
+    make in
+    
+    make.left.right.equalTo(view)
+    make.top.equalTo(textContainer)
+    make.bottom.equalTo(view)
+    }
+        
+    eventNameLabel.snp.makeConstraints { (make) in
+            make.top.equalTo(textContainer.snp.top)
+            make.left.equalTo(textContainer.snp.left).offset(5)
+        }
+        currentEventDate.snp.makeConstraints { (make) in
+            make.top.equalTo(textContainer.snp.top)
+            make.right.equalTo(textContainer).inset(5)
+        }
+    
+    LocationMarkerViewButton.snp.makeConstraints { (make) in
+            make.top.equalTo(eventNameLabel.snp.bottom).offset(5)
+            make.left.equalTo(textContainer.snp.left)
+        }
+    addressLabel.snp.makeConstraints { (make) in
+            make.top.equalTo(eventNameLabel.snp.bottom).offset(7)
+            make.left.equalTo(LocationMarkerViewButton.snp.right).offset(1.5)
+        }
+        
+    infoText.snp.makeConstraints {
+    make in
+        make.top.equalTo(addressLabel.snp.bottom).offset(20)
+        make.left.right.equalTo(textContainer).inset(10)
+    }
+    
+        userInteractStackView?.snp.makeConstraints { (make) in
+            make.top.equalTo(infoText.snp.bottom).offset(30)
+            make.left.right.equalTo(textContainer)
+            make.bottom.equalTo(textContainer.snp.bottom).inset(5)
+        }
+    }
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        
+        scrollView.scrollIndicatorInsets = view.safeAreaInsets
+        scrollView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: view.safeAreaInsets.bottom, right: 0)
+    }
+    
+    //MARK: - Update Line Spacing
     func updateWithSpacing(lineSpacing: Float) {
         // The attributed string to which the
         // paragraph line spacing style will be applied.
-        let attributedString = NSMutableAttributedString(string: descriptionLabel.text)
+        let attributedString = NSMutableAttributedString(string: infoText.text!)
         let mutableParagraphStyle = NSMutableParagraphStyle()
         // Customize the line spacing for paragraph.
         mutableParagraphStyle.lineSpacing = CGFloat(lineSpacing)
         mutableParagraphStyle.alignment = .justified
-        if let stringLength = descriptionLabel.text?.count {
+        if let stringLength = infoText.text?.count {
             attributedString.addAttribute(NSAttributedStringKey.paragraphStyle, value: mutableParagraphStyle, range: NSMakeRange(0, stringLength))
         }
         // textLabel is the UILabel subclass
         // which shows the custom text on the screen
-        descriptionLabel.attributedText = attributedString
+        infoText.attributedText = attributedString
+        
+    }
+    
+    //MARK: - Date Componets
 
+    fileprivate func getDayAndMonthFromEvent(_ event:Event) -> (String, String) {
+        let apiDateFormat = "MM/dd/yyyy"
+        let df = DateFormatter()
+        df.dateFormat = apiDateFormat
+        let eventDate = df.date(from: event.currentEventDate!)!
+        df.dateFormat = "dd"
+        let dayElement = df.string(from: eventDate)
+        df.dateFormat = "MMM"
+        let monthElement = df.string(from: eventDate)
+        return (dayElement, monthElement)
+    }
+    
+    //MARK: - Scroll View Delegate
+    
+    private var previousStatusBarHidden = false
+    
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        if previousStatusBarHidden != shouldHideStatusBar {
+            
+            UIView.animate(withDuration: 0.2, animations: {
+                self.setNeedsStatusBarAppearanceUpdate()
+            })
+            
+            previousStatusBarHidden = shouldHideStatusBar
+        }
+    }
+    
+    //MARK: - Status Bar Appearance
+    
+    override var preferredStatusBarUpdateAnimation: UIStatusBarAnimation {
+        return .slide
+    }
+    
+    override var prefersStatusBarHidden: Bool {
+        return shouldHideStatusBar
+    }
+    
+    private var shouldHideStatusBar: Bool {
+        let frame = textContainer.convert(textContainer.bounds, to: nil)
+        return frame.minY < view.safeAreaInsets.top
     }
  
 }

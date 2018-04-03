@@ -42,7 +42,6 @@ class CategoryEventCell: BaseRoundedCardCell {
         let eventNameHolder = UIView()
         eventNameHolder.backgroundColor = .clear
         eventNameHolder.layer.cornerRadius = 5
-
         return eventNameHolder
     }()
     
@@ -64,7 +63,7 @@ class CategoryEventCell: BaseRoundedCardCell {
         eventNameLabel.anchor(top: eventNameHolder.topAnchor, left: eventNameHolder.leftAnchor, bottom: eventNameHolder.bottomAnchor, right: eventNameHolder.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
         
     }
-    
+
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }

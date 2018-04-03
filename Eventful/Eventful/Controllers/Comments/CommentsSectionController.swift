@@ -18,7 +18,7 @@ class CommentsSectionController: ListSectionController,CommentCellDelegate {
     weak var delegate: CommentsSectionDelegate? = nil
     weak var comment: CommentGrabbed?
     var currentViewController: NewCommentsViewController!
-    let userProfileController = SearchProfileeViewController(collectionViewLayout: UICollectionViewFlowLayout())
+    let userProfileController = ProfileeViewController(collectionViewLayout: UICollectionViewFlowLayout())
     var eventKey: String?
     override init() {
         super.init()

@@ -9,7 +9,8 @@
 import UIKit
 
 class HomeFeedCell: UICollectionViewCell, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
-    
+    var homeFeedController: HomeFeedController?
+
     private let cellId = "cellId"
     var featuredEvents: [Event]?{
         didSet {
@@ -71,11 +72,17 @@ class HomeFeedCell: UICollectionViewCell, UICollectionViewDataSource, UICollecti
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-        return UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+        return UIEdgeInsets(top: 20, left: 5, bottom: 20, right: 5)
     }
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-         return CGSize(width: frame.width, height: frame.height - 40)
+         return CGSize(width: frame.width - 40, height: frame.height - 40)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let eventDetails = EventDetailViewController()
+        eventDetails.currentEvent = featuredEvents?[indexPath.item]
+        homeFeedController?.present(eventDetails, animated: false, completion: nil)
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {

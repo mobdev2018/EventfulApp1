@@ -89,7 +89,7 @@ PODS:
   - SVProgressHUD (2.2.5)
   - SwiftLocation (3.1.0):
     - SwiftyJSON (~> 4.0.0-alpha.1)
-  - SwiftyCam (2.6.0)
+  - SwiftyCam (2.7.0)
   - SwiftyJSON (4.0.0)
   - TextFieldEffects (1.4.0)
 
@@ -114,7 +114,7 @@ DEPENDENCIES:
   - SkeletonView
   - SVProgressHUD
   - SwiftLocation
-  - SwiftyCam
+  - SwiftyCam (from `https://github.com/Awalz/SwiftyCam.git`, branch `Swift4`)
   - SwiftyJSON
   - TextFieldEffects
 
@@ -124,6 +124,9 @@ EXTERNAL SOURCES:
   IGListKit:
     :branch: master
     :git: https://github.com/Instagram/IGListKit.git
+  SwiftyCam:
+    :branch: Swift4
+    :git: https://github.com/Awalz/SwiftyCam.git
 
 CHECKOUT OPTIONS:
   GeoFire:
@@ -132,6 +135,9 @@ CHECKOUT OPTIONS:
   IGListKit:
     :commit: c4789356d7caf516f8275b93ce1e7f6300ea2fd2
     :git: https://github.com/Instagram/IGListKit.git
+  SwiftyCam:
+    :commit: 85d713d643159cda72db2f3e230777af50cded94
+    :git: https://github.com/Awalz/SwiftyCam.git
 
 SPEC CHECKSUMS:
   Alamofire: f41a599bd63041760b26d393ec1069d9d7b917f4
@@ -164,10 +170,10 @@ SPEC CHECKSUMS:
   SnapKit: a42d492c16e80209130a3379f73596c3454b7694
   SVProgressHUD: 1428aafac632c1f86f62aa4243ec12008d7a51d6
   SwiftLocation: 8f5ef4f510a45e43239de57a3145b3669301e898
-  SwiftyCam: 86c114177a1b1f5dc2c82384577d0c20b922a31b
+  SwiftyCam: 7c826b73a5b208677aee29390582c771bf748661
   SwiftyJSON: 070dabdcb1beb81b247c65ffa3a79dbbfb3b48aa
   TextFieldEffects: 4ee41b5216e674d55fb6ac25107bf1af7629176f
 
-PODFILE CHECKSUM: f7cbcddd4baeb73b9a40ac1e5be42624183d276f
+PODFILE CHECKSUM: 341173892a46387f5df7832837f7e41e7e43ce0b
 
 COCOAPODS: 1.4.0

@@ -9,9 +9,9 @@
 import UIKit
 import Firebase
 import FirebaseDatabase
+import SnapKit
 
 class HomeFeedEventCell: BaseRoundedCardCell {
-    
     var event: Event? {
         didSet{
             guard let currentEvent = event else {
@@ -19,7 +19,7 @@ class HomeFeedEventCell: BaseRoundedCardCell {
             }
             guard let url = URL(string: currentEvent.currentEventImage) else { return }
             backgroundImageView.af_setImage(withURL: url)
-            
+            eventNameLabel.text = currentEvent.currentEventName.capitalized
         }
     }
     
@@ -30,6 +30,19 @@ class HomeFeedEventCell: BaseRoundedCardCell {
         firstImage.contentMode = .scaleToFill
         firstImage.layer.cornerRadius = 5
         return firstImage
+    }()
+    
+    let eventNameLabel : UILabel =  {
+        let sectionNameLabel = UILabel()
+        sectionNameLabel.font = UIFont(name:"DINCondensed-Bold", size: 20.0)
+        return sectionNameLabel
+    }()
+    
+    let eventNameHolder : UIView = {
+        let eventNameHolder = UIView()
+        eventNameHolder.backgroundColor = .clear
+        eventNameHolder.layer.cornerRadius = 5
+        return eventNameHolder
     }()
     
     
@@ -44,9 +57,18 @@ class HomeFeedEventCell: BaseRoundedCardCell {
     
     @objc func setupViews(){
         backgroundColor = .clear
-        setCellShadow() 
+        //setCellShadow()
         addSubview(backgroundImageView)
-        backgroundImageView.anchor(top: topAnchor, left: leftAnchor, bottom: bottomAnchor, right: rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        addSubview(eventNameHolder)
+        eventNameHolder.addSubview(eventNameLabel)
+        backgroundImageView.setContentCompressionResistancePriority(UILayoutPriority(600), for: .vertical)
+        backgroundImageView.anchor(top: topAnchor, left: leftAnchor, bottom: nil, right: rightAnchor, paddingTop: 5, paddingLeft: 0, paddingBottom: 5, paddingRight: 0, width: 0, height: 0)
+        eventNameHolder.anchor(top: backgroundImageView.bottomAnchor, left: leftAnchor, bottom: bottomAnchor, right: rightAnchor, paddingTop: 5, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 20)
+        eventNameLabel.snp.makeConstraints { (make) in
+            make.top.equalTo(eventNameHolder.snp.top)
+            make.left.right.equalTo(eventNameHolder).inset(10)
+            make.bottom.equalTo(eventNameHolder.snp.bottom)
+        }
         
     }
 }

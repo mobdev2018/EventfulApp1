@@ -54,9 +54,7 @@
             // fetchUser()
             
             self.collectionView?.contentInset = UIEdgeInsetsMake(20, 0, 0, 0)
-            
-            self.navigationController?.isNavigationBarHidden = true
-            
+            navigationItem.title = user.username
             collectionView?.register(UserProfileHeader.self, forSupplementaryViewOfKind: UICollectionElementKindSectionHeader, withReuseIdentifier: "headerID")
             
             collectionView?.register(EventsAttendingCell.self, forCellWithReuseIdentifier: cellID)
@@ -93,17 +91,19 @@
         }
         
         @objc func profileSettingsTapped(){
-            present(profileSetupTransition, animated: true, completion: nil)
+            let navController = UINavigationController(rootViewController: profileSetupTransition)
+            
+            present(navController, animated: true, completion: nil)
             //        self.navigationController?.pushViewController(profileSetupTransition, animated: true)
         }
         
         func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
-            return CGSize(width: view.frame.width, height: 150)
+            return CGSize(width: view.frame.width, height: 195)
         }
         
         override func viewWillAppear(_ animated: Bool) {
             super.viewWillAppear(animated)
-            self.navigationController?.isNavigationBarHidden = true
+            //self.navigationController?.isNavigationBarHidden = true
             
             self.collectionView?.reloadData()
         }

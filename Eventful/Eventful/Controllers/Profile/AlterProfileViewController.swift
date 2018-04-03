@@ -24,17 +24,22 @@ class AlterProfileViewController: UIViewController, UIImagePickerControllerDeleg
     var uid = ""
     override func viewDidLoad() {
         super.viewDidLoad()
+        setupVC()
+    }
+    
+    @objc func setupVC(){
         view?.backgroundColor = UIColor.white
-        navigationItem.title = "Profile Settings"
+        navigationItem.title = "Edit Profile"
+        
+        let backButton = UIBarButtonItem(image: UIImage(named: "icons8-Back-64"), style: .plain, target: self, action: #selector(handleSettingsDismiss))
+        self.navigationItem.leftBarButtonItem = backButton
         view.addSubview(selectProfileImage)
         view.addSubview(changeProfilePicture)
         view.addSubview(changeUsername)
-        view.addSubview(currentLocationLabel)
         view.addSubview(saveProfileEdits)
-        view.addSubview(backButton)
         ///Constraints for all views will go here
         //Constraints for the profile image
-        _ = selectProfileImage.anchor(top: view.centerYAnchor, left: nil, bottom: nil, right: nil, paddingTop: -275, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 100, height: 100)
+        _ = selectProfileImage.anchor(top: view.centerYAnchor, left: nil, bottom: nil, right: nil, paddingTop: -265, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 100, height: 100)
         selectProfileImage.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         
         //Constraints for the change profile picture button
@@ -42,9 +47,8 @@ class AlterProfileViewController: UIViewController, UIImagePickerControllerDeleg
         //Constraints for the text field that corresponds to the user name
         _ = changeUsername.anchor(top: changeProfilePicture.bottomAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, paddingTop: 15, paddingLeft: 32, paddingBottom: 0, paddingRight: 32, width: 0, height: 35)
         //Constraints for the text field that corresponds to the label
-        _ = currentLocationLabel.anchor(top: changeUsername.bottomAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, paddingTop: 15, paddingLeft: 32, paddingBottom: 0, paddingRight: 32, width: 0, height: 35)
-        _ = saveProfileEdits.anchor(top: currentLocationLabel.bottomAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, paddingTop: 200, paddingLeft: 32, paddingBottom: 0, paddingRight: 32, width: 200, height: 35)
-        _ = backButton.anchor(top: view.topAnchor, left: view.leftAnchor, bottom: nil, right: nil, paddingTop: 10, paddingLeft: 4, paddingBottom: 0, paddingRight: 0, width: 40, height: 40)
+        _ = saveProfileEdits.anchor(top: changeUsername.bottomAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, paddingTop: 200, paddingLeft: 32, paddingBottom: 0, paddingRight: 32, width: 200, height: 35)
+        
         ///////////////////////////////////////////////
         
         
@@ -55,16 +59,8 @@ class AlterProfileViewController: UIViewController, UIImagePickerControllerDeleg
         
         view.addGestureRecognizer(tap)
         
-        
     }
     
-    
-    lazy var backButton: UIButton = {
-        let backButton = UIButton(type: .system)
-        backButton.setImage(#imageLiteral(resourceName: "icons8-Expand Arrow-48").withRenderingMode(.alwaysOriginal), for: .normal)
-        backButton.addTarget(self, action: #selector(handleSettingsDismiss), for: .touchUpInside)
-        return backButton
-    }()
     
     @objc func handleSettingsDismiss(){
         print("Button pressed")

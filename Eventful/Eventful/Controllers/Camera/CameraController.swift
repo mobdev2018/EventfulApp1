@@ -13,9 +13,6 @@ class CameraViewController: SwiftyCamViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-//        self.tabBarController?.tabBar.isHidden = true
-//self.navigationController?.isNavigationBarHidden = true
-        
         let downSwipe = UISwipeGestureRecognizer(target: self, action: #selector(swipeAction(_:)))
         downSwipe.direction = .down
         view.addGestureRecognizer(downSwipe)
@@ -63,12 +60,14 @@ class CameraViewController: SwiftyCamViewController {
     }
  
     func swiftyCam(_ swiftyCam: SwiftyCamViewController, didTake photo: UIImage) {
-        let newVC = PhotoViewController(image: photo)
-        newVC.eventKey = self.eventKey
-        present(newVC, animated: true, completion: nil)
-       // self.navigationController?.pushViewController(newVC, animated: true)
+        let containerView = PreviewPhotoContainerView()
+        view.addSubview(containerView)
+        containerView.previewImageView.image =  photo
+        containerView.eventKey = eventKey
+        containerView.snp.makeConstraints { (make) in
+            make.edges.equalTo(view)
+        }
     }
-    
     
     override var prefersStatusBarHidden: Bool {
         return true
@@ -145,7 +144,7 @@ class CameraViewController: SwiftyCamViewController {
         self.view.addSubview(flashButton)
         
         cancelButton = UIButton(frame: CGRect(x: 10.0, y: 23.0, width: 25.0, height: 25.0))
-        cancelButton.setImage(#imageLiteral(resourceName: "cancel"), for: UIControlState())
+        cancelButton.setImage(#imageLiteral(resourceName: "icons8-delete-48"), for: UIControlState())
         cancelButton.addTarget(self, action: #selector(cancel), for: .touchUpInside)
         view.addSubview(cancelButton)
     }
@@ -194,8 +193,6 @@ extension CameraViewController : SwiftyCamViewControllerDelegate
         let newVC = VideoViewController(videoURL: url)
         newVC.eventKey = self.eventKey
         present(newVC, animated: true, completion: nil)
-       // self.navigationController?.pushViewController(newVC, animated: true)
-        //self.present(newVC, animated: true, completion: nil)
     }
     
     // Function which allows you to zoom. Added animation for User/UI purposes

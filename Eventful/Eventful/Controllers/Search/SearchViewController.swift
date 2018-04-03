@@ -18,7 +18,7 @@ class EventSearchController: UICollectionViewController, UISearchBarDelegate, UI
     let cellId = "cellID"
     var scopeIndex: Int = 0
     let cellID2 = "newCellID"
-    let userProfileController = SearchProfileeViewController(collectionViewLayout: UICollectionViewFlowLayout())
+    let userProfileController = ProfileeViewController(collectionViewLayout: UICollectionViewFlowLayout())
     var emptyLabel: UILabel?
 
     override func viewDidLoad() {

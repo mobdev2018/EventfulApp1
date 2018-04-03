@@ -10,13 +10,14 @@ import UIKit
 import CoreMotion
 
 protocol BaseRoundedCardCellDelegate:NSObjectProtocol {
-    
+    func handleEventDetailTransition(gestureRecognizer:UILongPressGestureRecognizer)
 }
 
 internal class BaseRoundedCardCell: UICollectionViewCell {
+    weak var delegate: BaseRoundedCardCellDelegate? = nil
+
     
-    
-    private static let kInnerMargin: CGFloat = 20.0
+    private static let kInnerMargin: CGFloat = 30.0
     
     /// Core Motion Manager
     private let motionManager = CMMotionManager()
@@ -127,9 +128,17 @@ internal class BaseRoundedCardCell: UICollectionViewCell {
                        animations: {
                         self.transform = CGAffineTransform.identity
         }) { (finished) in
+            if finished {
+                self.handleEventDetailTransition(gestureRecognizer: gestureRecognizer)
+            }
             
             self.isPressed = false
         }
+    }
+    
+    func handleEventDetailTransition(gestureRecognizer:UILongPressGestureRecognizer){
+        print("cell finished tapping")
+        delegate?.handleEventDetailTransition(gestureRecognizer: gestureRecognizer)
     }
     
 }

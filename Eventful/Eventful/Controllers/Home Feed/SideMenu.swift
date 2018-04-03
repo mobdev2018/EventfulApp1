@@ -9,8 +9,15 @@
 import UIKit
 
 class SideMenu: NSObject {
-    let name: String
-    init(name: String) {
+    let name: SideMenuName
+    init(name: SideMenuName) {
         self.name = name
     }
+}
+
+enum SideMenuName: String {
+    case SeizeTheNight = "Seize The Night"
+    case SeizeTheDay = "Seize The Day"
+    case TwentyOneAndUp = "21 & Up"
+    case FriendsEvents = "Friends Events"
 }

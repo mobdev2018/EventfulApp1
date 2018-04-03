@@ -26,9 +26,9 @@ class SideMenuLauncher: NSObject, UICollectionViewDelegateFlowLayout {
     }()
     
     let sideMenu: [SideMenu] = {
-        return[SideMenu(name: "Seize The Night"),SideMenu(name: "Seize The Day"),SideMenu(name:"21 & Up"), SideMenu(name: "Friends Events")]
+        return[SideMenu(name: .SeizeTheNight),SideMenu(name: .SeizeTheDay),SideMenu(name:.TwentyOneAndUp), SideMenu(name: .FriendsEvents)]
     }()
-    var homeFeedController: HomeFeedController?
+    weak var homeFeedController: HomeFeedController?
     let cellID = "cellID"
     let headerID = "headerID"
     let blackView = UIView()
@@ -51,7 +51,6 @@ class SideMenuLauncher: NSObject, UICollectionViewDelegateFlowLayout {
             }, completion: nil)
         }
     }
-    
     @objc func handleDismiss(sideMenu: SideMenu){
         UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
             self.blackView.alpha = 0
@@ -59,12 +58,24 @@ class SideMenuLauncher: NSObject, UICollectionViewDelegateFlowLayout {
                 self.collectionView.frame = CGRect(x: -(window.frame.width), y: 0, width: self.collectionView.frame.width, height: self.collectionView.frame.height)
             }
         }, completion: { (completed: Bool) in
-            if sideMenu.name != "" {
-                self.homeFeedController?.showControllerForCategory(sideMenu: sideMenu)
-            }
+            print("finished")
         })
     }
+
+    
+    @objc func handleDismissOne(sideMenu: SideMenu){
+        UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
+            self.blackView.alpha = 0
+            if let window = UIApplication.shared.keyWindow {
+                self.collectionView.frame = CGRect(x: -(window.frame.width), y: 0, width: self.collectionView.frame.width, height: self.collectionView.frame.height)
+            }
+        }, completion: { (completed: Bool) in
+                self.homeFeedController?.showControllerForCategory(sideMenu: sideMenu)
+        })
+    }
+    
 }
+
 
 extension SideMenuLauncher: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -102,7 +113,7 @@ extension SideMenuLauncher: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if indexPath.section == 1 {
             let sideMenuTitle = self.sideMenu[indexPath.item]
-            handleDismiss(sideMenu: sideMenuTitle)
+            handleDismissOne(sideMenu: sideMenuTitle)
         }
     }
     

@@ -62,6 +62,7 @@ class HomeFeedController: UICollectionViewController, UICollectionViewDelegateFl
     }
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        tabBarController?.tabBar.isHidden = false
 //        self.navigationController?.setNavigationBarHidden(true, animated: false)
     }
     
@@ -85,7 +86,8 @@ class HomeFeedController: UICollectionViewController, UICollectionViewDelegateFl
     
     @objc func showControllerForCategory(sideMenu: SideMenu){
         let categoryVC = CategoryViewController(collectionViewLayout: UICollectionViewFlowLayout())
-        categoryVC.navigationItem.title = sideMenu.name
+        categoryVC.navigationItem.title = sideMenu.name.rawValue
+        categoryVC.events = self.allEvents2[sideMenu.name.rawValue]!
         navigationController?.pushViewController(categoryVC, animated: true)
     }
     

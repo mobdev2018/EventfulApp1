@@ -12,7 +12,7 @@ import SnapKit
 class SideMenuCell: UICollectionViewCell {
     var sideMenu: SideMenu? {
     didSet{
-    nameLabel.text = sideMenu?.name
+        nameLabel.text = (sideMenu?.name).map { $0.rawValue }
     }
     }
     let nameLabel: UILabel = {

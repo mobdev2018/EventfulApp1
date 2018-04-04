@@ -86,7 +86,7 @@ class HomeFeedController: UICollectionViewController, UICollectionViewDelegateFl
     
     @objc func showControllerForCategory(sideMenu: SideMenu){
         let categoryVC = CategoryViewController(collectionViewLayout: UICollectionViewFlowLayout())
-        categoryVC.navigationItem.title = sideMenu.name.rawValue
+        categoryVC.titleView.text = sideMenu.name.rawValue
         categoryVC.events = self.allEvents2[sideMenu.name.rawValue]!
         navigationController?.pushViewController(categoryVC, animated: true)
     }

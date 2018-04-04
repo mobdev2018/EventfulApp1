@@ -35,6 +35,7 @@ class HomeFeedEventCell: BaseRoundedCardCell {
     let eventNameLabel : UILabel =  {
         let sectionNameLabel = UILabel()
         sectionNameLabel.font = UIFont(name:"DINCondensed-Bold", size: 20.0)
+        sectionNameLabel.textAlignment = .center
         return sectionNameLabel
     }()
     

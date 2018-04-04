@@ -17,7 +17,7 @@ class SideMenuCell: UICollectionViewCell {
     }
     let nameLabel: UILabel = {
         let nameLabel = UILabel()
-        nameLabel.font = UIFont(name: "Avenir-Medium", size: 13.0)
+        nameLabel.font = UIFont(name: "AvenirNext-DemiBold", size: 13.0)
         return nameLabel
     }()
     

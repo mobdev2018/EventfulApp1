@@ -8,22 +8,16 @@
 
 import UIKit
 
-private let reuseIdentifier = "Cell"
-
 class CategoryViewController: UICollectionViewController,UICollectionViewDelegateFlowLayout{
     var events = [Event]()
     let cellID = "cellID"
+    let titleView = UILabel()
 
     override func viewDidLoad() {
         super.viewDidLoad()
         setupViews()
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
+    self.collectionView!.register(CategoryEventCell.self, forCellWithReuseIdentifier: cellID)
 
-        // Register cell classes
-        self.collectionView!.register(CategoryEventCell.self, forCellWithReuseIdentifier: cellID)
-
-        // Do any additional setup after loading the view.
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -36,6 +30,12 @@ class CategoryViewController: UICollectionViewController,UICollectionViewDelegat
         self.collectionView?.backgroundColor = .white
         self.collectionView?.delegate = self
         self.collectionView?.dataSource = self
+        
+        titleView.font = UIFont(name: "Avenir", size: 18)
+        let width = titleView.sizeThatFits(CGSize(width: CGFloat.greatestFiniteMagnitude, height: CGFloat.greatestFiniteMagnitude)).width
+        titleView.frame = CGRect(origin:CGPoint.zero, size:CGSize(width: width, height: 500))
+        self.navigationItem.titleView = titleView
+        titleView.isUserInteractionEnabled = true
     }
     @objc func GoBack(){
         print("BACK TAPPED")
@@ -67,12 +67,18 @@ class CategoryViewController: UICollectionViewController,UICollectionViewDelegat
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let width = (view.frame.width - 2)/3
-        return CGSize(width: width, height: width)
+        let width = (view.frame.width - 20)/3
+        return CGSize(width: width, height: 200)
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-        return UIEdgeInsets(top: 10, left: 5, bottom: 5, right:0)
+        return UIEdgeInsets(top: 10, left: 5, bottom: 5, right:5)
+    }
+    override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        print("cell selected")
+        let eventDetails = EventDetailViewController()
+        eventDetails.currentEvent = events[indexPath.item]
+        self.present(eventDetails, animated: false, completion: nil)
     }
 
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {

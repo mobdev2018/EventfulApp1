@@ -35,6 +35,7 @@ class CategoryEventCell: BaseRoundedCardCell {
     let eventNameLabel : UILabel =  {
         let sectionNameLabel = UILabel()
         sectionNameLabel.font = UIFont(name:"DINCondensed-Bold", size: 16.0)
+        sectionNameLabel.textAlignment = .center
         return sectionNameLabel
     }()
     
@@ -60,7 +61,11 @@ class CategoryEventCell: BaseRoundedCardCell {
         backgroundImageView.setContentCompressionResistancePriority(UILayoutPriority(600), for: .vertical)
         backgroundImageView.anchor(top: topAnchor, left: leftAnchor, bottom: nil, right: rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 5, paddingRight: 0, width: 0, height: 0)
         eventNameHolder.anchor(top: backgroundImageView.bottomAnchor, left: leftAnchor, bottom: bottomAnchor, right: rightAnchor, paddingTop: 5, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 20)
-        eventNameLabel.anchor(top: eventNameHolder.topAnchor, left: eventNameHolder.leftAnchor, bottom: eventNameHolder.bottomAnchor, right: eventNameHolder.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        eventNameLabel.snp.makeConstraints { (make) in
+        
+        make.edges.equalTo(eventNameHolder).inset(1)
+            
+        }
         
     }
 

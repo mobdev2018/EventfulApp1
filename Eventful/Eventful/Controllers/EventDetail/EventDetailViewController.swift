@@ -38,7 +38,7 @@ class EventDetailViewController: UIViewController,UIScrollViewDelegate {
             currentEventDate.text = dateComponets.1 + ", \(dateComponets.0)\n\(currentEvent?.currentEventTime?.lowercased() ?? "")"
             eventKey = (currentEvent?.key)!
             eventPromo = (currentEvent?.currentEventPromo)!
-
+            setupAttendInteraction()
         }
     }
     private let scrollView = UIScrollView()
@@ -131,10 +131,72 @@ class EventDetailViewController: UIViewController,UIScrollViewDelegate {
     lazy var attendingButton: UIButton = {
         let attendButton = UIButton(type: .system)
         attendButton.setImage(#imageLiteral(resourceName: "walkingNotFiled").withRenderingMode(.alwaysOriginal), for: .normal)
-        //attendButton.addTarget(self, action: #selector(handleAttend), for: .touchUpInside)
+        attendButton.addTarget(self, action: #selector(handleAttend), for: .touchUpInside)
         return attendButton
     }()
-
+    @objc func handleAttend(){
+        // 2
+        attendingButton.isUserInteractionEnabled = false
+        print(currentEvent?.isAttending)
+       
+        if (currentEvent?.isAttending)! {
+            
+            AttendService.setIsAttending(!((currentEvent?.isAttending)!), from: currentEvent) { [unowned self] (success) in
+                // 5
+                
+                defer {
+                    self.attendingButton.isUserInteractionEnabled = true
+                }
+                
+                // 6
+                guard success else { return }
+                
+                // 7
+                self.currentEvent?.isAttending = !((self.currentEvent!.isAttending))
+                
+                self.currentEvent?.currentAttendCount += !((self.currentEvent!.isAttending)) ? 1 : -1
+                self.attendingButton.setImage(#imageLiteral(resourceName: "walkingNotFiled").withRenderingMode(.alwaysOriginal), for: .normal)
+            }
+            
+        }else{
+            
+            AttendService.setIsAttending(!((currentEvent?.isAttending)!), from: currentEvent) {[unowned self] (success) in
+                // 5
+                
+                defer {
+                    self.attendingButton.isUserInteractionEnabled = true
+                }
+                
+                // 6
+                guard success else { return }
+                
+                // 7
+                self.currentEvent?.isAttending = !((self.currentEvent!.isAttending))
+                
+                self.currentEvent?.currentAttendCount += !((self.currentEvent!.isAttending)) ? 1 : -1
+                self.attendingButton.setImage(#imageLiteral(resourceName: "walkingFilled").withRenderingMode(.alwaysOriginal), for: .normal)
+            }
+            
+        }
+        
+    }
+    
+    fileprivate func setupAttendInteraction(){
+        Database.database().reference().child("Attending").child(eventKey).child(User.current.uid).observeSingleEvent(of: .value, with: { (snapshot) in
+            if let isAttending = snapshot.value as? Int, isAttending == 1 {
+                print("User is attending")
+                self.currentEvent?.isAttending = true
+                self.attendingButton.setImage(#imageLiteral(resourceName: "walkingFilled").withRenderingMode(.alwaysOriginal), for: .normal)
+            }else{
+                print("User is not attending")
+                self.currentEvent?.isAttending = false
+                self.attendingButton.setImage(#imageLiteral(resourceName: "walkingNotFiled").withRenderingMode(.alwaysOriginal), for: .normal)
+            }
+        }) { (err) in
+            print("Failed to check if attending", err)
+        }
+    }
+    
     lazy var addToStoryButton : UIButton =  {
         let addToStory = UIButton(type: .system)
         addToStory.setImage(#imageLiteral(resourceName: "photo-camera").withRenderingMode(.alwaysOriginal), for: .normal)

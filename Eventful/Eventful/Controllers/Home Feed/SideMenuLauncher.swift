@@ -26,7 +26,7 @@ class SideMenuLauncher: NSObject, UICollectionViewDelegateFlowLayout {
     }()
     
     let sideMenu: [SideMenu] = {
-        return[SideMenu(name: .SeizeTheNight),SideMenu(name: .SeizeTheDay),SideMenu(name:.TwentyOneAndUp), SideMenu(name: .FriendsEvents)]
+        return[SideMenu(name: .SeizeTheNight, imageName:"icons8-night-50"),SideMenu(name: .SeizeTheDay, imageName:"icons8-sun-50"),SideMenu(name:.TwentyOneAndUp, imageName:"21"), SideMenu(name: .FriendsEvents, imageName:"icons8-friends-50")]
     }()
     weak var homeFeedController: HomeFeedController?
     let cellID = "cellID"
@@ -47,7 +47,7 @@ class SideMenuLauncher: NSObject, UICollectionViewDelegateFlowLayout {
             
             UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 2, initialSpringVelocity: 2, options: .curveEaseOut, animations: {
                 self.blackView.alpha = 1
-                self.collectionView.frame = CGRect(x: 0, y: 0, width: window.frame.width/2, height: self.collectionView.frame.height)
+                self.collectionView.frame = CGRect(x: 0, y: 0, width: window.frame.width * (3/4), height: self.collectionView.frame.height)
             }, completion: nil)
         }
     }
@@ -90,7 +90,7 @@ extension SideMenuLauncher: UICollectionViewDataSource {
     }
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         if indexPath.section == 1 {
-            return CGSize(width: collectionView.frame.width, height:40)
+            return CGSize(width: collectionView.frame.width, height:45)
         } else{
             return CGSize(width: collectionView.frame.width, height:90)
             

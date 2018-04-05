@@ -97,8 +97,9 @@ class Event:NSObject{
         self.currentEventEndDate = currentEventEndDate
     }
     
-    
-    
-    
+    override func isEqual(_ object: Any?) -> Bool {
+        guard let event = object as? Event else { return false }
+        return self.key == event.key
+    }
     
 }

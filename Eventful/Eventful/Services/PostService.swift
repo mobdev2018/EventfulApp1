@@ -80,9 +80,8 @@ class PostService {
         
     }
     
-    static func showFollowingEvent(for followerKey: String,completion: @escaping ([Event]) -> Void) {
+    static func showFollowingEvent(for followerKey: String,completion: @escaping (Event) -> Void) {
         //getting firebase root directory
-        var currentEvents = [Event]()
         let ref = Database.database().reference()
 
         ref.child("users").child(followerKey).child("Attending").observeSingleEvent(of: .value, with: { (attendingSnapshot) in
@@ -93,13 +92,7 @@ class PostService {
                 dispatchGroup.enter()
                 EventService.show(forEventKey: event.key, completion: { (event) in
                     dispatchGroup.leave()
-                    currentEvents.append(event!)
-                })
-                dispatchGroup.notify(queue: .main, execute: {
-                    if currentEvents.count == eventKeys.count{
-                        completion(currentEvents)
-                        eventKeys.removeAll()
-                    }
+                    completion(event!)
                 })
             }
         }) { (err) in

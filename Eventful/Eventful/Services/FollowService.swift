@@ -7,7 +7,8 @@
 //
 
 import Foundation
-import  FirebaseDatabase
+import FirebaseDatabase
+import Firebase
 
 struct FollowService {
     private static func followUser(_ user: User, forCurrentUserWithSuccess success: @escaping (Bool) -> Void) {

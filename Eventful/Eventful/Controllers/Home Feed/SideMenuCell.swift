@@ -13,12 +13,22 @@ class SideMenuCell: UICollectionViewCell {
     var sideMenu: SideMenu? {
     didSet{
         nameLabel.text = (sideMenu?.name).map { $0.rawValue }
+        if let imageName = sideMenu?.imageName {
+            iconImageView.image = UIImage(named: imageName)?.withRenderingMode(.alwaysOriginal)
+            //iconImageView.tintColor = UIColor.darkGray
+        }
     }
     }
     let nameLabel: UILabel = {
         let nameLabel = UILabel()
-        nameLabel.font = UIFont(name: "AvenirNext-DemiBold", size: 13.0)
+        nameLabel.font = UIFont(name: "AvenirNext-Regular", size: 15.0)
         return nameLabel
+    }()
+    
+    let iconImageView: UIImageView = {
+        let imageView = UIImageView()
+        imageView.contentMode = .scaleAspectFit
+        return imageView
     }()
     
     
@@ -28,9 +38,15 @@ class SideMenuCell: UICollectionViewCell {
     }
     @objc func setupViews(){
         backgroundColor = .white
+        addSubview(iconImageView)
+        iconImageView.snp.makeConstraints { (make) in
+            make.top.equalTo(self.snp.top).offset(10)
+            make.left.equalTo(self.snp.left).inset(5)
+        }
         addSubview(nameLabel)
-        nameLabel.snp.makeConstraints { (make) in
-            make.edges.equalTo(self).inset(5)
+       nameLabel.snp.makeConstraints { (make) in
+        make.left.equalTo(iconImageView.snp.right).offset(5)
+        make.top.equalTo(self.snp.top).offset(14)
         }
         let currentUserDividerView = UIView()
         currentUserDividerView.backgroundColor = UIColor.lightGray

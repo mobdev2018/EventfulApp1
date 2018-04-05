@@ -163,6 +163,38 @@ struct UserService {
         })
     }
     
+    static func following(for user: User = User.current, completion: @escaping ([User]) -> Void) {
+        // 1
+        let followingRef = Database.database().reference().child("following").child(user.uid)
+        followingRef.observeSingleEvent(of: .value, with: { (snapshot) in
+            // 2
+            guard let followingDict = snapshot.value as? [String : Bool] else {
+                return completion([])
+            }
+            
+            // 3
+            var following = [User]()
+            let dispatchGroup = DispatchGroup()
+            
+            for uid in followingDict.keys {
+                dispatchGroup.enter()
+                
+                show(forUID: uid) { user in
+                    if let user = user {
+                        following.append(user)
+                    }
+                    
+                    dispatchGroup.leave()
+                }
+            }
+            
+            // 4
+            dispatchGroup.notify(queue: .main) {
+                completion(following)
+            }
+        })
+    }
+    
     static func usersExcludingCurrentUser(completion: @escaping ([User]) -> Void) {
         let currentUser = User.current
         // 1

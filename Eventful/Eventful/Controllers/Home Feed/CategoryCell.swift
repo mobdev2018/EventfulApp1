@@ -8,7 +8,7 @@
 
 import UIKit
 
-class CategoryCell: UICollectionViewCell, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
+class CategoryCell: UICollectionViewCell, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout,UIScrollViewDelegate {
     private let cellID = "cellID"
     var homeFeedController: HomeFeedController?
     var categoryEvents: [Event]?{
@@ -67,6 +67,16 @@ class CategoryCell: UICollectionViewCell, UICollectionViewDataSource, UICollecti
         return UIEdgeInsets(top: 10, left: 14, bottom: 5, right: 14)
     }
     
+    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+        self.categoryCollectionView.scrollToNearestVisibleCollectionViewCell()
+    }
+    
+    func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+        if !decelerate {
+            self.categoryCollectionView.scrollToNearestVisibleCollectionViewCell()
+        }
+    }
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupViews()
@@ -88,5 +98,29 @@ class CategoryCell: UICollectionViewCell, UICollectionViewDataSource, UICollecti
                 categoryCollectionView.showsHorizontalScrollIndicator = false
         categoryCollectionView.register(CategoryEventCell.self, forCellWithReuseIdentifier: cellID)
         
+    }
+}
+
+extension UICollectionView {
+    func scrollToNearestVisibleCollectionViewCell() {
+        self.decelerationRate = UIScrollViewDecelerationRateFast
+        let visibleCenterPositionOfScrollView = Float(self.contentOffset.x + (self.bounds.size.width / 2))
+        var closestCellIndex = -1
+        var closestDistance: Float = .greatestFiniteMagnitude
+        for i in 0..<self.visibleCells.count {
+            let cell = self.visibleCells[i]
+            let cellWidth = cell.bounds.size.width
+            let cellCenter = Float(cell.frame.origin.x + cellWidth / 2)
+            
+            // Now calculate closest cell
+            let distance: Float = fabsf(visibleCenterPositionOfScrollView - cellCenter)
+            if distance < closestDistance {
+                closestDistance = distance
+                closestCellIndex = self.indexPath(for: cell)!.row
+            }
+        }
+        if closestCellIndex != -1 {
+            self.scrollToItem(at: IndexPath(row: closestCellIndex, section: 0), at: .centeredHorizontally, animated: true)
+        }
     }
 }

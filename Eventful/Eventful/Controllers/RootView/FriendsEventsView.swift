@@ -118,7 +118,7 @@ class FriendsEventsView: UITableViewController,TransitionDelegate{
                 group.enter()
                 UserService.show(forUID: followingId.key, completion: { (user) in
                     PostService.showFollowingEvent(for: followingId.key, completion: { (event) in
-                        self.attendingEvents = event
+//                        self.attendingEvents = event
                         let friend = Friend(friendName: (user?.username)!, events: self.attendingEvents, imageUrl: (user?.profilePic)!)
                         self.friends.append(friend)
                         // leave here

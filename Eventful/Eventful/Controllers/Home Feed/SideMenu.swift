@@ -10,8 +10,10 @@ import UIKit
 
 class SideMenu: NSObject {
     let name: SideMenuName
-    init(name: SideMenuName) {
+    let imageName: String
+    init(name: SideMenuName, imageName: String) {
         self.name = name
+        self.imageName = imageName
     }
 }
 

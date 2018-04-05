@@ -11,6 +11,7 @@
         let homeFeedController = HomeFeedController(collectionViewLayout: UICollectionViewFlowLayout())
         let navController = UINavigationController(rootViewController: homeFeedController)
         navController.tabBarItem.image = UIImage(named: "icons8-home-page-50")?.withRenderingMode(.alwaysOriginal)
+        navController.tabBarItem.title = "Home"
         navController.tabBarItem.selectedImage = UIImage(named: "icons8-home-page-filled-50")?.withRenderingMode(.alwaysOriginal)
 
         //        let navController = ScrollingNavigationController(rootViewController: homeFeedController)
@@ -19,6 +20,7 @@
         let profileView = ProfileeViewController(collectionViewLayout: UICollectionViewFlowLayout())
         let profileViewNavController = UINavigationController(rootViewController: profileView)
         profileViewNavController.tabBarItem.image = UIImage(named: "icons8-User-50")?.withRenderingMode(.alwaysOriginal)
+        profileViewNavController.tabBarItem.title = "Profile"
         profileViewNavController.tabBarItem.selectedImage = UIImage(named: "icons8-User Filled-50")?.withRenderingMode(.alwaysOriginal)
 
         let searchController = EventSearchController(collectionViewLayout: UICollectionViewFlowLayout())
@@ -26,13 +28,14 @@
         
         searchNavController.tabBarItem.image =  UIImage(named: "icons8-search-50")?.withRenderingMode(.alwaysOriginal)
         searchNavController.tabBarItem.selectedImage =  UIImage(named: "icons8-search-filled-50")?.withRenderingMode(.alwaysOriginal)
+        searchNavController.tabBarItem.title = "Search"
 
         let notificationView = NotificationsViewController()
         let notificationNavController = UINavigationController(rootViewController: notificationView)
         notificationNavController.tabBarItem.image = UIImage(named: "icons8-Notification-50")?.withRenderingMode(.alwaysOriginal)
         notificationNavController.tabBarItem.selectedImage = UIImage(named: "icons8-Notification Filled-50")?.withRenderingMode(.alwaysOriginal)
-
-        
+        notificationNavController.tabBarItem.title = "Notifications"
+    
         return [navController
             ,searchNavController,notificationNavController,profileViewNavController]
     }()

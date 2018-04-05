@@ -308,3 +308,36 @@ extension TimeInterval {
         }
     }
 }
+
+extension Array where Element:Equatable {
+    func removeDuplicates() -> [Element] {
+        return reduce(into: []) { result, element in
+            if !result.contains(element) {
+                result.append(element)
+            }
+        }
+    }
+    
+    mutating func removeDuplicatesTwo() {
+        var result = [Element]()
+        for value in self {
+            if !result.contains(value) {
+                result.append(value)
+            }
+        }
+        self = result
+    }
+}
+
+public extension Sequence where Iterator.Element: Equatable {
+    var uniqueElements: [Iterator.Element] {
+        return self.reduce([]){
+            uniqueElements, element in
+            
+            uniqueElements.contains(element)
+                ? uniqueElements
+                : uniqueElements + [element]
+        }
+    }
+}
+

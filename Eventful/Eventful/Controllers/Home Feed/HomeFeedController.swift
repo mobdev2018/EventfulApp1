@@ -39,6 +39,8 @@ class HomeFeedController: UICollectionViewController, UICollectionViewDelegateFl
     var allEvents2 = [String:[Event]]()
     var seizeTheNight = [Event]()
     var seizeTheDay = [Event]()
+    var twentyOne = [Event]()
+    var friendsEvents = [Event]()
     private let cellID = "cellID"
     private let catergoryCellID = "catergoryCellID"
     var images: [String] = ["gear1","gear4","snakeman","gear4","gear1"]
@@ -57,13 +59,13 @@ class HomeFeedController: UICollectionViewController, UICollectionViewDelegateFl
         SVProgressHUD.dismiss()
         grabUserLoc()
         setupBarButtonItems()
+        grabFriendsEvents()
         collectionView?.register(HomeFeedCell.self, forCellWithReuseIdentifier: cellID)
                 collectionView?.register(CategoryCell.self, forCellWithReuseIdentifier: catergoryCellID)
     }
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         tabBarController?.tabBar.isHidden = false
-//        self.navigationController?.setNavigationBarHidden(true, animated: false)
     }
     
     override func viewDidDisappear(_ animated: Bool) {
@@ -106,14 +108,19 @@ class HomeFeedController: UICollectionViewController, UICollectionViewDelegateFl
                     if events.category == "Seize The Day"{
                         self.seizeTheDay.append(events)
                     }
+                    if events.category == "21 & Up"{
+                    self.twentyOne.append(events)
+                    }
                 
                 self.allEvents2["Seize The Night"] = self.seizeTheNight
                 self.allEvents2["Seize The Day"] = self.seizeTheDay
+                self.allEvents2[ "21 & Up"] = self.twentyOne
+
                 print("Event count in PostService Closure:\(self.allEvents.count)")
                 DispatchQueue.main.async {
                    // self.dynamoCollectionView.reloadData()
                     //self.dynamoCollectionViewTop.reloadData()
-                    self.collectionView?.reloadData()
+//                    self.collectionView?.reloadData()
 
                 }
                 
@@ -130,8 +137,38 @@ class HomeFeedController: UICollectionViewController, UICollectionViewDelegateFl
             print("Latitude: \(currentLocation.coordinate.latitude)")
             print("Longitude: \(currentLocation.coordinate.longitude)")
         }
-        
     }
+    
+    @objc func grabFriendsEvents(){
+        print("Attempting to see where your friends are going")
+        UserService.following { (user) in
+            for following in user {
+                print(following.username as Any)
+                PostService.showFollowingEvent(for: following.uid, completion: { (event) in
+                    self.friendsEvents.append(event)
+                   // self.friendsEvents.append(contentsOf: event)
+                    // leave here
+                    self.allEvents2["Friends Events"] = self.friendsEvents.removeDuplicates()
+                    self.collectionView?.reloadData()
+                })
+                
+            }  
+            
+        }
+    }
+    
+    func uniq<S : Sequence, T : Hashable>(source: S) -> [T] where S.Iterator.Element == T {
+        var buffer = [T]()
+        var added = Set<T>()
+        for elem in source {
+            if !added.contains(elem) {
+                buffer.append(elem)
+                added.insert(elem)
+            }
+        }
+        return buffer
+    }
+    
     override func didMove(toParentViewController parent: UIViewController?) {
         super.didMove(toParentViewController: parent)
         
@@ -184,8 +221,6 @@ class HomeFeedController: UICollectionViewController, UICollectionViewDelegateFl
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: catergoryCellID, for: indexPath) as! CategoryCell
         cell.sectionNameLabel.text = categories[indexPath.item]
         cell.homeFeedController = self
-        print(categories[indexPath.item])
-        print(indexPath.item)
         if allEvents2[categories[indexPath.item]]?.count != nil {
             print(allEvents2[categories[indexPath.item]])
             cell.categoryEvents = allEvents2[categories[indexPath.item]]

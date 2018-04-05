@@ -8,7 +8,7 @@
 
 import UIKit
 
-class HomeFeedCell: UICollectionViewCell, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
+class HomeFeedCell: UICollectionViewCell, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, UIScrollViewDelegate {
     var homeFeedController: HomeFeedController?
 
     private let cellId = "cellId"
@@ -90,4 +90,15 @@ class HomeFeedCell: UICollectionViewCell, UICollectionViewDataSource, UICollecti
         cell.event = featuredEvents?[indexPath.item]
         return cell
     }
+    
+    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+        self.homeFeedCollectionView.scrollToNearestVisibleCollectionViewCell()
+    }
+    
+    func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+        if !decelerate {
+            self.homeFeedCollectionView.scrollToNearestVisibleCollectionViewCell()
+        }
+    }
 }
+

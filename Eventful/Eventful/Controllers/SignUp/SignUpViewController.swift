@@ -362,13 +362,10 @@ class SignUpViewController: UIViewController, UIImagePickerControllerDelegate, U
     //creatas a UILabel
     let signInLabel: UILabel = {
         let signUp = UILabel()
-        signUp.textColor = .black
-        let myString = "Already have an account?"
-        let myAttribute = [NSAttributedStringKey.font:UIFont(name: "Times New Roman", size: 15)!]
-        let myAttrString = NSAttributedString(string: myString, attributes: myAttribute)
-        signUp.attributedText = myAttrString
+        signUp.textColor = UIColor.black
+        signUp.font = UIFont.boldSystemFont(ofSize: 13)
+        signUp.text = "Already have an account?"
         return signUp
-        
     }()
     
     //will create the signup button

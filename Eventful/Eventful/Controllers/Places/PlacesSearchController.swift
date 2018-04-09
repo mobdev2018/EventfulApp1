@@ -113,8 +113,8 @@ extension PlacesSearchController: UICollectionViewDataSource{
         let city = arrayAddress[indexPath.item].attributedPrimaryText.string
         let stateHolder = arrayAddress[indexPath.item].attributedSecondaryText?.string.split(separator: ",")
         let string = "\(city), \(String(describing: stateHolder![0])) ▼"
-        
         self.homeFeedController?.titleView.text = string
+        self.homeFeedController?.updateCVWithLocation(placeID: currentLocation!)
         self.dismiss(animated: false, completion: nil)
         
     }

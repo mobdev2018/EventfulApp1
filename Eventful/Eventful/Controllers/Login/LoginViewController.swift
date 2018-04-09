@@ -156,7 +156,7 @@ class LoginViewController: UIViewController , LoginViewControllerDelegate {
     let signUpLabel: UILabel = {
         let signUp = UILabel()
         signUp.text = "Don't have an account?"
-        signUp.textColor = UIColor.lightGray
+        signUp.textColor = UIColor.black
         signUp.font = UIFont.boldSystemFont(ofSize: 13)
         return signUp
     }()

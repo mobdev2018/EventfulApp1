@@ -15,6 +15,7 @@ import CoreLocation
 import FirebaseDatabase
 import SVProgressHUD
 import SkeletonView
+import GooglePlaces
 
 class ImageAndTitleItem: NSObject {
     public var name:String?
@@ -41,6 +42,8 @@ class HomeFeedController: UICollectionViewController, UICollectionViewDelegateFl
     var seizeTheDay = [Event]()
     var twentyOne = [Event]()
     var friendsEvents = [Event]()
+    var newLoadedEvents = [Event]()
+    var placesClient = GMSPlacesClient()
     private let cellID = "cellID"
     private let catergoryCellID = "catergoryCellID"
     var images: [String] = ["gear1","gear4","snakeman","gear4","gear1"]
@@ -93,6 +96,71 @@ class HomeFeedController: UICollectionViewController, UICollectionViewDelegateFl
         categoryVC.titleView.text = sideMenu.name.rawValue
         categoryVC.events = self.allEvents2[sideMenu.name.rawValue]!
         navigationController?.pushViewController(categoryVC, animated: true)
+    }
+    
+    @objc func updateCVWithLocation(placeID: String){
+        print(placeID)
+        placesClient.lookUpPlaceID(placeID) { (place, error) in
+            if error != nil {
+                print("lookup place id query error: \(error!.localizedDescription)")
+                return
+            }
+            if let p = place {
+                print("Place name \(p.name)")
+                print("Place address \(p.formattedAddress)")
+                print("Place placeID \(p.placeID)")
+                print("Place attributions \(p.attributions)")
+                print("Place coordinates \(p.coordinate)")
+                let currentLocation = CLLocation(latitude: p.coordinate.latitude, longitude: p.coordinate.longitude)
+                ///regular events
+                self.allEvents2["Seize The Night"]?.removeAll()
+                self.allEvents2["Seize The Day"]?.removeAll()
+                self.allEvents2["21 & Up"]?.removeAll()
+                self.seizeTheNight.removeAll()
+                self.seizeTheDay.removeAll()
+                self.twentyOne.removeAll()
+                self.featuredEvents.removeAll()
+
+                PostService.showEvent(for: currentLocation, completion: { [unowned self](event) in
+                    print(event.key)
+
+
+                    if event.category == "Seize The Night" {
+                        self.seizeTheNight.append(event)
+                    }
+                    if event.category == "Seize The Day"{
+                        self.seizeTheDay.append(event)
+                    }
+                    if event.category == "21 & Up"{
+                        self.twentyOne.append(event)
+                    }
+                    
+                    self.allEvents2["Seize The Night"] = self.seizeTheNight
+                    self.allEvents2["Seize The Day"] = self.seizeTheDay
+                    self.allEvents2[ "21 & Up"] = self.twentyOne
+                    DispatchQueue.main.async {
+                        self.collectionView?.reloadData()
+                    }
+                })
+                
+                //featured events
+
+                PostService.showFeaturedEvent(for: currentLocation, completion: { [weak self] (events) in
+                    self?.featuredEvents = events
+                    DispatchQueue.main.async {
+                        self?.collectionView?.reloadData()
+                    }
+                    // print("Event count in Featured Events Closure is:\(self?.featuredEvents.count)")
+                    }
+                )
+                
+                
+   
+            }else {
+                print("No place details for \(placeID)")
+            }
+            
+        }
     }
     
     @objc func grabUserLoc(){

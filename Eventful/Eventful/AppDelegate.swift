@@ -12,6 +12,7 @@ import Fabric
 import Crashlytics
 import UserNotifications
 import NotificationBannerSwift
+import GooglePlaces
 
 
 typealias FIRUser = FirebaseAuth.User
@@ -34,6 +35,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, MessagingDelegate {
         //2
         // Configure messaging
         Messaging.messaging().delegate = self
+        //configure google places api
+        GMSPlacesClient.provideAPIKey("AIzaSyD-IAnUrSttIChacXhY_f_Sa2OA-d6AueE")
 
         window = UIWindow(frame: UIScreen.main.bounds)
         window?.makeKeyAndVisible()

@@ -29,6 +29,9 @@ target 'Eventful' do
     pod "Hero"
     pod 'NotificationBannerSwift'
     pod "SkeletonView"
+    pod 'GooglePlaces'
+    pod 'GooglePlacePicker'
+    pod 'GoogleMaps'
     # Pods for Eventful
     
 end

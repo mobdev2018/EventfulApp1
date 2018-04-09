@@ -182,7 +182,8 @@ class EventDetailViewController: UIViewController,UIScrollViewDelegate {
     }
     
     fileprivate func setupAttendInteraction(){
-        Database.database().reference().child("Attending").child(eventKey).child(User.current.uid).observeSingleEvent(of: .value, with: { (snapshot) in
+        Database.database().reference().child("attending").child(eventKey).child(User.current.uid).observeSingleEvent(of: .value, with: { (snapshot) in
+            print(snapshot)
             if let isAttending = snapshot.value as? Int, isAttending == 1 {
                 print("User is attending")
                 self.currentEvent?.isAttending = true
@@ -337,7 +338,7 @@ class EventDetailViewController: UIViewController,UIScrollViewDelegate {
         userInteractStackView?.snp.makeConstraints { (make) in
             make.top.equalTo(infoText.snp.bottom).offset(30)
             make.left.right.equalTo(textContainer)
-            make.bottom.equalTo(textContainer.snp.bottom).inset(5)
+            make.bottom.equalTo(textContainer.snp.bottom)
         }
     }
     

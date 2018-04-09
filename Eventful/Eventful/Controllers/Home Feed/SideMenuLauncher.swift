@@ -47,7 +47,7 @@ class SideMenuLauncher: NSObject, UICollectionViewDelegateFlowLayout {
             
             UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 2, initialSpringVelocity: 2, options: .curveEaseOut, animations: {
                 self.blackView.alpha = 1
-                self.collectionView.frame = CGRect(x: 0, y: 0, width: window.frame.width * (3/4), height: self.collectionView.frame.height)
+                self.collectionView.frame = CGRect(x: 0, y: 0, width: window.frame.width * (2.50/4), height: self.collectionView.frame.height)
             }, completion: nil)
         }
     }

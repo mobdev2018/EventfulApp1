@@ -124,9 +124,9 @@ class SignUpViewController: UIViewController, UIImagePickerControllerDelegate, U
         let button = UIButton(type: .system)
         button.setTitle("SIGN UP", for: .normal)
         button.setTitleColor(.white, for: .normal)
-        button.layer.cornerRadius = 23.5
+        button.layer.cornerRadius = 5
         button.addTarget(self, action: #selector(handleSignUp), for: .touchUpInside)
-        button.backgroundColor = UIColor.logoColor
+        button.backgroundColor = UIColor.rgb(red: 45, green: 162, blue: 232)
         return button
     }()
     
@@ -376,7 +376,7 @@ class SignUpViewController: UIViewController, UIImagePickerControllerDelegate, U
         let button = UIButton(type: .system)
         button.setTitle("Sign in", for: .normal)
         button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 13)
-        button.setTitleColor(UIColor.logoColor, for: .normal)
+        button.setTitleColor(UIColor.rgb(red: 45, green: 162, blue: 232), for: .normal)
         button.addTarget(self, action: #selector(handleCancel), for: .touchUpInside)
         return button
     }()

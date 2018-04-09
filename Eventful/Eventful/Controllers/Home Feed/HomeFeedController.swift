@@ -52,6 +52,8 @@ class HomeFeedController: UICollectionViewController, UICollectionViewDelegateFl
         launcher.homeFeedController = self
         return launcher
     }()
+    let titleView = UILabel()
+
     override func viewDidLoad() {
         super.viewDidLoad()
         collectionView?.backgroundColor = .white
@@ -115,21 +117,12 @@ class HomeFeedController: UICollectionViewController, UICollectionViewDelegateFl
                 self.allEvents2["Seize The Night"] = self.seizeTheNight
                 self.allEvents2["Seize The Day"] = self.seizeTheDay
                 self.allEvents2[ "21 & Up"] = self.twentyOne
-
-                print("Event count in PostService Closure:\(self.allEvents.count)")
-                DispatchQueue.main.async {
-                   // self.dynamoCollectionView.reloadData()
-                    //self.dynamoCollectionViewTop.reloadData()
-//                    self.collectionView?.reloadData()
-
-                }
-                
+               // print("Event count in PostService Closure:\(self.allEvents.count)")
             })
             
             PostService.showFeaturedEvent(for: currentLocation, completion: { [weak self] (events) in
-                
                 self?.featuredEvents = events
-                print("Event count in Featured Events Closure is:\(self?.featuredEvents.count)")
+               // print("Event count in Featured Events Closure is:\(self?.featuredEvents.count)")
                 DispatchQueue.main.async {
                 }
             }
@@ -189,17 +182,15 @@ class HomeFeedController: UICollectionViewController, UICollectionViewDelegateFl
                 }
                 if placemarks!.count > 0 {
                     let pm = placemarks![0]
-                    print(pm.locality as Any)
-                    print(pm.administrativeArea as Any)
-                    let titleView = UILabel()
-                    titleView.text = "\(pm.locality ?? ""), \(pm.administrativeArea ?? "") ▼"
-                    titleView.font = UIFont(name: "Avenir", size: 18)
-                    let width = titleView.sizeThatFits(CGSize(width: CGFloat.greatestFiniteMagnitude, height: CGFloat.greatestFiniteMagnitude)).width
-                    titleView.frame = CGRect(origin:CGPoint.zero, size:CGSize(width: width, height: 500))
-                    self.navigationItem.titleView = titleView
+                    self.titleView.text = "\(pm.locality ?? ""), \(pm.administrativeArea ?? "") ▼"
+                    self.titleView.font = UIFont(name: "Avenir", size: 18)
+                    self.titleView.adjustsFontSizeToFitWidth = true
+                    let width = self.titleView.sizeThatFits(CGSize(width: CGFloat.greatestFiniteMagnitude, height: CGFloat.greatestFiniteMagnitude)).width
+                    self.titleView.frame = CGRect(origin:CGPoint.zero, size:CGSize(width: width, height: 500))
+                    self.navigationItem.titleView = self.titleView
                     let recognizer = UITapGestureRecognizer(target: self, action: #selector(self.titleWasTapped))
-                    titleView.isUserInteractionEnabled = true
-                    titleView.addGestureRecognizer(recognizer)
+                    self.titleView.isUserInteractionEnabled = true
+                    self.titleView.addGestureRecognizer(recognizer)
                 }
                 else {
                     print("Problem with the data received from geocoder")
@@ -209,6 +200,10 @@ class HomeFeedController: UICollectionViewController, UICollectionViewDelegateFl
     }
     @objc private func titleWasTapped() {
         print("Hello, titleWasTapped!")
+        let searchController = PlacesSearchController()
+        searchController.homeFeedController = self
+        let placesNavController = UINavigationController(rootViewController: searchController)
+        self.present(placesNavController, animated: false, completion: nil)
     }
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         if indexPath.section == 0 {
